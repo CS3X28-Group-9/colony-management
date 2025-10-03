@@ -1,0 +1,14 @@
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Django database (don’t version control SQLite)
+db.sqlite3
+
+# Virtual environments
+venv/
+.env/
