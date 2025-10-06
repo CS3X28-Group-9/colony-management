@@ -1,0 +1,38 @@
+---
+#Simple CI file
+#Sets up Python, as well and installs uv, caching packages. All needed linting/formatting checks is done using the pre-commit yaml but double checked. Tests ran as well but currently empty
+name: CI Pipeline
+run-name: ${{ github.event_name }}ed to ${{ github.ref_name }} by ${{ github.actor }} - run ${{ github.run_number }}
+
+on:
+  push:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.8.23"
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run pre-commit hooks
+        uses: pre-commit/action@v3.0.1
+
+      - name: Run Tests
+        run: python mousemetrics/mouseapp/tests.py test
