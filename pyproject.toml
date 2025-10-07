@@ -4,11 +4,17 @@ version = "0.1.0"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "black>=25.9.0",
-    "django>=5.2.7",
-    "django-upgrade>=1.29.0",
-    "pre-commit>=4.3.0",
-    "ruff>=0.13.3",
+  "django>=5.2.7"
+]
+
+[dependency-groups]
+dev = [
+  "black>=25.9",
+  "django-upgrade>=1.29",
+  "pre-commit>=4.3",
+  "pytest>=8.4.2",
+  "pytest-django>=4.11.1",
+  "ruff>=0.13.3",
 ]
 
 [tool.ruff]
@@ -20,3 +26,18 @@ quote-style = "double"
 indent-style = "space"
 skip-magic-trailing-comma = false
 line-ending = "auto"
+
+[dependency-groups]
+dev = [
+    "black>=25.9.0",
+    "django-upgrade>=1.29.0",
+    "pre-commit>=4.3.0",
+    "pytest>=8.4.2",
+    "pytest-django>=4.11.1",
+    "ruff>=0.13.3",
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "test.settings"
+# -- recommended but optional:
+python_files = ["test_*.py", "*_test.py", "testing/python/*.py"]
