@@ -3,6 +3,7 @@ name = "colony-management"
 version = "0.1.0"
 readme = "README.md"
 requires-python = ">=3.13"
+classifiers = [ "Programming Language :: Python :: 3 :: Only", "Programming Language :: Python :: 3.13" ]
 dependencies = [
   "django>=5.2.7"
 ]
@@ -21,23 +22,12 @@ dev = [
 line-length = 88
 indent-width = 4
 
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
-skip-magic-trailing-comma = false
-line-ending = "auto"
-
-[dependency-groups]
-dev = [
-    "black>=25.9.0",
-    "django-upgrade>=1.29.0",
-    "pre-commit>=4.3.0",
-    "pytest>=8.4.2",
-    "pytest-django>=4.11.1",
-    "ruff>=0.13.3",
-]
+format.indent-style = "space"
+format.quote-style = "double"
+format.line-ending = "auto"
+format.skip-magic-trailing-comma = false
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "test.settings"
-# -- recommended but optional:
-python_files = ["test_*.py", "*_test.py", "testing/python/*.py"]
+DJANGO_SETTINGS_MODULE = "mousemetrics.settings"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+pythonpath = ["mousemetrics"]
