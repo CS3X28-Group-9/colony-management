@@ -3,3 +3,7 @@
 **/*.pyc
 .venv/
 /.direnv
+
+
+# packaging
+*.egg-info/
