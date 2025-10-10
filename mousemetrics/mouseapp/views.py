@@ -1,8 +1,5 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
 
-def hello(request):
-    return HttpResponse("Hello, world. You're at the mouseapp index.")
-
-
-# Create your views here.
+def home(request):
+    return render(request, "home.html")
