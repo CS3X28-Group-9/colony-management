@@ -22,7 +22,7 @@ class RegistrationForm(UserCreationForm):
     def save(self, commit=True):  # creates and saves new user
         user = super().save(commit=False)
         email = self.cleaned_data["email"]
-        user.username = email.split("@")[0]
+        user.username = email.split("@")[0]  # your username is the part before the @
         user.email = email
         if commit:
             user.save()

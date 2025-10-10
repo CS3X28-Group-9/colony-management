@@ -1,17 +1,33 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Login</h1>
+
+<style>
+  .form-row { display: flex; align-items: center; gap: 12px; margin: 8px 0; }
+  .form-row label { width: 140px; font-weight: 600; }
+  .form-row input { width: 320px; padding: 8px; }
+  .actions { margin-top: 12px; }
+</style>
+
 <form method="post">
   {% csrf_token %}
   {{ form.non_field_errors }}
-  <div>
-    <label>Username</label>
-    {{ form.username }}
+
+  <div class="form-row">  <!-- in future accept email as well as username -->
+    {{ form.username.label_tag }}
+    {{ form.username }} <!-- username is before the @ in emails -->
   </div>
-  <div>
-    <label>Password</label>
+
+  <div class="form-row">
+    {{ form.password.label_tag }}
     {{ form.password }}
   </div>
-  <button type="submit">Sign in</button>
+
+  <div class="actions">
+    <button type="submit">Sign in</button>
+  </div>
 </form>
+
+<p><a href="{% url 'password_reset' %}">Forgot password?</a></p>
+<p>Don't have an account? <a href="{% url 'register' %}">Sign up</a></p>
 {% endblock %}

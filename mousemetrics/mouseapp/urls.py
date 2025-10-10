@@ -3,6 +3,6 @@ from .views import home, register
 
 urlpatterns = [
     path("", home, name="home"),
-    path("accounts/", include("django.contrib.auth.urls")),
+    path("", include("django.contrib.auth.urls")),
     path("register/", register, name="register"),
 ]

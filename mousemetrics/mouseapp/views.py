@@ -6,6 +6,10 @@ def home(request):
     return render(request, "home.html")
 
 
+def login(request):
+    return render(request, template_name="mouseapp/login.html")
+
+
 def register(request):
     if request.method == "POST":
         form = RegistrationForm(request.POST)
