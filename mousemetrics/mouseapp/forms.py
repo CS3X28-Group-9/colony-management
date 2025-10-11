@@ -2,6 +2,15 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import AuthenticationForm
+
+
+class CustomAuthenticationForm(AuthenticationForm):
+    username = forms.EmailField(label="Email", max_length=254)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["username"].widget.attrs["placeholder"] = "Enter your email"
 
 
 class RegistrationForm(UserCreationForm):
@@ -19,10 +28,10 @@ class RegistrationForm(UserCreationForm):
             raise ValidationError("This email is already registered.")
         return email
 
-    def save(self, commit=True):  # creates and saves new user
+    def save(self, commit=True):
         user = super().save(commit=False)
         email = self.cleaned_data["email"]
-        user.username = email.split("@")[0]  # your username is the part before the @
+        user.username = email
         user.email = email
         if commit:
             user.save()
