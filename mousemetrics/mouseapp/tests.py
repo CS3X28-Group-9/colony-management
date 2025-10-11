@@ -8,7 +8,6 @@ from .forms import RegistrationForm
 def test_home_renders_template(client):
     response = client.get(reverse("home"))
     assert response.status_code == 200
-    assert "text/html" in response["Content-Type"]
     assert response["Content-Type"] == "text/html; charset=utf-8"
 
 
