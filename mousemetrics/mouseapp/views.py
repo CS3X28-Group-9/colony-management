@@ -4,7 +4,7 @@ from django.contrib.auth import login as auth_login
 
 
 def home(request):
-    return render(request, "home.html")
+    return render(request, "mouseapp/home.html")
 
 
 def login(request):
@@ -16,7 +16,7 @@ def login(request):
     else:
         form = CustomAuthenticationForm()
 
-    return render(request, "mouseapp/login.html", {"form": form})
+    return render(request, "/registration/login.html", {"form": form})
 
 
 def register(request):
