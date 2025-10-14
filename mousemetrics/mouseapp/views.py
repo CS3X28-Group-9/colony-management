@@ -12,7 +12,7 @@ def login(request):
         form = CustomAuthenticationForm(request, data=request.POST)
         if form.is_valid():
             auth_login(request, form.get_user())
-            return redirect("home")
+            return redirect("mouseapp:home")
     else:
         form = CustomAuthenticationForm()
 
@@ -24,7 +24,7 @@ def register(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("login")
+            return redirect("mouseapp:login")
     else:
         form = RegistrationForm()
     return render(request, "registration/register.html", {"form": form})
