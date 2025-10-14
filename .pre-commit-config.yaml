@@ -1,49 +1,63 @@
 ---
 repos:
   #In case of depreciated code when repurposing from stackoverflow or similar
-  - repo: https://github.com/adamchainz/django-upgrade
+-   repo: https://github.com/adamchainz/django-upgrade
     rev: 1.29.0
     hooks:
-      - id: django-upgrade
+    -   id: django-upgrade
     #Keep lockfile up to date
-  - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.8.23
+-   repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.9.2
     hooks:
-      - id: uv-lock
+    -   id: uv-lock
   #Linting
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.13.3
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.0
     hooks:
-      - id: ruff-check
+    -   id: ruff-check
         args:
-          - --fix
+        -   --fix
   #Formatting
-  - repo: https://github.com/psf/black-pre-commit-mirror.git
+-   repo: https://github.com/psf/black-pre-commit-mirror.git
     rev: 25.9.0
     hooks:
-      - id: black
-  - repo: https://github.com/pre-commit/pre-commit-hooks.git
+    -   id: black
+  #HTML/CSS Linting
+-   repo: https://github.com/rtts/djhtml
+    rev: 3.0.10
+    hooks:
+    -   id: djhtml
+        entry: djhtml --tabwidth 2
+    -   id: djcss
+        args:
+        -   .
+-   repo: https://github.com/pre-commit/pre-commit-hooks.git
     rev: v6.0.0
     hooks:
       #Filesystem
-      - id: check-case-conflict
-      - id: check-illegal-windows-names
+    -   id: check-case-conflict
+    -   id: check-illegal-windows-names
       #Text formatting
-      - id: end-of-file-fixer
-      - id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
       #File checks
-      - id: check-json
-      - id: check-toml
-      - id: check-yaml
+    -   id: check-json
+    -   id: check-toml
+    -   id: check-yaml
       #Python
-      - id: name-tests-test
+    -   id: name-tests-test
       #Git
-      - id: no-commit-to-branch
+    -   id: no-commit-to-branch
   #Pytest
-  - repo: local
+-   repo: local
     hooks:
-      - id: pytest-mouseapp
+    -   id: pytest-mouseapp
         name: pytest-check
         entry: uv run pytest
         language: system
         pass_filenames: false
+  #Auto update Pre-commit versions
+-   repo: https://gitlab.com/vojko.pribudic.foss/pre-commit-update
+    rev: v0.8.0
+    hooks:
+    -   id: pre-commit-update

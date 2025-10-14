@@ -12,6 +12,7 @@ dependencies:
 
 lint:
 	black . && ruff check .
+	djhtml mousemetrics/. && djcss mousemetrics/.
 
 workflows:
 	pre-commit install
