@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Family Tree{% endblock %}
+{% block content %}
+  <div class="overflow-x-scroll">
+    {% for generation in ancestry %}
+      <div class="flex flex-row justify-center">
+        {% for mouse in generation %}
+          <div style="min-width: calc(36 * var(--spacing) * pow(2, {{ forloop.parentloop.counter0 }}));" class="flex justify-center align-center">
+            {% if mouse is not None %}
+              <div class="p-2 m-1 max-w-36 w-36 border rounded-md">
+                <a href="{% url "mouseapp:family_tree" mouse=mouse.id %}">{{ mouse.strain }} {{ mouse.tube_number }}</a><br>
+                Box: {{ mouse.box.number }}<br>
+                Earmark: {{ mouse.earmark }}
+                <a class="float-end text-xs" href="{% url "mouseapp:mouse" id=mouse.id %}">(Details)</a>
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+{% endblock content %}
