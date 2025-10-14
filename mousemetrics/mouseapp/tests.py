@@ -34,3 +34,44 @@ def test_user_creation():
     assert db_user.first_name == user_data["first_name"]
     assert db_user.last_name == user_data["last_name"]
     assert db_user.check_password(user_data["password1"])
+
+
+@pytest.mark.django_db
+def test_registration_redirect(client):
+    register_url = reverse("mouseapp:register")
+    login_url = reverse("mouseapp:login")
+    user_data = {
+        "email": "redirect_test@abdn.ac.uk",
+        "first_name": "Redirect",
+        "last_name": "Test",
+        "password1": "a-secure-password",
+        "password2": "a-secure-password",
+    }
+
+    response = client.post(register_url, data=user_data)
+
+    assert response.status_code == 302, "Expected a redirect after registration"
+    assert (
+        response.url == login_url
+    ), f"Expected redirect to {login_url}, but got {response.url}"
+
+
+@pytest.mark.django_db
+def test_login_redirect(client):
+    login_url = reverse("mouseapp:login")
+    home_url = reverse("mouseapp:home")
+    password = "a-very-secure-password"
+    user = User.objects.create_user(
+        username="loginuser@example.com",
+        email="loginuser@example.com",
+        password=password,
+        first_name="Login",
+        last_name="User",
+    )
+
+    response = client.post(login_url, {"username": user.email, "password": password})
+
+    assert response.status_code == 302, "Expected a redirect after login"
+    assert (
+        response.url == home_url
+    ), f"Expected redirect to {home_url}, but got {response.url}"
