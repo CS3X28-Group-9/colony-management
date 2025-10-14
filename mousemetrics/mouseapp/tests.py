@@ -14,28 +14,23 @@ def test_home_renders_template(client):
     assert response["Content-Type"] == "text/html; charset=utf-8"
 
 
-class RegistrationTest(TestCase):
-    def test_user_creation(self):
-        user_data = {
-            "email": "test@abdn.ac.uk",
-            "first_name": "T",
-            "last_name": "E",
-            "password1": "Str0ngPass123!",
-            "password2": "Str0ngPass123!",
-        }
+def test_user_creation(django_db):
+    user_data = {
+        "email": "test@abdn.ac.uk",
+        "first_name": "T",
+        "last_name": "E",
+        "password1": "Str0ngPass123!",
+        "password2": "Str0ngPass123!",
+    }
+    
+    form = RegistrationForm(data=user_data)
+    assert form.is_valid()
 
-        form = RegistrationForm(data=user_data)
-        self.assertTrue(form.is_valid())
+    user = form.save()
+    assert user is not None
 
-        user = form.save()
-        self.assertIsNotNone(user)
-
-        try:
-            db_user = User.objects.get(email=user_data["email"])
-            self.assertEqual(db_user.email, user_data["email"])
-            self.assertEqual(db_user.first_name, user_data["first_name"])
-            self.assertEqual(db_user.last_name, user_data["last_name"])
-            self.assertTrue(db_user.check_password(user_data["password1"]))
-
-        except User.DoesNotExist:
-            self.fail("User was not found in the database after registration.")
+    db_user = User.objects.get(email=user_data["email"])
+    assert db_user.email == user_data["email"]
+    assert db_user.first_name == user_data["first_name"]
+    assert db_user.last_name == user_data["last_name"]
+    assert db_user.check_password(user_data["password1"]))
