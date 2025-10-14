@@ -2,7 +2,10 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.core.validators import EmailValidator
 from django.contrib.auth.forms import AuthenticationForm
+import re
+from django.contrib.auth.models import BaseUserManager
 
 
 class CustomAuthenticationForm(AuthenticationForm):
@@ -13,8 +16,15 @@ class CustomAuthenticationForm(AuthenticationForm):
         self.fields["username"].widget.attrs["placeholder"] = "Enter your email"
 
 
+class TightEmailValidator(EmailValidator):
+    regex = re.compile(
+        r"""((([\t ]*\r\n)?[\t ]+)?[-!#-'*+/-9=?A-Z^-~]+(\.[-!#-'*+/-9=?A-Z^-~]+)*(([\t ]*\r\n)?[\t ]+)?|(([\t ]*\r\n)?[\t ]+)?"(((([\t ]*\r\n)?[\t ]+)?([]!#-[^-~]|(\\[\t -~])))+(([\t ]*\r\n)?[\t ]+)?|(([\t ]*\r\n)?[\t ]+)?)"(([\t ]*\r\n)?[\t ]+)?)@((([\t ]*\r\n)?[\t ]+)?[-!#-'*+/-9=?A-Z^-~]+(\.[-!#-'*+/-9=?A-Z^-~]+)*(([\t ]*\r\n)?[\t ]+)?|(([\t ]*\r\n)?[\t ]+)?\[((([\t ]*\r\n)?[\t ]+)?[!-Z^-~])*(([\t ]*\r\n)?[\t ]+)?](([\t ]*\r\n)?[\t ]+)?)""",
+        re.IGNORECASE,
+    )
+
+
 class RegistrationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
+    email = forms.EmailField(required=True, validators=[TightEmailValidator])
     first_name = forms.CharField(max_length=30, required=True)
     last_name = forms.CharField(max_length=30, required=True)
 
@@ -23,8 +33,13 @@ class RegistrationForm(UserCreationForm):
         fields = ("email", "first_name", "last_name", "password1", "password2")
 
     def clean_email(self):
-        email = self.cleaned_data["email"]
-        if User.objects.filter(email__iexact=email).exists():  # stops repeat emails
+        email = BaseUserManager.normalize_email(
+            self.cleaned_data["email"]
+        )  # normalize so _exact can be used
+
+        if User.objects.filter(
+            email__exact=email
+        ).exists():  # _exact rather than _iexact to to ensure local normalization
             raise ValidationError("This email is already registered.")
         return email
 
