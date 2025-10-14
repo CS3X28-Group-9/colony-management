@@ -11,9 +11,9 @@ dependencies:
 	uv sync
 
 lint:
-	black . && ruff check .
-	djhtml mousemetrics/. && djcss mousemetrics/.
+	uv run black . && uv run ruff check .
+	uv run djhtml mousemetrics/. && uv run djcss mousemetrics/. #scoping to prevent temp file scans
 
 workflows:
-	pre-commit install
-	pre-commit run --all-files
+	uv run pre-commit install
+	uv run pre-commit run --all-files
