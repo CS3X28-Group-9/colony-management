@@ -1,32 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Login</h1>
+  <h1>Login</h1>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
 
-        <div class="form-row">
-            {{ form.username.label_tag }}
-            {{ form.username }}
-        </div>
+    <div class="form-row">
+      {{ form.username.label_tag }}
+      {{ form.username }}
+    </div>
 
-        <div class="form-row">
-            {{ form.password.label_tag }}
-            {{ form.password }}
-        </div>
+    <div class="form-row">
+      {{ form.password.label_tag }}
+      {{ form.password }}
+    </div>
 
-        <div class="actions">
-            <button type="submit">Sign in</button>
-        </div>
-    </form>
+    <div class="actions">
+      <button type="submit">Sign in</button>
+    </div>
+  </form>
 
-    <p>
-        <a href="{% url 'mouseapp:password_reset' %}">Forgot password?</a>
-    </p>
+  <p>
+    <a href="{% url 'mouseapp:password_reset' %}">Forgot password?</a>
+  </p>
 
-    <p>
-        Don't have an account? <a href="{% url 'mouseapp:register' %}">Sign up</a>
-    </p>
+  <p>
+    Don't have an account? <a href="{% url 'mouseapp:register' %}">Sign up</a>
+  </p>
 {% endblock %}
