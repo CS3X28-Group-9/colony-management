@@ -13,4 +13,6 @@
     <li>Earmark: {{ mouse.earmark }}</li>
     <li>Notes: {{ mouse.notes }}</li>
   </ul>
+
+  <a href="{% url "mouseapp:family_tree" mouse=mouse.id %}">Family Tree</a>
 {% endblock %}
