@@ -36,7 +36,7 @@ class Project(models.Model):
 
 
 class Box(models.Model):
-    number = models.IntegerField(primary_key=True)
+    number = models.TextField(primary_key=True)
 
 
 class Mouse(models.Model):
@@ -61,7 +61,7 @@ class Mouse(models.Model):
         related_name="child_set_f",
     )
     date_of_birth = models.DateField()
-    tube_number = models.IntegerField()
+    tube_number = models.IntegerField(blank=True, null=True)
     box = models.ForeignKey(Box, on_delete=models.PROTECT)
     # TODO(moth): Do we need restricted choices here?
     strain = models.TextField()

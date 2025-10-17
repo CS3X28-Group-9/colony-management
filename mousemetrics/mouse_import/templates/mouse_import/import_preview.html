@@ -1,0 +1,56 @@
+{% load dict_extras %}
+
+<h1>Preview Import #{{ import_obj.id }}</h1>
+
+{% if messages %}
+  <ul>
+    {% for m in messages %}
+      <li>{{ m }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+<p>
+  <strong>File:</strong> {{ import_obj.file.name }} | <strong>Sheet:</strong> {{
+  import_obj.sheet_name|default:"(active)" }} | <strong>Range:</strong> {{
+  import_obj.cell_range }} | <strong>Rows:</strong> {{ import_obj.row_count }}
+</p>
+
+<h2>Column Mapping</h2>
+<form method="post">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">Save Mapping</button>
+</form>
+
+{% if saved_mapping %}
+  <p><strong>Saved mapping:</strong> {{ saved_mapping }}</p>
+  <form
+    method="post"
+    action="{% url 'mouse_import:import_commit' import_obj.id %}"
+  >
+    {% csrf_token %}
+    <button type="submit">Commit Import</button>
+  </form>
+{% else %}
+  <p><em>Save a mapping first to enable commit.</em></p>
+{% endif %}
+
+<h2>Data Preview (first 50 rows)</h2>
+<table border="1" cellpadding="4">
+  <thead>
+    <tr>
+      {% for c in columns %}
+        <th>{{ c }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+      <tr>
+        {% for c in columns %}
+          <td>{{ row|get_item:c }}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

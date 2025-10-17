@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "mouseapp",
+    "mouse_import",
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_REDIRECT_URL = "mouseapp:home"
 LOGIN_URL = "/registration/login"
 LOGOUT_REDIRECT_URL = "/"
+
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"
