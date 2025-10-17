@@ -18,6 +18,22 @@ class Project(models.Model):
     class Meta:
         permissions = [("create_project", "Create projects")]
 
+    def has_read_access(self, user):
+        try:
+            if user == self.lead:
+                return True
+        except models.Model.DoesNotExist:
+            pass
+
+        return user.is_superuser or user in self.researchers
+
+    def has_write_access(self, user):
+        try:
+            if user == self.lead:
+                return True
+        except models.Model.DoesNotExist:
+            return user.is_superuser
+
 
 class Box(models.Model):
     number = models.IntegerField(primary_key=True)
@@ -59,6 +75,14 @@ class Mouse(models.Model):
         permissions = [
             ("edit_mice", "Can edit mouse details"),
         ]
+
+    def has_read_access(self, user):
+        return self.project.has_read_access(user) or user.has_perm("mouseapp.edit_mice")
+
+    def has_write_access(self, user):
+        return self.project.has_write_access(user) or user.has_perm(
+            "mouseapp.edit_mice"
+        )
 
 
 class Request(models.Model):
