@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Project{% endblock %}
+
+{% block content %}
+  <ul>
+    <li>Lead: {{ project.lead }}</li>
+    <li>Members: <ul>
+      {% for user in project.researchers.all %}
+        <li>{{ user.username }}</li>
+      {% endfor %}
+    </ul></li>
+    <li>License constraints: {{ project.license_constraints }}</li>
+  </ul>
+{% endblock %}

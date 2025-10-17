@@ -1,11 +1,13 @@
 from django.urls import path, include
-from .views import home, register
+from . import views
 
 app_name = "mouseapp"  # namespacing the app
 
 urlpatterns = [
-    path("", home, name="home"),
-    path("register/", register, name="register"),
+    path("", views.home, name="home"),
+    path("mouse/<int:id>/", views.mouse, name="mouse"),
+    path("project/<int:id>/", views.project, name="project"),
+    path("register/", views.register, name="register"),
     path(
         "registration/", include("django.contrib.auth.urls")
     ),  # includes login, logout, password management URLs

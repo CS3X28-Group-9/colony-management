@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Mouse{% endblock %}
+
+{% block content %}
+  <ul>
+    <li>Sex: {{ mouse.sex }}</li>
+    <li>Date of Birth: {{ mouse.date_of_birth }}</li>
+    <li>Tube Number: {{ mouse.tube_number }}</li>
+    <li>Box Number: {{ mouse.box.number }}</li>
+    <li>Strain: {{ mouse.strain }}</li>
+    <li>Coat colour: {{ mouse.coat_colour }}</li>
+    <li>Earmark: {{ mouse.earmark }}</li>
+    <li>Notes: {{ mouse.notes }}</li>
+  </ul>
+{% endblock %}
