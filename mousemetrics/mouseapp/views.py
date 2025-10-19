@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_safe
+from django.conf import settings
 
 
 class AuthedRequest(HttpRequest):
@@ -54,6 +55,8 @@ def login(request: HttpRequest) -> HttpResponse:
 
 
 def register(request: HttpRequest):
+    if not settings.ENABLE_REGISTRATION:
+        raise PermissionDenied()
     if request.method == "POST":
         form = RegistrationForm(request.POST)
         if form.is_valid():
