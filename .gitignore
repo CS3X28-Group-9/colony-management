@@ -3,6 +3,7 @@
 **/*.pyc
 .venv/
 /.direnv
+node_modules/
 
 #temp
 .*/

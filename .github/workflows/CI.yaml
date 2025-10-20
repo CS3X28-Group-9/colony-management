@@ -34,7 +34,7 @@ jobs:
       - name: Run pre-commit hooks
         uses: pre-commit/action@v3.0.1
         env:
-          SKIP: no-commit-to-branch
+          SKIP: no-commit-to-branch, pre-commit-update
 
       - name: Run Tests
         run: uv run pytest
