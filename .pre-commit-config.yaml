@@ -55,8 +55,3 @@ repos:
         entry: uv run pytest
         language: system
         pass_filenames: false
-  #Auto update Pre-commit versions
--   repo: https://gitlab.com/vojko.pribudic.foss/pre-commit-update
-    rev: v0.8.0
-    hooks:
-    -   id: pre-commit-update
