@@ -75,3 +75,43 @@ def test_login_redirect(client):
     assert (
         response.url == home_url
     ), f"Expected redirect to {home_url}, but got {response.url}"
+
+
+@pytest.mark.django_db
+def test_local_email_normalisation():
+    user_data = {
+        "email": "loginuser@example.com",
+        "first_name": "T",
+        "last_name": "E",
+        "password1": "Str0ngPass123!",
+        "password2": "Str0ngPass123!",
+    }
+    user1 = RegistrationForm(data=user_data)
+    assert user1.is_valid(), user1.errors
+    user1.save()
+
+    user_data2 = {
+        "email": "LOGINUSER@example.com",
+        "first_name": "T",
+        "last_name": "E",
+        "password1": "Str0ngPass123!",
+        "password2": "Str0ngPass123!",
+    }
+    user2 = RegistrationForm(data=user_data2)
+    assert user2.is_valid(), user2.errors
+    user2.save()
+
+    assert User.objects.filter(email="loginuser@example.com").exists()
+    assert User.objects.filter(email="LOGINUSER@example.com").exists()
+
+    user_data3 = {
+        "email": "LOGINUSER@example.com",
+        "first_name": "T",
+        "last_name": "E",
+        "password1": "Str0ngPass123!",
+        "password2": "Str0ngPass123!",
+    }
+
+    user3 = RegistrationForm(data=user_data3)
+    assert "This email is already registered." in user3.errors["email"]
+    assert not user3.is_valid(), user3.errors

@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import BaseUserManager
 
 
 class CustomAuthenticationForm(AuthenticationForm):
@@ -23,8 +24,13 @@ class RegistrationForm(UserCreationForm):
         fields = ("email", "first_name", "last_name", "password1", "password2")
 
     def clean_email(self):
-        email = self.cleaned_data["email"]
-        if User.objects.filter(email__iexact=email).exists():  # stops repeat emails
+        email = BaseUserManager.normalize_email(
+            self.cleaned_data["email"]
+        )  # normalize so _exact can be used
+
+        if User.objects.filter(
+            email__exact=email
+        ).exists():  # _exact rather than _iexact to to ensure local normalization
             raise ValidationError("This email is already registered.")
         return email
 
