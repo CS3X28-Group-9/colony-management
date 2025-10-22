@@ -1,22 +1,20 @@
 {% extends "base.html" %}
 
 {% block title %}Home{% endblock %}
+{% block content %}
 
-{% block content%}
   {% if user.is_authenticated %}
-
-    <p>Hi {{ user.username }}!</p>
-
+    <h1>Welcome back</h1>
+    <p>You’re logged in as {{ user.username }}.</p>
     <form action="{% url 'mouseapp:logout' %}" method="post">
       {% csrf_token %}
-      <button type="submit">Log Out</button>
+      <button type="submit">Log out</button>
     </form>
-
   {% else %}
-
-    <p>You are not logged in</p>
-    <a href="{% url 'mouseapp:login' %}">Log In</a>
-    <a href="{% url 'mouseapp:register' %}">Sign Up</a>
-
+    <h1>Welcome to MouseMetrics</h1>
+    <p>Log in or create an account to continue.</p>
+    <a href="{% url 'mouseapp:login' %}">Log in</a>
+    <a href="{% url 'mouseapp:register' %}">Sign up</a>
   {% endif %}
-{% endblock content %}
+
+{% endblock %}

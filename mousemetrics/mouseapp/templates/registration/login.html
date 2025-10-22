@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% block title %}Login{% endblock %}
 
 {% block content %}
   <h1>Login</h1>
@@ -7,26 +8,24 @@
     {% csrf_token %}
     {{ form.non_field_errors }}
 
-    <div class="form-row">
-      {{ form.username.label_tag }}
+    <div>
+      <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
       {{ form.username }}
+      {{ form.username.errors }}
     </div>
 
-    <div class="form-row">
-      {{ form.password.label_tag }}
+    <div>
+      <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
       {{ form.password }}
+      {{ form.password.errors }}
     </div>
 
-    <div class="actions">
-      <button type="submit">Sign in</button>
-    </div>
+    <button type="submit">Sign in</button>
   </form>
 
-  <p>
+  <div>
     <a href="{% url 'mouseapp:password_reset' %}">Forgot password?</a>
-  </p>
-
-  <p>
-    Don't have an account? <a href="{% url 'mouseapp:register' %}">Sign up</a>
-  </p>
+    <br>
+    <a href="{% url 'mouseapp:register' %}">Create an account</a>
+  </div>
 {% endblock %}

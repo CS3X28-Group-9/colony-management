@@ -20,10 +20,9 @@ workflows:
 	uv run pre-commit run --all-files
 
 maildev:
-	command -v maildev >/dev/null 2>&1 || npm install -g maildev
+	npm install -g maildev
 	nohup maildev >/dev/null 2>&1 &
 
 dev:
 	make maildev
-	uv run python manage.py runserver
-
+	uv run python mousemetrics/manage.py runserver

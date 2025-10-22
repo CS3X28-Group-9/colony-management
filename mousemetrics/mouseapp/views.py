@@ -1,10 +1,11 @@
-from .forms import RegistrationForm, CustomAuthenticationForm
-from .models import Mouse, Project
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_safe
+
+from .forms import RegistrationForm, CustomAuthenticationForm
+from .models import Mouse, Project
 
 
 def home(request):
@@ -35,7 +36,7 @@ def project(request, id):
     return render(request, "mouseapp/project.html", context)
 
 
-def login(request):
+def login_view(request):
     if request.method == "POST":
         form = CustomAuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -44,7 +45,7 @@ def login(request):
     else:
         form = CustomAuthenticationForm()
 
-    return render(request, "/registration/login.html", {"form": form})
+    return render(request, "registration/login.html", {"form": form})
 
 
 def register(request):
