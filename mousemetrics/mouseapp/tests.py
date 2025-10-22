@@ -1,4 +1,6 @@
+from django.http import HttpResponse, HttpResponseRedirect
 import pytest
+from django.test import Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from .forms import RegistrationForm
@@ -7,8 +9,8 @@ User = get_user_model()
 
 
 @pytest.mark.django_db
-def test_home_renders_template(client):
-    response = client.get(reverse("mouseapp:home"))
+def test_home_renders_template(client: Client):
+    response: HttpResponse = client.get(reverse("mouseapp:home"))
     assert response.status_code == 200
     assert response["Content-Type"] == "text/html; charset=utf-8"
 
@@ -37,7 +39,7 @@ def test_user_creation():
 
 
 @pytest.mark.django_db
-def test_registration_redirect(client):
+def test_registration_redirect(client: Client):
     register_url = reverse("mouseapp:register")
     login_url = reverse("mouseapp:login")
     user_data = {
@@ -48,7 +50,7 @@ def test_registration_redirect(client):
         "password2": "a-secure-password",
     }
 
-    response = client.post(register_url, data=user_data)
+    response: HttpResponseRedirect = client.post(register_url, data=user_data)
 
     assert response.status_code == 302, "Expected a redirect after registration"
     assert (
@@ -57,7 +59,7 @@ def test_registration_redirect(client):
 
 
 @pytest.mark.django_db
-def test_login_redirect(client):
+def test_login_redirect(client: Client):
     login_url = reverse("mouseapp:login")
     home_url = reverse("mouseapp:home")
     password = "a-very-secure-password"
@@ -69,7 +71,9 @@ def test_login_redirect(client):
         last_name="User",
     )
 
-    response = client.post(login_url, {"username": user.email, "password": password})
+    response: HttpResponseRedirect = client.post(
+        login_url, {"username": user.email, "password": password}
+    )
 
     assert response.status_code == 302, "Expected a redirect after login"
     assert (
@@ -113,5 +117,6 @@ def test_local_email_normalisation():
     }
 
     user3 = RegistrationForm(data=user_data3)
-    assert "This email is already registered." in user3.errors["email"]
     assert not user3.is_valid(), user3.errors
+    assert user3.errors is not None
+    assert "This email is already registered." in user3.errors["email"]

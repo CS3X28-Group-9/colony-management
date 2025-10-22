@@ -1,5 +1,7 @@
 from django.db import models
+from django.db.models import SET_NULL
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class Project(models.Model):
@@ -7,7 +9,7 @@ class Project(models.Model):
         User,
         blank=True,
         null=True,
-        on_delete=models.SET_NULL,
+        on_delete=SET_NULL,
         related_name="leading_set",
     )
     researchers = models.ManyToManyField(
@@ -18,21 +20,20 @@ class Project(models.Model):
     class Meta:
         permissions = [("create_project", "Create projects")]
 
-    def has_read_access(self, user):
+    def has_read_access(self, user: User) -> bool:
         try:
             if user == self.lead:
                 return True
-        except models.Model.DoesNotExist:
+        except ObjectDoesNotExist:
             pass
 
-        return user.is_superuser or user in self.researchers
+        return bool(user.is_superuser or self.researchers.filter(id=user.pk).exists())
 
-    def has_write_access(self, user):
+    def has_write_access(self, user: User) -> bool:
         try:
-            if user == self.lead:
-                return True
-        except models.Model.DoesNotExist:
-            return user.is_superuser
+            return user == self.lead
+        except ObjectDoesNotExist:
+            return bool(user.is_superuser)
 
 
 class Box(models.Model):
@@ -76,10 +77,10 @@ class Mouse(models.Model):
             ("edit_mice", "Can edit mouse details"),
         ]
 
-    def has_read_access(self, user):
+    def has_read_access(self, user: User) -> bool:
         return self.project.has_read_access(user) or user.has_perm("mouseapp.edit_mice")
 
-    def has_write_access(self, user):
+    def has_write_access(self, user: User) -> bool:
         return self.project.has_write_access(user) or user.has_perm(
             "mouseapp.edit_mice"
         )

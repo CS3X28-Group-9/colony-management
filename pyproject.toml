@@ -15,6 +15,7 @@ dev = [
   "djhtml>=3.0.10",
   "pre-commit>=4.3",
   "pre-commit-update>=0.8.0",
+  "pyright>=1.1.406",
   "pytest>=8.4.2",
   "pytest-django>=4.11.1",
   "ruff>=0.13.3",
@@ -33,3 +34,25 @@ format.skip-magic-trailing-comma = false
 DJANGO_SETTINGS_MODULE = "mousemetrics.settings"
 python_files = ["tests.py", "test_*.py", "*_tests.py"]
 pythonpath = ["mousemetrics"]
+
+[tool.pyright]
+include = ["mousemetrics"]
+exclude = ["**/migrations", ".venv/", ".pytest_cache/*", "uv.lock", "pyproject.toml"]
+typeCheckingMode = "strict"
+reportMissingTypeStubs = false
+
+
+#52
+reportUnknownMemberType = true
+
+#38
+reportUnknownVariableType = true
+
+#7
+reportAttributeAccessIssue = true
+
+#4
+reportAssignmentType = true
+
+#9
+reportUnknownArgumentType = true
