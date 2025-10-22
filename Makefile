@@ -1,5 +1,5 @@
 .ONESHELL:
-.PHONY: all
+.PHONY: all install dependencies lint workflows run-tailwind maildev dev
 
 install:
 	pip install uv
@@ -9,6 +9,7 @@ install:
 dependencies:
 	uv lock
 	uv sync
+	uv run djhtml mousemetrics/. && uv run djcss mousemetrics/.
 
 lint:
 	uv run black . && uv run ruff check .
@@ -17,3 +18,12 @@ lint:
 workflows:
 	uv run pre-commit install
 	uv run pre-commit run --all-files
+
+maildev:
+	command -v maildev >/dev/null 2>&1 || npm install -g maildev
+	nohup maildev >/dev/null 2>&1 &
+
+dev:
+	make maildev
+	uv run python manage.py runserver
+
