@@ -2,6 +2,8 @@
 <html>
 
   <head>
+    {% load static %}
+    <link rel="stylesheet" href = "{% static 'dist/styles.css'%}">
     <meta charset="utf-8">
     <title>{% block title %}Mouse Metrics{% endblock %}</title>
   </head>
