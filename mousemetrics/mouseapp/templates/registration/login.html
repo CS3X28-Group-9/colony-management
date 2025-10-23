@@ -1,32 +1,87 @@
 {% extends "base.html" %}
+{% block title %}Sign In{% endblock %}
 
 {% block content %}
-  <h1>Login</h1>
+  <div class="fixed inset-0 -z-10 bg-gradient-to-br from-[#0b0c10] via-[#0d1117] to-[#111827]"></div>
 
-  <form method="post">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
+  <div class="min-h-[calc(100vh-9rem)] flex items-center justify-center px-4 text-gray-100">
+    <div class="relative w-full max-w-md card">
 
-    <div class="form-row">
-      {{ form.username.label_tag }}
-      {{ form.username }}
+      <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500/10 to-transparent blur-2xl -z-10"></div>
+
+      <h1 class="text-center text-3xl font-semibold tracking-tight mb-2 text-gray-100">
+        Sign in to MouseMetrics
+      </h1>
+      <p class="text-center hint mb-8">Enter your credentials to continue</p>
+
+      <form method="post" class="space-y-6" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+          <div class="text-center text-sm text-rose-300">
+            {{ form.non_field_errors.0 }}
+          </div>
+        {% endif %}
+
+        <div>
+          <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+            Email
+          </label>
+          <input
+            type="email"
+            id="{{ form.username.id_for_label }}"
+            name="{{ form.username.html_name }}"
+            value="{{ form.username.value|default_if_none:'' }}"
+            placeholder="you@example.com"
+            autocomplete="email"
+            autofocus
+            class="input"
+            required
+          />
+          {% if form.username.errors %}
+            <p class="error">{{ form.username.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div>
+          <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+            Password
+          </label>
+          <input
+            type="password"
+            id="{{ form.password.id_for_label }}"
+            name="{{ form.password.html_name }}"
+            placeholder="••••••••"
+            autocomplete="current-password"
+            class="input"
+            required
+          />
+          {% if form.password.errors %}
+            <p class="error">{{ form.password.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div class="flex items-center justify-between text-sm">
+          <label class="flex items-center gap-2 text-gray-400 select-none">
+            <input type="checkbox" class="accent-blue-600 rounded-sm" />
+            Remember me
+          </label>
+          <a href="{% url 'mouseapp:password_reset' %}" class="text-blue-400 hover:text-blue-300 font-medium transition">
+            Forgot password?
+          </a>
+        </div>
+
+        <button type="submit" class="btn-primary mt-2">
+          Sign in
+        </button>
+
+        <p class="text-sm text-center text-gray-400 mt-6">
+          Don’t have an account?
+          <a href="{% url 'mouseapp:register' %}" class="text-blue-400 hover:text-blue-300 font-semibold transition">
+            Register here
+          </a>
+        </p>
+      </form>
     </div>
-
-    <div class="form-row">
-      {{ form.password.label_tag }}
-      {{ form.password }}
-    </div>
-
-    <div class="actions">
-      <button type="submit">Sign in</button>
-    </div>
-  </form>
-
-  <p>
-    <a href="{% url 'mouseapp:password_reset' %}">Forgot password?</a>
-  </p>
-
-  <p>
-    Don't have an account? <a href="{% url 'mouseapp:register' %}">Sign up</a>
-  </p>
+  </div>
 {% endblock %}
