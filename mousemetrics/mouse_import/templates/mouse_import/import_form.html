@@ -1,0 +1,14 @@
+<h1>Mouse Excel Import</h1>
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">Upload</button>
+</form>
+
+{% if messages %}
+  <ul>
+    {% for m in messages %}
+      <li>{{ m }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}

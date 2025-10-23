@@ -6,12 +6,12 @@ repos:
     -   id: django-upgrade
     #Keep lockfile up to date
 -   repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.3
+    rev: 0.9.5
     hooks:
     -   id: uv-lock
   #Linting
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.0
+    rev: v0.14.1
     hooks:
     -   id: ruff-check
         args:

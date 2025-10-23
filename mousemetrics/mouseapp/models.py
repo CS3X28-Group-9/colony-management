@@ -40,7 +40,7 @@ class Project(models.Model):
 
 
 class Box(models.Model):
-    number: "models.IntegerField[Any, Any]" = models.IntegerField(primary_key=True)
+    number: "models.TextField[Any, Any]" = models.TextField(primary_key=True)
 
 
 class Mouse(models.Model):
@@ -69,17 +69,17 @@ class Mouse(models.Model):
         related_name="child_set_f",
     )
     date_of_birth: "models.DateField[Any, Any]" = models.DateField()
-    tube_number: "models.IntegerField[Any, Any]" = models.IntegerField()
-    box: "models.ForeignKey[Any, Any]" = models.ForeignKey(
-        Box, on_delete=models.PROTECT
+    tube_number: "models.IntegerField[Any, Any]" = models.IntegerField(
+        blank=True, null=True
     )
+    box: models.ForeignKey[Any, Any] = models.ForeignKey(Box, on_delete=models.PROTECT)
     # TODO(moth): Do we need restricted choices here?
     strain: "models.TextField[Any, Any]" = models.TextField()
     # TODO(moth): Do we need restricted choices here?
-    coat_colour: "models.TextField[Any, Any]" = models.TextField()
+    coat_colour: "models.TextField[Any, Any]" = models.TextField(null=True, blank=True)
     # TODO(moth): Is this correct?
     earmark: "models.TextField[Any, Any]" = models.TextField()
-    notes: "models.TextField[Any, Any]" = models.TextField()
+    notes: "models.TextField[Any, Any]" = models.TextField(null=True, blank=True)
 
     class Meta:
         permissions = [
