@@ -1,13 +1,12 @@
 import pytest
+from django.test import Client
 from django.urls import reverse
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from .forms import RegistrationForm
-
-User = get_user_model()
 
 
 @pytest.mark.django_db
-def test_home_renders_template(client):
+def test_home_renders_template(client: Client):
     response = client.get(reverse("mouseapp:home"))
     assert response.status_code == 200
     assert response["Content-Type"] == "text/html; charset=utf-8"
@@ -30,14 +29,14 @@ def test_user_creation():
     assert user is not None
 
     db_user = User.objects.get(email=user_data["email"])
-    assert db_user.email == user_data["email"]
-    assert db_user.first_name == user_data["first_name"]
-    assert db_user.last_name == user_data["last_name"]
-    assert db_user.check_password(user_data["password1"])
+    assert db_user.email == user_data["email"]  # type: ignore reportUnknownArgumentType
+    assert db_user.first_name == user_data["first_name"]  # type: ignore reportUnknownMemberType
+    assert db_user.last_name == user_data["last_name"]  # type: ignore reportUnknownMemberType
+    assert db_user.check_password(user_data["password1"])  # type: ignore reportUnknownMemberType
 
 
 @pytest.mark.django_db
-def test_registration_redirect(client):
+def test_registration_redirect(client: Client):
     register_url = reverse("mouseapp:register")
     login_url = reverse("mouseapp:login")
     user_data = {
@@ -51,17 +50,18 @@ def test_registration_redirect(client):
     response = client.post(register_url, data=user_data)
 
     assert response.status_code == 302, "Expected a redirect after registration"
+
     assert (
-        response.url == login_url
-    ), f"Expected redirect to {login_url}, but got {response.url}"
+        response.url == login_url  # pyright: ignore
+    ), f"Expected redirect to {login_url}, but got {response.url}"  # pyright: ignore
 
 
 @pytest.mark.django_db
-def test_login_redirect(client):
+def test_login_redirect(client: Client):
     login_url = reverse("mouseapp:login")
     home_url = reverse("mouseapp:home")
     password = "a-very-secure-password"
-    user = User.objects.create_user(
+    user: User = User.objects.create_user(
         username="loginuser@example.com",
         email="loginuser@example.com",
         password=password,
@@ -69,12 +69,18 @@ def test_login_redirect(client):
         last_name="User",
     )
 
-    response = client.post(login_url, {"username": user.email, "password": password})
+    response = client.post(
+        login_url,
+        {
+            "username": user.email,  # pyright: ignore reportUnknownMemberType
+            "password": password,  # pyright: ignore reportUnknownMemberType
+        },
+    )
 
     assert response.status_code == 302, "Expected a redirect after login"
     assert (
-        response.url == home_url
-    ), f"Expected redirect to {home_url}, but got {response.url}"
+        response.url == home_url  # pyright: ignore
+    ), f"Expected redirect to {home_url}, but got {response.url}"  # pyright: ignore
 
 
 @pytest.mark.django_db
@@ -113,5 +119,6 @@ def test_local_email_normalisation():
     }
 
     user3 = RegistrationForm(data=user_data3)
-    assert "This email is already registered." in user3.errors["email"]
     assert not user3.is_valid(), user3.errors
+    assert user3.errors is not None
+    assert "This email is already registered." in user3.errors["email"]
