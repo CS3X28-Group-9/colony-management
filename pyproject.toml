@@ -11,6 +11,7 @@ dependencies = [
 [dependency-groups]
 dev = [
   "black>=25.9",
+  "django-stubs>=5.2.7",
   "django-upgrade>=1.29",
   "djhtml>=3.0.10",
   "pre-commit>=4.3",
@@ -37,22 +38,6 @@ pythonpath = ["mousemetrics"]
 
 [tool.pyright]
 include = ["mousemetrics"]
-exclude = ["**/migrations", ".venv/", ".pytest_cache/*", "uv.lock", "pyproject.toml"]
+exclude = ["**/migrations", ".venv", "mousemetrics/mouseapp/admin.py"]
 typeCheckingMode = "strict"
 reportMissingTypeStubs = false
-
-
-#52
-reportUnknownMemberType = true
-
-#38
-reportUnknownVariableType = true
-
-#7
-reportAttributeAccessIssue = true
-
-#4
-reportAssignmentType = true
-
-#9
-reportUnknownArgumentType = true

@@ -47,6 +47,13 @@ repos:
     -   id: name-tests-test
       #Git
     -   id: no-commit-to-branch
+-   repo: local
+    hooks:
+    -   id: PyRight
+        name: PyRight
+        entry: uv run pyright .
+        language: system
+        files: \.py$
   #Pytest
 -   repo: local
     hooks:

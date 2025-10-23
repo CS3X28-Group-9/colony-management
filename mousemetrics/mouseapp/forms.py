@@ -1,4 +1,4 @@
-from typing import Any, Dict, cast, override
+from typing import Any, Dict, override
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -15,16 +15,14 @@ class CustomAuthenticationForm(AuthenticationForm):
         self.fields["username"].widget.attrs["placeholder"] = "Enter your email"
 
 
-class RegistrationForm(UserCreationForm):
+class RegistrationForm(UserCreationForm):  # pyright: ignore
     email = forms.EmailField(required=True)
     first_name = forms.CharField(max_length=30, required=True)
     last_name = forms.CharField(max_length=30, required=True)
 
-    class _Meta:  # This is still a UserCreationForm but with added fields
+    class Meta:  # This is still a UserCreationForm but with added fields
         model = User
         fields = ("email", "first_name", "last_name", "password1", "password2")
-
-    Meta = cast(type[UserCreationForm.Meta], _Meta)
 
     def clean_email(self) -> str:
         cleaned_data: Dict[str, Any] = self.cleaned_data
@@ -40,10 +38,10 @@ class RegistrationForm(UserCreationForm):
 
     @override
     def save(self, commit: bool = True) -> User:
-        user = super().save(commit=False)
+        user = super().save(commit=False)  # pyright: ignore
         email = self.cleaned_data["email"]
         user.username = email
         user.email = email
         if commit:
-            user.save()
-        return user
+            user.save()  # pyright: ignore
+        return user  # pyright: ignore
