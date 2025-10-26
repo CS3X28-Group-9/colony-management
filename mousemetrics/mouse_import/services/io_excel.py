@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from os import PathLike
 import logging
 import re
 from contextlib import closing
@@ -13,7 +14,9 @@ logger = logging.getLogger(__name__)
 _RANGE_RE = re.compile(r"^([A-Z]+)(\d+):([A-Z]+)(\d+)$", re.I)
 
 
-def read_range(file_path: str, sheet_name: str | None, range_expr: str) -> pd.DataFrame:
+def read_range(
+    file_path: PathLike, sheet_name: str | None, range_expr: str
+) -> pd.DataFrame:
     with closing(
         load_workbook(filename=file_path, data_only=True, read_only=True)
     ) as workbook:
