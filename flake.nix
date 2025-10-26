@@ -17,6 +17,7 @@
     devShells = eachSystem ({pkgs, ...}: {
       default = pkgs.mkShell {
         packages = with pkgs; [python3 uv ruff black];
+        LD_LIBRARY_PATH = lib.concatMapStringsSep ":" (l: "${lib.getLib l}/lib") [pkgs.stdenv.cc.cc pkgs.zlib];
       };
     });
   };

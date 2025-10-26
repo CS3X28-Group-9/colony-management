@@ -21,4 +21,5 @@ from django.urls import path, include
 urlpatterns = [
     path("", include("mouseapp.urls")),
     path("admin/", admin.site.urls),
+    path("mouse-import/", include("mouse_import.urls")),
 ]
