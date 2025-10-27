@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "anymail",
     "mouseapp",
     "mouse_import",
 ]
@@ -157,3 +158,12 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
+EMAIL_BACKEND = (
+    "anymail.backends.resend.EmailBackend"
+    if RESEND_API_KEY
+    else "django.core.mail.backends.console.EmailBackend"
+)
+DEFAULT_FROM_EMAIL = "Mousemetrics <mousemetrics@mousemetrics.ben.soroos.net>"
+SERVER_EMAIL = "Mousemetrics <system@mousemetrics.ben.soroos.net>"
