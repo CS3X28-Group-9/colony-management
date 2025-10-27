@@ -13,10 +13,6 @@
 
         {% if user.is_authenticated %}
           <span>Hi {{ user.username }}</span>
-          <form action="{% url 'mouseapp:logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-          </form>
         {% else %}
           <a href="{% url 'mouseapp:login' %}">Login</a>
           <a href="{% url 'mouseapp:register' %}">Sign up</a>

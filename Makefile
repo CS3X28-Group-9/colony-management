@@ -1,5 +1,5 @@
 .ONESHELL:
-.PHONY: all install dependencies lint workflows run-tailwind maildev dev
+.PHONY: all install dependencies lint workflows dev
 
 install:
 	pip install uv
@@ -19,10 +19,6 @@ workflows:
 	uv run pre-commit install
 	uv run pre-commit run --all-files
 
-maildev:
-	npm install -g maildev
-	nohup maildev >/dev/null 2>&1 &
-
+# Development server (no MailDev needed)
 dev:
-	make maildev
 	uv run python mousemetrics/manage.py runserver

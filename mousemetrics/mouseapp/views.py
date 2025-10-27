@@ -45,7 +45,8 @@ def login_view(request):
     else:
         form = CustomAuthenticationForm()
 
-    return render(request, "registration/login.html", {"form": form})
+    # ✅ updated path
+    return render(request, "accounts/login.html", {"form": form})
 
 
 def register(request):
@@ -56,4 +57,6 @@ def register(request):
             return redirect("mouseapp:login")
     else:
         form = RegistrationForm()
-    return render(request, "registration/register.html", {"form": form})
+
+    # ✅ updated path
+    return render(request, "accounts/register.html", {"form": form})

@@ -127,12 +127,9 @@ LOGIN_URL = "/login/"
 LOGOUT_REDIRECT_URL = "/"
 
 
-# Email configuration (MailDev for local, SMTP for production)
+# Email configuration (Console for local, SMTP for production)
 if DEBUG:
-    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-    EMAIL_HOST = "localhost"
-    EMAIL_PORT = 1025
-    EMAIL_USE_TLS = False
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
     DEFAULT_FROM_EMAIL = "noreply@mousemetrics.local"
 else:
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
