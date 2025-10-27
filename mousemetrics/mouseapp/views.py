@@ -45,7 +45,6 @@ def login_view(request):
     else:
         form = CustomAuthenticationForm()
 
-    # ✅ updated path
     return render(request, "accounts/login.html", {"form": form})
 
 
@@ -58,5 +57,4 @@ def register(request):
     else:
         form = RegistrationForm()
 
-    # ✅ updated path
     return render(request, "accounts/register.html", {"form": form})
