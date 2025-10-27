@@ -7,6 +7,16 @@
 
     <p>Hi {{ user.username }}!</p>
 
+    <ul>
+      {% for project in user.leading_set.all %}
+        <li><a href="{% url 'mouseapp:project' project.id %}">Project with {{ project.researchers.count }} members</a></li>
+      {% endfor %}
+
+      {% for project in user.project_set.all %}
+        <li><a href="{% url 'mouseapp:project' project.id %}">Project lead by {{ project.lead }}</a></li>
+      {% endfor %}
+    </ul>
+
     <form action="{% url 'mouseapp:logout' %}" method="post">
       {% csrf_token %}
       <button type="submit">Log Out</button>
