@@ -6,7 +6,7 @@ from typing import Any, Dict
 from django.db import DatabaseError, IntegrityError, transaction
 from django.db.models import ForeignKey, Model, Field
 
-from mouseapp.models import Mouse
+from mouseapp.models import Mouse, Box
 
 from .coercion import normalize_for_field
 
@@ -28,6 +28,39 @@ def resolve_fk_instance(fk_field: ForeignKey, raw_value: Any, project=None):
         if project is not None:
             qs = qs.filter(project=project)
         return qs.filter(tube_number=tube_value).first()
+
+    if target_model is Box:
+        if raw_value is None:
+            return None
+
+        try:
+            str_value = str(raw_value).strip()
+            if "-" in str_value:
+                project_num, box_num = str_value.split("-", 1)
+                project_num = int(project_num)
+                box_num = int(box_num)
+            else:
+                box_num = int(str_value)
+
+            if project is None:
+                return None
+
+            box = Box.objects.filter(project=project, number=box_num).first()
+
+            if box is None:
+                try:
+                    box = Box.objects.create(
+                        project=project,
+                        number=box_num,
+                        box_type="S",
+                    )
+                except Exception as exc:
+                    logger.warning(f"Failed to create box: {exc}")
+                    return None
+
+            return box
+        except (ValueError, TypeError):
+            return None
 
     pk_name = _target_pk_name(target_model)
     pk_field = _get_model_field(target_model, pk_name)

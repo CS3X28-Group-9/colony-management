@@ -6,7 +6,6 @@ from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from django.utils.timezone import now
 from datetime import timedelta
-from django.core.exceptions import ObjectDoesNotExist
 
 
 class Project(models.Model):
@@ -97,7 +96,7 @@ class Mouse(models.Model):
     earmark = models.CharField(
         max_length=16, blank=True, validators=[EARMARK_VALIDATOR]
     )
-    notes = models.TextField()
+    notes = models.TextField(blank=True, default="")
 
     def clean(self):
         if (
