@@ -1,5 +1,4 @@
-from typing import Any
-from typing_extensions import override
+from typing import Any, override
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
