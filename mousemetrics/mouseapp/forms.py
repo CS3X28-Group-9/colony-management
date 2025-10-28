@@ -5,6 +5,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.contrib.auth.base_user import BaseUserManager
 
 
 class CustomAuthenticationForm(AuthenticationForm):
@@ -70,8 +71,9 @@ class RegistrationForm(UserCreationForm):
         )
 
     def clean_email(self) -> str:
-        email = self.cleaned_data["email"]
-        if User.objects.filter(email__iexact=email).exists():
+        cleaned_data = self.cleaned_data
+        email = BaseUserManager.normalize_email(cleaned_data["email"])
+        if User.objects.filter(email=email).exists():
             raise ValidationError("This email is already registered.")
         return email
 

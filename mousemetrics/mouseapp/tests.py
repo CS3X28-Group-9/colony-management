@@ -102,5 +102,8 @@ def test_local_email_normalisation():
         "password2": "Str0ngPass123!",
     }
     user2 = RegistrationForm(data=user_data2)
-    assert not user2.is_valid()
-    assert "This email is already registered." in user2.errors["email"]
+    assert user2.is_valid(), user2.errors
+    user2.save()
+
+    assert User.objects.filter(email="loginuser@example.com").exists()
+    assert User.objects.filter(email="LOGINUSER@example.com").exists()
