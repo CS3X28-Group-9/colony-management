@@ -1,61 +1,30 @@
 {% load static %}
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="Efficient experimental data tracking and analysis." />
     <title>{% block title %}MouseMetrics{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'dist/styles.css' %}" />
     <link rel="icon" href="{% static 'favicon.ico' %}" />
-    {% block head_extra %}{% endblock %}
   </head>
-  <body class="min-h-screen bg-[#0b0c10] text-gray-200 selection:bg-blue-500/30 selection:text-white antialiased">
-    <span class="sr-only" id="skip-link"><a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 bg-blue-600 text-white px-3 py-1.5 rounded-md z-50">Skip to content</a></span>
 
-    <div class="pointer-events-none fixed inset-0 -z-10">
-      <div class="absolute inset-0 bg-gradient-to-br from-black/0 via-[#0d1117] to-[#111827]"></div>
-      <div class="absolute left-1/2 top-[-10%] h-[50rem] w-[50rem] -translate-x-1/2 rounded-full bg-blue-500/5 blur-3xl"></div>
-    </div>
 
-    <header class="sticky top-0 z-40 border-b border-[#1f232d] bg-[#0f1115]/70 backdrop-blur">
-      <nav class="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
-        <a href="{% url 'mouseapp:home' %}" class="text-lg font-semibold tracking-tight text-gray-100">MouseMetrics</a>
-        <div class="flex items-center gap-2 text-sm">
-          {% if user.is_authenticated %}
-            <span class="hidden sm:inline text-gray-400">Hi {{ user.username }}</span>
-            <a href="{% url 'mouseapp:project' 1 %}" class="hidden sm:inline-flex items-center rounded-md border border-[#303641] px-3 py-1.5 text-gray-200 hover:bg-[#12141a]">Projects</a>
-            <form action="{% url 'mouseapp:logout' %}" method="post">
-              {% csrf_token %}
-              <button type="submit" class="inline-flex items-center rounded-md bg-blue-600 px-3 py-1.5 text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
-                Logout
-              </button>
-            </form>
-          {% else %}
-            <a href="{% url 'mouseapp:login' %}" class="inline-flex items-center rounded-md border border-[#303641] px-3 py-1.5 text-gray-200 hover:bg-[#12141a]">Login</a>
-            <a href="{% url 'mouseapp:register' %}" class="inline-flex items-center rounded-md bg-blue-600 px-3 py-1.5 text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">Sign up</a>
-          {% endif %}
-        </div>
-      </nav>
+  <body class="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 selection:bg-blue-500/30 dark:antialiased">
+
+    <header class="sticky top-0 z-40 border-b border-gray-800 bg-gray-900/70 backdrop-blur">
+      {% include "navbar.html" %}
     </header>
-
-    {% if messages %}
-      <div class="mx-auto max-w-6xl px-4 pt-4 space-y-2">
-        {% for message in messages %}
-          <div class="rounded-md border border-[#303641] bg-[#12141a] px-4 py-3 text-sm
-                      {% if message.tags == 'error' %}text-rose-300{% elif 'success' in message.tags %}text-emerald-300{% else %}text-gray-200{% endif %}">
-            {{ message }}
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
 
     <main id="main" class="mx-auto max-w-6xl px-4 py-10">
       {% block content %}{% endblock %}
     </main>
 
     <footer class="mt-12 pb-10 text-center text-xs text-gray-500">
-      © {{ now|date:"Y" }} MouseMetrics
+      © MouseMetrics
     </footer>
 
     {% block scripts %}{% endblock %}

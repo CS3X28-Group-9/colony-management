@@ -1,0 +1,33 @@
+<nav class="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
+  <a href="{% url 'mouseapp:home' %}" class="text-lg font-semibold tracking-tight text-gray-100">
+    MouseMetrics
+  </a>
+  <div class="flex items-center gap-2 text-sm">
+    {% if user.is_authenticated %}
+      <span class="hidden sm:inline text-gray-400">Hi, {{ user.first_name }}</span>
+
+      <a href="{% url 'mouseapp:project' 1 %}"
+         class="hidden sm:inline-flex items-center rounded-md border border-gray-700 px-3 py-1.5 text-gray-200 hover:bg-gray-800">
+        Projects
+      </a>
+
+      <form action="{% url 'mouseapp:logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit"
+                class="inline-flex items-center rounded-md bg-blue-600 px-3 py-1.5 text-white
+                       hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+          Logout
+        </button>
+      </form>
+    {% else %}
+      <a href="{% url 'mouseapp:login' %}" class="inline-flex items-center rounded-md bg-blue-600 px-3 py-1.5 text-white hover:bg-blue-700 transition">
+        Log in
+      </a>
+
+      <a href="{% url 'mouseapp:register' %}" class="inline-flex items-center rounded-md border border-blue-600 text-blue-600 px-3 py-1.5 hover:bg-blue-50 dark:hover:bg-blue-950 transition">
+        Sign up
+      </a>
+
+    {% endif %}
+  </div>
+</nav>

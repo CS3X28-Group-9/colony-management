@@ -1,10 +1,8 @@
 {
   "dependencies": {
-    "@tailwindcss/cli": "^4.1.14",
-    "@tailwindcss/vite": "^4.1.14",
-    "tailwindcss": "^4.1.14"
+    "@tailwindcss/cli": "^4.1.14"
   },
-  "scripts" :{
-    "tailwind":"npx @tailwindcss/cli -i ./mousemetrics/mousemetrics/static/src/styles.css -o ./mousemetrics/mousemetrics/static/dist/styles.css --watch"
+  "scripts": {
+    "tailwind": "npx @tailwindcss/cli -i ./mousemetrics/mousemetrics/static/src/styles.css -o ./mousemetrics/mousemetrics/static/dist/styles.css --watch"
   }
 }

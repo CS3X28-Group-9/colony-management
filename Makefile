@@ -5,12 +5,13 @@ install:
 	pip install uv
 	uv lock
 	uv sync
+	npm i
 
 dependencies:
 	uv lock
 	uv sync
 
-
+lint:
 	uv run black . && uv run ruff check .
 	uv run djhtml mousemetrics/. && uv run djcss mousemetrics/. #scoping to prevent temp file scans
 

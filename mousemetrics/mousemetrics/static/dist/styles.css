@@ -1,4 +1,4 @@
-/*! tailwindcss v4.1.15 | MIT License | https://tailwindcss.com */
+/*! tailwindcss v4.1.16 | MIT License | https://tailwindcss.com */
 @layer properties;
 @layer theme, base, components, utilities;
 @layer theme {
@@ -161,9 +161,7 @@
     ::placeholder {
       color: currentcolor;
       @supports (color: color-mix(in lab, red, red)) {
-        & {
-          color: color-mix(in oklab, currentcolor 50%, transparent);
-        }
+        color: color-mix(in oklab, currentcolor 50%, transparent);
       }
     }
   }
@@ -384,9 +382,7 @@
   .bg-blue-500\/5 {
     background-color: color-mix(in srgb, oklch(62.3% 0.214 259.815) 5%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
-      & {
-        background-color: color-mix(in oklab, var(--color-blue-500) 5%, transparent);
-      }
+      background-color: color-mix(in oklab, var(--color-blue-500) 5%, transparent);
     }
   }
   .bg-blue-600 {
@@ -403,18 +399,14 @@
   .from-black\/0 {
     --tw-gradient-from: color-mix(in srgb, #000 0%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
-      & {
-        --tw-gradient-from: color-mix(in oklab, var(--color-black) 0%, transparent);
-      }
+      --tw-gradient-from: color-mix(in oklab, var(--color-black) 0%, transparent);
     }
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
   .from-blue-500\/10 {
     --tw-gradient-from: color-mix(in srgb, oklch(62.3% 0.214 259.815) 10%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
-      & {
-        --tw-gradient-from: color-mix(in oklab, var(--color-blue-500) 10%, transparent);
-      }
+      --tw-gradient-from: color-mix(in oklab, var(--color-blue-500) 10%, transparent);
     }
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
@@ -543,17 +535,13 @@
     & *::selection {
       background-color: color-mix(in srgb, oklch(62.3% 0.214 259.815) 30%, transparent);
       @supports (color: color-mix(in lab, red, red)) {
-        & {
-          background-color: color-mix(in oklab, var(--color-blue-500) 30%, transparent);
-        }
+        background-color: color-mix(in oklab, var(--color-blue-500) 30%, transparent);
       }
     }
     &::selection {
       background-color: color-mix(in srgb, oklch(62.3% 0.214 259.815) 30%, transparent);
       @supports (color: color-mix(in lab, red, red)) {
-        & {
-          background-color: color-mix(in oklab, var(--color-blue-500) 30%, transparent);
-        }
+        background-color: color-mix(in oklab, var(--color-blue-500) 30%, transparent);
       }
     }
   }
@@ -714,9 +702,7 @@
     border-width: 1px;
     border-color: color-mix(in srgb, oklch(37.3% 0.034 259.733) 70%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
-      & {
-        border-color: color-mix(in oklab, var(--color-gray-700) 70%, transparent);
-      }
+      border-color: color-mix(in oklab, var(--color-gray-700) 70%, transparent);
     }
     background-color: #0e1015;
     padding-inline: calc(var(--spacing) * 4);
@@ -731,9 +717,7 @@
     &:focus {
       border-color: color-mix(in srgb, oklch(62.3% 0.214 259.815) 50%, transparent);
       @supports (color: color-mix(in lab, red, red)) {
-        & {
-          border-color: color-mix(in oklab, var(--color-blue-500) 50%, transparent);
-        }
+        border-color: color-mix(in oklab, var(--color-blue-500) 50%, transparent);
       }
     }
     &:focus {
@@ -743,9 +727,7 @@
     &:focus {
       --tw-ring-color: color-mix(in srgb, oklch(62.3% 0.214 259.815) 60%, transparent);
       @supports (color: color-mix(in lab, red, red)) {
-        & {
-          --tw-ring-color: color-mix(in oklab, var(--color-blue-500) 60%, transparent);
-        }
+        --tw-ring-color: color-mix(in oklab, var(--color-blue-500) 60%, transparent);
       }
     }
     &:focus {
