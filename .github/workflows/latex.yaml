@@ -1,0 +1,32 @@
+name: Build LaTeX PDF
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compile LaTeX
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: report/main.tex
+          work_in_root_file_dir: true
+          latexmk_use_outdir: true
+          # Uncomment if needed:
+          # latexmk_use_xelatex: true
+          # latexmk_shell_escape: true
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: report-pdf
+          path: |
+            report/out/*.pdf
+            report/*.pdf
+          if-no-files-found: error
