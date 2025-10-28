@@ -1,20 +1,21 @@
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpRequest, HttpResponse
-from .forms import RegistrationForm, CustomAuthenticationForm
-from .models import Mouse, Project
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_safe
 from django.conf import settings
+
+from .forms import RegistrationForm, CustomAuthenticationForm
+from .models import Mouse, Project
 
 
 class AuthedRequest(HttpRequest):
     user: User  # pyright: ignore[reportIncompatibleVariableOverride]
 
 
-def home(request: HttpRequest):
+def home(request: HttpRequest) -> HttpResponse:
     return render(request, "mouseapp/home.html")
 
 
@@ -42,19 +43,20 @@ def project(request: AuthedRequest, id: int) -> HttpResponse:
     return render(request, "mouseapp/project.html", context)
 
 
-def login(request: HttpRequest) -> HttpResponse:
+def login_view(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
-        form = CustomAuthenticationForm(request.POST)
+        form = CustomAuthenticationForm(request, data=request.POST)
+
         if form.is_valid():
             auth_login(request, form.get_user())
             return redirect("mouseapp:home")
     else:
         form = CustomAuthenticationForm()
 
-    return render(request, "/registration/login.html", {"form": form})
+    return render(request, "accounts/login.html", {"form": form})
 
 
-def register(request: HttpRequest):
+def register(request: HttpRequest) -> HttpResponse:
     if not settings.ENABLE_REGISTRATION:
         raise PermissionDenied()
     if request.method == "POST":
@@ -64,4 +66,5 @@ def register(request: HttpRequest):
             return redirect("mouseapp:login")
     else:
         form = RegistrationForm()
-    return render(request, "registration/register.html", {"form": form})
+
+    return render(request, "accounts/register.html", {"form": form})

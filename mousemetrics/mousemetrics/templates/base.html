@@ -1,16 +1,31 @@
-<!DOCTYPE html>
-<html>
-
+{% load static %}
+<!doctype html>
+<html lang="en">
   <head>
-    <meta charset="utf-8">
-    <title>{% block title %}Mouse Metrics{% endblock %}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}MouseMetrics{% endblock %}</title>
   </head>
-
   <body>
-    <main>
-      {% block content %}
-      {% endblock %}
-    </main>
-  </body>
+    <header>
+      <nav>
+        <a href="{% url 'mouseapp:home' %}">MouseMetrics</a>
 
+        {% if user.is_authenticated %}
+          <span>Hi {{ user.username }}</span>
+        {% else %}
+          <a href="{% url 'mouseapp:login' %}">Login</a>
+          <a href="{% url 'mouseapp:register' %}">Sign up</a>
+        {% endif %}
+      </nav>
+    </header>
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+      © {{ now|date:"Y" }} MouseMetrics
+    </footer>
+  </body>
 </html>

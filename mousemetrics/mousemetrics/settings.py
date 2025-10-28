@@ -93,36 +93,30 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
     },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 
+# Authentication backends
 AUTHENTICATION_BACKENDS = [
     "mouseapp.backends.EmailBackend",
     "django.contrib.auth.backends.ModelBackend",
 ]
 
+# Registration toggle
 ENABLE_REGISTRATION = not bool(os.environ.get("MOUSEMETRICS_DISABLE_REGISTRATION"))
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
-
 USE_I18N = True
-
 USE_TZ = True
 
 
@@ -132,38 +126,44 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+
+# Media files
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
+# Authentication redirects
 LOGIN_REDIRECT_URL = "mouseapp:home"
-LOGIN_URL = "/registration/login"
+LOGIN_URL = "/login/"
 LOGOUT_REDIRECT_URL = "/"
 
-MEDIA_ROOT = BASE_DIR / "media"
-MEDIA_URL = "/media/"
 
+# Storage configuration
 STORAGES = {
-    # Media / default storage (used by FileField, uploads, etc.)
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
-        "OPTIONS": {
-            "location": MEDIA_ROOT,
-            "base_url": MEDIA_URL,
-        },
+        "OPTIONS": {"location": MEDIA_ROOT, "base_url": MEDIA_URL},
     },
-    # Static files storage (served by WhiteNoise in prod)
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
+
+# Email configuration
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
+
 EMAIL_BACKEND = (
     "anymail.backends.resend.EmailBackend"
     if RESEND_API_KEY
     else "django.core.mail.backends.console.EmailBackend"
 )
+
 DEFAULT_FROM_EMAIL = "Mousemetrics <mousemetrics@mousemetrics.ben.soroos.net>"
 SERVER_EMAIL = "Mousemetrics <system@mousemetrics.ben.soroos.net>"
