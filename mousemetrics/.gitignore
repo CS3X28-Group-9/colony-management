@@ -2,6 +2,9 @@
 .DS_Store
 Thumbs.db
 
+# media
+*.xlsx
+
 # Python cache
 __pycache__/
 *.pyc
