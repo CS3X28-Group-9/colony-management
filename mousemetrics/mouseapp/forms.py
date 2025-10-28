@@ -16,6 +16,7 @@ class CustomAuthenticationForm(AuthenticationForm):
                 "class": "input",
                 "placeholder": "Enter your email",
                 "autocomplete": "email",
+                "name": "username",  # ensures Django receives correct field
             }
         ),
     )

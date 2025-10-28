@@ -45,7 +45,8 @@ def project(request: AuthedRequest, id: int) -> HttpResponse:
 
 def login_view(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
-        form = CustomAuthenticationForm(request.POST)
+        form = CustomAuthenticationForm(request, data=request.POST)
+
         if form.is_valid():
             auth_login(request, form.get_user())
             return redirect("mouseapp:home")
