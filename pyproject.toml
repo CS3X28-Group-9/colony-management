@@ -5,16 +5,23 @@ readme = "README.md"
 requires-python = ">=3.13"
 classifiers = [ "Programming Language :: Python :: 3 :: Only", "Programming Language :: Python :: 3.13" ]
 dependencies = [
-  "django>=5.2.7"
+  "django>=5.2.7",
+  "openpyxl>=3.1.5",
+  "pandas>=2.3.3",
+  "django-anymail>=13.1",
+  "gunicorn>=23.0.0",
+  "whitenoise>=6.11.0",
 ]
 
 [dependency-groups]
 dev = [
   "black>=25.9",
+  "django-stubs>=5.2.7",
   "django-upgrade>=1.29",
   "djhtml>=3.0.10",
   "pre-commit>=4.3",
   "pre-commit-update>=0.8.0",
+  "pyright>=1.1.406",
   "pytest>=8.4.2",
   "pytest-django>=4.11.1",
   "ruff>=0.13.3",
@@ -32,5 +39,11 @@ format.skip-magic-trailing-comma = false
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "mousemetrics.settings"
-python_files = ["tests.py", "test_*.py", "*_tests.py"]
+python_files = ["tests.py", "*_test.py"]
 pythonpath = ["mousemetrics"]
+
+[tool.pyright]
+include = ["mousemetrics"]
+exclude = ["**/migrations", ".venv", "mousemetrics/mouseapp/admin.py"]
+typeCheckingMode = "basic"
+reportMissingTypeStubs = false
