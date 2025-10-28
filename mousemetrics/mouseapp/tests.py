@@ -107,3 +107,16 @@ def test_local_email_normalisation():
 
     assert User.objects.filter(email="loginuser@example.com").exists()
     assert User.objects.filter(email="LOGINUSER@example.com").exists()
+
+    user_data3 = {
+        "email": "LOGINUSER@example.com",
+        "first_name": "T",
+        "last_name": "E",
+        "password1": "Str0ngPass123!",
+        "password2": "Str0ngPass123!",
+    }
+
+    user3 = RegistrationForm(data=user_data3)
+    assert not user3.is_valid(), user3.errors
+    assert user3.errors is not None
+    assert "This email is already registered." in user3.errors["email"]
