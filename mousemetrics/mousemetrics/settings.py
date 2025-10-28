@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -127,14 +129,14 @@ LOGIN_URL = "/login/"
 LOGOUT_REDIRECT_URL = "/"
 
 
-# Email configuration (Console for local, SMTP for production)
+# Email configuration (Console for local, Resend for deployment)
 if DEBUG:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
     DEFAULT_FROM_EMAIL = "noreply@mousemetrics.local"
 else:
-    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-    EMAIL_HOST = "smtp.abdn.ac.uk"
-    EMAIL_PORT = 587
-    EMAIL_USE_TLS = True
-    EMAIL_HOST_USER = "your_university_email@abdn.ac.uk"
-    EMAIL_HOST_PASSWORD = "your-secure-password"
+    EMAIL_BACKEND = "anymail.backends.resend.EmailBackend"
+    ANYMAIL = {
+        "RESEND_API_KEY": os.environ.get("RESEND_API_KEY"),
+    }
+    DEFAULT_FROM_EMAIL = "Mousemetrics <mousemetrics@mousemetrics.ben.soroos.net>"
+    SERVER_EMAIL = "Mousemetrics <system@mousemetrics.ben.soroos.net>"

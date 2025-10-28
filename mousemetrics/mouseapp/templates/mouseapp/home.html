@@ -5,7 +5,7 @@
 
   {% if user.is_authenticated %}
     <h1>Welcome back</h1>
-    <p>You’re logged in as {{ user.username }}.</p>
+    <p>You’re logged in as {{ user.first_name }}.</p>
     <form action="{% url 'mouseapp:logout' %}" method="post">
       {% csrf_token %}
       <button type="submit">Log out</button>

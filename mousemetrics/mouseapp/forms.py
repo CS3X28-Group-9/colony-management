@@ -1,3 +1,6 @@
+from typing import Any
+from typing_extensions import override
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -17,7 +20,8 @@ class CustomAuthenticationForm(AuthenticationForm):
         ),
     )
 
-    def __init__(self, *args, **kwargs):
+    @override
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         # Style password field
         self.fields["password"].widget.attrs.update(
@@ -54,9 +58,9 @@ class RegistrationForm(UserCreationForm):
         model = User
         fields = ("email", "first_name", "last_name", "password1", "password2")
 
-    def __init__(self, *args, **kwargs):
+    @override
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
-        # Style password fields
         self.fields["password1"].widget.attrs.update(
             {"class": "input", "autocomplete": "new-password"}
         )
@@ -64,16 +68,17 @@ class RegistrationForm(UserCreationForm):
             {"class": "input", "autocomplete": "new-password"}
         )
 
-    def clean_email(self):
+    def clean_email(self) -> str:
         email = self.cleaned_data["email"]
         if User.objects.filter(email__iexact=email).exists():
             raise ValidationError("This email is already registered.")
         return email
 
-    def save(self, commit=True):
+    @override
+    def save(self, commit: bool = True) -> User:
         user = super().save(commit=False)
         email = self.cleaned_data["email"]
-        user.username = email  # use email as username
+        user.username = email
         user.email = email
         user.first_name = self.cleaned_data["first_name"]
         user.last_name = self.cleaned_data["last_name"]
