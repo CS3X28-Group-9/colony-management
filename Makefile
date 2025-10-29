@@ -14,14 +14,12 @@ dependencies:
 
 lint:
 	uv run black . && uv run ruff check .
-	uv run djhtml mousemetrics/. && uv run djcss mousemetrics/. #scoping to prevent temp file scans
+	uv run djhtml mousemetrics/. && uv run djcss $$(find mousemetrics/. -name "*.css" ! -path "*/staticfiles/*" ! -path "*/static/dist/styles.css") #scoping to prevent temp file scans
 
 workflows:
 	uv run pre-commit install
 	uv run pre-commit run --all-files
 
-run-tailwind:
-	npm run tailwind
 # Development server (no MailDev needed)
 dev:
 	uv run python mousemetrics/manage.py runserver

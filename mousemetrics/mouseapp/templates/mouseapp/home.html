@@ -1,41 +1,7 @@
-{% extends "base.html" %}
-{% block title %}Home{% endblock %}
-{% block content %}
+<!-- prettier-ignore-start -->
 
-{% block content %}
-  <div class="min-h-[calc(100vh-9rem)] flex items-center justify-center px-4">
-    <div class="w-full max-w-lg text-center card">
-      {% if user.is_authenticated %}
-        <h1 class="text-3xl font-semibold mb-4">
-          Welcome back
-        </h1>
-        <p class="mb-8 text-gray-700 dark:text-gray-400">
-          You’re logged in as
-          <span class="font-medium text-blue-600 dark:text-blue-400">{{ user.first_name|default:user.username }}</span>.
-        </p>
+{% extends "base.html" %} {% block title %}Home{% endblock %}
 
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="{% url 'mouseapp:project' 1 %}" class="btn-primary sm:w-auto w-full">
-            View Projects
-          </a>
-          <form action="{% url 'mouseapp:logout' %}" method="post" class="sm:w-auto w-full">
-            {% csrf_token %}
-            <button type="submit" class="btn-secondary w-full">Log Out</button>
-          </form>
-        </div>
-      {% else %}
-        <h1 class="text-3xl font-semibold mb-4">
-          Welcome to <span class="text-blue-600 dark:text-blue-400">MouseMetrics</span>
-        </h1>
-        <p class="mb-8 text-gray-700 dark:text-gray-400">
-          Log in or create an account to access your dashboard and data.
-        </p>
+<!-- prettier-ignore-end -->
 
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="{% url 'mouseapp:login' %}" class="btn-primary sm:w-auto w-full">Log In</a>
-          <a href="{% url 'mouseapp:register' %}" class="btn-secondary sm:w-auto w-full">Sign Up</a>
-        </div>
-      {% endif %}
-    </div>
-  </div>
-{% endblock %}
+{% block content%} {% endblock content %}

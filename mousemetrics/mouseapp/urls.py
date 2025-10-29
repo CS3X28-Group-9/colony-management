@@ -3,7 +3,6 @@ from django.contrib.auth import views as auth_views
 from . import views
 
 app_name = "mouseapp"
-app_name = "mouseapp"
 
 urlpatterns = [
     # ========================
@@ -59,9 +58,4 @@ urlpatterns = [
         ),
         name="password_reset_complete",
     ),
-        "accounts/login/",
-        auth_views.LoginView.as_view(template_name="accounts/login.html"),
-        name="login",
-    ),
-    path("accounts/", include("django.contrib.auth.urls")),
 ]

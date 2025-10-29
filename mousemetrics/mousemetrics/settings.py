@@ -13,13 +13,17 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 
-# ======================================
-# Core paths and environment
-# ======================================
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 # Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
+
+# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-$+sao&03^3d2jkya4^a_$x2ea7d-gsx97df@%&q%wq%#&9g)^i"
+
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("MOUSEMETRICS_ENVIRONMENT", "dev").lower() == "dev"
 
 ALLOWED_HOSTS = [
@@ -27,9 +31,9 @@ ALLOWED_HOSTS = [
 ]
 CSRF_TRUSTED_ORIGINS = ["https://" + host for host in ALLOWED_HOSTS]
 
-# ======================================
-# Installed apps
-# ======================================
+
+# Application definition
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -42,9 +46,6 @@ INSTALLED_APPS = [
     "mouse_import",
 ]
 
-# ======================================
-# Middleware
-# ======================================
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -58,9 +59,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "mousemetrics.urls"
 
-# ======================================
-# Templates
-# ======================================
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -78,9 +76,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "mousemetrics.wsgi.application"
 
-# ======================================
+
 # Database
-# ======================================
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -88,9 +87,10 @@ DATABASES = {
     }
 }
 
-# ======================================
+
 # Password validation
-# ======================================
+# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
@@ -99,6 +99,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
+
 
 # Authentication backends
 AUTHENTICATION_BACKENDS = [
@@ -110,45 +111,54 @@ AUTHENTICATION_BACKENDS = [
 ENABLE_REGISTRATION = not bool(os.environ.get("MOUSEMETRICS_DISABLE_REGISTRATION"))
 
 
-# ======================================
 # Internationalization
-# ======================================
+# https://docs.djangoproject.com/en/5.2/topics/i18n/
+
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-# ======================================
-# Static files
-# ======================================
-STATIC_URL = "static/"
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.2/howto/static-files/
+
+STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [BASE_DIR / "mousemetrics" / "static"]
+
+
+# Media files
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
+# Authentication redirects
 LOGIN_REDIRECT_URL = "mouseapp:home"
-LOGIN_URL = "/registration/login"
+LOGIN_URL = "/login/"
 LOGOUT_REDIRECT_URL = "/"
 
-MEDIA_ROOT = BASE_DIR / "media"
-MEDIA_URL = "/media/"
 
 # Storage configuration
 STORAGES = {
-    # Media / default storage (used by FileField, uploads, etc.)
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
         "OPTIONS": {"location": MEDIA_ROOT, "base_url": MEDIA_URL},
     },
-    # Static files storage (served by WhiteNoise in prod)
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+WHITENOISE_MANIFEST_STRICT = False
 
+
+# Email configuration
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
 
 EMAIL_BACKEND = (
@@ -159,15 +169,3 @@ EMAIL_BACKEND = (
 
 DEFAULT_FROM_EMAIL = "Mousemetrics <mousemetrics@mousemetrics.ben.soroos.net>"
 SERVER_EMAIL = "Mousemetrics <system@mousemetrics.ben.soroos.net>"
-
-# ======================================
-# Authentication redirects
-# ======================================
-LOGIN_REDIRECT_URL = "mouseapp:home"
-LOGIN_URL = "/accounts/login"
-LOGOUT_REDIRECT_URL = "/"
-
-# ======================================
-# Default PK type
-# ======================================
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

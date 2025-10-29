@@ -1,28 +1,35 @@
 @import "tailwindcss";
 
 @layer components {
-  .btn-primary  { @apply w-full sm:w-auto px-6 py-3 rounded-md bg-blue-600 text-white hover:bg-blue-700 font-medium transition; }
-  .btn-secondary{ @apply w-full sm:w-auto px-6 py-3 rounded-md bg-gray-700 text-gray-200 hover:bg-gray-600 font-medium transition; }
-  .card { @apply rounded-3xl border border-gray-800 bg-gray-900/80 backdrop-blur-xl p-8
-    shadow-[0_0_60px_-15px_rgba(0,0,0,0.6)];
-  }
-
-  .input {
-    @apply w-full bg-gray-950 border border-gray-700/70 text-gray-200 placeholder-gray-500
-    rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500/60
-    focus:border-blue-500/50 transition;
-  }
-
   .btn-primary {
-    @apply w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg
-    focus:outline-none focus:ring-2 focus:ring-blue-500 transition;
+    @apply inline-flex items-center justify-center
+    px-5 py-2.5
+    rounded-xl
+    cursor-pointer
+    bg-neutral-400 text-neutral-800 border-2
+    border-neutral-400 shadow-md
+    hover:shadow-lg hover:border-neutral-700
+    focus:outline-none focus:ring-2 focus:ring-offset-2
+    transition duration-200 ease-in-out;
   }
 
-  .hint {
-    @apply text-sm text-gray-400;
+  .btn-secondary {
+    @apply inline-flex items-center justify-center
+    px-5 py-2.5
+    rounded-xl
+    cursor-pointer
+    bg-transparent text-neutral-800 border-2
+    border-neutral-400 shadow-md
+    hover:shadow-lg hover:border-neutral-700
+    focus:outline-none focus:ring-2 focus:ring-offset-2
+    transition duration-200 ease-in-out;
   }
 
-  .error {
-    @apply mt-2 text-xs text-rose-300;
+  .btn-password-toggle {
+    @apply absolute inset-y-0 end-0 flex items-center z-20 px-3 cursor-pointer
+    text-gray-400 rounded-e-md
+    focus:outline-hidden focus:text-blue-600
+    dark:text-neutral-600 dark:focus:text-blue-500
+    transition duration-150 ease-in-out;
   }
 }
