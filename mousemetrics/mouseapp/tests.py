@@ -48,9 +48,7 @@ def test_registration_redirect(client: Client):
     }
 
     response = client.post(register_url, data=user_data)
-
     assert response.status_code == 302, "Expected a redirect after registration"
-
     assert (
         response.url == login_url  # pyright: ignore
     ), f"Expected redirect to {login_url}, but got {response.url}"  # pyright: ignore
