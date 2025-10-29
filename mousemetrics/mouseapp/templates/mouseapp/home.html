@@ -5,10 +5,15 @@
 
   <div class="flex justify-center mt-6">
     <div class="inline-block bg-neutral-200 border border-neutral-300 rounded-lg p-4 w-fit">
-      {% if messages %}
+
+      {% if user.leading_set.exists or user.project_set.exists %}
         <ul>
-          {% for m in messages %}
-            <li>{{ m }}</li>
+          {% for project in user.leading_set.all %}
+            <li><a href="{% url 'mouseapp:project' project.id %}" class="btn-secondary">Project with {{ project.researchers.count }} members</a></li>
+          {% endfor %}
+
+          {% for project in user.project_set.all %}
+            <li><a href="{% url 'mouseapp:project' project.id %}">Project lead by {{ project.lead }}</a></li>
           {% endfor %}
         </ul>
       {% else %}
@@ -16,7 +21,6 @@
           No current projects
         </h3>
       {% endif %}
-
       <div  class="flex justify-center py-3">
         <a href="{% url 'mouse_import:import_form' %}" class="btn-primary">Import Mice</a>
       </div>
