@@ -54,7 +54,6 @@ def login_view(request: HttpRequest) -> HttpResponse:
         form = CustomAuthenticationForm()
 
     return render(request, "accounts/login.html", {"form": form})
-    return render(request, "accounts/login.html", {"form": form})
 
 
 def register(request: HttpRequest) -> HttpResponse:
