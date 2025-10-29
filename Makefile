@@ -5,6 +5,7 @@ install:
 	pip install uv
 	uv lock
 	uv sync
+	npm i
 
 dependencies:
 	uv lock
@@ -13,7 +14,10 @@ dependencies:
 
 lint:
 	uv run black . && uv run ruff check .
-	uv run djhtml mousemetrics/. && uv run djcss mousemetrics/. #scoping to prevent temp file scans
+	uv run djhtml mousemetrics/. && uv run djcss $$(find mousemetrics/. -name "*.css" ! -path "*/staticfiles/*" ! -path "*/static/dist/styles.css") #scoping to prevent temp file scans
+
+run-tailwind:
+	npm run tailwind
 
 workflows:
 	uv run pre-commit install

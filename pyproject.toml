@@ -38,6 +38,7 @@ format.skip-magic-trailing-comma = false
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "mousemetrics.settings"
+django_debug_mode = true
 python_files = ["tests.py", "*_test.py"]
 pythonpath = ["mousemetrics"]
 

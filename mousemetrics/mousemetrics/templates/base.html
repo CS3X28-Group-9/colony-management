@@ -1,31 +1,25 @@
 {% load static %}
 <!doctype html>
-<html lang="en">
+<html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="color-scheme" content="light" />
+    <meta name="description" content="Animal colony management system" />
     <title>{% block title %}MouseMetrics{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'dist-styles.css' %}" />
   </head>
-  <body>
-    <header>
-      <nav>
-        <a href="{% url 'mouseapp:home' %}">MouseMetrics</a>
 
-        {% if user.is_authenticated %}
-          <span>Hi {{ user.username }}</span>
-        {% else %}
-          <a href="{% url 'mouseapp:login' %}">Login</a>
-          <a href="{% url 'mouseapp:register' %}">Sign up</a>
-        {% endif %}
-      </nav>
-    </header>
-
-    <main>
-      {% block content %}{% endblock %}
-    </main>
-
-    <footer>
-      © {{ now|date:"Y" }} MouseMetrics
-    </footer>
+  <body
+    class="flex flex-col justify-between h-screen bg-neutral-100"
+  >
+    {% include "components/navbar.html" %}
+    <main class="mb-auto">{% block content %} {% endblock %}</main>
+    {% include "components/footer.html" %}
+    <script src="https://unpkg.com/preline/dist/preline.js"></script>
+    <script src="{% static 'js/password-toggle.js' %}"></script>
   </body>
 </html>

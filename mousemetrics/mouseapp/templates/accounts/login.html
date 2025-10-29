@@ -1,31 +1,145 @@
-{% extends "base.html" %}
-{% block title %}Login{% endblock %}
+{% extends "base.html" %} {% block title %}Sign In{%endblock %}
 
-{% block content %}
-  <h1>Login</h1>
+{% block content%}
 
-  <form method="post">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
+  <div class="flex justify-center p-4">
+    <div
+      class="p-4 sm:p-6 lg:p-8 rounded bg-neutral-200 w-80 shadow-md border border-neutral-300"
+    >
+      <form method="post" class="space-y-6">
+        <h3 class="text-xl font-medium text-gray-900 text-center">
+          Sign in to MouseMetrics
+        </h3>
+        {% csrf_token %}
+        <div class="relative">
+          <input
+            type="email"
+            id="{{ form.username.id_for_label }}"
+            name="{{ form.username.html_name }}"
+            value="{{ form.username.value|default_if_none:'' }}"
+            autocomplete="email"
+            autofocus
+            required
+            placeholder=" "
+            class="block px-2.5 pt-5 pb-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none focus:border-blue-600 focus:ring-0 focus:outline-none peer"
+          />
+          <label
+            for="{{ form.username.id_for_label }}"
+            class="absolute top-4 text-sm text-gray-500 duration-300 transform scale-75 -translate-y-4 origin-left start-2.5 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+          >Email</label
+            >
+          </div>
+          {% if form.username.errors %}
+            <p>{{ form.username.errors.0 }}</p>
+          {% endif %}
+          <div class="relative">
+            <input
+              type="password"
+              placeholder=" "
+              id="{{ form.password.id_for_label }}"
+              name="{{ form.password.html_name }}"
+              autocomplete="current-password"
+              class="block px-2.5 pt-5 pb-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none focus:border-blue-600 focus:ring-0 focus:outline-none peer"
+              required
+            />
 
-    <div>
-      <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
-      {{ form.username }}
-      {{ form.username.errors }}
-    </div>
+            <button
+              type="button"
+              data-hs-toggle-password='{
+                                       "target": "#{{ form.password.id_for_label }}"
+                                       }'
+              tabindex="-1"
+              onmousedown="event.preventDefault()"
+              class="absolute inset-y-0 end-0 flex items-center z-20 px-3 cursor-pointer text-gray-400 rounded-e-md focus:outline-hidden focus:text-blue-600"
+            >
+              <svg
+                class="shrink-0 size-3.5"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  class="hs-password-active:hidden"
+                  d="M9.88 9.88a3 3 0 1 0 4.24 4.24"
+                ></path>
+                <path
+                  class="hs-password-active:hidden"
+                  d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"
+                ></path>
+                <path
+                  class="hs-password-active:hidden"
+                  d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"
+                ></path>
+                <line
+                  class="hs-password-active:hidden"
+                  x1="2"
+                  x2="22"
+                  y1="2"
+                  y2="22"
+                ></line>
+                <path
+                  class="hidden hs-password-active:block"
+                  d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"
+                ></path>
+                <circle
+                  class="hidden hs-password-active:block"
+                  cx="12"
+                  cy="12"
+                  r="3"
+                ></circle>
+              </svg>
+            </button>
+            <label
+              for="{{ form.password.id_for_label }}"
+              class="absolute top-4 text-sm text-gray-500 duration-300 transform scale-75 -translate-y-4 origin-left start-2.5 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+            >Password</label
+              >
+            </div>
+            {% if form.password.errors %}
+              <p>{{ form.password.errors.0 }}</p>
+            {% endif %}
 
-    <div>
-      <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
-      {{ form.password }}
-      {{ form.password.errors }}
-    </div>
-
-    <button type="submit">Sign in</button>
-  </form>
-
-  <div>
-    <a href="{% url 'mouseapp:password_reset' %}">Forgot password?</a>
-    <br>
-    <a href="{% url 'mouseapp:register' %}">Create an account</a>
-  </div>
+            <div class="flex items-start">
+              <div class="flex items-start">
+                <div class="flex items-center h-5">
+                  <input
+                    id="remember"
+                    aria-describedby="remember"
+                    type="checkbox"
+                    class="bg-gray-50 border border-gray-300 focus:ring-3 focus:ring-blue-300 h-4 w-4 rounded"
+                  />
+                </div>
+                <div class="text-sm ml-3">
+                  <label
+                    for="remember"
+                    class="font-medium text-gray-900"
+                  >Remember me</label
+                    >
+                  </div>
+                </div>
+                <a
+                  href="{% url 'mouseapp:password_reset' %}"
+                  class="text-sm text-blue-700 hover:underline ml-auto px-2"
+                >Forgotten Password?</a
+                  >
+                </div>
+                <button type="submit" class="w-full btn-primary">
+                  Login to your account
+                </button>
+                <div class="text-sm font-medium text-gray-500 ">
+                  Not registered?
+                  <a
+                    href="{% url 'mouseapp:register' %}"
+                    class="text-blue-700 hover:underline "
+                  >Create account</a
+                    >
+                  </div>
+                </form>
+              </div>
+            </div>
 {% endblock %}

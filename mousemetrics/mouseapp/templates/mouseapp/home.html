@@ -1,32 +1,30 @@
-{% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
-{% block content %}
+{% extends "base.html" %} {% block title %}Home{% endblock %}
 
-  {% if user.is_authenticated %}
+{% block content%}
 
-    <p>Hi {{ user.first_name }}!</p>
+  <div class="flex justify-center mt-6">
+    <div class="inline-block bg-neutral-200 border border-neutral-300 rounded-lg p-4 w-fit">
 
-    <ul>
-      {% for project in user.leading_set.all %}
-        <li><a href="{% url 'mouseapp:project' project.id %}">Project with {{ project.researchers.count }} members</a></li>
-      {% endfor %}
+      {% if user.leading_set.exists or user.project_set.exists %}
+        <ul>
+          {% for project in user.leading_set.all %}
+            <li><a href="{% url 'mouseapp:project' project.id %}" class="btn-secondary">Project with {{ project.researchers.count }} members</a></li>
+          {% endfor %}
 
-      {% for project in user.project_set.all %}
-        <li><a href="{% url 'mouseapp:project' project.id %}">Project lead by {{ project.lead }}</a></li>
-      {% endfor %}
-    </ul>
+          {% for project in user.project_set.all %}
+            <li><a href="{% url 'mouseapp:project' project.id %}">Project lead by {{ project.lead }}</a></li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <h3 class="text-xl font-medium text-gray-900 text-center my-2">
+          No current projects
+        </h3>
+      {% endif %}
+      <div  class="flex justify-center py-3">
+        <a href="{% url 'mouse_import:import_form' %}" class="btn-primary">Import Mice</a>
+      </div>
+    </div>
+  </div>
 
-
-    <form action="{% url 'mouseapp:logout' %}" method="post">
-      {% csrf_token %}
-      <button type="submit">Log out</button>
-    </form>
-  {% else %}
-    <h1>Welcome to MouseMetrics</h1>
-    <p>Log in or create an account to continue.</p>
-    <a href="{% url 'mouseapp:login' %}">Log in</a>
-    <a href="{% url 'mouseapp:register' %}">Sign up</a>
-  {% endif %}
-
-{% endblock %}
+{% endblock content %}

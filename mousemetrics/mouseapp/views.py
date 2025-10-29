@@ -66,5 +66,4 @@ def register(request: HttpRequest) -> HttpResponse:
             return redirect("mouseapp:login")
     else:
         form = RegistrationForm()
-
     return render(request, "accounts/register.html", {"form": form})

@@ -1,63 +1,66 @@
 repos:
   #In case of depreciated code when repurposing from stackoverflow or similar
--   repo: https://github.com/adamchainz/django-upgrade
+  - repo: https://github.com/adamchainz/django-upgrade
     rev: 1.29.0
     hooks:
-    -   id: django-upgrade
+      - id: django-upgrade
     #Keep lockfile up to date
--   repo: https://github.com/astral-sh/uv-pre-commit
+  - repo: https://github.com/astral-sh/uv-pre-commit
     rev: 0.9.5
     hooks:
-    -   id: uv-lock
-  #Linting
--   repo: https://github.com/astral-sh/ruff-pre-commit
+      - id: uv-lock
+    #Linting
+  - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.14.1
     hooks:
-    -   id: ruff-check
+      - id: ruff-check
         args:
-        -   --fix
-  #Formatting
--   repo: https://github.com/psf/black-pre-commit-mirror.git
+          - --fix
+    #Formatting
+  - repo: https://github.com/psf/black-pre-commit-mirror.git
     rev: 25.9.0
     hooks:
-    -   id: black
-  #HTML/CSS Linting
--   repo: https://github.com/rtts/djhtml
+      - id: black
+    #HTML/CSS Linting
+  - repo: https://github.com/rtts/djhtml
     rev: 3.0.10
     hooks:
-    -   id: djhtml
+      - id: djhtml
         entry: djhtml --tabwidth 2
-    -   id: djcss
-        args:
-        -   .
--   repo: https://github.com/pre-commit/pre-commit-hooks.git
+        files: '^mousemetrics/.*\.html$'
+        exclude: ".*/staticfiles/.*"
+      - id: djcss
+        files: '^mousemetrics/.*\.css$'
+        exclude: ".*/staticfiles/.*|.*/static/dist/.*"
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks.git
     rev: v6.0.0
     hooks:
       #Filesystem
-    -   id: check-case-conflict
-    -   id: check-illegal-windows-names
-      #Text formatting
-    -   id: end-of-file-fixer
-    -   id: trailing-whitespace
-      #File checks
-    -   id: check-json
-    -   id: check-toml
-    -   id: check-yaml
-      #Python
-    -   id: name-tests-test
-      #Git
-    -   id: no-commit-to-branch
--   repo: local
+      - id: check-case-conflict
+      - id: check-illegal-windows-names
+        #Text formatting
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        #File checks
+      - id: check-json
+      - id: check-toml
+      - id: check-yaml
+        #Python
+      - id: name-tests-test
+        #Git
+      - id: no-commit-to-branch
+  - repo: local
     hooks:
-    -   id: PyRight
+      - id: PyRight
         name: PyRight
         entry: uv run pyright .
         language: system
         files: \.py$
-  #Pytest
--   repo: local
+    #Pytest
+  - repo: local
     hooks:
-    -   id: pytest-mouseapp
+      - id: pytest-mouseapp
         name: pytest-check
         entry: uv run pytest
         language: system
