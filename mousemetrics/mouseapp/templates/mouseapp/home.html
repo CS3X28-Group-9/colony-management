@@ -1,10 +1,26 @@
 
 {% extends "base.html" %} {% block title %}Home{% endblock %}
 
+{% block content%}
 
-{% block content%} 
-  <div  class="flex justify-center">
-    <a href="{% url 'mouse_import:import_form' %}" class="btn-primary">Import Mice</a>
+  <div class="flex justify-center mt-6">
+    <div class="inline-block bg-neutral-200 border border-neutral-300 rounded-lg p-4 w-fit">
+      {% if messages %}
+        <ul>
+          {% for m in messages %}
+            <li>{{ m }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <h3 class="text-xl font-medium text-gray-900 text-center my-2">
+          No current projects
+        </h3>
+      {% endif %}
+
+      <div  class="flex justify-center py-3">
+        <a href="{% url 'mouse_import:import_form' %}" class="btn-primary">Import Mice</a>
+      </div>
+    </div>
   </div>
 
 {% endblock content %}
