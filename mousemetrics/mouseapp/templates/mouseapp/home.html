@@ -2,4 +2,9 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %}
 
 
-{% block content%} {% endblock content %}
+{% block content%} 
+  <div  class="flex justify-center">
+    <a href="{% url 'mouse_import:import_form' %}" class="btn-primary">Import Mice</a>
+  </div>
+
+{% endblock content %}
