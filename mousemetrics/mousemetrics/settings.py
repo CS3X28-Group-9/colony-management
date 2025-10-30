@@ -21,7 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-$+sao&03^3d2jkya4^a_$x2ea7d-gsx97df@%&q%wq%#&9g)^i"
+SECRET_KEY = os.environ.get(
+    "MOUSEMETRICS_SECRET_KEY",
+    "django-insecure-$+sao&03^3d2jkya4^a_$x2ea7d-gsx97df@%&q%wq%#&9g)^i",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("MOUSEMETRICS_ENVIRONMENT", "dev").lower() == "dev"
