@@ -1,5 +1,5 @@
 repos:
-  #In case of depreciated code when repurposing from stackoverflow or similar
+    #In case of depreciated code when repurposing from stackoverflow or similar
   - repo: https://github.com/adamchainz/django-upgrade
     rev: 1.29.0
     hooks:
@@ -32,11 +32,11 @@ repos:
       - id: djcss
         files: '^mousemetrics/.*\.css$'
         exclude: ".*/staticfiles/.*|.*/static/dist/.*"
-
+    #Out of the box hooks
   - repo: https://github.com/pre-commit/pre-commit-hooks.git
     rev: v6.0.0
     hooks:
-      #Filesystem
+        #Filesystem
       - id: check-case-conflict
       - id: check-illegal-windows-names
         #Text formatting
@@ -50,6 +50,7 @@ repos:
       - id: name-tests-test
         #Git
       - id: no-commit-to-branch
+    #Type checking
   - repo: local
     hooks:
       - id: PyRight
@@ -65,3 +66,10 @@ repos:
         entry: uv run pytest
         language: system
         pass_filenames: false
+    #Pytest
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+        exclude: package.lock.json
