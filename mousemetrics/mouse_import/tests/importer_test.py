@@ -1,5 +1,6 @@
 import pytest
 from pathlib import Path
+from datetime import date
 
 from mouse_import.services.io_excel import read_range
 from mouse_import.services.importer import Importer, ImportOptions
@@ -35,7 +36,11 @@ MAPPING = {
 
 @pytest.fixture
 def project(db):
-    project = Project()
+    project = Project(
+        name="Test Project",
+        start_date=date.today(),
+        license_constraints="Test constraints",
+    )
     project.save()
     return project
 
