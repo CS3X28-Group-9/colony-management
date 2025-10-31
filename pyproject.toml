@@ -44,6 +44,6 @@ pythonpath = ["mousemetrics"]
 
 [tool.pyright]
 include = ["mousemetrics"]
-exclude = ["**/migrations", ".venv", "mousemetrics/mouseapp/admin.py"]
+exclude = ["**/migrations", ".venv", ".direnv", "mousemetrics/mouseapp/admin.py"]
 typeCheckingMode = "basic"
 reportMissingTypeStubs = false
