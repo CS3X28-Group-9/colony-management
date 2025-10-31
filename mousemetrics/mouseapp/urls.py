@@ -12,6 +12,7 @@ urlpatterns = [
     path("mouse/<int:id>/", views.mouse, name="mouse"),
     path("project/<int:id>/", views.project, name="project"),
     path("register/", views.register, name="register"),
+    path("family_tree/<int:mouse>/", views.family_tree, name="family_tree"),
     # ========================
     # Authentication routes
     # ========================
