@@ -32,6 +32,7 @@ class Importer:
         self.fields = list(importable_fields())
         self.field_by_name = {field.name: field for field in self.fields}
         self.has_tube = "tube_number" in self.field_by_name
+        self.has_strain = "strain" in self.field_by_name
 
     def run(
         self, dataframe: pd.DataFrame, mapping: Dict[str, str]
@@ -57,7 +58,20 @@ class Importer:
                     transaction.savepoint_rollback(savepoint)
                     continue
 
-                if self.has_tube and defaults.get("tube_number") is not None:
+                # if both strain and tube_number are present, update by that pair (ignore project in lookup)
+                if (
+                    self.has_tube
+                    and self.has_strain
+                    and defaults.get("tube_number") is not None
+                    and defaults.get("strain") is not None
+                ):
+                    obj, was_created = Mouse.objects.update_or_create(
+                        tube_number=defaults["tube_number"],
+                        strain=defaults["strain"],
+                        defaults=defaults,
+                    )
+                # else keep prior behavior
+                elif self.has_tube and defaults.get("tube_number") is not None:
                     obj, was_created = Mouse.objects.update_or_create(
                         project=self.project,
                         tube_number=defaults["tube_number"],
