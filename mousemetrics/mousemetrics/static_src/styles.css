@@ -32,4 +32,16 @@
     dark:text-neutral-600 dark:focus:text-blue-500
     transition duration-150 ease-in-out;
   }
+
+  .table-row-striped {
+    @apply border border-l-2 border-r-2 border-gray-800;
+  }
+
+  .table-data:nth-child(odd) {
+    @apply bg-white;
+  }
+
+  .table-data:nth-child(even) {
+    @apply bg-gray-200;
+  }
 }

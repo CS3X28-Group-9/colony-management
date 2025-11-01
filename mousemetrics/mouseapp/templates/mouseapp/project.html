@@ -11,8 +11,8 @@
       {% endfor %}
     </ul></li>
     <li>Mice: <table>
-      <tr>
-        <th>Link</th>
+      <tr class="bg-gray-200 text-gray-700 uppercase text-sm font-semibold border-2">
+        <th>Mouse ID</th>
         <th>Date of Birth</th>
         <th>Tube Number</th>
         <th>Box Number</th>
@@ -22,15 +22,17 @@
         <th>Earmark</th>
       </tr>
       {% for mouse in project.mouse_set.all %}
-        <tr>
-          <td><a href="{% url 'mouseapp:mouse' mouse.id %}">Link</a></td>
-          <td>{{ mouse.date_of_birth }}</td>
+        <tr class="table-data">
+          <td class="table-data-left">
+            <a href="{% url 'mouseapp:mouse' mouse.id %}" class="text-blue-600 hover:underline">{{ mouse.id }}</a>
+          </td>
+          <td >{{ mouse.date_of_birth }}</td>
           <td>{{ mouse.tube_number }}</td>
           <td>{{ mouse.box.number }}</td>
           <td>{{ mouse.strain }}</td>
           <td>{{ mouse.coat_colour }}</td>
           <td>{{ mouse.sex }}</td>
-          <td>{{ mouse.earmark }}</td>
+          <td class="table-data-right">{{ mouse.earmark }}</td>
         </tr>
       {% endfor %}
     </table></li>
