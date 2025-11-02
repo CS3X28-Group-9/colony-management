@@ -24,9 +24,11 @@ class CustomAuthenticationForm(AuthenticationForm):
     remember_me = forms.BooleanField(
         required=False,
         initial=False,
-        widget=forms.CheckboxInput(attrs={
-            "class": "bg-gray-50 border border-gray-300 focus:ring-3 focus:ring-blue-300 h-4 w-4 rounded",
-        })
+        widget=forms.CheckboxInput(
+            attrs={
+                "class": "bg-gray-50 border border-gray-300 focus:ring-3 focus:ring-blue-300 h-4 w-4 rounded",
+            }
+        ),
     )
 
     @override
