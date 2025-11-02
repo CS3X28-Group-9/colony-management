@@ -44,4 +44,12 @@
   .table-data:nth-child(even) {
     @apply bg-gray-200;
   }
+
+  .input-label { @apply
+    text-sm text-gray-500 duration-300 transform scale-75 -translate-y-4  origin-left start-2.5
+  }
+
+  .toggle-password{
+    @apply stroke-current stroke-2 fill-none
+  }
 }

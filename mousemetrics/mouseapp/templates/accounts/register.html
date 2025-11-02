@@ -1,6 +1,6 @@
-{% extends "base.html" %} {% block title %}Sign Up{% endblock %}
-
-
+{% extends "base.html" %}
+{% block title %}Sign Up{% endblock %}
+{% load static %}
 {% block content %}
 
   <div class="flex justify-center p-4">
@@ -8,7 +8,7 @@
       class="p-4 sm:p-6 lg:p-8 rounded bg-neutral-200 w-80 shadow-md border border-neutral-300"
     >
       <form method="post" class="space-y-6">
-        <h3 class="text-xl font-medium text-gray-900  text-center">
+        <h3 class="text-xl font-medium text-gray-900 text-center">
           Create your account
         </h3>
         {% csrf_token %} {% if form.non_field_errors %}
@@ -23,12 +23,12 @@
             name="{{ form.email.html_name }}"
             value="{{ form.email.value|default_if_none:'' }}"
             autocomplete="email"
-            class="block px-2.5 pt-5 pb-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none  focus:border-blue-600 focus:ring-0 focus:outline-none peer "
+            class="block px-2.5 pt-5 pb-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none focus:border-blue-600 focus:ring-0 focus:outline-none peer"
             required
           />
           <label
             for="{{ form.email.id_for_label }}"
-            class="absolute top-4 text-sm text-gray-500 duration-300 transform scale-75 -translate-y-4  origin-left start-2.5 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+            class="absolute top-4 input-label peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
           >Email</label
             >
             {% if form.email.errors %}
@@ -43,13 +43,13 @@
               name="{{ form.first_name.html_name }}"
               value="{{ form.first_name.value|default_if_none:'' }}"
               autocomplete="given-name"
-              class="block px-2.5 pt-5 pb-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none focus:border-blue-600 focus:ring-0 focus:outline-none peer "
+              class="block px-2.5 pt-5 pb-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none focus:border-blue-600 focus:ring-0 focus:outline-none peer"
               required
               placeholder=" "
             />
             <label
               for="{{ form.first_name.id_for_label }}"
-              class="absolute top-4 text-sm text-gray-500 duration-300 transform scale-75 -translate-y-4  origin-left start-2.5 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+              class="absolute top-4 input-label peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
             >First Name</label
               >
               {% if form.first_name.errors %}
@@ -86,7 +86,7 @@
                   id="{{ form.password1.id_for_label }}"
                   name="{{ form.password1.html_name }}"
                   autocomplete="current-password"
-                  class="block px-2.5 pt-5 pb-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none  focus:border-blue-600 focus:ring-0 focus:outline-none peer "
+                  class="block px-2.5 pt-5 pb-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none focus:border-blue-600 focus:ring-0 focus:outline-none peer"
                   required
                 />
 
@@ -95,55 +95,19 @@
                   data-hs-toggle-password='{
                                            "target": "#{{ form.password1.id_for_label }}"
                                            }'
-                  tabindex="-1"
                   onmousedown="event.preventDefault()"
-                  class="absolute inset-y-0 end-0 flex items-center z-20 px-3 cursor-pointer text-gray-400 rounded-e-md focus:outline-hidden focus:text-blue-600 "
+                  class="absolute inset-y-0 end-0 flex items-center z-20 px-3 cursor-pointer text-gray-400 rounded-e-md focus:outline-hidden focus:text-blue-600"
                 >
-                  <svg
-                    class="shrink-0 size-3.5"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path
-                      class="hs-password-active:hidden"
-                      d="M9.88 9.88a3 3 0 1 0 4.24 4.24"
-                    ></path>
-                    <path
-                      class="hs-password-active:hidden"
-                      d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"
-                    ></path>
-                    <path
-                      class="hs-password-active:hidden"
-                      d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"
-                    ></path>
-                    <line
-                      class="hs-password-active:hidden"
-                      x1="2"
-                      x2="22"
-                      y1="2"
-                      y2="22"
-                    ></line>
-                    <path
-                      class="hidden hs-password-active:block"
-                      d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"
-                    ></path>
-                    <circle
-                      class="hidden hs-password-active:block"
-                      cx="12"
-                      cy="12"
-                      r="3"
-                    ></circle>
-                  </svg>
+                  <span class="eye-slash-icon">
+                    {% include "components/pass-mode-pass.svg" %}
+                  </span>
+                  <span class="eye-icon hidden">
+                    {% include "components/text-mode-pass.svg" %}
+                  </span>
                 </button>
                 <label
                   for="{{ form.password1.id_for_label }}"
-                  class="absolute top-4 text-sm text-gray-500 duration-300 transform scale-75 -translate-y-4  origin-left start-2.5 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+                  class="absolute top-4 input-label peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
                 >Password</label
                   >
                 </div>
@@ -155,7 +119,7 @@
                     id="{{ form.password2.id_for_label }}"
                     name="{{ form.password2.html_name }}"
                     autocomplete="current-password"
-                    class="block px-2.5 pt-5 pb-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none  focus:border-blue-600 focus:ring-0 focus:outline-none peer "
+                    class="block px-2.5 pt-5 pb-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none focus:border-blue-600 focus:ring-0 focus:outline-none peer"
                     required
                   />
 
@@ -164,66 +128,31 @@
                     data-hs-toggle-password='{
                                              "target": "#{{ form.password2.id_for_label }}"
                                              }'
-                    tabindex="-1"
                     onmousedown="event.preventDefault()"
-                    class="absolute inset-y-0 end-0 flex items-center z-20 px-3 cursor-pointer text-gray-400 rounded-e-md focus:outline-hidden focus:text-blue-600 "
+                    class="absolute inset-y-0 end-0 flex items-center z-20 px-3 cursor-pointer text-gray-400 rounded-e-md focus:outline-hidden focus:text-blue-600"
                   >
-                    <svg
-                      class="shrink-0 size-3.5"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path
-                        class="hs-password-active:hidden"
-                        d="M9.88 9.88a3 3 0 1 0 4.24 4.24"
-                      ></path>
-                      <path
-                        class="hs-password-active:hidden"
-                        d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"
-                      ></path>
-                      <path
-                        class="hs-password-active:hidden"
-                        d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"
-                      ></path>
-                      <line
-                        class="hs-password-active:hidden"
-                        x1="2"
-                        x2="22"
-                        y1="2"
-                        y2="22"
-                      ></line>
-                      <path
-                        class="hidden hs-password-active:block"
-                        d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"
-                      ></path>
-                      <circle
-                        class="hidden hs-password-active:block"
-                        cx="12"
-                        cy="12"
-                        r="3"
-                      ></circle>
-                    </svg>
+                    <span class="eye-slash-icon">
+                      {% include "components/pass-mode-pass.svg" %}
+                    </span>
+                    <span class="eye-icon hidden">
+                      {% include "components/text-mode-pass.svg" %}
+                    </span>
                   </button>
+
                   <label
                     for="{{ form.password2.id_for_label }}"
-                    class="absolute top-4 text-sm text-gray-500 duration-300 transform scale-75 -translate-y-4  origin-left start-2.5 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+                    class="absolute top-4 input-label peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
                   >Confirm Password</label
                     >
                   </div>
 
                   <button type="submit" class="mt-2 btn-primary">Sign up</button>
 
-                  <p class="mt-6 text-sm text-center text-gray-600 ">
+                  <p class="mt-6 text-sm text-center text-gray-600">
                     Already have an account?
                     <a
                       href="{% url 'mouseapp:login' %}"
-                      class="font-semibold text-blue-600 transition  hover:text-blue-500 "
+                      class="font-semibold text-blue-600 transition hover:text-blue-500"
                     >
                       Log in
                     </a>
