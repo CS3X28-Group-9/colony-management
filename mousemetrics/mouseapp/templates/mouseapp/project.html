@@ -1,41 +1,51 @@
 {% extends "base.html" %}
-
 {% block title %}Project{% endblock %}
-
 {% block content %}
   <ul>
     <li>Lead: {{ project.lead }}</li>
-    <li>Members: <ul>
-      {% for user in project.researchers.all %}
-        <li>{{ user.username }}</li>
-      {% endfor %}
-    </ul></li>
-    <li>Mice: <table>
-      <tr class="bg-gray-200 text-gray-700 uppercase text-sm font-semibold border-2">
-        <th>Mouse ID</th>
-        <th>Date of Birth</th>
-        <th>Tube Number</th>
-        <th>Box Number</th>
-        <th>Strain</th>
-        <th>Coat Colour</th>
-        <th>Sex</th>
-        <th>Earmark</th>
-      </tr>
-      {% for mouse in project.mouse_set.all %}
-        <tr class="table-data">
-          <td class="table-data-left">
-            <a href="{% url 'mouseapp:mouse' mouse.id %}" class="text-blue-600 hover:underline">{{ mouse.id }}</a>
-          </td>
-          <td >{{ mouse.date_of_birth }}</td>
-          <td>{{ mouse.tube_number }}</td>
-          <td>{{ mouse.box.number }}</td>
-          <td>{{ mouse.strain }}</td>
-          <td>{{ mouse.coat_colour }}</td>
-          <td>{{ mouse.sex }}</td>
-          <td class="table-data-right">{{ mouse.earmark }}</td>
+    <li>
+      Members:
+      <ul>
+        {% for user in project.researchers.all %}
+          <li>{{ user.username }}</li>
+        {% endfor %}
+      </ul>
+    </li>
+    <li>
+      Mice:
+      <table>
+        <tr
+          class="bg-gray-200 text-gray-700 uppercase text-sm font-semibold border-2"
+        >
+          <th class="table-padding">Mouse ID</th>
+          <th class="table-padding">Date of Birth</th>
+          <th class="table-padding">Tube Number</th>
+          <th class="table-padding">Box Number</th>
+          <th class="table-padding">Strain</th>
+          <th class="table-padding">Coat Colour</th>
+          <th class="table-padding">Sex</th>
+          <th class="table-padding">Earmark</th>
         </tr>
-      {% endfor %}
-    </table></li>
+        {% for mouse in project.mouse_set.all %}
+          <tr class="table-data">
+            <td class="table-data-left numeric">
+              <a
+                href="{% url 'mouseapp:mouse' mouse.id %}"
+                class="text-blue-600 hover:underline"
+              >{{ mouse.id }}</a
+                >
+              </td>
+              <td class="numeric table-padding">{{ mouse.date_of_birth }}</td>
+              <td class="numeric table-padding">{{ mouse.tube_number }}</td>
+              <td class="numeric table-padding">{{ mouse.box.number }}</td>
+              <td class="table-padding">{{ mouse.strain }}</td>
+              <td class="table-padding">{{ mouse.coat_colour }}</td>
+              <td class="table-padding">{{ mouse.sex }}</td>
+              <td class="table-data-right table-padding">{{ mouse.earmark }}</td>
+            </tr>
+        {% endfor %}
+      </table>
+    </li>
     <li>License constraints: {{ project.license_constraints }}</li>
   </ul>
 {% endblock %}
