@@ -11,6 +11,12 @@
           Sign in to MouseMetrics
         </h3>
         {% csrf_token %}
+        {% if form.non_field_errors %}
+          {% for error in form.non_field_errors %}
+            <p class="text-sm text-red-500 text-center">{{ error }}</p>
+          {% endfor %}
+        {% endif %}
+
         <div class="relative">
           <input
             type="email"
@@ -29,9 +35,7 @@
           >Email</label
             >
           </div>
-          {% if form.username.errors %}
-            <p>{{ form.username.errors.0 }}</p>
-          {% endif %}
+
           <div class="relative">
             <input
               type="password"
@@ -100,9 +104,6 @@
             >Password</label
               >
             </div>
-            {% if form.password.errors %}
-              <p>{{ form.password.errors.0 }}</p>
-            {% endif %}
 
             <div class="flex items-start">
               <div class="flex items-start">

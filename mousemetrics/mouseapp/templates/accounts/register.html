@@ -147,6 +147,11 @@
                 >Password</label
                   >
                 </div>
+                {% if form.password1.errors %}
+                  {% for error in form.password1.errors %}
+                    <p class="text-sm text-red-500 leading-tight">{{ error }}</p>
+                  {% endfor %}
+                {% endif %}
 
                 <div class="relative">
                   <input
@@ -216,6 +221,11 @@
                   >Confirm Password</label
                     >
                   </div>
+                  {% if form.password2.errors %}
+                    {% for error in form.password2.errors %}
+                      <p class="text-sm text-red-500 leading-tight">{{ error }}</p>
+                    {% endfor %}
+                  {% endif %}
 
                   <button type="submit" class="mt-2 btn-primary">Sign up</button>
 
