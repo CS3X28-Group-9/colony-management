@@ -816,6 +816,14 @@
       outline-style: none;
     }
   }
+  .default-header {
+    text-align: center;
+    font-size: var(--text-xl);
+    line-height: var(--tw-leading, var(--text-xl--line-height));
+    --tw-font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-gray-900);
+  }
 }
 @property --tw-translate-x {
   syntax: "*";

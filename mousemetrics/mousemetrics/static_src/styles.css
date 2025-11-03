@@ -41,20 +41,23 @@
     @apply bg-gray-200 hover:bg-gray-300;
   }
 
-  .input-label { @apply
-    text-sm text-gray-500 duration-300 transform scale-75 -translate-y-4  origin-left start-2.5
+  .input-label {
+    @apply text-sm text-gray-500 duration-300 transform scale-75 -translate-y-4  origin-left start-2.5;
   }
 
-  .numeric { @apply
-    text-right
+  .numeric {
+    @apply text-right;
   }
 
-  .table-padding { @apply
-    mx-2 px-2
+  .table-padding {
+    @apply mx-2 px-2;
   }
 
-  .floating-label { @apply
-    text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none focus:border-blue-600 focus:ring-0 focus:outline-none;
+  .floating-label {
+    @apply text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none focus:border-blue-600 focus:ring-0 focus:outline-none;
   }
 
+  .default-header {
+    @apply text-xl font-medium text-gray-900 text-center
+  }
 }
