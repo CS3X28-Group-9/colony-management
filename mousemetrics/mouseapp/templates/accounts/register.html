@@ -23,7 +23,7 @@
             name="{{ form.email.html_name }}"
             value="{{ form.email.value|default_if_none:'' }}"
             autocomplete="email"
-            class="block px-2.5 pt-5 pb-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none focus:border-blue-600 focus:ring-0 focus:outline-none peer"
+            class="block px-2.5 pt-5 pb-2.5 w-full floating-label peer"
             required
           />
           <label
@@ -43,7 +43,7 @@
               name="{{ form.first_name.html_name }}"
               value="{{ form.first_name.value|default_if_none:'' }}"
               autocomplete="given-name"
-              class="block px-2.5 pt-5 pb-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none focus:border-blue-600 focus:ring-0 focus:outline-none peer"
+              class="block px-2.5 pt-5 pb-2.5 w-full floating-label peer"
               required
               placeholder=" "
             />
@@ -65,7 +65,7 @@
                 name="{{ form.last_name.html_name }}"
                 value="{{ form.last_name.value|default_if_none:'' }}"
                 autocomplete="family-name"
-                class="block px-2.5 pt-5 pb-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none focus:border-blue-600 focus:ring-0 focus:outline-none peer"
+                class="block px-2.5 pt-5 pb-2.5 w-full floating-label peer"
                 required
               />
               <label
@@ -86,7 +86,7 @@
                   id="{{ form.password1.id_for_label }}"
                   name="{{ form.password1.html_name }}"
                   autocomplete="current-password"
-                  class="block px-2.5 pt-5 pb-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none focus:border-blue-600 focus:ring-0 focus:outline-none peer"
+                  class="block px-2.5 pt-5 pb-2.5 w-full floating-label peer"
                   required
                 />
 
@@ -120,7 +120,7 @@
                     id="{{ form.password2.id_for_label }}"
                     name="{{ form.password2.html_name }}"
                     autocomplete="current-password"
-                    class="block px-2.5 pt-5 pb-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none focus:border-blue-600 focus:ring-0 focus:outline-none peer"
+                    class="block px-2.5 pt-5 pb-2.5 w-full floating-label peer"
                     required
                   />
 

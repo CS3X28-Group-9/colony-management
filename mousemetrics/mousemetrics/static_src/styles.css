@@ -53,4 +53,8 @@
     mx-2 px-2
   }
 
+  .floating-label { @apply
+    text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none focus:border-blue-600 focus:ring-0 focus:outline-none;
+  }
+
 }
