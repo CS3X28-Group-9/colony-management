@@ -48,6 +48,9 @@ def login_view(request: HttpRequest) -> HttpResponse:
         form = CustomAuthenticationForm(request, data=request.POST)
 
         if form.is_valid():
+            remember_me = form.cleaned_data.get("remember_me")
+            if not remember_me:
+                request.session.set_expiry(0)  # Session expires on browser close
             auth_login(request, form.get_user())
             return redirect("mouseapp:home")
     else:
