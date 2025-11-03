@@ -18,6 +18,14 @@ def to_int(value: Any) -> Optional[int]:
     try:
         return int(float(value))
     except Exception:
+        # Try to extract numeric part from formats like "1-1" (take last numeric segment)
+        if isinstance(value, str) and "-" in value:
+            parts = value.split("-")
+            for part in reversed(parts):
+                try:
+                    return int(float(part.strip()))
+                except Exception:
+                    continue
         logger.debug("Failed to coerce value to int", extra={"value": value})
         return None
 
