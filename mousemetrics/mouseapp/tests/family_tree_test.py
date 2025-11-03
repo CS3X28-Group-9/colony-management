@@ -9,9 +9,8 @@ from mouseapp.views import family_tree_ancestry
 
 @pytest.fixture
 def mice(db):
-    project = Project(name="Test Project", start_date=date(2025, 1, 1))
-    project.save()
-    box = Box(number=0, project=project)
+    box = Box(number=0)
+    project = Project()
     kwargs = dict(
         date_of_birth=date(1970, 1, 1),
         tube_number=0,
@@ -21,6 +20,7 @@ def mice(db):
         notes=".",
     )
     box.save()
+    project.save()
     grandfather = Mouse(strain="M'", sex="M", **kwargs)
     father = Mouse(strain="M", sex="M", father=grandfather, **kwargs)
     mother = Mouse(strain="F", sex="F", **kwargs)
