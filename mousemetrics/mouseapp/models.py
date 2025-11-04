@@ -83,12 +83,12 @@ class Mouse(models.Model):
         related_name="child_set_f",
     )
     date_of_birth = models.DateField()
-    tube_number = models.IntegerField()  # Changed from allowing null/blank
+    tube_number = models.IntegerField()
     box = models.ForeignKey(Box, on_delete=models.PROTECT)
     strain = models.TextField()
     coat_colour = models.TextField(blank=True, null=True)
     earmark = models.CharField(
-        max_length=16, blank=True, validators=[EARMARK_VALIDATOR]  # Uses the validator
+        max_length=16, blank=True, validators=[EARMARK_VALIDATOR]
     )
     notes = models.TextField(blank=True)
 
