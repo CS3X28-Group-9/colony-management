@@ -9,8 +9,8 @@ from mouseapp.views import family_tree_ancestry
 
 @pytest.fixture
 def mice(db):
-    box = Box(number=0)
-    project = Project()
+    box = Box(number="0")
+    project = Project(name="Test Project", start_date=date(2000, 1, 1))
     kwargs = dict(
         date_of_birth=date(1970, 1, 1),
         tube_number=0,
