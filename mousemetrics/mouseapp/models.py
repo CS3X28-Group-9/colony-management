@@ -1,89 +1,106 @@
-from typing import Any
 from django.db import models
 from django.db.models import SET_NULL
 from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.validators import RegexValidator
 
 
 class Project(models.Model):
-    lead: models.ForeignKey[Any, Any] = models.ForeignKey(
+    name = models.CharField(max_length=255)
+    start_date = models.DateField()
+    allow_over_18_months = models.BooleanField(default=False)
+    has_mod_sev_permission = models.BooleanField(default=False)
+    quota_5_years = models.PositiveIntegerField(null=True, blank=True)
+
+    lead = models.ForeignKey(
         User,
         blank=True,
         null=True,
         on_delete=SET_NULL,
         related_name="leading_set",
     )
-    researchers: "models.ManyToManyField[Any, Any]" = models.ManyToManyField(
+    researchers = models.ManyToManyField(
         User, through="Membership", through_fields=("project", "user")
     )
-    license_constraints: "models.TextField[Any, Any]" = models.TextField()
+    license_constraints = models.TextField()
 
     class Meta:
         permissions = [("create_project", "Create projects")]
 
     def has_read_access(self, user: User) -> bool:
-        try:
-            if user == self.lead:
-                return True
-        except ObjectDoesNotExist:
-            pass
-
-        return bool(user.is_superuser or self.researchers.filter(id=user.pk).exists())  # type: ignore reportUnknownMemberType, reportUnknownArgumentType
+        if self.lead and self.lead.pk == user.pk:
+            return True
+        if user.is_superuser:
+            return True
+        return self.researchers.filter(pk=user.pk).exists()
 
     def has_write_access(self, user: User) -> bool:
-        try:
-            if user == self.lead:
-                return True
-        except ObjectDoesNotExist:
-            pass
-        return user.is_superuser  # type: ignore reportUnknownMemberType
+        if self.lead and self.lead.pk == user.pk:
+            return True
+        return user.is_superuser
 
 
 class Box(models.Model):
-    number: "models.TextField[Any, Any]" = models.TextField(primary_key=True)
+    box_type = models.CharField(
+        max_length=1, choices=[("S", "Shoe"), ("T", "Stock")], default="S"
+    )
+    project = models.ForeignKey(
+        Project, on_delete=models.PROTECT, null=True, blank=True
+    )
+    number = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name_plural = "Boxes"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["project", "number"], name="uniq_box_per_project"
+            )
+        ]
 
 
 class Mouse(models.Model):
-    sex_choices = {
-        "F": "Female",
-        "M": "Male",
-    }
-    project: models.ForeignKey[Any, Any] = models.ForeignKey(
-        Project, on_delete=models.PROTECT
+    SEX_CHOICES = {"F": "Female", "M": "Male"}
+
+    EARMARK_VALIDATOR = RegexValidator(
+        regex=r"^([TB][RL])*$",
+        message="Earmark must be a sequence of position codes (T/B for Top/Bottom, R/L for Right/Left). Examples: TR, BL, TRBL.",
+        code="invalid_earmark",
     )
-    sex: "models.CharField[Any, Any]" = models.CharField(
-        max_length=1, choices=sex_choices
-    )
-    mother: models.ForeignKey[Any, Any] = models.ForeignKey(
+
+    project = models.ForeignKey(Project, on_delete=models.PROTECT)
+    sex = models.CharField(max_length=1, choices=list(SEX_CHOICES.items()))
+    mother = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
         related_name="child_set_m",
     )
-    father: models.ForeignKey[Any, Any] = models.ForeignKey(
+    father = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
         related_name="child_set_f",
     )
-    date_of_birth: "models.DateField[Any, Any]" = models.DateField()
-    tube_number: "models.IntegerField[Any, Any]" = models.IntegerField(
-        blank=True, null=True
+    date_of_birth = models.DateField()
+    tube_number = models.IntegerField()
+    box = models.ForeignKey(Box, on_delete=models.PROTECT)
+    strain = models.TextField()
+    coat_colour = models.TextField(blank=True, null=True)
+    earmark = models.CharField(
+        max_length=16, blank=True, validators=[EARMARK_VALIDATOR]
     )
-    box: models.ForeignKey[Any, Any] = models.ForeignKey(Box, on_delete=models.PROTECT)
-    # TODO(moth): Do we need restricted choices here?
-    strain: "models.TextField[Any, Any]" = models.TextField()
-    # TODO(moth): Do we need restricted choices here?
-    coat_colour: "models.TextField[Any, Any]" = models.TextField(null=True, blank=True)
-    # TODO(moth): Is this correct?
-    earmark: "models.TextField[Any, Any]" = models.TextField()
-    notes: "models.TextField[Any, Any]" = models.TextField(null=True, blank=True)
+    notes = models.TextField(blank=True)
 
     class Meta:
         permissions = [
             ("edit_mice", "Can edit mouse details"),
+        ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["project", "strain", "tube_number"],
+                name="unique_mouse_id_per_project",
+            )
         ]
 
     def has_read_access(self, user: User) -> bool:
@@ -96,32 +113,28 @@ class Mouse(models.Model):
 
 
 class Request(models.Model):
-    BREED_REQUEST = "B"
-    CULL_REQUEST = "C"
-    REQUEST_CHOICES = {
-        BREED_REQUEST: "Breed",
-        CULL_REQUEST: "Cull",
-    }
-
-    creator: models.ForeignKey[Any, Any] = models.ForeignKey(
-        User, on_delete=models.PROTECT
+    REQUEST_CHOICES = (
+        ("B", "Set up breeding pair"),
+        ("C", "Cull"),
+        ("T", "Transfer"),
+        ("Q", "Query"),
     )
-    approver: models.ForeignKey[Any, Any] = models.ForeignKey(
+
+    project = models.ForeignKey(
+        Project, on_delete=models.CASCADE, related_name="requests", null=True
+    )
+    creator = models.ForeignKey(User, on_delete=models.PROTECT)
+    approver = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
         related_name="approved_set",
     )
-    approved_date: "models.DateField[Any, Any]" = models.DateField(
-        blank=True, null=True
-    )
-    fulfill_date: "models.DateField[Any, Any]" = models.DateField(blank=True, null=True)
-    kind: "models.CharField[Any, Any]" = models.CharField(
-        max_length=1, choices=REQUEST_CHOICES
-    )
-    # TODO(moth): Do we need something more structured here?
-    details: "models.TextField[Any, Any]" = models.TextField()
+    approved_date = models.DateField(blank=True, null=True)
+    fulfill_date = models.DateField(blank=True, null=True)
+    kind = models.CharField(max_length=1, choices=REQUEST_CHOICES)
+    details = models.TextField()
 
     class Meta:
         permissions = [
@@ -130,18 +143,54 @@ class Request(models.Model):
         ]
 
 
+class RequestReply(models.Model):
+    request = models.ForeignKey(
+        Request, on_delete=models.CASCADE, related_name="replies"
+    )
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        permissions = [("send_reply", "Can send replies and queries on requests")]
+
+
 class Membership(models.Model):
-    project: models.ForeignKey[Any, Any] = models.ForeignKey(
-        Project, on_delete=models.CASCADE
-    )
-    user: models.ForeignKey[Any, Any] = models.ForeignKey(
-        User, on_delete=models.CASCADE
-    )
-    permissions: "models.TextField[Any, Any]" = models.TextField()
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
                 fields=["project", "user"], name="unique_membership"
             )
+        ]
+
+
+class StudyPlan(models.Model):
+    STATUS_CHOICES = (
+        ("Draft", "Draft"),
+        ("Submitted", "Submitted"),
+        ("Approved", "Approved"),
+        ("Completed", "Completed"),
+    )
+
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    creator = models.ForeignKey(User, on_delete=models.PROTECT)
+    approver = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="approved_study_plans",
+    )
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="Draft")
+    study_id = models.CharField(max_length=50, blank=True, null=True, unique=True)
+    description = models.TextField()
+    approval_date = models.DateField(blank=True, null=True)
+
+    class Meta:
+        permissions = [
+            ("approve_study_plan", "Can approve a study plan"),
+            ("view_study_plan", "Can view study plans"),
         ]
