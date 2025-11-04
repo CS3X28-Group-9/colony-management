@@ -155,20 +155,9 @@ class RequestReply(models.Model):
         permissions = [("send_reply", "Can send replies and queries on requests")]
 
 
-class Role(models.TextChoices):
-    PROJECT_LEAD = "PROJECT_LEAD", "Project Lead"
-    PROJECT_MEMBER = "PROJECT_MEMBER", "Project Member"
-    BREEDING = "BREEDING", "Breeding"
-
-
 class Membership(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    role = models.CharField(
-        max_length=20,
-        choices=Role,
-        default=Role.PROJECT_MEMBER,
-    )
 
     class Meta:
         constraints = [
