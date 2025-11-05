@@ -11,8 +11,11 @@
         <h3 class="text-xl font-medium text-gray-900  text-center">
           Create your account
         </h3>
-        {% csrf_token %} {% if form.non_field_errors %}
-          <div>{{ form.non_field_errors.0 }}</div>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+          {% for error in form.non_field_errors %}
+            <p class="text-sm text-red-500 text-center">{{ error }}</p>
+          {% endfor %}
         {% endif %}
 
         <div class="relative">
@@ -32,8 +35,11 @@
           >Email</label
             >
             {% if form.email.errors %}
-              <p>{{ form.email.errors.0 }}</p>
+              {% for error in form.email.errors %}
+                <p class="text-sm text-red-500">{{ error }}</p>
+              {% endfor %}
             {% endif %}
+
           </div>
 
           <div class="relative">
@@ -53,8 +59,11 @@
             >First Name</label
               >
               {% if form.first_name.errors %}
-                <p>{{ form.first_name.errors.0 }}</p>
+                {% for error in form.first_name.errors %}
+                  <p class="text-sm text-red-500">{{ error }}</p>
+                {% endfor %}
               {% endif %}
+
             </div>
 
             <div class="relative">
@@ -73,10 +82,12 @@
                 class="absolute top-4 text-sm text-gray-500 duration-300 transform scale-75 -translate-y-4 origin-left start-2.5 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
               >Last Name</label
                 >
-
                 {% if form.last_name.errors %}
-                  <p class="error">{{ form.last_name.errors.0 }}</p>
+                  {% for error in form.last_name.errors %}
+                    <p class="text-sm text-red-500">{{ error }}</p>
+                  {% endfor %}
                 {% endif %}
+
               </div>
 
               <div class="relative">
