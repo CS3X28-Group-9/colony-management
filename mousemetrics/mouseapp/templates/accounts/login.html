@@ -109,15 +109,16 @@
               <div class="flex items-start">
                 <div class="flex items-center h-5">
                   <input
-                    id="remember"
-                    aria-describedby="remember"
+                    id="{{ form.remember_me.id_for_label }}"
+                    name="{{ form.remember_me.html_name }}"
                     type="checkbox"
                     class="bg-gray-50 border border-gray-300 focus:ring-3 focus:ring-blue-300 h-4 w-4 rounded"
+                    {% if form.remember_me.value %}checked{% endif %}
                   />
                 </div>
                 <div class="text-sm ml-3">
                   <label
-                    for="remember"
+                    for="{{ form.remember_me.id_for_label }}"
                     class="font-medium text-gray-900"
                   >Remember me</label
                     >

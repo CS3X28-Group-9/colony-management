@@ -48,6 +48,9 @@ def login_view(request: HttpRequest) -> HttpResponse:
         form = CustomAuthenticationForm(request, data=request.POST)
 
         if form.is_valid():
+            remember_me = form.cleaned_data.get("remember_me")
+            if not remember_me:
+                request.session.set_expiry(0)  # Session expires on browser close
             auth_login(request, form.get_user())
             return redirect("mouseapp:home")
     else:
@@ -67,3 +70,33 @@ def register(request: HttpRequest) -> HttpResponse:
     else:
         form = RegistrationForm()
     return render(request, "accounts/register.html", {"form": form})
+
+
+def family_tree_ancestry(mouse: Mouse) -> list[list[Mouse | None]]:
+    """Lay out the ancestry half of the family tree
+    Return effectively the generations of mice: each generation is an entry in the list
+    Includes `None` where no such mouse exists, so that the tree is complete
+
+    See tests in `family_tree_test.py` for examples
+    """
+
+    def parents(mouse: Mouse | None) -> list[Mouse | None]:
+        if mouse is not None:
+            return [mouse.father, mouse.mother]
+        return [None, None]
+
+    ancestry: list[list[Mouse | None]] = [[mouse]]
+    while any(any(parents(mouse)) for mouse in ancestry[-1]):
+        ancestry.append([])
+        for parent in ancestry[-2]:
+            ancestry[-1].extend(parents(parent))
+    ancestry.reverse()
+
+    return ancestry
+
+
+def family_tree(request, mouse):
+    mouse = get_object_or_404(Mouse, pk=mouse)
+    ancestry = family_tree_ancestry(mouse)
+
+    return render(request, "mouseapp/family_tree.html", {"ancestry": ancestry})

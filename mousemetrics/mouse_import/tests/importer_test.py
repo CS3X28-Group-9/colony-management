@@ -1,4 +1,5 @@
 import pytest
+from datetime import date
 from pathlib import Path
 
 from mouse_import.services.io_excel import read_range
@@ -35,7 +36,7 @@ MAPPING = {
 
 @pytest.fixture
 def project(db):
-    project = Project()
+    project = Project(name="Test Project", start_date=date(2000, 1, 1))
     project.save()
     return project
 
@@ -57,4 +58,5 @@ def test_basic_import(project):
     assert m1.mother is None
     assert m1.notes == ""
 
-    assert m2.father.id == m1.id
+    assert m2.father is not None
+    assert m2.father.pk == m1.pk
