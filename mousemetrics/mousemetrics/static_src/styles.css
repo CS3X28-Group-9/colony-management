@@ -32,4 +32,12 @@
     dark:text-neutral-600 dark:focus:text-blue-500
     transition duration-150 ease-in-out;
   }
+
+  .error-message {
+    @apply text-sm text-red-500;
+  }
+
+  .error-message-compact {
+    @apply text-sm text-red-500 leading-tight;
+  }
 }

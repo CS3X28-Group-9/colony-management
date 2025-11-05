@@ -14,7 +14,7 @@
         {% csrf_token %}
         {% if form.non_field_errors %}
           {% for error in form.non_field_errors %}
-            <p class="text-sm text-red-500 text-center">{{ error }}</p>
+            <p class="error-message text-center">{{ error }}</p>
           {% endfor %}
         {% endif %}
 
@@ -36,7 +36,7 @@
             >
             {% if form.email.errors %}
               {% for error in form.email.errors %}
-                <p class="text-sm text-red-500">{{ error }}</p>
+                <p class="error-message">{{ error }}</p>
               {% endfor %}
             {% endif %}
 
@@ -60,7 +60,7 @@
               >
               {% if form.first_name.errors %}
                 {% for error in form.first_name.errors %}
-                  <p class="text-sm text-red-500">{{ error }}</p>
+                  <p class="error-message0">{{ error }}</p>
                 {% endfor %}
               {% endif %}
 
@@ -84,7 +84,7 @@
                 >
                 {% if form.last_name.errors %}
                   {% for error in form.last_name.errors %}
-                    <p class="text-sm text-red-500">{{ error }}</p>
+                    <p class="error-message">{{ error }}</p>
                   {% endfor %}
                 {% endif %}
 
@@ -160,7 +160,7 @@
                 </div>
                 {% if form.password1.errors %}
                   {% for error in form.password1.errors %}
-                    <p class="text-sm text-red-500 leading-tight">{{ error }}</p>
+                    <p class="error-message-compact">{{ error }}</p>
                   {% endfor %}
                 {% endif %}
 
@@ -234,7 +234,7 @@
                   </div>
                   {% if form.password2.errors %}
                     {% for error in form.password2.errors %}
-                      <p class="text-sm text-red-500 leading-tight">{{ error }}</p>
+                      <p class="error-message-compact">{{ error }}</p>
                     {% endfor %}
                   {% endif %}
 

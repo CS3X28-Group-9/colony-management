@@ -13,7 +13,7 @@
         {% csrf_token %}
         {% if form.non_field_errors %}
           {% for error in form.non_field_errors %}
-            <p class="text-sm text-red-500 text-center">{{ error }}</p>
+            <p class="error-message text-center">{{ error }}</p>
           {% endfor %}
         {% endif %}
 
