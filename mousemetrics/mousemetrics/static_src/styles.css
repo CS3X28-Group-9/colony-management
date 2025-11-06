@@ -34,11 +34,19 @@
   }
 
   .table-data:nth-child(odd) {
-    @apply bg-white hover:bg-gray-300;
+    @apply bg-white hover:bg-gray-300 divide-x-1 divide-gray-300;
   }
 
   .table-data:nth-child(even) {
-    @apply bg-gray-200 hover:bg-gray-300;
+    @apply bg-gray-200 hover:bg-gray-300 divide-x-1 divide-gray-300;
+  }
+
+  .left-table-data{
+    @apply border-l-1 border-gray-300
+  }
+
+  .right-table-data{
+    @apply border-r-1 border-gray-300
   }
 
   .input-label {

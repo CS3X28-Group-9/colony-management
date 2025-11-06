@@ -28,7 +28,7 @@
         </tr>
         {% for mouse in project.mouse_set.all %}
           <tr class="table-data">
-            <td class="table-data-left numeric">
+            <td class="left-table-data numeric">
               <a
                 href="{% url 'mouseapp:mouse' mouse.id %}"
                 class="text-blue-600 hover:underline"
@@ -41,7 +41,7 @@
               <td class="table-padding">{{ mouse.strain }}</td>
               <td class="table-padding">{{ mouse.coat_colour }}</td>
               <td class="table-padding">{{ mouse.sex }}</td>
-              <td class="table-data-right table-padding">{{ mouse.earmark }}</td>
+              <td class="right-table-data table-padding">{{ mouse.earmark }}</td>
             </tr>
         {% endfor %}
       </table>
