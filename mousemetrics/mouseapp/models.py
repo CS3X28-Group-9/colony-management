@@ -39,9 +39,58 @@ class Project(models.Model):
         return user.is_superuser
 
 
+class StudyPlan(models.Model):
+    STATUS_CHOICES = (
+        ("Draft", "Draft"),
+        ("Submitted", "Submitted"),
+        ("Approved", "Approved"),
+        ("Completed", "Completed"),
+    )
+    SOURCE_CHOICES = {
+        "I": "Internal",
+        "E": "External",
+    }
+
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    creator = models.ForeignKey(User, on_delete=models.PROTECT)
+    approver = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="approved_study_plans",
+    )
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="Draft")
+    study_id = models.CharField(max_length=50, blank=True, null=True, unique=True)
+    approval_date = models.DateField(blank=True, null=True)
+
+    description = models.TextField()
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+
+    mouse_quota_male = models.IntegerField(blank=True, null=True)
+    mouse_quota_female = models.IntegerField(blank=True, null=True)
+    mouse_source = models.CharField(
+        choices=SOURCE_CHOICES,
+        blank=True,
+        null=True,
+    )
+
+    class Meta:
+        permissions = [
+            ("approve_study_plan", "Can approve a study plan"),
+            ("view_study_plan", "Can view study plans"),
+        ]
+
+
 class Box(models.Model):
+    LOCATION_CHOICES = {"B": "Breeding", "E": "Experimental"}
     box_type = models.CharField(
         max_length=1, choices=[("S", "Shoe"), ("T", "Stock")], default="S"
+    )
+    location = models.CharField(
+        max_length=1,
+        choices=LOCATION_CHOICES,
     )
     project = models.ForeignKey(
         Project, on_delete=models.PROTECT, null=True, blank=True
@@ -67,6 +116,13 @@ class Mouse(models.Model):
     )
 
     project = models.ForeignKey(Project, on_delete=models.PROTECT)
+    study_plan = models.ForeignKey(
+        StudyPlan,
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True,
+        related_name="mice_assigned",
+    )
     sex = models.CharField(max_length=1, choices=list(SEX_CHOICES.items()))
     mother = models.ForeignKey(
         "self",
@@ -164,33 +220,4 @@ class Membership(models.Model):
             models.UniqueConstraint(
                 fields=["project", "user"], name="unique_membership"
             )
-        ]
-
-
-class StudyPlan(models.Model):
-    STATUS_CHOICES = (
-        ("Draft", "Draft"),
-        ("Submitted", "Submitted"),
-        ("Approved", "Approved"),
-        ("Completed", "Completed"),
-    )
-
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    creator = models.ForeignKey(User, on_delete=models.PROTECT)
-    approver = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-        related_name="approved_study_plans",
-    )
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="Draft")
-    study_id = models.CharField(max_length=50, blank=True, null=True, unique=True)
-    description = models.TextField()
-    approval_date = models.DateField(blank=True, null=True)
-
-    class Meta:
-        permissions = [
-            ("approve_study_plan", "Can approve a study plan"),
-            ("view_study_plan", "Can view study plans"),
         ]
