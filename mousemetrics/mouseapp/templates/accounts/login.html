@@ -34,6 +34,13 @@
             class="absolute top-4 text-sm text-gray-500 duration-300 transform scale-75 -translate-y-4 origin-left start-2.5 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
           >Email</label
             >
+            {% if form.username.errors %}
+              <div class="error-message-compact">
+                {% for error in form.username.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% endif %}
           </div>
 
           <div class="relative">
@@ -103,6 +110,14 @@
               class="absolute top-4 text-sm text-gray-500 duration-300 transform scale-75 -translate-y-4 origin-left start-2.5 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
             >Password</label
               >
+
+              {% if form.password.errors %}
+                <div class="error-message-compact">
+                  {% for error in form.password.errors %}
+                    {{ error }}
+                  {% endfor %}
+                </div>
+              {% endif %}
             </div>
 
             <div class="flex items-start">
