@@ -50,7 +50,7 @@
   }
 
   .input-label {
-    @apply text-sm text-gray-500 duration-300 transform scale-75 -translate-y-4  origin-left start-2.5;
+    @apply text-sm text-gray-500 transform scale-75 -translate-y-4 origin-left start-2.5;
   }
 
   .numeric {

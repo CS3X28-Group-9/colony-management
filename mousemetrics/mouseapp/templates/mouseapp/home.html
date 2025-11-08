@@ -7,9 +7,9 @@
     <div class="inline-block bg-neutral-200 border border-neutral-300 rounded-lg p-4 w-fit">
       {% if user.is_authenticated %}
         {% if user.leading_set.exists or user.project_set.exists %}
-          <ul>
+          <ul class = "flex flex-col items-stretch space-y-2 w-max">
             {% for project in user.leading_set.all %}
-              <li><a href="{% url 'mouseapp:project' project.id %}" class="btn-secondary">Project with {{ project.researchers.count }} members</a></li>
+              <li><a href="{% url 'mouseapp:project' project.id %}" class="btn-secondary block">{{ project.name }} - {{ project.researchers.count }} members</a></li>
             {% endfor %}
 
             {% for project in user.project_set.all %}

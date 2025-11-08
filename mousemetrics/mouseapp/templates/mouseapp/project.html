@@ -19,7 +19,6 @@
         >
           <th class="table-padding">Mouse ID</th>
           <th class="table-padding">Date of Birth</th>
-          <th class="table-padding">Tube Number</th>
           <th class="table-padding">Box Number</th>
           <th class="table-padding">Strain</th>
           <th class="table-padding">Coat Colour</th>
@@ -29,14 +28,13 @@
         {% for mouse in project.mouse_set.all %}
           <tr class="table-data">
             <td class="left-table-data numeric">
-              <a
-                href="{% url 'mouseapp:mouse' mouse.id %}"
-                class="text-blue-600 hover:underline"
-              >{{ mouse.id }}</a
+              <a tabindex="-1"
+                 href="{% url 'mouseapp:mouse' mouse.id %}"
+                 class="text-blue-600 hover:underline"
+              >{{ mouse.tube_number }}</a
                 >
               </td>
               <td class="numeric table-padding">{{ mouse.date_of_birth }}</td>
-              <td class="numeric table-padding">{{ mouse.tube_number }}</td>
               <td class="numeric table-padding">{{ mouse.box.number }}</td>
               <td class="table-padding">{{ mouse.strain }}</td>
               <td class="table-padding">{{ mouse.coat_colour }}</td>
