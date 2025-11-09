@@ -25,6 +25,7 @@ class Project(models.Model):
 
     class Meta:
         permissions = [("create_project", "Create projects")]
+        ordering = ["name"]
 
     def has_read_access(self, user: User) -> bool:
         if self.lead and self.lead.pk == user.pk:
