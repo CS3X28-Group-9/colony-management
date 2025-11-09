@@ -50,31 +50,26 @@ class Importer:
                 defaults, self_fk_raw = apply_mapping(
                     row, mapping, self.fields, self.project
                 )
-                missing = missing_required(self.fields, defaults)
+
+                # Ensure everything is scoped to this project
+                defaults["project"] = self.project
+
+                missing = list(missing_required(self.fields, defaults))
+                if self.has_strain and defaults.get("strain") is None:
+                    missing.append("strain")
+
                 if missing:
                     errors.append(
-                        f"Row {row_num}: missing/invalid required fields: {', '.join(missing)}"
+                        f"Row {row_num}: missing/invalid required fields: {', '.join(sorted(set(missing)))}"
                     )
                     transaction.savepoint_rollback(savepoint)
                     continue
 
-                # if both strain and tube_number are present, update by that pair (ignore project in lookup)
-                if (
-                    self.has_tube
-                    and self.has_strain
-                    and defaults.get("tube_number") is not None
-                    and defaults.get("strain") is not None
-                ):
-                    obj, was_created = Mouse.objects.update_or_create(
-                        tube_number=defaults["tube_number"],
-                        strain=defaults["strain"],
-                        defaults=defaults,
-                    )
-                # else keep prior behavior
-                elif self.has_tube and defaults.get("tube_number") is not None:
+                if self.has_tube and defaults.get("tube_number") is not None:
                     obj, was_created = Mouse.objects.update_or_create(
                         project=self.project,
                         tube_number=defaults["tube_number"],
+                        strain=defaults["strain"],
                         defaults=defaults,
                     )
                 else:
