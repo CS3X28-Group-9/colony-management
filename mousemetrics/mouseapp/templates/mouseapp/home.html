@@ -16,14 +16,15 @@
             <li><a href="{% url 'mouseapp:project' project.id %}">Project lead by {{ project.lead }}</a></li>
           {% endfor %}
         </ul>
+
+        <div  class="flex justify-center py-3">
+          <a href="{% url 'mouse_import:import_form' %}" class="btn-primary">Import Mice</a>
+        </div>
       {% else %}
         <h3 class="text-xl font-medium text-gray-900 text-center my-2">
           No current projects
         </h3>
       {% endif %}
-      <div  class="flex justify-center py-3">
-        <a href="{% url 'mouse_import:import_form' %}" class="btn-primary">Import Mice</a>
-      </div>
     </div>
   </div>
 
