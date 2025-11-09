@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.14"
+    "@tailwindcss/vite": "^4.1.14",
+    "@tailwindplus/elements": "^1.0.18"
   },
   "scripts": {
     "tailwind": "npx @tailwindcss/cli -i ./mousemetrics/mousemetrics/static_src/styles.css -o ./mousemetrics/mousemetrics/static/dist/styles.css --watch"

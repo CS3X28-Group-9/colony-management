@@ -1,54 +1,80 @@
-{% extends "base.html" %}
-{% block title %}Import form{% endblock %}
+{% extends "base.html" %} {% block title %}Import form{% endblock %}
 {% block content %}
 
-  <div class="p-4 m-4 sm:p-6 lg:p-8 rounded bg-neutral-200 w-max shadow-md border border-neutral-300">
+  <div
+    class="p-4 m-4 sm:p-6 lg:p-8 rounded bg-neutral-200 w-max shadow-md border border-neutral-300"
+  >
     <h1>Mouse Excel Import</h1>
 
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
 
-      <div class="">
-        <label for="{{ form.project.id_for_project }}" class="w-max">
-          Project - Project that owns the imported mice.</label
+      <div class="relative flex items-center">
+        <label for="select" class="whitespace-nowrap text-sm"> Project: </label>
+        <el-select id="select" name="selected" class="mt-2 block">
+          <button
+            type="button"
+            class="flex w-50 items-center justify-between rounded-md bg-white py-1.5 px-3 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm"
           >
-          <select
-            name="{{ form.project.html_name }}"
-            id="{{ form.project.id_for_label }}"
-            class="bg-white w-max"
-            required
-          >
-            <option>Select a project</option>
-            {% for project in user.leading_set.all %}
-              <option value="{{ project.id }}">{{ project.name }}</option>
-            {% endfor %}
-          </select>
-          <br />
-          <label for="file-input" class="sr-only w-max">Choose file</label>
-          <input
-            type="file"
-            name="file-input"
-            id="file-input"
-            class="block w-full border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4"
-          />
-
-          <br />
-          <label for="{{ form.sheet_name.id_for_label }}" class="w-max">
-            Sheet name - Leave blank to use the active worksheet.</label
+            <el-selectedcontent
+              class="col-start-1 row-start-1 flex items-center"
             >
-            <br />
-            <label for="{{ form.cell_range.id_for_label }}" class="w-max">
-              Cell range - Excel range such as "A1:M40".</label
-              >
-            </div>
-            <button type="submit" class="btn-primary">Upload</button>
-          </form>
-        </div>
+              <span class="truncate">Select a project!</span>
+            </el-selectedcontent>
+            {% include "components/svgs/double-chevron.svg" %}
+          </button>
 
-        {% if messages %}
-          <ul>
-            {% for m in messages %}
-              <li>{{ m }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %} {% endblock %}
+          <el-options
+            anchor="bottom end"
+            popover
+            class="max-h-56 w-(--button-width) overflow-auto rounded-md bg-white py-1 text-base shadow-lg outline-1 outline-black/5 [--anchor-gap:--spacing(1)] data-leave:transition data-leave:transition-discrete data-leave:duration-100 data-leave:ease-in data-closed:data-leave:opacity-0 sm:text-sm"
+          >{% for project in user.leading_set.all %}
+            <el-option
+              value="{{ project.id }}"
+              class="group/option relative block cursor-default py-2 pr-9 pl-3 text-gray-900 select-none focus:bg-blue-500 focus:text-white focus:outline-hidden"
+            >
+              <div class="flex items-center">
+                <span
+                  class="ml-3 block truncate font-normal group-aria-selected/option:font-semibold"
+                >{{ project.name }}</span
+                  >
+                </div>
+                <span
+                  class="absolute inset-y-0 right-0 flex items-center pr-4 text-blue-500 invisible group-aria-selected/option:visible group-focus/option:text-white"
+                >
+                  {% include "components/svgs/selected.svg" %}
+                </span>
+              </el-option>
+          {% endfor %}
+          </el-options>
+        </el-select>
+      </div>
+
+      <br />
+      <label for="file-input" class="sr-only w-max">Choose file</label>
+      <input
+        type="file"
+        name="file-input"
+        id="file-input"
+        class="block w-full border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4"
+      />
+
+      <br />
+      <label for="{{ form.sheet_name.id_for_label }}" class="w-max">
+        Sheet name - Leave blank to use the active worksheet.</label
+        >
+        <br />
+        <label for="{{ form.cell_range.id_for_label }}" class="w-max">
+          Cell range - Excel range such as "A1:M40".</label
+          >
+          <button type="submit" class="btn-primary">Upload</button>
+        </form>
+      </div>
+
+      {% if messages %}
+        <ul>
+          {% for m in messages %}
+            <li>{{ m }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %} {% endblock %}

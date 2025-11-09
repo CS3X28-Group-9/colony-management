@@ -5,32 +5,26 @@
 
   <div class="flex justify-center mt-6">
     <div class="inline-block bg-neutral-200 border border-neutral-300 rounded-lg p-4 w-fit">
-      {% if user.is_authenticated %}
-        {% if user.leading_set.exists or user.project_set.exists %}
-          <ul class = "flex flex-col items-stretch space-y-2 w-max">
-            {% for project in user.leading_set.all %}
-              <li><a href="{% url 'mouseapp:project' project.id %}" class="btn-secondary block">{{ project.name }} - {{ project.researchers.count }} members</a></li>
-            {% endfor %}
 
-            {% for project in user.project_set.all %}
-              <li><a href="{% url 'mouseapp:project' project.id %}">Project lead by {{ project.lead }}</a></li>
-            {% endfor %}
-          </ul>
-          <div class="flex justify-center py-3">
-            <a href="{% url 'mouse_import:import_form' %}" class="btn-primary">Import Mice</a>
-          </div>
-        {% else %}
-          <h3 class="default-header my-2">
-            No current projects
-          </h3>
-        {% endif %}
+      {% if user.leading_set.exists or user.project_set.exists %}
+        <ul class>
+          {% for project in user.leading_set.all %}
+            <li><a href="{% url 'mouseapp:project' project.id %}" class="btn-secondary w-full mb-1">{{project.name}} - {{ project.researchers.count }} members</a></li>
+          {% endfor %}
 
+          {% for project in user.project_set.all %}
+            <li><a href="{% url 'mouseapp:project' project.id %}">Project lead by {{ project.lead }}</a></li>
+          {% endfor %}
+        </ul>
       {% else %}
-        <h3 class="default-header my-2">
-          Login to use service
+        <h3 class="text-xl font-medium text-gray-900 text-center my-2">
+          No current projects
         </h3>
-        </div>
       {% endif %}
+      <div  class="flex justify-center py-3">
+        <a href="{% url 'mouse_import:import_form' %}" class="btn-primary">Import Mice</a>
+      </div>
     </div>
+  </div>
 
 {% endblock content %}
