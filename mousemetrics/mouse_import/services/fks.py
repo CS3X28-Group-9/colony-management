@@ -6,7 +6,7 @@ from typing import Any, Dict
 from django.db import DatabaseError, IntegrityError, transaction
 from django.db.models import ForeignKey, Model, Field
 
-from mouseapp.models import Mouse, Box
+from mouseapp.models import Mouse, Box, Strain
 
 from .coercion import normalize_for_field
 
@@ -49,6 +49,9 @@ def resolve_fk_instance(fk_field: ForeignKey, raw_value: Any, project=None):
             except Exception:
                 return None
         return None
+
+    if target_model is Strain:
+        return Strain.objects.get_or_create(name=str(raw_value))[0]
 
     pk_name = _target_pk_name(target_model)
     pk_field = _get_model_field(target_model, pk_name)

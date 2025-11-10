@@ -4,7 +4,7 @@ from pathlib import Path
 
 from mouse_import.services.io_excel import read_range
 from mouse_import.services.importer import Importer, ImportOptions
-from mouseapp.models import Project, Mouse
+from mouseapp.models import Project, Mouse, Strain
 
 
 def run_import(
@@ -54,7 +54,7 @@ def test_basic_import(project):
     assert m1.date_of_birth.year == 1970
     assert m1.earmark == "TL"
     assert m1.sex == "M"
-    assert m1.strain == "Some-strain"
+    assert m1.strain == Strain.objects.get_or_create("Some-strain")[0]
     assert m1.coat_colour == "black"
     assert m1.father is None
     assert m1.mother is None

@@ -3,7 +3,7 @@ from datetime import date
 import pytest
 from django.urls import reverse
 
-from mouseapp.models import Mouse, Box, Project
+from mouseapp.models import Mouse, Box, Project, Strain
 from mouseapp.views import family_tree_ancestry
 
 
@@ -21,11 +21,18 @@ def mice(db):
     )
     box.save()
     project.save()
-    grandfather = Mouse(strain="M'", sex="M", **kwargs)
-    father = Mouse(strain="M", sex="M", father=grandfather, **kwargs)
-    mother = Mouse(strain="F", sex="F", **kwargs)
-    ref = Mouse(strain="MF", sex="F", mother=mother, father=father, **kwargs)
-    child = Mouse(strain="MF.", sex="M", mother=ref, **kwargs)
+    s = lambda n: Strain.objects.get_or_create(name=n)[0]
+    grandfather = Mouse(strain=s("M'"), sex="M", **kwargs)
+    father = Mouse(strain=s("M"), sex="M", father=grandfather, **kwargs)
+    mother = Mouse(strain=s("F"), sex="F", **kwargs)
+    ref = Mouse(
+        strain=s("MF"),
+        sex="F",
+        mother=mother,
+        father=father,
+        **kwargs,
+    )
+    child = Mouse(strain=s("MF."), sex="M", mother=ref, **kwargs)
 
     mice = (grandfather, father, mother, ref, child)
     for mouse in mice:
