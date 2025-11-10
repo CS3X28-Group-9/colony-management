@@ -25,14 +25,6 @@
     transition duration-200 ease-in-out;
   }
 
-  .btn-password-toggle {
-    @apply absolute inset-y-0 end-0 flex items-center z-20 px-3 cursor-pointer
-    text-gray-400 rounded-e-md
-    focus:outline-hidden focus:text-blue-600
-    dark:text-neutral-600 dark:focus:text-blue-600
-    transition duration-150 ease-in-out;
-  }
-
   .table-data:nth-child(odd) {
     @apply bg-white hover:bg-gray-300 divide-x-1 divide-gray-300;
   }
@@ -59,6 +51,10 @@
 
   .table-padding {
     @apply mx-2 px-2;
+  }
+
+  .table-header-text {
+    @apply px-2 border-2 border-black;
   }
 
   .floating-label {
@@ -91,5 +87,9 @@
 
   .error-message-compact {
     @apply text-sm text-red-500 leading-tight;
+  }
+
+  .table-header {
+    @apply bg-gray-200 text-gray-700 uppercase text-sm font-semibold
   }
 }

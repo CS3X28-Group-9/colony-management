@@ -29,6 +29,7 @@ def _map_session_key(import_pk: int) -> str:
 @login_required
 def import_form(request: HttpRequest) -> HttpResponse:
     form = MouseImportForm(request.POST or None, request.FILES or None)
+
     if request.method == "POST" and form.is_valid():
         import_obj = form.save(commit=False)
         import_obj.uploaded_by = request.user

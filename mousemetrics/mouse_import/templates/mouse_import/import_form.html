@@ -124,13 +124,4 @@
         </form>
       </div>
 
-      {% if messages and 'error' in message.level_tag %}
-        <ul>
-          {% for m in messages %}
-            {% if m.level_tag == "success" %}
-              <li>{{ m }}</li>
-            {% endif %}
-          {% endfor %}
-        </ul>
-      {% endif %}
 {% endblock %}

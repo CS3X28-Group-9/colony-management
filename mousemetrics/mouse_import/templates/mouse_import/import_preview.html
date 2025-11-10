@@ -1,78 +1,235 @@
+{% extends "base.html" %}
+{% block title %}Import Preview{% endblock %}
 {% load dict_extras %}
+{% block content %}
 
-<h1>Preview Import #{{ import_obj.id }}</h1>
+  <h1>Preview Import to {{ import_obj.project.name }}</h1>
 
-{% if messages %}
-  <ul>
-    {% for m in messages %}
-      <li>{{ m }}</li>
-    {% endfor %}
-  </ul>
-{% endif %}
+  {% if messages %}
+    <ul>
+      {% for m in messages %}
+        <li>{{ m }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
 
-<p>
-  <strong>File:</strong> {{ import_obj.file.name }} |
-  <strong>Sheet:</strong>
-  {{ import_obj.sheet_name|default_if_none:"(active)"|default:"(active)" }} |
-  <strong>Range:</strong>
-  {{ import_obj.cell_range|default_if_none:"(entire sheet)"|default:"(entire sheet)" }} |
+  <p>
+    <strong>File:</strong> {{ import_obj.original_filename }} |
+    <strong>Sheet:</strong>
+    {{ import_obj.sheet_name|default_if_none:"(active)"|default:"(active)" }} |
+    <strong>Range:</strong>
+    {{ import_obj.cell_range|default_if_none:"(entire sheet)"|default:"(entire sheet)" }} |
 
+    <strong>Rows:</strong> {{ import_obj.row_count }}
+  </p>
 
-  <strong>Rows:</strong> {{ import_obj.row_count }}
-</p>
+  <h3 class = "text-xl font-medium text-gray-900">Column Mapping</h3>
+  <form method="post">
+    {% csrf_token %}
+    <div class = "relative">
+      <select
 
-<h2>Column Mapping</h2>
-<form method="post">
-  {% csrf_token %} {{ form.as_p }}
-  <button type="submit">Save Mapping</button>
-</form>
+        id="{{ form.box.id_for_label }}"
+        name="{{ form.box.html_name }}"
+        class = "bg-amber-400 my-1"
+      >
+        {% for c in columns %}
+          <option value="{{ value }}">{{ c }}</option>
+        {% endfor %}
+      </select>      <label
+        for="{{ form.box.id_for_label }}"
+      >box</label>
+    </div>
 
-{% if saved_mapping %}
-  <h3>Saved mapping</h3>
-  <table border="1" cellpadding="4">
+    <div class = "relative">
+      <select
+
+        id="{{ form.date_of_birth.id_for_label }}"
+        name="{{ form.date_of_birth.html_name }}"
+        class = "bg-amber-400 my-1"
+      >
+        {% for c in columns %}
+          <option value="{{ value }}">{{ c }}</option>
+        {% endfor %}
+      </select>      <label
+        for="{{ form.date_of_birth.id_for_label }}"
+      >date_of_birth</label>
+    </div>
+
+    <div class = "relative">
+      <select
+
+        id="{{ form.sex.id_for_label }}"
+        name="{{ form.sex.html_name }}"
+        class = "bg-amber-400 my-1"
+      >
+        {% for c in columns %}
+          <option value="{{ value }}">{{ c }}</option>
+        {% endfor %}
+      </select>      <label
+        for="{{ form.sex.id_for_label }}"
+      >sex</label>
+    </div>
+
+    <div class = "relative">
+      <select
+
+        id="{{ form.strain.id_for_label }}"
+        name="{{ form.strain.html_name }}"
+        class = "bg-amber-400 my-1"
+      >
+        {% for c in columns %}
+          <option value="{{ value }}">{{ c }}</option>
+        {% endfor %}
+      </select>      <label
+        for="{{ form.strain.id_for_label }}"
+      >strain</label>
+    </div>
+
+    <div class = "relative">
+      <select
+
+        id="{{ form.tube_number.id_for_label }}"
+        name="{{ form.tube_number.html_name }}"
+        class = "bg-amber-400 my-1"
+      >
+        {% for c in columns %}
+          <option value="{{ value }}">{{ c }}</option>
+        {% endfor %}
+      </select>      <label
+        for="{{ form.tube_number.id_for_label }}"
+      >tube_number</label>
+    </div>
+
+    <div class = "relative">
+      <select
+
+        id="{{ form.coat_colour.id_for_label }}"
+        name="{{ form.coat_colour.html_name }}"
+        class = "bg-amber-400 my-1"
+      >
+        {% for c in columns %}
+          <option value="{{ value }}">{{ c }}</option>
+        {% endfor %}
+      </select>      <label
+        for="{{ form.coat_colour.id_for_label }}"
+      >coat_colour</label>
+    </div>
+
+    <div class = "relative">
+      <select
+
+        id="{{ form.earmark.id_for_label }}"
+        name="{{ form.earmark.html_name }}"
+        class = "bg-amber-400 my-1"
+      >
+        {% for c in columns %}
+          <option value="{{ value }}">{{ c }}</option>
+        {% endfor %}
+      </select>      <label
+        for="{{ form.earmark.id_for_label }}"
+      >earmark</label>
+    </div>
+
+    <div class = "relative">
+      <select
+
+        id="{{ form.father.id_for_label }}"
+        name="{{ form.father.html_name }}"
+        class = "bg-amber-400 my-1"
+      >
+        {% for c in columns %}
+          <option value="{{ value }}">{{ c }}</option>
+        {% endfor %}
+      </select>      <label
+        for="{{ form.father.id_for_label }}"
+      >father</label>
+    </div>
+
+    <div class = "relative">
+      <select
+
+        id="{{ form.mother.id_for_label }}"
+        name="{{ form.mother.html_name }}"
+        class = "bg-amber-400 my-1"
+      >
+        {% for c in columns %}
+          <option value="{{ value }}">{{ c }}</option>
+        {% endfor %}
+      </select>      <label
+        for="{{ form.mother.id_for_label }}"
+      >mother</label>
+    </div>
+
+    <div class="relative">
+      <select
+        id="{{ form.notes.id_for_label }}"
+        name="{{ form.notes.html_name }}"
+        class="bg-amber-400 my-1"
+      >
+        {% for c in columns %}
+          <option value="{{ value }}">{{ c }}</option>
+        {% endfor %}
+      </select>
+      <label for="{{ form.notes.id_for_label }}">notes</label>
+    </div>
+
+    <button type="submit" class="btn-primary">Save Mapping</button>
+  </form>
+
+  {% if saved_mapping %}
+    <h3>Saved mapping</h3>
+    <table class="mx-2">
+      <thead>
+        <tr
+          class="table-header"
+        >
+          <th class="table-header-text">Source column</th>
+          <th class="table-header-text">Target field</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for src, dst in saved_mapping.items %}
+          <tr>
+            <td>{{ src }}</td>
+            <td>{{ dst }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <form
+      method="post"
+      action="{% url 'mouse_import:import_commit' import_obj.id %}"
+    >
+      {% csrf_token %}
+      <button type="submit">Commit Import</button>
+    </form>
+  {% else %}
+    <p><em>Save a mapping first to enable commit.</em></p>
+  {% endif %}
+
+  <table class="mx-2">
+    <caption class="py-2 text-start text-sm">
+      Data Preview (first 50 rows)
+    </caption>
     <thead>
-      <tr>
-        <th>Source column</th>
-        <th>Target field</th>
+      <tr
+        class="table-header"
+      >
+        {% for c in columns %}
+          <th class="table-header-text">{{ c }}</th>
+        {% endfor %}
       </tr>
     </thead>
     <tbody>
-      {% for src, dst in saved_mapping.items %}
-        <tr>
-          <td>{{ src }}</td>
-          <td>{{ dst }}</td>
+      {% for row in rows %}
+        <tr class="table-data">
+          {% for c in columns %}
+            <td class="table-padding">{{ row|get_item:c }}</td>
+          {% endfor %}
         </tr>
       {% endfor %}
     </tbody>
   </table>
-
-  <form
-    method="post"
-    action="{% url 'mouse_import:import_commit' import_obj.id %}"
-  >
-    {% csrf_token %}
-    <button type="submit">Commit Import</button>
-  </form>
-{% else %}
-  <p><em>Save a mapping first to enable commit.</em></p>
-{% endif %}
-
-<h2>Data Preview (first 50 rows)</h2>
-<table border="1" cellpadding="4">
-  <thead>
-    <tr>
-      {% for c in columns %}
-        <th>{{ c }}</th>
-      {% endfor %}
-    </tr>
-  </thead>
-  <tbody>
-    {% for row in rows %}
-      <tr>
-        {% for c in columns %}
-          <td>{{ row|get_item:c }}</td>
-        {% endfor %}
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
+{% endblock %}
