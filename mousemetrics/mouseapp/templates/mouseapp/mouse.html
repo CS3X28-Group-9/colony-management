@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Mouse{% endblock %}
-{% block content %}
+{% block content%}
   <div class="max-w-3xl mx-auto px-4 py-8">
     <div class="bg-white rounded-lg shadow-md overflow-hidden">
       <div class="bg-neutral-200 px-6 py-4">
@@ -44,6 +44,32 @@
             <dd class="mouse-data">{{ mouse.earmark }}</dd>
           </div>
 
+          <div class="mouse-flex">
+            <dt class="mouse-row">Mother</dt>
+            {% if mouse.mother %}
+              <dd class="mouse-data link">
+                <a href="{% url 'mouseapp:mouse' id=mouse.mother.id %}">
+                  {{ mouse.mother.strain }} {{ mouse.mother.tube_number }}
+                </a>
+              </dd>
+            {% else %}
+              <dd class="mouse-data">N/A</dd>
+            {% endif %}
+          </div>
+
+          <div class="mouse-flex">
+            <dt class="mouse-row">Father</dt>
+            {% if mouse.father %}
+              <dd class="mouse-data link">
+                <a href="{% url 'mouseapp:mouse' id=mouse.mother.id %}">
+                  {{ mouse.father.strain }} {{ mouse.father.tube_number }}
+                </a>
+              </dd>
+            {% else %}
+              <dd class="mouse-data">N/A</dd>
+            {% endif %}
+          </div>
+
           <div class="flex pb-3">
             <dt class="mouse-row">Notes</dt>
             <dd class="mouse-data">{{ mouse.notes }}</dd>
@@ -51,9 +77,10 @@
         </dl>
 
         <div class="mt-6 pt-6 border-t border-gray-200">
-          <a href="{% url 'mouseapp:family_tree' mouse=mouse.id %}"
-             class="inline-flex items-center px-4 py-2 btn-primary">
-
+          <a
+            href="{% url 'mouseapp:family_tree' mouse=mouse.id %}"
+            class="inline-flex items-center px-4 py-2 btn-primary"
+          >
             View Family Tree
           </a>
         </div>
