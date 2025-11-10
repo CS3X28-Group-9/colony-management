@@ -14,36 +14,43 @@
     <li>
       Mice:
       <table class="mx-2">
-        <tr
-          class="bg-gray-200 text-gray-700 uppercase text-sm font-semibold border-2"
-        >
-          <th class="table-padding">Mouse ID</th>
-          <th class="table-padding">Date of Birth</th>
-          <th class="table-padding">Box Number</th>
-          <th class="table-padding">Strain</th>
-          <th class="table-padding">Coat Colour</th>
-          <th class="table-padding">Sex</th>
-          <th class="table-padding">Earmark</th>
-        </tr>
-        {% for mouse in project.mouse_set.all %}
-          <tr class="table-data">
-            <td class="left-table-data numeric">
-              <a tabindex="-1"
-                 href="{% url 'mouseapp:mouse' mouse.id %}"
-                 class="link"
-              >{{ mouse.tube_number }}</a
-                >
-              </td>
-              <td class="numeric table-padding">{{ mouse.date_of_birth }}</td>
-              <td class="numeric table-padding">{{ mouse.box.number }}</td>
-              <td class="table-padding">{{ mouse.strain }}</td>
-              <td class="table-padding">{{ mouse.coat_colour }}</td>
-              <td class="table-padding">{{ mouse.sex }}</td>
-              <td class="right-table-data table-padding">{{ mouse.earmark }}</td>
-            </tr>
-        {% endfor %}
+        <thead>
+          <tr
+            class="bg-gray-200 text-gray-700 uppercase text-sm font-semibold border-2"
+          >
+            <th class="table-padding">Mouse ID</th>
+            <th class="table-padding">Date of Birth</th>
+            <th class="table-padding">Box Number</th>
+            <th class="table-padding">Strain</th>
+            <th class="table-padding">Coat Colour</th>
+            <th class="table-padding">Sex</th>
+            <th class="table-padding">Earmark</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for mouse in project.mouse_set.all %}
+            <tr class="table-data">
+              <td class="left-table-data numeric">
+                <a
+                  tabindex="-1"
+                  href="{% url 'mouseapp:mouse' mouse.id %}"
+                  class="link"
+                >{{ mouse.tube_number }}</a
+                  >
+                </td>
+                <td class="numeric table-padding">{{ mouse.date_of_birth }}</td>
+                <td class="numeric table-padding">{{ mouse.box.number }}</td>
+                <td class="table-padding">{{ mouse.strain }}</td>
+                <td class="table-padding">{{ mouse.coat_colour }}</td>
+                <td class="table-padding">{{ mouse.sex }}</td>
+                <td class="right-table-data table-padding">{{ mouse.earmark }}</td>
+              </tr>
+          {% endfor %}
+        </tbody>
       </table>
     </li>
-    <li>License constraints: {{ project.license_constraints }}</li>
+    <li class="font-bold">
+      License constraints: {{ project.license_constraints }}
+    </li>
   </ul>
 {% endblock %}
