@@ -57,11 +57,17 @@ def import_preview(request: HttpRequest, pk: int) -> HttpResponse:
             import_obj.cell_range,
         )
     except Exception as exc:  # pragma: no cover - reported to the user
-        messages.error(request, f"Error reading Excel range: {exc}")
+        messages.error(
+            request, f"Error reading Excel range: {exc}", extra_tags="range_error"
+        )
         return redirect("mouse_import:import_form")
 
     if df.empty:
-        messages.error(request, "Selected range does not contain any data.")
+        messages.error(
+            request,
+            "Selected range does not contain any data.",
+            extra_tags="range_error",
+        )
         return redirect("mouse_import:import_form")
 
     df_key = _df_session_key(import_obj.pk)

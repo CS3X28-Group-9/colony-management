@@ -84,4 +84,12 @@
   .link {
     @apply text-blue-600 hover:underline;
   }
+
+  .error-message {
+    @apply text-sm text-red-500;
+  }
+
+  .error-message-compact {
+    @apply text-sm text-red-500 leading-tight;
+  }
 }
