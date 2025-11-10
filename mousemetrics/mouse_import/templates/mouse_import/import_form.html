@@ -59,12 +59,12 @@
       {% endif %}
 
       <br />
-      <label for="file-input" class="sr-only w-max">Choose file</label>
+      <label for="file-input" class="sr-only">Choose file</label>
       <input
         type="file"
         id="{{ form.file.id_for_label }}"
         name="{{ form.file.html_name }}"
-        class="block w-full border hover:cursor-pointer border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-600 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4"
+        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all file:mr-4 file:py-2.5 file:px-4 file:rounded-l-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
         required
       />
       {% if form.file.errors %}
@@ -74,54 +74,57 @@
       {% endif %}
 
       <br />
-      <label for="{{ form.sheet_name.id_for_label }}" class="w-max">
-        Sheet name - Leave blank to use the active worksheet.</label
-        >
-        {% if form.sheet.errors %}
-          <div class="error-message-compact">
-            {% for error in form.sheet.errors %} {{ error }} {% endfor %}
-          </div>
-        {% endif %}
-        <input
-          type="text"
-          id="{{ form.sheet_name.id_for_label }}"
-          name="{{ form.sheet_name.html_name }}"
-          class="bg-white"
-        />
-        <br />
-        <label for="{{ form.cell_range.id_for_label }}" class="w-max">
-          Cell range - Excel range such as "A1:M40".</label
-          >
+      <label for="{{ form.sheet_name.id_for_label }}" class="block text-sm font-medium text-gray-700">
+        Sheet name
+        <span class="text-gray-500 font-normal">- Leave blank to use the active worksheet</span>
+      </label>
+      <input
+        type="text"
+        id="{{ form.sheet_name.id_for_label }}"
+        name="{{ form.sheet_name.html_name }}"
+        class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+        placeholder="e.g., Sheet1"
+      />
+      {% if form.sheet.errors %}
+        <div class="error-message-compact">
+          {% for error in form.cell_range.errors %} {{ error }} {% endfor %}
+        </div>
+      {% endif %}
+      <br />
+      <label for="{{ form.cell_range.id_for_label }}" class="block text-sm font-medium text-gray-700">
+        Cell range
+        <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="text"
+        id="{{ form.cell_range.id_for_label }}"
+        name="{{ form.cell_range.html_name }}"
+        class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+        placeholder="e.g., A1:M40"
+        required
+      />
+      <p class="text-xs text-gray-500">Excel range such as "A1:M40"</p>
+      {% if form.cell_range.errors %}
+        <div class="error-message-compact">
+          {% for error in form.cell_range.errors %} {{ error }} {% endfor %}
+        </div>
+      {% endif %}
 
-
-          <input
-            type="text"
-            id="{{ form.cell_range.id_for_label }}"
-            name="{{ form.cell_range.html_name }}"
-            class="bg-white"
-            required
-          />
-          {% if form.cell_range.errors %}
-            <div class="error-message-compact">
-              {% for error in form.cell_range.errors %} {{ error }} {% endfor %}
-            </div>
+      {% if messages %}
+        {% for message in messages %}
+          {% if 'range_error' in message.tags %}
+            <div class = "error-message-compact">{{ message }}</div>
           {% endif %}
+        {% endfor %}
+      {% endif %}
+      <br>
 
-          {% if messages %}
-            {% for message in messages %}
-              {% if 'range_error' in message.tags %}
-                <div class = "error-message-compact">{{ message }}</div>
-              {% endif %}
-            {% endfor %}
-          {% endif %}
-          <br>
+      {% if form.non_field_errors %} {% for error in form.non_field_errors %}
+        <p class="error-message text-center">{{ error }}</p>
+      {% endfor %} {% endif %}
 
-          {% if form.non_field_errors %} {% for error in form.non_field_errors %}
-            <p class="error-message text-center">{{ error }}</p>
-          {% endfor %} {% endif %}
-
-          <button type="submit" class="btn-primary">Upload</button>
-        </form>
-      </div>
+      <button type="submit" class="btn-primary">Upload</button>
+    </form>
+  </div>
 
 {% endblock %}

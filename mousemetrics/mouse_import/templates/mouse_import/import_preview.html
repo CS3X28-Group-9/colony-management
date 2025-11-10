@@ -52,6 +52,13 @@
                   {{ field }}
                 </div>
               </div>
+
+              {% if field.errors %}
+                {% for error in field.errors %}
+                  <p class="error-message">{{ error }}</p>
+                {% endfor %}
+              {% endif %}
+
           {% endfor %}
           <div class="flex items-center gap-2 mt-2">
 
@@ -61,6 +68,12 @@
             >
               Save Mapping
             </button>
+
+            {% if form.non_field_errors %}
+              {% for error in form.non_field_errors %}
+                <p class="error-message">{{ error }}</p>
+              {% endfor %}
+            {% endif %}
           </form>
 
           {% if saved_mapping %}
@@ -70,6 +83,12 @@
             >
               {% csrf_token %}
               <button type="submit" class="btn-primary">Commit Import</button>
+
+              {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                  <p class="error-message">{{ error }}</p>
+                {% endfor %}
+              {% endif %}
             </form>
           {% else %}
             <p class="mt-2"><em>Save a mapping first to enable commit.</em></p>
