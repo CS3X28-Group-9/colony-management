@@ -61,7 +61,7 @@
             <dt class="mouse-row">Father</dt>
             {% if mouse.father %}
               <dd class="mouse-data">
-                <a href="{% url 'mouseapp:mouse' id=mouse.mother.id %}">
+                <a href="{% url 'mouseapp:mouse' id=mouse.father.id %}">
                   {{ mouse.father.strain }} {{ mouse.father.tube_number }}
                 </a>
               </dd>

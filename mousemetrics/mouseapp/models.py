@@ -39,6 +39,9 @@ class Project(models.Model):
             return True
         return user.is_superuser
 
+    def mouse_count(self):
+        return self.mouse_set.count()  # type: ignore
+
 
 class StudyPlan(models.Model):
     STATUS_CHOICES = (
