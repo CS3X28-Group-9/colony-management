@@ -7,10 +7,20 @@
         <strong>Lead:</strong> {{ project.lead }}
       </span>
       <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm">
-        <strong>Project Start Date:</strong> {{ project.start_date }}
+        <strong>Project start date:</strong> {{ project.start_date }}
       </span>
       <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm">
         <strong>Mice in project:</strong> {{ project.mouse_count }}
+      </span>
+      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm">
+        <strong>Project quoata:</strong>
+
+        {% if project.quota_5_years is none %}
+          No quota
+        {% else %}
+          {{ project.quota_5_years }}
+        {% endif %}
+
       </span>
     </div>
 
