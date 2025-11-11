@@ -23,7 +23,7 @@
             </label>
             {{ form.mouse }}
             {% if form.mouse.errors %}
-              <p class="mt-1 text-sm text-red-600">{{ form.mouse.errors }}</p>
+              <p class="mt-1 error-message-compact">{{ form.mouse.errors }}</p>
             {% endif %}
             {% if form.mouse.help_text %}
               <p class="mt-1 text-sm text-gray-500">{{ form.mouse.help_text }}</p>
@@ -36,7 +36,7 @@
             </label>
             {{ form.details }}
             {% if form.details.errors %}
-              <p class="mt-1 text-sm text-red-600">{{ form.details.errors }}</p>
+              <p class="mt-1 error-message-compact">{{ form.details.errors }}</p>
             {% endif %}
             {% if form.details.help_text %}
               <p class="mt-1 text-sm text-gray-500">{{ form.details.help_text }}</p>
