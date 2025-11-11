@@ -139,10 +139,6 @@
     @apply bg-blue-100 text-blue-800;
   }
 
-  .page-container {
-    @apply max-w-4xl mx-auto mt-6;
-  }
-
   .page-container-wide {
     @apply max-w-6xl mx-auto mt-6;
   }
