@@ -6,6 +6,9 @@
 
     {% if user.is_authenticated %}
       <div class="flex items-center gap-4">
+        <a href="{% url 'mouseapp:requests' %}" class="text-neutral-700 hover:text-neutral-900 transition-colors">
+          Requests
+        </a>
         <span class="text-neutral-700">Hi, {{ user.first_name }}</span>
         <form action="{% url 'mouseapp:logout' %}" method="post" class="m-0">
           {% csrf_token %}

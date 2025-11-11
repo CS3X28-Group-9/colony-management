@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Requests{% endblock %}
+
+{% block content %}
+  <div class="page-container-wide">
+    <div class="card p-6">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="page-title">Requests</h1>
+        <div class="flex gap-2">
+          <a href="{% url 'mouseapp:create_breeding_request' %}" class="btn-primary text-sm">New Breeding Request</a>
+          <a href="{% url 'mouseapp:create_culling_request' %}" class="btn-primary text-sm">New Culling Request</a>
+          <a href="{% url 'mouseapp:create_transfer_request' %}" class="btn-primary text-sm">New Transfer Request</a>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-panel">
+        <form method="get" class="flex gap-4 items-end">
+          <div>
+            <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <select name="status" id="status" class="input">
+              <option value="">All Statuses</option>
+              <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+              <option value="accepted" {% if status_filter == 'accepted' %}selected{% endif %}>Accepted</option>
+              <option value="denied" {% if status_filter == 'denied' %}selected{% endif %}>Denied</option>
+              <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>Completed</option>
+            </select>
+          </div>
+          <div>
+            <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+            <select name="type" id="type" class="input">
+              <option value="">All Types</option>
+              <option value="B" {% if type_filter == 'B' %}selected{% endif %}>Breeding</option>
+              <option value="C" {% if type_filter == 'C' %}selected{% endif %}>Culling</option>
+              <option value="T" {% if type_filter == 'T' %}selected{% endif %}>Transfer</option>
+              <option value="Q" {% if type_filter == 'Q' %}selected{% endif %}>Query</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-primary">Filter</button>
+          {% if status_filter or type_filter %}
+            <a href="{% url 'mouseapp:requests' %}" class="btn-secondary">Clear</a>
+          {% endif %}
+        </form>
+      </div>
+
+      <!-- Requests List -->
+      {% if requests %}
+        <ul class="space-y-3">
+          {% for req in requests %}
+            <li class="request-card">
+              <div class="flex justify-between items-start">
+                <div class="flex-1">
+                  <div class="flex items-center gap-3 mb-2">
+                    <h3 class="font-semibold text-lg">{{ req.get_kind_display }}</h3>
+                    <span class="status-badge
+                                 {% if req.status == 'pending' %}status-pending
+                                 {% elif req.status == 'accepted' %}status-accepted
+                                 {% elif req.status == 'denied' %}status-denied
+                                 {% elif req.status == 'completed' %}status-completed
+                                 {% endif %}">
+                      {{ req.get_status_display }}
+                    </span>
+                  </div>
+
+                  {% if req.mouse %}
+                    <p class="text-sm text-muted mb-1">
+                      <strong>Mouse:</strong>
+                      <a href="{% url 'mouseapp:mouse' req.mouse.id %}" class="link-primary">
+                        {{ req.mouse.strain }} - Tube {{ req.mouse.tube_number }}
+                      </a>
+                    </p>
+                  {% endif %}
+
+                  <p class="text-gray-700 mb-2">{{ req.details }}</p>
+
+                  <div class="text-muted-small space-y-1">
+                    <p>Created by {{ req.creator.get_full_name|default:req.creator.username }} on {{ req.created_at|date:"M d, Y H:i" }}</p>
+                    {% if req.approver %}
+                      <p>Approved by {{ req.approver.get_full_name|default:req.approver.username }}{% if req.approved_date %} on {{ req.approved_date|date:"M d, Y" }}{% endif %}</p>
+                    {% endif %}
+                    {% if req.fulfill_date %}
+                      <p>Fulfilled on {{ req.fulfill_date|date:"M d, Y" }}</p>
+                    {% endif %}
+                  </div>
+                </div>
+
+                <div class="ml-4 flex flex-col gap-2">
+                  {% if req.can_change_status and req.status == 'pending' %}
+                    <form method="post" action="{% url 'mouseapp:update_request_status' req.id %}" class="m-0">
+                      {% csrf_token %}
+                      <input type="hidden" name="status" value="accepted">
+                      <button type="submit" class="btn-primary text-sm w-full">Accept</button>
+                    </form>
+                    <form method="post" action="{% url 'mouseapp:update_request_status' req.id %}" class="m-0">
+                      {% csrf_token %}
+                      <input type="hidden" name="status" value="denied">
+                      <button type="submit" class="btn-secondary text-sm w-full">Deny</button>
+                    </form>
+                  {% endif %}
+                  {% if req.can_change_status and req.status == 'accepted' %}
+                    <form method="post" action="{% url 'mouseapp:update_request_status' req.id %}" class="m-0">
+                      {% csrf_token %}
+                      <input type="hidden" name="status" value="completed">
+                      <button type="submit" class="btn-primary text-sm w-full">Mark Completed</button>
+                    </form>
+                  {% endif %}
+                </div>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="text-muted text-center py-8">No requests found.</p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

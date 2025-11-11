@@ -6,10 +6,15 @@ from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.core.mail import send_mail
 from django.core import signing
-from django.views.decorators.http import require_safe
+from django.views.decorators.http import require_safe, require_http_methods
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.contrib import messages
+from django.db.models import Q
+from django.core.paginator import Paginator
+from datetime import date
+import json
 
 from .forms import (
     RegistrationForm,
@@ -18,8 +23,11 @@ from .forms import (
     MouseForm,
     ProjectForm,
     RemoveMemberForm,
+    BreedingRequestForm,
+    CullingRequestForm,
+    TransferRequestForm,
 )
-from .models import Mouse, Project
+from .models import Mouse, Project, Request, Notification
 
 
 class AuthedRequest(HttpRequest):
@@ -27,7 +35,14 @@ class AuthedRequest(HttpRequest):
 
 
 def home(request: HttpRequest) -> HttpResponse:
-    return render(request, "mouseapp/home.html")
+    context = {}
+    if request.user.is_authenticated:
+        notifications = Notification.objects.filter(user=request.user, read=False)[:10]
+        context["notifications"] = notifications
+        context["unread_count"] = Notification.objects.filter(
+            user=request.user, read=False
+        ).count()
+    return render(request, "mouseapp/home.html", context)
 
 
 @require_safe
@@ -38,7 +53,20 @@ def mouse(request: AuthedRequest, id: int) -> HttpResponse:
         raise PermissionDenied()
     write_access = mouse.has_write_access(request.user)
 
-    context = {"mouse": mouse, "write_access": write_access}
+    mouse_requests = Request.objects.filter(mouse=mouse).order_by("-created_at")
+
+    requests_with_permissions = []
+    for req in mouse_requests:
+        req.can_change_status = req.can_change_status(
+            request.user
+        )  # pyright: ignore[reportAttributeAccessIssue]
+        requests_with_permissions.append(req)
+
+    context = {
+        "mouse": mouse,
+        "write_access": write_access,
+        "mouse_requests": requests_with_permissions,
+    }
     return render(request, "mouseapp/mouse.html", context)
 
 
@@ -313,3 +341,226 @@ def family_tree(request: HttpRequest, mouse: int) -> HttpResponse:
             "has_descendants": has_descendants,
         },
     )
+
+
+def _prepare_request_form(
+    request: AuthedRequest, form_class, request_type: str, request_code: str
+) -> tuple:
+    mouse_id = None
+    if request.method == "POST":
+        form = form_class(request.POST, user=request.user)
+        if form.is_valid():
+            request_obj = form.save(commit=False)
+            request_obj.creator = request.user
+            request_obj.kind = request_code
+            if request_obj.mouse:
+                request_obj.project = request_obj.mouse.project
+            request_obj.save()
+            messages.success(request, f"{request_type} request created successfully.")
+            return redirect("mouseapp:requests"), form, mouse_id
+    else:
+        form = form_class(user=request.user)
+        mouse_id = request.GET.get("mouse")
+        if mouse_id:
+            try:
+                mouse = Mouse.objects.get(id=mouse_id)
+                if mouse.has_read_access(request.user):
+                    form.fields["mouse"].initial = mouse.pk
+                else:
+                    mouse_id = None
+            except Mouse.DoesNotExist:
+                mouse_id = None
+
+    return (
+        None,
+        form,
+        mouse_id,
+    )
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def create_breeding_request(request: AuthedRequest) -> HttpResponse:
+    redirect_response, form, mouse_id = _prepare_request_form(
+        request, BreedingRequestForm, "Breeding", "B"
+    )
+    if redirect_response:
+        return redirect_response
+    return render(
+        request,
+        "mouseapp/create_request.html",
+        {
+            "form": form,
+            "request_type": "Breeding",
+            "request_type_code": "B",
+            "mouse_id": mouse_id,
+        },
+    )
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def create_culling_request(request: AuthedRequest) -> HttpResponse:
+    redirect_response, form, mouse_id = _prepare_request_form(
+        request, CullingRequestForm, "Culling", "C"
+    )
+    if redirect_response:
+        return redirect_response
+    return render(
+        request,
+        "mouseapp/create_request.html",
+        {
+            "form": form,
+            "request_type": "Culling",
+            "request_type_code": "C",
+            "mouse_id": mouse_id,
+        },
+    )
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def create_transfer_request(request: AuthedRequest) -> HttpResponse:
+    redirect_response, form, mouse_id = _prepare_request_form(
+        request, TransferRequestForm, "Transfer", "T"
+    )
+    if redirect_response:
+        return redirect_response
+    return render(
+        request,
+        "mouseapp/create_request.html",
+        {
+            "form": form,
+            "request_type": "Transfer",
+            "request_type_code": "T",
+            "mouse_id": mouse_id,
+        },
+    )
+
+
+@login_required
+@require_safe
+def requests_list(request: AuthedRequest) -> HttpResponse:
+    if request.user.is_superuser or request.user.has_perm("mouseapp.approve_request"):
+        user_requests = Request.objects.all()
+    else:
+        user_requests = Request.objects.filter(creator=request.user)
+        user_projects = Project.objects.filter(
+            Q(lead=request.user) | Q(researchers=request.user)
+        ).distinct()
+        project_requests = Request.objects.filter(project__in=user_projects)
+        user_requests = (user_requests | project_requests).distinct()
+
+    status_filter = request.GET.get("status", "")
+    if status_filter in dict(Request.STATUS_CHOICES):
+        user_requests = user_requests.filter(status=status_filter)
+
+    type_filter = request.GET.get("type", "")
+    if type_filter in dict(Request.REQUEST_CHOICES):
+        user_requests = user_requests.filter(kind=type_filter)
+
+    requests_with_permissions = []
+    for req in user_requests.order_by("-created_at"):
+        req.can_change_status = req.can_change_status(
+            request.user
+        )  # pyright: ignore[reportAttributeAccessIssue]
+        requests_with_permissions.append(req)
+
+    request_id = request.GET.get("id")
+    highlighted_request_id = None
+    page_number = request.GET.get("page")
+
+    paginator = Paginator(requests_with_permissions, 10)
+
+    if request_id:
+        try:
+            highlighted_request_id = int(request_id)
+            for index, req in enumerate(requests_with_permissions):
+                if req.id == highlighted_request_id:
+                    page_number = (index // paginator.per_page) + 1
+                    break
+        except (ValueError, TypeError):
+            highlighted_request_id = None
+
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "page_obj": page_obj,
+        "requests": page_obj,
+        "status_filter": status_filter,
+        "type_filter": type_filter,
+        "highlighted_request_id": highlighted_request_id,
+    }
+    return render(request, "mouseapp/requests.html", context)
+
+
+@login_required
+@require_http_methods(["POST"])
+def update_request_status(request: AuthedRequest, request_id: int) -> HttpResponse:
+    request_obj = get_object_or_404(Request, id=request_id)
+
+    if not request_obj.can_change_status(request.user):
+        raise PermissionDenied(
+            "You do not have permission to change this request's status."
+        )
+
+    new_status = request.POST.get("status")
+    if new_status not in dict(Request.STATUS_CHOICES):
+        messages.error(request, "Invalid status.")
+        return redirect("mouseapp:requests")
+
+    old_status = request_obj.status
+    request_obj.status = new_status
+
+    if new_status == "accepted" and not request_obj.approved_date:
+        request_obj.approved_date = date.today()
+        request_obj.approver = request.user
+    if new_status == "completed" and not request_obj.fulfill_date:
+        request_obj.fulfill_date = date.today()
+
+    request_obj.save()
+
+    if (
+        old_status != new_status
+        and new_status in ["accepted", "denied", "completed"]
+        and request_obj.creator != request.user
+    ):
+        status_display = dict(Request.STATUS_CHOICES).get(new_status, new_status)
+        kind_display = dict(Request.REQUEST_CHOICES).get(
+            request_obj.kind, request_obj.kind
+        )
+        mouse_info = (
+            f"mouse {request_obj.mouse}" if request_obj.mouse else "your request"
+        )
+        message = (
+            f"Your {kind_display} request for {mouse_info} has been {status_display}."
+        )
+        Notification.objects.create(
+            user=request_obj.creator,
+            request=request_obj,
+            message=message,
+        )
+
+    messages.success(request, f"Request status updated to {new_status}.")
+    return redirect("mouseapp:requests")
+
+
+@login_required
+@require_http_methods(["POST"])
+def mark_notification_read(
+    request: AuthedRequest, notification_id: int
+) -> HttpResponse:
+    notification = get_object_or_404(
+        Notification, id=notification_id, user=request.user
+    )
+    notification.read = True
+    notification.save()
+    return redirect("mouseapp:home")
+
+
+@login_required
+@require_http_methods(["POST"])
+def mark_all_notifications_read(request: AuthedRequest) -> HttpResponse:
+    Notification.objects.filter(user=request.user, read=False).update(read=True)
+    messages.success(request, "All notifications marked as read.")
+    return redirect("mouseapp:home")

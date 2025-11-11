@@ -3,35 +3,78 @@
 
 {% block content%}
 
-  <div class="flex justify-center mt-6">
-    <div class="inline-block bg-neutral-200 border border-neutral-300 rounded-lg p-4 w-fit">
-      {% if user.is_authenticated %}
-
-        {% if user.leading_set.exists or user.project_set.exists %}
-          <ul class>
-            {% for project in user.leading_set.all %}
-              <li><a href="{% url 'mouseapp:project' project.id %}" class="btn-secondary w-full mb-1">{{project.name}} - {{ project.researchers.count }} members</a></li>
-            {% endfor %}
-
-            {% for project in user.project_set.all %}
-              <li><a href="{% url 'mouseapp:project' project.id %}">Project lead by {{ project.lead }}</a></li>
+  <div class="flex flex-col items-center mt-6 gap-6">
+    {% if user.is_authenticated %}
+      {% if unread_count > 0 %}
+        <div class="notification-panel">
+          <div class="flex justify-between items-center mb-3">
+            <h2 class="section-title text-gray-900">
+              Notifications
+              <span class="ml-2 px-2 py-1 bg-blue-500 text-white text-sm rounded-full">{{ unread_count }} unread</span>
+            </h2>
+            <form action="{% url 'mouseapp:mark_all_notifications_read' %}" method="post" class="m-0">
+              {% csrf_token %}
+              <button type="submit" class="btn-secondary text-sm">Mark all as read</button>
+            </form>
+          </div>
+          <ul class="space-y-2">
+            {% for notification in notifications %}
+              <li class="notification-item {% if not notification.read %}notification-item-unread{% endif %}">
+                <div class="flex justify-between items-start">
+                  <div class="flex-1">
+                    <p class="text-gray-900">{{ notification.message }}</p>
+                    <p class="text-sm text-gray-500 mt-1">{{ notification.created_at|date:"M d, Y H:i" }}</p>
+                  </div>
+                  {% if not notification.read %}
+                    <form action="{% url 'mouseapp:mark_notification_read' notification.id %}" method="post" class="m-0 ml-2">
+                      {% csrf_token %}
+                      <button type="submit" class="text-sm link-primary">Mark read</button>
+                    </form>
+                  {% endif %}
+                </div>
+              </li>
             {% endfor %}
           </ul>
-
-          <div class="flex justify-center py-3">
-            <a href="{% url 'mouse_import:import_form' %}" class="btn-primary">Import Mice</a>
-          </div>
-        {% else %}
-          <h3 class="default-header my-2">
-            No current projects!
-          </h3>
-        {% endif %}
-      {% else %}
-        <h3 class="default-header my-2">
-          Login to view projects
-        </h3>
+          {% if unread_count > 10 %}
+            <div class="mt-3 text-center">
+              <a href="{% url 'mouseapp:requests' %}" class="link-primary">View all requests →</a>
+            </div>
+          {% endif %}
+        </div>
       {% endif %}
-    </div>
+
+      <div class="flex justify-center mt-6">
+        <div class="inline-block bg-neutral-200 border border-neutral-300 rounded-lg p-4 w-fit">
+          {% if user.leading_set.exists or user.project_set.exists %}
+            <ul class>
+              {% for project in user.leading_set.all %}
+                <li><a href="{% url 'mouseapp:project' project.id %}" class="btn-secondary w-full mb-1">{{project.name}} - {{ project.researchers.count }} members</a></li>
+              {% endfor %}
+
+              {% for project in user.project_set.all %}
+                <li><a href="{% url 'mouseapp:project' project.id %}">Project lead by {{ project.lead }}</a></li>
+              {% endfor %}
+            </ul>
+
+            <div class="flex justify-center py-3">
+              <a href="{% url 'mouse_import:import_form' %}" class="btn-primary">Import Mice</a>
+            </div>
+          {% else %}
+            <h3 class="default-header my-2">
+              No current projects!
+            </h3>
+          {% endif %}
+        </div>
+      </div>
+    {% else %}
+      <div class="flex justify-center mt-6">
+        <div class="inline-block bg-neutral-200 border border-neutral-300 rounded-lg p-4 w-fit">
+          <h3 class="default-header my-2">
+            Login to view projects
+          </h3>
+        </div>
+      </div>
+    {% endif %}
   </div>
 
 {% endblock content %}

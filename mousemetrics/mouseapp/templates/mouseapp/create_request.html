@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Create {{ request_type }} Request{% endblock %}
+
+{% block content %}
+  <div class="form-container">
+    <div class="card p-6">
+      <h1 class="page-title">Create {{ request_type }} Request</h1>
+
+      <form method="post">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+          <div class="error-message">
+            {{ form.non_field_errors }}
+          </div>
+        {% endif %}
+
+        <div class="space-y-4">
+          <div>
+            <label for="{{ form.mouse.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+              {{ form.mouse.label }}
+            </label>
+            {{ form.mouse }}
+            {% if form.mouse.errors %}
+              <p class="mt-1 text-sm text-red-600">{{ form.mouse.errors }}</p>
+            {% endif %}
+            {% if form.mouse.help_text %}
+              <p class="mt-1 text-sm text-gray-500">{{ form.mouse.help_text }}</p>
+            {% endif %}
+          </div>
+
+          <div>
+            <label for="{{ form.details.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+              {{ form.details.label }}
+            </label>
+            {{ form.details }}
+            {% if form.details.errors %}
+              <p class="mt-1 text-sm text-red-600">{{ form.details.errors }}</p>
+            {% endif %}
+            {% if form.details.help_text %}
+              <p class="mt-1 text-sm text-gray-500">{{ form.details.help_text }}</p>
+            {% endif %}
+          </div>
+
+          {{ form.kind }}
+        </div>
+
+        <div class="mt-6 flex gap-3">
+          <button type="submit" class="btn-primary">Create Request</button>
+          <a href="{% url 'mouseapp:requests' %}" class="btn-secondary">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
