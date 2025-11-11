@@ -11,7 +11,7 @@
                 <a href="{% url "mouseapp:family_tree" mouse=mouse.id %}">{{ mouse.strain }} {{ mouse.tube_number }}</a><br>
                 Box: {{ mouse.box.number }}<br>
                 Earmark: {{ mouse.earmark }}
-                <a class="float-end text-xs link" href="{% url "mouseapp:mouse" id=mouse.id %}">(Details)</a>
+                <a class="float-end text-xs" href="{% url "mouseapp:mouse" id=mouse.id %}">(Details)</a>
               </div>
             {% endif %}
           </div>

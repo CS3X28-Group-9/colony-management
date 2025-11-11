@@ -77,9 +77,11 @@
     @apply w-2/3 text-sm text-gray-900;
   }
 
-  .link {
-    @apply text-blue-600 hover:underline;
-  }
+  @layer base {
+    a {
+      @apply text-blue-600 hover:underline;
+    }}
+
 
   .error-message {
     @apply text-sm text-red-500;
