@@ -1197,18 +1197,6 @@
     color: var(--color-gray-700);
     text-transform: uppercase;
   }
-  .error-message {
-    font-size: var(--text-sm);
-    line-height: var(--tw-leading, var(--text-sm--line-height));
-    color: var(--color-red-500);
-  }
-  .error-message-compact {
-    font-size: var(--text-sm);
-    line-height: var(--tw-leading, var(--text-sm--line-height));
-    --tw-leading: var(--leading-tight);
-    line-height: var(--leading-tight);
-    color: var(--color-red-500);
-  }
 }
 @property --tw-space-y-reverse {
   syntax: "*";

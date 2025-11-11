@@ -95,11 +95,4 @@
     @apply bg-gray-200 text-gray-700 uppercase text-sm font-semibold
   }
 
-  .error-message {
-    @apply text-sm text-red-500;
-  }
-
-  .error-message-compact {
-    @apply text-sm text-red-500 leading-tight;
-  }
 }
