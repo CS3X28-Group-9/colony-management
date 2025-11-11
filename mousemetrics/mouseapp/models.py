@@ -25,6 +25,7 @@ class Project(models.Model):
 
     class Meta:
         permissions = [("create_project", "Create projects")]
+        ordering = ["name"]
 
     def has_read_access(self, user: User) -> bool:
         if self.lead and self.lead.pk == user.pk:
@@ -37,6 +38,9 @@ class Project(models.Model):
         if self.lead and self.lead.pk == user.pk:
             return True
         return user.is_superuser
+
+    def mouse_count(self):
+        return self.mouse_set.count()  # type: ignore
 
 
 class StudyPlan(models.Model):

@@ -1,11 +1,51 @@
-<h1>Import Complete (#{{ import_obj.id }})</h1>
-<p>Created: {{ created }} | Updated: {{ updated }}</p>
-{% if errors and errors|length %}
-  <h3>Row issues</h3>
-  <ul>
-    {% for e in errors %}
-      <li>{{ e }}</li>
-    {% endfor %}
-  </ul>
-{% endif %}
-<p><a href="{% url 'mouse_import:import_form' %}">Upload another</a></p>
+{% extends "base.html" %}
+{% block title %}Import Result{% endblock %}
+{% block content %}
+  <div class="m-4">
+    <h1 class="text-3xl font-bold text-gray-900 mb-4">
+      {% if errors and errors|length %}
+        Import Failed
+      {% else %}
+        Import Complete (#{{ import_obj.id }})
+      {% endif %}
+    </h1>
+
+    <div class="flex items-center gap-4 text-sm text-gray-600 mb-6">
+      <span class="flex items-center gap-2">
+        {% include "components/svgs/plus.svg" %}
+        Created: {{ created }}
+      </span>
+      <span class="text-gray-400">|</span>
+      <span class="flex items-center gap-2">
+        {% include "components/svgs/retry.svg" %}
+        Updated: {{ updated }} </span>
+    </div>
+    {% if errors and errors|length %}
+      <div class="bg-red-50 border-l-4 border-red-500 rounded-r-lg p-4 mb-6 w-fit">
+        <div class="flex items-start">
+          {% include "components/svgs/cross.svg" %}
+          <div class="flex-1">
+            <h3 class="text-lg font-semibold text-red-800 mb-3">
+              Row Issues ({{ errors|length }})
+            </h3>
+            <ul class="space-y-2">
+              {% for e in errors %}
+                <li
+                  class="text-sm text-red-700 bg-white bg-opacity-50 rounded px-3 py-2 border border-red-200 w-fit"
+                >
+                  {{ e }}
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+    {% endif %}
+
+  </div>
+  <p>
+    <a href="{% url 'mouse_import:import_form' %}" class="btn-primary mx-2"
+    >Upload another</a
+      >
+    </p>
+  </div>
+{% endblock %}

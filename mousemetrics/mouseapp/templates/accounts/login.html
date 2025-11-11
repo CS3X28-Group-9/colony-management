@@ -1,5 +1,4 @@
 {% extends "base.html" %} {% block title %}Sign In{%endblock %}
-
 {% block content%}
 
   <div class="flex justify-center p-4">
@@ -7,7 +6,7 @@
       class="p-4 sm:p-6 lg:p-8 rounded bg-neutral-200 w-80 shadow-md border border-neutral-300"
     >
       <form method="post" class="space-y-6">
-        <h3 class="text-xl font-medium text-gray-900 text-center">
+        <h3 class="default-header">
           Sign in to MouseMetrics
         </h3>
         {% csrf_token %}
@@ -27,11 +26,11 @@
             autofocus
             required
             placeholder=" "
-            class="block px-2.5 pt-5 pb-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none focus:border-blue-600 focus:ring-0 focus:outline-none peer"
+            class="block px-2.5 pt-5 pb-2.5 w-full floating-label peer"
           />
           <label
             for="{{ form.username.id_for_label }}"
-            class="absolute top-4 text-sm text-gray-500 duration-300 transform scale-75 -translate-y-4 origin-left start-2.5 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+            class="absolute top-4 input-label duration-300 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
           >Email</label
             >
             {% if form.username.errors %}
@@ -50,7 +49,7 @@
               id="{{ form.password.id_for_label }}"
               name="{{ form.password.html_name }}"
               autocomplete="current-password"
-              class="block px-2.5 pt-5 pb-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none focus:border-blue-600 focus:ring-0 focus:outline-none peer"
+              class="block px-2.5 pt-5 pb-2.5 w-full floating-label peer"
               required
             />
 
@@ -61,53 +60,18 @@
                                        }'
               tabindex="-1"
               onmousedown="event.preventDefault()"
-              class="absolute inset-y-0 end-0 flex items-center z-20 px-3 cursor-pointer text-gray-400 rounded-e-md focus:outline-hidden focus:text-blue-600"
+              class="absolute inset-y-0 end-0 flex items-center z-20 px-3 cursor-pointer text-gray-400 rounded-e-md"
             >
-              <svg
-                class="shrink-0 size-3.5"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path
-                  class="hs-password-active:hidden"
-                  d="M9.88 9.88a3 3 0 1 0 4.24 4.24"
-                ></path>
-                <path
-                  class="hs-password-active:hidden"
-                  d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"
-                ></path>
-                <path
-                  class="hs-password-active:hidden"
-                  d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"
-                ></path>
-                <line
-                  class="hs-password-active:hidden"
-                  x1="2"
-                  x2="22"
-                  y1="2"
-                  y2="22"
-                ></line>
-                <path
-                  class="hidden hs-password-active:block"
-                  d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"
-                ></path>
-                <circle
-                  class="hidden hs-password-active:block"
-                  cx="12"
-                  cy="12"
-                  r="3"
-                ></circle>
-              </svg>
+              <span class="eye-slash-icon hover:stroke-blue-600 stroke-current">
+                {% include "components/svgs/pass-mode-pass.svg" %}
+              </span>
+              <span class="eye-icon hidden hover:stroke-blue-600 stroke-current">
+                {% include "components/svgs/text-mode-pass.svg" %}
+              </span>
             </button>
             <label
               for="{{ form.password.id_for_label }}"
-              class="absolute top-4 text-sm text-gray-500 duration-300 transform scale-75 -translate-y-4 origin-left start-2.5 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+              class="absolute top-4 input-label duration-300 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
             >Password</label
               >
 
@@ -141,18 +105,17 @@
                 </div>
                 <a
                   href="{% url 'mouseapp:password_reset' %}"
-                  class="text-sm text-blue-700 hover:underline ml-auto px-2"
+                  class="text-sm ml-auto px-2"
                 >Forgotten Password?</a
                   >
                 </div>
                 <button type="submit" class="w-full btn-primary">
                   Login to your account
                 </button>
-                <div class="text-sm font-medium text-gray-500 ">
+                <div class="text-sm font-medium text-gray-500">
                   Not registered?
                   <a
                     href="{% url 'mouseapp:register' %}"
-                    class="text-blue-700 hover:underline "
                   >Create account</a
                     >
                   </div>
