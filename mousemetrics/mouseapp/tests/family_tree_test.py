@@ -7,6 +7,10 @@ from mouseapp.models import Mouse, Box, Project, Strain
 from mouseapp.views import family_tree_ancestry
 
 
+def s(n):
+    return Strain.objects.get_or_create(name=n)[0]
+
+
 @pytest.fixture
 def mice(db):
     box = Box(number="0")
@@ -21,7 +25,6 @@ def mice(db):
     )
     box.save()
     project.save()
-    s = lambda n: Strain.objects.get_or_create(name=n)[0]
     grandfather = Mouse(strain=s("M'"), sex="M", **kwargs)
     father = Mouse(strain=s("M"), sex="M", father=grandfather, **kwargs)
     mother = Mouse(strain=s("F"), sex="F", **kwargs)
