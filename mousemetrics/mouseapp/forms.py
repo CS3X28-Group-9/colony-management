@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth.base_user import BaseUserManager
 
+from .models import Mouse, Request
+
 
 class CustomAuthenticationForm(AuthenticationForm):
     username = forms.EmailField(
@@ -91,3 +93,64 @@ class RegistrationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class RequestForm(forms.ModelForm):
+    mouse = forms.ModelChoiceField(
+        queryset=Mouse.objects.all(),
+        required=True,
+        label="Mouse",
+        widget=forms.Select(attrs={"class": "input"}),
+    )
+    details = forms.CharField(
+        required=True,
+        label="Details",
+        widget=forms.Textarea(attrs={"class": "input", "rows": 4}),
+        help_text="Provide additional details about this request.",
+    )
+
+    class Meta:
+        model = Request
+        fields = ["mouse", "kind", "details"]
+        widgets = {
+            "kind": forms.HiddenInput(),
+        }
+
+    def __init__(self, *args: Any, user: User | None = None, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        if user:
+            accessible_mice = [
+                mouse for mouse in Mouse.objects.all() if mouse.has_read_access(user)
+            ]
+            mouse_field = self.fields["mouse"]
+            if isinstance(mouse_field, forms.ModelChoiceField):
+                mouse_field.queryset = Mouse.objects.filter(
+                    id__in=[m.pk for m in accessible_mice]
+                )
+
+    def clean_mouse(self) -> Mouse:
+        mouse = self.cleaned_data.get("mouse")
+        if not mouse:
+            raise ValidationError("A mouse must be selected.")
+        return mouse
+
+
+class BreedingRequestForm(RequestForm):
+    kind = forms.CharField(
+        initial="B",
+        widget=forms.HiddenInput(),
+    )
+
+
+class CullingRequestForm(RequestForm):
+    kind = forms.CharField(
+        initial="C",
+        widget=forms.HiddenInput(),
+    )
+
+
+class TransferRequestForm(RequestForm):
+    kind = forms.CharField(
+        initial="T",
+        widget=forms.HiddenInput(),
+    )

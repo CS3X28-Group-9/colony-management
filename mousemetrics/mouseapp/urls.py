@@ -5,18 +5,42 @@ from . import views
 app_name = "mouseapp"
 
 urlpatterns = [
-    # ========================
-    # Core app views
-    # ========================
     path("", views.home, name="home"),
     path("mouse/<int:id>/", views.mouse, name="mouse"),
     path("project/<int:id>/", views.project, name="project"),
     path("register/", views.register, name="register"),
     path("family_tree/<int:mouse>/", views.family_tree, name="family_tree"),
-    # ========================
-    # Authentication routes
-    # ========================
-    # Using Django’s built-in auth views but pointing to our custom templates in /templates/accounts/
+    path("requests/", views.requests_list, name="requests"),
+    path(
+        "requests/breeding/create/",
+        views.create_breeding_request,
+        name="create_breeding_request",
+    ),
+    path(
+        "requests/culling/create/",
+        views.create_culling_request,
+        name="create_culling_request",
+    ),
+    path(
+        "requests/transfer/create/",
+        views.create_transfer_request,
+        name="create_transfer_request",
+    ),
+    path(
+        "requests/<int:request_id>/update-status/",
+        views.update_request_status,
+        name="update_request_status",
+    ),
+    path(
+        "notifications/<int:notification_id>/read/",
+        views.mark_notification_read,
+        name="mark_notification_read",
+    ),
+    path(
+        "notifications/mark-all-read/",
+        views.mark_all_notifications_read,
+        name="mark_all_notifications_read",
+    ),
     path(
         "login/",
         views.login_view,
