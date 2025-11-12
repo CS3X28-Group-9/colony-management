@@ -44,7 +44,7 @@
         <form method="post">
           {% csrf_token %}
           {% for field in form %}
-            <div class="relative flex items-center mb-2 w-fit">
+            <div class="relative flex items-center mb-2 w-fit {% if field.name|first == "f" %}ml-4{% endif %}">
               <label for="{{ field.id_for_label }}" class="w-32 text-gray-700 font-medium"
               >{{ field.label }}</label
                 >
@@ -60,6 +60,24 @@
               {% endif %}
 
           {% endfor %}
+          <script>
+            document.querySelectorAll('[data-choices-for]').forEach(choiceEl => {
+              const parent = choiceEl.parentNode.parentNode;
+              if (mapEl.value == '-- fixed --') {
+                parent.classList.remove('hidden');
+              } else {
+                parent.classList.add('hidden');
+              }
+              const mapEl = document.getElementById('id_' + choiceEl.attributes['data-choices-for'].value);
+              mapEl.addEventListener('change', () => {
+                if (mapEl.value == '-- fixed --') {
+                  parent.classList.remove('hidden');
+                } else {
+                  parent.classList.add('hidden');
+                }
+              });
+            });
+          </script>
           <div class="flex items-center gap-2 mt-2">
 
             <button
@@ -110,7 +128,7 @@
               {% for src, dst in saved_mapping.items %}
                 <tr class="table-data border-2 border-black">
                   <td class="table-padding border-black">{{ src }}</td>
-                  <td class="table-padding border-black">{{ dst }}</td>
+                  <td class="table-padding border-black">{{ saved_fixed | get_item:src | default:dst }}</td>
                 </tr>
               {% endfor %}
             </tbody>
