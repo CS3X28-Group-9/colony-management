@@ -5,44 +5,6 @@
 
   <div class="flex flex-col items-center mt-6 gap-6">
     {% if user.is_authenticated %}
-      {% if unread_count > 0 %}
-        <div class="bg-neutral-200 border border-neutral-300 rounded-lg p-4 w-full max-w-4xl">
-          <div class="flex justify-between items-center mb-3">
-            <h2 class="text-xl font-semibold text-gray-900">
-              Notifications
-              <span class="ml-2 px-2 py-1 bg-blue-500 text-white text-sm rounded-full">{{ unread_count }} unread</span>
-            </h2>
-            <form action="{% url 'mouseapp:mark_all_notifications_read' %}" method="post" class="m-0">
-              {% csrf_token %}
-              <button type="submit" class="btn-secondary text-sm">Mark all as read</button>
-            </form>
-          </div>
-          <ul class="space-y-2">
-            {% for notification in notifications %}
-              <li class="bg-white border border-neutral-300 rounded p-3 {% if not notification.read %}border-l-4 border-l-blue-500{% endif %}">
-                <div class="flex justify-between items-start">
-                  <div class="flex-1">
-                    <p class="text-gray-900">{{ notification.message }}</p>
-                    <p class="text-sm text-gray-500 mt-1">{{ notification.created_at|date:"M d, Y H:i" }}</p>
-                  </div>
-                  {% if not notification.read %}
-                    <form action="{% url 'mouseapp:mark_notification_read' notification.id %}" method="post" class="m-0 ml-2">
-                      {% csrf_token %}
-                      <button type="submit" class="text-sm link-primary">Mark read</button>
-                    </form>
-                  {% endif %}
-                </div>
-              </li>
-            {% endfor %}
-          </ul>
-          {% if unread_count > 10 %}
-            <div class="mt-3 text-center">
-              <a href="{% url 'mouseapp:requests' %}" class="link-primary">View all requests →</a>
-            </div>
-          {% endif %}
-        </div>
-      {% endif %}
-
       <div class="flex justify-center mt-6">
         <div class="inline-block bg-neutral-200 border border-neutral-300 rounded-lg p-4 w-fit">
           {% if user.leading_set.exists or user.project_set.exists %}

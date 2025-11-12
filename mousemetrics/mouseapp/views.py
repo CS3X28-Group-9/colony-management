@@ -35,14 +35,7 @@ class AuthedRequest(HttpRequest):
 
 
 def home(request: HttpRequest) -> HttpResponse:
-    context = {}
-    if request.user.is_authenticated:
-        notifications = Notification.objects.filter(user=request.user, read=False)[:10]
-        context["notifications"] = notifications
-        context["unread_count"] = Notification.objects.filter(
-            user=request.user, read=False
-        ).count()
-    return render(request, "mouseapp/home.html", context)
+    return render(request, "mouseapp/home.html")
 
 
 @require_safe
@@ -371,6 +364,11 @@ def _prepare_request_form(
             except Mouse.DoesNotExist:
                 mouse_id = None
 
+    return (
+        None,
+        form,
+        mouse_id,
+    )
     return (
         None,
         form,

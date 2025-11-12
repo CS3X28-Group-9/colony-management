@@ -16,7 +16,6 @@ dependencies = [
 [dependency-groups]
 dev = [
   "black>=25.9",
-  "detect-secrets>=1.5.0",
   "django-stubs>=5.2.7",
   "django-upgrade>=1.29",
   "djhtml>=3.0.10",

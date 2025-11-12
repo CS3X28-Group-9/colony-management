@@ -6,6 +6,7 @@
 
     {% if user.is_authenticated %}
       <div class="flex items-center gap-4">
+        <span class="text-neutral-700">Hi, {{ user.first_name }}</span>
         <a href="{% url 'mouseapp:requests' %}" class="btn-secondary">
           Requests
         </a>
@@ -13,7 +14,6 @@
           {% csrf_token %}
           <button type="submit" class="btn-primary">Sign Out</button>
         </form>
-        <span class="text-neutral-700">Hi, {{ user.first_name }}</span>
       </div>
     {% else %}
       <div class="flex items-center gap-4">

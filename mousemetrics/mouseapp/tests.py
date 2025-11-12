@@ -225,6 +225,72 @@ def test_request_status_change_permissions(client: Client):
 
 
 @pytest.mark.django_db
+def test_request_status_change_requires_mouse_project_access(client: Client):
+    """Test that users cannot change request status without mouse/project access."""
+    from .models import Request, Mouse, Project, Box, Membership
+    from django.contrib.auth.models import User, Permission
+    from django.contrib.contenttypes.models import ContentType
+
+    requester = User.objects.create_user(
+        username="requester@example.com",
+        email="requester@example.com",
+        password="password123",
+    )
+    approver = User.objects.create_user(
+        username="approver@example.com",
+        email="approver@example.com",
+        password="password123",
+    )
+
+    project = Project.objects.create(
+        name="Test Project",
+        start_date="2024-01-01",
+        license_constraints="Test constraints",
+        lead=requester,
+    )
+    box = Box.objects.create(
+        number="1",
+        location="E",
+        box_type="S",
+        project=project,
+    )
+    mouse = Mouse.objects.create(
+        project=project,
+        sex="M",
+        date_of_birth="2024-01-01",
+        tube_number=1,
+        box=box,
+        strain="C57BL/6",
+    )
+
+    request_obj = Request.objects.create(
+        creator=requester,
+        mouse=mouse,
+        project=project,
+        kind="B",
+        details="Test request",
+        status="pending",
+    )
+
+    content_type = ContentType.objects.get_for_model(Request)
+    approve_perm = Permission.objects.get(
+        codename="approve_request", content_type=content_type
+    )
+    approver.user_permissions.add(approve_perm)
+
+    client.force_login(approver)
+    url = reverse("mouseapp:update_request_status", args=[request_obj.pk])
+    response = client.post(url, {"status": "accepted"})
+    assert response.status_code == 403
+
+    Membership.objects.create(project=project, user=approver)
+    response = client.post(url, {"status": "accepted"})
+    assert response.status_code == 302
+    request_obj.refresh_from_db()
+    assert request_obj.status == "accepted"
+
+
+@pytest.mark.django_db
 def test_notification_created_on_status_change(client: Client):
     """Test that notifications are created when request status changes."""
     from .models import Request, Mouse, Project, Box, Notification
@@ -295,7 +361,7 @@ def test_requests_page_requires_login(client: Client):
 
 @pytest.mark.django_db
 def test_notifications_only_visible_to_authenticated_users(client: Client):
-    """Test that notifications are only visible to authenticated users."""
+    """Test that notifications are not shown on the home page."""
     from .models import Notification
     from django.contrib.auth.models import User
 
@@ -312,13 +378,9 @@ def test_notifications_only_visible_to_authenticated_users(client: Client):
 
     response = client.get(reverse("mouseapp:home"))
     assert response.status_code == 200
-    assert (
-        "notifications" not in response.content.decode().lower()
-        or "unread_count" not in response.context
-    )
+    assert "unread_count" not in response.context
 
     client.force_login(user)
     response = client.get(reverse("mouseapp:home"))
     assert response.status_code == 200
-    if Notification.objects.filter(user=user, read=False).exists():
-        assert "notifications" in response.context or "unread_count" in response.context
+    assert "unread_count" not in response.context
