@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("mouseapp", "0007_box_location_mouse_study_plan_studyplan_end_date_and_more"),
+        ("mouseapp", "0008_alter_project_options"),
     ]
 
     operations = [

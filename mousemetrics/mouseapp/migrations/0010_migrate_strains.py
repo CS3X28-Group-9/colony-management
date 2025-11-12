@@ -14,7 +14,7 @@ def migrate_strains(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("mouseapp", "0008_strain_mouse_new_strain"),
+        ("mouseapp", "0009_strain_mouse_new_strain"),
     ]
 
     operations = [
