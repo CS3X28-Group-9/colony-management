@@ -18,5 +18,21 @@
         {% endfor %}
       </div>
     {% endfor %}
+
+    <div class="flex flex-row justify-center">
+      {% for node in tree_layout %}
+        {% if node.y == 1 %}
+          <div style="min-width: calc(36 * var(--spacing) * 1);" class="flex justify-center align-center">
+            <div class="p-2 m-1 w-36 border rounded-md">
+              <a href="{% url "mouseapp:family_tree" mouse=node.mouse.id %}">{{ node.mouse.strain }} {{ node.mouse.tube_number }}</a><br>
+              Box: {{ node.mouse.box.number }}<br>
+              Earmark: {{ node.mouse.earmark }}
+              <a class="float-end text-xs" href="{% url "mouseapp:mouse" id=node.mouse.id %}">(Details)</a>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
   </div>
+
 {% endblock content %}

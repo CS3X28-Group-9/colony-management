@@ -95,8 +95,61 @@ def family_tree_ancestry(mouse: Mouse) -> list[list[Mouse | None]]:
     return ancestry
 
 
+def calculate_family_width(mouse: Mouse) -> float:
+    """Calculate the total width needed for this mouse's family subtree"""
+    children = list(mouse.child_set_m.all()) + list(mouse.child_set_f.all())
+    children = list(set(children))
+
+    if not children:
+        return 1.0
+
+    return sum(calculate_family_width(child) for child in children)
+
+
+def layout_family_tree(mouse: Mouse) -> list[dict]:
+    """Calculate positions for the entire family tree with proper widths"""
+
+    def layout_subtree(mouse_obj: Mouse, start_x: float, level: int) -> list[dict]:
+        children = list(mouse_obj.child_set_m.all()) + list(mouse_obj.child_set_f.all())
+        children = list(set(children))
+
+        if not children:
+            return [{"mouse": mouse_obj, "x": start_x + 0.5, "y": level, "width": 1.0}]
+
+        # Layout children
+        current_x = start_x
+        child_nodes = []
+
+        for child in children:
+            child_width = calculate_family_width(child)
+            child_layout = layout_subtree(child, current_x, level + 1)
+            child_nodes.extend(child_layout)
+            current_x += child_width
+
+        # Add parent centered above children
+        total_width = current_x - start_x
+        child_nodes.append(
+            {
+                "mouse": mouse_obj,
+                "x": start_x + total_width / 2,
+                "y": level,
+                "width": total_width,
+            }
+        )
+
+        return child_nodes
+
+    return layout_subtree(mouse, 0.0, 0)
+
+
 def family_tree(request, mouse):
     mouse = get_object_or_404(Mouse, pk=mouse)
-    ancestry = family_tree_ancestry(mouse)
-
-    return render(request, "mouseapp/family_tree.html", {"ancestry": ancestry})
+    return render(
+        request,
+        "mouseapp/family_tree.html",
+        {
+            "ancestry": family_tree_ancestry(mouse),
+            "tree_layout": layout_family_tree(mouse),
+            "center_mouse": mouse,
+        },
+    )

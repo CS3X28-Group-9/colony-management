@@ -148,6 +148,9 @@ class Mouse(models.Model):
     )
     notes = models.TextField(blank=True)
 
+    child_set_m: models.Manager
+    child_set_f: models.Manager
+
     class Meta:
         permissions = [
             ("edit_mice", "Can edit mouse details"),
