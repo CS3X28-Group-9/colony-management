@@ -32,6 +32,7 @@ class Importer:
         self.fields = list(importable_fields())
         self.field_by_name = {field.name: field for field in self.fields}
         self.has_tube = "tube_number" in self.field_by_name
+        self.has_strain = "strain" in self.field_by_name
 
     def run(
         self, dataframe: pd.DataFrame, mapping: Dict[str, str]
@@ -49,10 +50,17 @@ class Importer:
                 defaults, self_fk_raw = apply_mapping(
                     row, mapping, self.fields, self.project
                 )
-                missing = missing_required(self.fields, defaults)
+
+                # Ensure everything is scoped to this project
+                defaults["project"] = self.project
+
+                missing = list(missing_required(self.fields, defaults))
+                if self.has_strain and defaults.get("strain") is None:
+                    missing.append("strain")
+
                 if missing:
                     errors.append(
-                        f"Row {row_num}: missing/invalid required fields: {', '.join(missing)}"
+                        f"Row {row_num}: missing/invalid required fields: {', '.join(sorted(set(missing)))}"
                     )
                     transaction.savepoint_rollback(savepoint)
                     continue
@@ -61,6 +69,7 @@ class Importer:
                     obj, was_created = Mouse.objects.update_or_create(
                         project=self.project,
                         tube_number=defaults["tube_number"],
+                        strain=defaults["strain"],
                         defaults=defaults,
                     )
                 else:
