@@ -8,6 +8,7 @@ from django.views.decorators.http import require_safe, require_http_methods
 from django.conf import settings
 from django.contrib import messages
 from django.db.models import Q
+from django.core.paginator import Paginator
 from datetime import date
 
 from .forms import (
@@ -18,6 +19,8 @@ from .forms import (
     TransferRequestForm,
 )
 from .models import Mouse, Project, Request, Notification
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
 
 
 class AuthedRequest(HttpRequest):
@@ -26,6 +29,33 @@ class AuthedRequest(HttpRequest):
 
 def home(request: HttpRequest) -> HttpResponse:
     return render(request, "mouseapp/home.html")
+
+
+def get_users_to_notify_for_request(request_obj: Request) -> list[User]:
+    """Get all users who should be notified when a request is created."""
+    users_to_notify = []
+
+    users_to_notify.extend(User.objects.filter(is_superuser=True))
+
+    if request_obj.project and request_obj.project.lead:
+        if request_obj.project.lead not in users_to_notify:
+            users_to_notify.append(request_obj.project.lead)
+
+    try:
+        content_type = ContentType.objects.get_for_model(Request)
+        approve_perm = Permission.objects.get(
+            codename="approve_request", content_type=content_type
+        )
+        users_with_perm = User.objects.filter(
+            Q(user_permissions=approve_perm) | Q(groups__permissions=approve_perm)
+        ).distinct()
+        for user in users_with_perm:
+            if user not in users_to_notify:
+                users_to_notify.append(user)
+    except Permission.DoesNotExist:
+        pass
+
+    return [user for user in users_to_notify if user != request_obj.creator]
 
 
 @require_safe
@@ -72,8 +102,8 @@ def login_view(request: HttpRequest) -> HttpResponse:
         if form.is_valid():
             remember_me = form.cleaned_data.get("remember_me")
             if not remember_me:
-                request.session.set_expiry(0)  # Session expires on browser close
-            auth_login(request, form.get_user())
+                request.session.set_expiry(0)
+                auth_login(request, form.get_user())
             return redirect("mouseapp:home")
     else:
         form = CustomAuthenticationForm()
@@ -127,6 +157,7 @@ def family_tree(request, mouse):
 @login_required
 @require_http_methods(["GET", "POST"])
 def create_breeding_request(request: AuthedRequest) -> HttpResponse:
+    mouse_id = None
     if request.method == "POST":
         form = BreedingRequestForm(request.POST, user=request.user)
         if form.is_valid():
@@ -136,6 +167,15 @@ def create_breeding_request(request: AuthedRequest) -> HttpResponse:
             if request_obj.mouse:
                 request_obj.project = request_obj.mouse.project
             request_obj.save()
+
+            users_to_notify = get_users_to_notify_for_request(request_obj)
+            for user in users_to_notify:
+                Notification.objects.create(
+                    user=user,
+                    request=request_obj,
+                    message="New request created. [link]",
+                )
+
             messages.success(request, "Breeding request created successfully.")
             return redirect("mouseapp:requests")
     else:
@@ -162,6 +202,7 @@ def create_breeding_request(request: AuthedRequest) -> HttpResponse:
 @login_required
 @require_http_methods(["GET", "POST"])
 def create_culling_request(request: AuthedRequest) -> HttpResponse:
+    mouse_id = None
     if request.method == "POST":
         form = CullingRequestForm(request.POST, user=request.user)
         if form.is_valid():
@@ -171,6 +212,15 @@ def create_culling_request(request: AuthedRequest) -> HttpResponse:
             if request_obj.mouse:
                 request_obj.project = request_obj.mouse.project
             request_obj.save()
+
+            users_to_notify = get_users_to_notify_for_request(request_obj)
+            for user in users_to_notify:
+                Notification.objects.create(
+                    user=user,
+                    request=request_obj,
+                    message="New request created. [link]",
+                )
+
             messages.success(request, "Culling request created successfully.")
             return redirect("mouseapp:requests")
     else:
@@ -197,6 +247,7 @@ def create_culling_request(request: AuthedRequest) -> HttpResponse:
 @login_required
 @require_http_methods(["GET", "POST"])
 def create_transfer_request(request: AuthedRequest) -> HttpResponse:
+    mouse_id = None
     if request.method == "POST":
         form = TransferRequestForm(request.POST, user=request.user)
         if form.is_valid():
@@ -206,6 +257,15 @@ def create_transfer_request(request: AuthedRequest) -> HttpResponse:
             if request_obj.mouse:
                 request_obj.project = request_obj.mouse.project
             request_obj.save()
+
+            users_to_notify = get_users_to_notify_for_request(request_obj)
+            for user in users_to_notify:
+                Notification.objects.create(
+                    user=user,
+                    request=request_obj,
+                    message="New request created. [link]",
+                )
+
             messages.success(request, "Transfer request created successfully.")
             return redirect("mouseapp:requests")
     else:
@@ -259,10 +319,30 @@ def requests_list(request: AuthedRequest) -> HttpResponse:
         )  # pyright: ignore[reportAttributeAccessIssue]
         requests_with_permissions.append(req)
 
+    request_id = request.GET.get("id")
+    highlighted_request_id = None
+    page_number = request.GET.get("page")
+
+    paginator = Paginator(requests_with_permissions, 10)
+
+    if request_id:
+        try:
+            highlighted_request_id = int(request_id)
+            for idx, req in enumerate(requests_with_permissions):
+                if req.id == highlighted_request_id:
+                    page_number = (idx // 10) + 1
+                    break
+        except (ValueError, TypeError):
+            pass
+
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        "requests": requests_with_permissions,
+        "page_obj": page_obj,
+        "requests": page_obj,
         "status_filter": status_filter,
         "type_filter": type_filter,
+        "highlighted_request_id": highlighted_request_id,
     }
     return render(request, "mouseapp/requests.html", context)
 
@@ -299,15 +379,7 @@ def update_request_status(request: AuthedRequest, request_id: int) -> HttpRespon
         and request_obj.creator != request.user
     ):
         status_display = dict(Request.STATUS_CHOICES).get(new_status, new_status)
-        kind_display = dict(Request.REQUEST_CHOICES).get(
-            request_obj.kind, request_obj.kind
-        )
-        mouse_info = (
-            f"mouse {request_obj.mouse}" if request_obj.mouse else "your request"
-        )
-        message = (
-            f"Your {kind_display} request for {mouse_info} has been {status_display}."
-        )
+        message = f"Request {status_display.lower()}. [link]"
         Notification.objects.create(
             user=request_obj.creator,
             request=request_obj,
@@ -326,14 +398,13 @@ def mark_notification_read(
     notification = get_object_or_404(
         Notification, id=notification_id, user=request.user
     )
-    notification.read = True
-    notification.save()
+    notification.delete()
     return redirect("mouseapp:home")
 
 
 @login_required
 @require_http_methods(["POST"])
 def mark_all_notifications_read(request: AuthedRequest) -> HttpResponse:
-    Notification.objects.filter(user=request.user, read=False).update(read=True)
+    Notification.objects.filter(user=request.user, read=False).delete()
     messages.success(request, "All notifications marked as read.")
     return redirect("mouseapp:home")

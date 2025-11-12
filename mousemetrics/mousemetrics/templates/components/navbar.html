@@ -7,6 +7,64 @@
     {% if user.is_authenticated %}
       <div class="flex items-center gap-4">
         <span class="text-neutral-700">Hi, {{ user.first_name }}</span>
+        <div class="relative" id="notification-container">
+          <button type="button" class="relative inline-flex items-center p-2 text-neutral-700 hover:text-neutral-900 transition-colors cursor-pointer z-10" id="notification-dropdown" aria-expanded="false" aria-haspopup="true" onclick="toggleNotificationDropdown(event)">
+            {% include "components/svgs/bell.svg" %}
+            {% if unread_count > 0 %}
+              <span class="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full pointer-events-none">
+                {{ unread_count }}
+              </span>
+            {% endif %}
+          </button>
+          <div class="hidden transition-[opacity] duration-200 opacity-0 min-w-[320px] absolute right-0 top-full mt-2 bg-white border border-neutral-300 rounded-lg shadow-lg z-50" id="notification-menu" aria-labelledby="notification-dropdown">
+            <div class="p-4 border-b border-neutral-200">
+              <div class="flex justify-between items-center gap-4">
+                <h3 class="font-semibold text-neutral-800">Notifications</h3>
+                {% if unread_count > 0 %}
+                  <form method="post" action="{% url 'mouseapp:mark_all_notifications_read' %}" class="m-0">
+                    {% csrf_token %}
+                    <button type="submit" class="text-sm text-neutral-600 hover:text-neutral-900 whitespace-nowrap px-2 py-1">Mark all read</button>
+                  </form>
+                {% endif %}
+              </div>
+            </div>
+            <div class="max-h-96 overflow-y-auto">
+              {% if recent_notifications %}
+                <ul class="divide-y divide-neutral-200">
+                  {% for notification in recent_notifications %}
+                    <li class="p-4 hover:bg-neutral-50 {% if not notification.read %}bg-blue-50{% endif %}">
+                      <div class="flex justify-between items-start gap-2">
+                        <div class="flex-1 space-y-2">
+                          <p class="text-sm text-neutral-800 {% if not notification.read %}font-medium{% endif %}">
+                            {% if notification.request and "[link]" in notification.message %}
+                              {{ notification.message|slice:":-7" }}
+                            {% else %}
+                              {{ notification.message }}
+                            {% endif %}
+                          </p>
+                          {% if notification.request %}
+                            <a href="{% url 'mouseapp:requests' %}?id={{ notification.request.id }}" class="text-sm text-blue-600 hover:text-blue-800 underline">View request</a>
+                          {% endif %}
+                          <p class="text-xs text-neutral-500">{{ notification.created_at|date:"M d, Y g:i A" }}</p>
+                        </div>
+                        {% if not notification.read %}
+                          <form method="post" action="{% url 'mouseapp:mark_notification_read' notification.id %}" class="m-0">
+                            {% csrf_token %}
+                            <button type="submit" class="text-xs text-neutral-500 hover:text-neutral-700" title="Mark as read">×</button>
+                          </form>
+                        {% endif %}
+                      </div>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <div class="p-8 text-center">
+                  <p class="text-neutral-500 text-sm">No notifications</p>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
         <a href="{% url 'mouseapp:requests' %}" class="btn-secondary">
           Requests
         </a>
