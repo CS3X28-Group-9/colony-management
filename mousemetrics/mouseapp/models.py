@@ -260,6 +260,11 @@ class Request(models.Model):
         ordering = ["-created_at"]
 
     def can_change_status(self, user: User) -> bool:
+        if self.mouse and not self.mouse.has_read_access(user):
+            return False
+        if self.project and not self.project.has_read_access(user):
+            return False
+
         if self.status == "pending":
             if user.is_superuser:
                 return True
