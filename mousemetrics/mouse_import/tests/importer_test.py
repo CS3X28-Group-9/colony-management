@@ -66,7 +66,7 @@ def test_basic_import(project):
 
 def test_import_same_tube_different_strain(project):
     """Same tube number but different (strain, tube_number) are different unique mice."""
-    created, updated, errors = run_import(project.id, "Sheet2", "A1:J33", MAPPING)
+    created, updated, errors = run_import(project.id, "Sheet2", "A1:J3", MAPPING)
     assert not errors and not updated
     assert len(created) == 2
 
