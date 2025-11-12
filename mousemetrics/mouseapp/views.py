@@ -25,14 +25,7 @@ class AuthedRequest(HttpRequest):
 
 
 def home(request: HttpRequest) -> HttpResponse:
-    context = {}
-    if request.user.is_authenticated:
-        notifications = Notification.objects.filter(user=request.user, read=False)[:10]
-        context["notifications"] = notifications
-        context["unread_count"] = Notification.objects.filter(
-            user=request.user, read=False
-        ).count()
-    return render(request, "mouseapp/home.html", context)
+    return render(request, "mouseapp/home.html")
 
 
 @require_safe
@@ -139,6 +132,7 @@ def create_breeding_request(request: AuthedRequest) -> HttpResponse:
         if form.is_valid():
             request_obj = form.save(commit=False)
             request_obj.creator = request.user
+            request_obj.kind = "B"
             if request_obj.mouse:
                 request_obj.project = request_obj.mouse.project
             request_obj.save()
@@ -155,15 +149,14 @@ def create_breeding_request(request: AuthedRequest) -> HttpResponse:
             except Mouse.DoesNotExist:
                 pass
 
-    return render(
-        request,
-        "mouseapp/create_request.html",
-        {
-            "form": form,
-            "request_type": "Breeding",
-            "request_type_code": "B",
-        },
-    )
+    context = {
+        "form": form,
+        "request_type": "Breeding",
+        "request_type_code": "B",
+    }
+    if mouse_id:
+        context["mouse_id"] = mouse_id
+    return render(request, "mouseapp/create_request.html", context)
 
 
 @login_required
@@ -174,6 +167,7 @@ def create_culling_request(request: AuthedRequest) -> HttpResponse:
         if form.is_valid():
             request_obj = form.save(commit=False)
             request_obj.creator = request.user
+            request_obj.kind = "C"
             if request_obj.mouse:
                 request_obj.project = request_obj.mouse.project
             request_obj.save()
@@ -190,15 +184,14 @@ def create_culling_request(request: AuthedRequest) -> HttpResponse:
             except Mouse.DoesNotExist:
                 pass
 
-    return render(
-        request,
-        "mouseapp/create_request.html",
-        {
-            "form": form,
-            "request_type": "Culling",
-            "request_type_code": "C",
-        },
-    )
+    context = {
+        "form": form,
+        "request_type": "Culling",
+        "request_type_code": "C",
+    }
+    if mouse_id:
+        context["mouse_id"] = mouse_id
+    return render(request, "mouseapp/create_request.html", context)
 
 
 @login_required
@@ -209,6 +202,7 @@ def create_transfer_request(request: AuthedRequest) -> HttpResponse:
         if form.is_valid():
             request_obj = form.save(commit=False)
             request_obj.creator = request.user
+            request_obj.kind = "T"
             if request_obj.mouse:
                 request_obj.project = request_obj.mouse.project
             request_obj.save()
@@ -225,15 +219,14 @@ def create_transfer_request(request: AuthedRequest) -> HttpResponse:
             except Mouse.DoesNotExist:
                 pass
 
-    return render(
-        request,
-        "mouseapp/create_request.html",
-        {
-            "form": form,
-            "request_type": "Transfer",
-            "request_type_code": "T",
-        },
-    )
+    context = {
+        "form": form,
+        "request_type": "Transfer",
+        "request_type_code": "T",
+    }
+    if mouse_id:
+        context["mouse_id"] = mouse_id
+    return render(request, "mouseapp/create_request.html", context)
 
 
 @login_required
