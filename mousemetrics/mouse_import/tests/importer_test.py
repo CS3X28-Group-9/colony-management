@@ -34,6 +34,10 @@ MAPPING: dict[str, str] = {
 }
 
 
+def strain(n):
+    return Strain.objects.get_or_create(name=n)[0]
+
+
 @pytest.fixture
 def project(db):
     project = Project(name="Test Project", start_date=date(2000, 1, 1))
@@ -54,7 +58,7 @@ def test_basic_import(project):
     assert m1.date_of_birth.year == 1970
     assert m1.earmark == "TL"
     assert m1.sex == "M"
-    assert m1.strain == Strain.objects.get_or_create("Some-strain")[0]
+    assert m1.strain == strain("Some-strain")
     assert m1.coat_colour == "black"
     assert m1.father is None
     assert m1.mother is None
@@ -72,7 +76,7 @@ def test_import_same_tube_different_strain(project):
 
     m1, m2 = [Mouse.objects.get(pk=pk) for pk in created]
     # normalise order
-    if m1.strain != "Some-strain":
+    if m1.strain != strain("Some-strain"):
         m1, m2 = m2, m1
 
     # row 1 mice
@@ -81,7 +85,7 @@ def test_import_same_tube_different_strain(project):
     assert m1.date_of_birth.isoformat() == "1970-01-01"
     assert m1.earmark == "TL"
     assert m1.sex == "M"
-    assert m1.strain == "Some-strain"
+    assert m1.strain == strain("Some-strain")
     assert m1.coat_colour == "black"
     assert m1.father is None
     assert m1.mother is None
@@ -93,7 +97,7 @@ def test_import_same_tube_different_strain(project):
     assert m2.date_of_birth.isoformat() == "1970-01-02"
     assert m2.earmark == "TR"
     assert m2.sex == "F"
-    assert m2.strain == "Different-strain"
+    assert m2.strain == strain("Different-strain")
     assert m2.coat_colour == "green"
     assert m2.father is None
     assert m2.mother is None
