@@ -361,7 +361,7 @@ def test_requests_page_requires_login(client: Client):
 
 @pytest.mark.django_db
 def test_notifications_only_visible_to_authenticated_users(client: Client):
-    """Test that notifications are not shown on the home page."""
+    """Test that notifications are handled correctly for authenticated and unauthenticated users."""
     from .models import Notification
     from django.contrib.auth.models import User
 
@@ -378,9 +378,9 @@ def test_notifications_only_visible_to_authenticated_users(client: Client):
 
     response = client.get(reverse("mouseapp:home"))
     assert response.status_code == 200
-    assert "unread_count" not in response.context
+    assert response.context["unread_count"] == 0
 
     client.force_login(user)
     response = client.get(reverse("mouseapp:home"))
     assert response.status_code == 200
-    assert "unread_count" not in response.context
+    assert response.context["unread_count"] == 1

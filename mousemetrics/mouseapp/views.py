@@ -28,6 +28,8 @@ from .forms import (
     TransferRequestForm,
 )
 from .models import Mouse, Project, Request, Notification
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
 
 
 class AuthedRequest(HttpRequest):
@@ -35,7 +37,42 @@ class AuthedRequest(HttpRequest):
 
 
 def home(request: HttpRequest) -> HttpResponse:
-    return render(request, "mouseapp/home.html")
+    context: dict[str, object] = {}
+    if request.user.is_authenticated:
+        context["notifications"] = Notification.objects.filter(
+            user=request.user
+        ).order_by("-created_at")[:10]
+        context["unread_count"] = Notification.objects.filter(
+            user=request.user, read=False
+        ).count()
+    return render(request, "mouseapp/home.html", context)
+
+
+def get_users_to_notify_for_request(request_obj: Request) -> list[User]:
+    """Get all users who should be notified when a request is created."""
+    users_to_notify = []
+
+    users_to_notify.extend(User.objects.filter(is_superuser=True))
+
+    if request_obj.project and request_obj.project.lead:
+        if request_obj.project.lead not in users_to_notify:
+            users_to_notify.append(request_obj.project.lead)
+
+    try:
+        content_type = ContentType.objects.get_for_model(Request)
+        approve_perm = Permission.objects.get(
+            codename="approve_request", content_type=content_type
+        )
+        users_with_perm = User.objects.filter(
+            Q(user_permissions=approve_perm) | Q(groups__permissions=approve_perm)
+        ).distinct()
+        for user in users_with_perm:
+            if user not in users_to_notify:
+                users_to_notify.append(user)
+    except Permission.DoesNotExist:
+        pass
+
+    return [user for user in users_to_notify if user != request_obj.creator]
 
 
 @require_safe
@@ -199,8 +236,8 @@ def login_view(request: HttpRequest) -> HttpResponse:
         if form.is_valid():
             remember_me = form.cleaned_data.get("remember_me")
             if not remember_me:
-                request.session.set_expiry(0)  # Session expires on browser close
-            auth_login(request, form.get_user())
+                request.session.set_expiry(0)
+                auth_login(request, form.get_user())
             return redirect("mouseapp:home")
     else:
         form = CustomAuthenticationForm()
@@ -349,6 +386,15 @@ def _prepare_request_form(
             if request_obj.mouse:
                 request_obj.project = request_obj.mouse.project
             request_obj.save()
+
+            users_to_notify = get_users_to_notify_for_request(request_obj)
+            for user in users_to_notify:
+                Notification.objects.create(
+                    user=user,
+                    request=request_obj,
+                    message=f"New {request_type.lower()} request created.",
+                )
+
             messages.success(request, f"{request_type} request created successfully.")
             return redirect("mouseapp:requests"), form, mouse_id
     else:
@@ -364,11 +410,6 @@ def _prepare_request_form(
             except Mouse.DoesNotExist:
                 mouse_id = None
 
-    return (
-        None,
-        form,
-        mouse_id,
-    )
     return (
         None,
         form,
@@ -524,15 +565,7 @@ def update_request_status(request: AuthedRequest, request_id: int) -> HttpRespon
         and request_obj.creator != request.user
     ):
         status_display = dict(Request.STATUS_CHOICES).get(new_status, new_status)
-        kind_display = dict(Request.REQUEST_CHOICES).get(
-            request_obj.kind, request_obj.kind
-        )
-        mouse_info = (
-            f"mouse {request_obj.mouse}" if request_obj.mouse else "your request"
-        )
-        message = (
-            f"Your {kind_display} request for {mouse_info} has been {status_display}."
-        )
+        message = f"Request {status_display.lower()}. [link]"
         Notification.objects.create(
             user=request_obj.creator,
             request=request_obj,
