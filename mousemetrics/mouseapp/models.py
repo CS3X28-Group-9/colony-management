@@ -42,6 +42,9 @@ class Project(models.Model):
     def mouse_count(self):
         return self.mouse_set.count()  # type: ignore
 
+    def __str__(self) -> str:
+        return f"Project {self.name}"
+
 
 class StudyPlan(models.Model):
     STATUS_CHOICES = (
@@ -86,6 +89,9 @@ class StudyPlan(models.Model):
             ("view_study_plan", "Can view study plans"),
         ]
 
+    def __str__(self) -> str:
+        return f"Study plan for {self.project.name}"
+
 
 class Box(models.Model):
     LOCATION_CHOICES = {"B": "Breeding", "E": "Experimental"}
@@ -108,6 +114,9 @@ class Box(models.Model):
                 fields=["project", "number"], name="uniq_box_per_project"
             )
         ]
+
+    def __str__(self) -> str:
+        return self.number
 
 
 class Strain(models.Model):
@@ -178,14 +187,17 @@ class Mouse(models.Model):
             "mouseapp.edit_mice"
         )
 
+    def __str__(self) -> str:
+        return f"{self.strain} {self.tube_number}"
+
 
 class Request(models.Model):
-    REQUEST_CHOICES = (
-        ("B", "Set up breeding pair"),
-        ("C", "Cull"),
-        ("T", "Transfer"),
-        ("Q", "Query"),
-    )
+    REQUEST_CHOICES = {
+        "B": "Set up breeding pair",
+        "C": "Cull",
+        "T": "Transfer",
+        "Q": "Query",
+    }
 
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, related_name="requests", null=True
@@ -209,6 +221,12 @@ class Request(models.Model):
             ("fulfill_request", "Can mark requests fulfilled"),
         ]
 
+    def __str__(self) -> str:
+        kind = Request.REQUEST_CHOICES[self.kind]
+        if kind == Request.REQUEST_CHOICES["B"]:
+            kind = "Breeding"
+        return f"{kind} request from {self.creator.name}"
+
 
 class RequestReply(models.Model):
     request = models.ForeignKey(
@@ -221,6 +239,9 @@ class RequestReply(models.Model):
     class Meta:
         permissions = [("send_reply", "Can send replies and queries on requests")]
 
+    def __str__(self) -> str:
+        return f"Response to {self.request}"
+
 
 class Membership(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
@@ -232,3 +253,6 @@ class Membership(models.Model):
                 fields=["project", "user"], name="unique_membership"
             )
         ]
+
+    def __str__(self) -> str:
+        return f"{self.project}, {self.user}"
