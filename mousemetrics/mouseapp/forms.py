@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth.base_user import BaseUserManager
 
-from .models import Mouse
+from . import models
 
 
 class CustomAuthenticationForm(AuthenticationForm):
@@ -97,7 +97,7 @@ class RegistrationForm(UserCreationForm):
 
 class MouseForm(forms.ModelForm):
     class Meta:
-        model = Mouse
+        model = models.Mouse
         fields = [
             "coat_colour",
             "sex",
@@ -110,4 +110,18 @@ class MouseForm(forms.ModelForm):
             "coat_colour",
             "earmark",
             "notes",
+        ]
+
+
+class ProjectForm(forms.ModelForm):
+    class Meta:
+        model = models.Project
+        fields = [
+            "name",
+            "lead",
+            "start_date",
+            "allow_over_18_months",
+            "has_mod_sev_permission",
+            "quota_5_years",
+            "license_constraints",
         ]
