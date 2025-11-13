@@ -17,125 +17,19 @@
 
         <div class="p-6">
           <dl class="space-y-4">
-            <div class="mouse-flex">
-              <dt class="mouse-row"><label for="{{ form.sex.id_for_label }}">Sex</label></dt>
-              <dd class="mouse-data">{{ form.sex }}</dd>
-              {% if form.sex.errors %}
-                <div class="error-message-compact">
-                  {% for error in form.sex.errors %}
-                    {{ error }}
-                  {% endfor %}
-                </div>
-              {% endif %}
-            </div>
-
-            <div class="mouse-flex">
-              <dt class="mouse-row"><label for="{{ form.date_of_birth.id_for_label }}">Date of Birth</label></dt>
-              <dd class="mouse-data">{{ form.date_of_birth }}</dd>
-              {% if form.date_of_birth.errors %}
-                <div class="error-message-compact">
-                  {% for error in form.date_of_birth.errors %}
-                    {{ error }}
-                  {% endfor %}
-                </div>
-              {% endif %}
-            </div>
-
-            <div class="mouse-flex">
-              <dt class="mouse-row"><label for="{{ form.tube_number.id_for_label }}">Tube Number</label></dt>
-              <dd class="mouse-data">{{ form.tube_number }}</dd>
-              {% if form.tube_number.errors %}
-                <div class="error-message-compact">
-                  {% for error in form.tube_number.errors %}
-                    {{ error }}
-                  {% endfor %}
-                </div>
-              {% endif %}
-            </div>
-
-            <div class="mouse-flex">
-              <dt class="mouse-row"><label for="{{ form.box.id_for_label }}">Box Number</label></dt>
-              <dd class="mouse-data">{{ form.box }}</dd>
-              {% if form.box.errors %}
-                <div class="error-message-compact">
-                  {% for error in form.box.errors %}
-                    {{ error }}
-                  {% endfor %}
-                </div>
-              {% endif %}
-            </div>
-
-            <div class="mouse-flex">
-              <dt class="mouse-row"><label for="{{ form.strain.id_for_label }}">Strain</label></dt>
-              <dd class="mouse-data">{{ form.strain }}</dd>
-              {% if form.strain.errors %}
-                <div class="error-message-compact">
-                  {% for error in form.strain.errors %}
-                    {{ error }}
-                  {% endfor %}
-                </div>
-              {% endif %}
-            </div>
-
-            <div class="mouse-flex">
-              <dt class="mouse-row"><label for="{{ form.coat_colour.id_for_label }}">Coat Colour</label></dt>
-              <dd class="mouse-data">{{ form.coat_colour }}</dd>
-              {% if form.coat_colour.errors %}
-                <div class="error-message-compact">
-                  {% for error in form.coat_colour.errors %}
-                    {{ error }}
-                  {% endfor %}
-                </div>
-              {% endif %}
-            </div>
-
-            <div class="mouse-flex">
-              <dt class="mouse-row"><label for="{{ form.earmark.id_for_label }}">Earmark</label></dt>
-              <dd class="mouse-data">{{ form.earmark }}</dd>
-              {% if form.earmark.errors %}
-                <div class="error-message-compact">
-                  {% for error in form.earmark.errors %}
-                    {{ error }}
-                  {% endfor %}
-                </div>
-              {% endif %}
-            </div>
-
-            <div class="mouse-flex">
-              <dt class="mouse-row"><label for="{{ form.mother.id_for_label }}">Mother</label></dt>
-              <dd class="mouse-data">{{ form.mother }}</dd>
-              {% if form.mother.errors %}
-                <div class="error-message-compact">
-                  {% for error in form.mother.errors %}
-                    {{ error }}
-                  {% endfor %}
-                </div>
-              {% endif %}
-            </div>
-
-            <div class="mouse-flex">
-              <dt class="mouse-row"><label for="{{ form.father.id_for_label }}">Father</label></dt>
-              <dd class="mouse-data">{{ form.father }}</dd>
-              {% if form.father.errors %}
-                <div class="error-message-compact">
-                  {% for error in form.father.errors %}
-                    {{ error }}
-                  {% endfor %}
-                </div>
-              {% endif %}
-            </div>
-
-            <div class="flex pb-3">
-              <dt class="mouse-row"><label for="{{ form.notes.id_for_label }}">Notes</label></dt>
-              <dd class="mouse-data">{{ form.notes }}</dd>
-              {% if form.notes.errors %}
-                <div class="error-message-compact">
-                  {% for error in form.notes.errors %}
-                    {{ error }}
-                  {% endfor %}
-                </div>
-              {% endif %}
-            </div>
+            {% for field in form %}
+              <div class="mouse-flex">
+                <dt class="mouse-row"><label for="{{ field.id_for_label }}">{{ field.label }}</label></dt>
+                <dd class="mouse-data">{{ field }}</dd>
+                {% if field.errors %}
+                  <div class="error-message-compact">
+                    {% for error in field.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            {% endfor %}
 
             <button type="submit" class="w-full btn-primary">
               Submit
