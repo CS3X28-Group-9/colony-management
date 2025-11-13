@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Editing Project{% endblock %}
+{% block content %}
+  <div class ="m-4">
+    <div class="flex flex-wrap gap-3 my-4 p-4 bg-white border border-gray-200 rounded-lg w-fit">
+      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-md text-sm">
+        <strong>Lead:</strong> {{ project.lead }}
+      </span>
+      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm">
+        <strong>Project start date:</strong> {{ project.start_date }}
+      </span>
+      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm">
+        <strong>Mice in project:</strong> {{ project.mouse_count }}
+      </span>
+      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm">
+        <strong>Project quota:</strong>
+
+        {% if project.quota_5_years is none %}
+          No quota
+        {% else %}
+          {{ project.quota_5_years }}
+        {% endif %}
+
+      </span>
+    </div>
+
+    <ul>
+
+      <li>
+        <strong>License constraints:</strong> {{ project.license_constraints }}
+      </li>
+      <li>
+        <strong>Members:</strong>
+        <ul>
+          {% for user in project.researchers.all %}
+            <li>{{ user.username }}</li>
+          {% endfor %}
+        </ul>
+      </li>
+
+
+      <li>
+        <table>
+          <caption class="py-2 text-start text-sm">Mice:</caption>
+          <thead>
+            <tr
+              class="table-header"
+            >
+              <th class="table-header-text">Mouse ID</th>
+              <th class="table-header-text">Date of Birth</th>
+              <th class="table-header-text">Box Number</th>
+              <th class="table-header-text">Strain</th>
+              <th class="table-header-text">Coat Colour</th>
+              <th class="table-header-text">Sex</th>
+              <th class="table-header-text">Earmark</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for mouse in project.mouse_set.all %}
+              <tr class="table-data">
+                <td class="left-table-data numeric">
+                  <a
+                    tabindex="-1"
+                    href="{% url 'mouseapp:mouse' mouse.id %}"
+                  >{{ mouse.tube_number }}</a
+                    >
+                  </td>
+                  <td class="numeric table-padding">{{ mouse.date_of_birth }}</td>
+                  <td class="numeric table-padding">{{ mouse.box.number }}</td>
+                  <td class="table-padding">{{ mouse.strain }}</td>
+                  <td class="table-padding">{{ mouse.coat_colour }}</td>
+                  <td class="table-padding">{{ mouse.sex }}</td>
+                  <td class="right-table-data table-padding">{{ mouse.earmark }}</td>
+                </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </div>
+{% endblock %}

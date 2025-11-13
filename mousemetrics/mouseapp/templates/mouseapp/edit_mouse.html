@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Editing Mouse{% endblock %}
+{% block content %}
+  <div class="max-w-3xl mx-auto px-4 py-8">
+    <form method="post">
+      {% csrf_token %}
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="bg-neutral-200 px-6 py-4">
+          <h3 class="default-header">Mouse Details</h3>
+        </div>
+
+        <div class="p-6">
+          <dl class="space-y-4">
+            <div class="mouse-flex">
+              <dt class="mouse-row">Sex</dt>
+              <dd class="mouse-data">{{ form.sex }}</dd>
+            </div>
+
+            <div class="mouse-flex">
+              <dt class="mouse-row">Date of Birth</dt>
+              <dd class="mouse-data">{{ form.date_of_birth }}</dd>
+            </div>
+
+            <div class="mouse-flex">
+              <dt class="mouse-row">Tube Number</dt>
+              <dd class="mouse-data">{{ form.tube_number }}</dd>
+            </div>
+
+            <div class="mouse-flex">
+              <dt class="mouse-row">Box Number</dt>
+              <dd class="mouse-data">{{ form.box }}</dd>
+            </div>
+
+            <div class="mouse-flex">
+              <dt class="mouse-row">Strain</dt>
+              <dd class="mouse-data">{{ form.strain }}</dd>
+            </div>
+
+            <div class="mouse-flex">
+              <dt class="mouse-row">Coat Colour</dt>
+              <dd class="mouse-data">{{ form.coat_colour }}</dd>
+            </div>
+
+            <div class="mouse-flex">
+              <dt class="mouse-row">Earmark</dt>
+              <dd class="mouse-data">{{ form.earmark }}</dd>
+            </div>
+
+            <div class="mouse-flex">
+              <dt class="mouse-row">Mother</dt>
+              <dd class="mouse-data">{{ form.mother }}</dd>
+            </div>
+
+            <div class="mouse-flex">
+              <dt class="mouse-row">Father</dt>
+              <dd class="mouse-data">{{ form.father }}</dd>
+            </div>
+
+            <div class="flex pb-3">
+              <dt class="mouse-row">Notes</dt>
+              <dd class="mouse-data">{{ form.notes }}</dd>
+            </div>
+
+            <button type="submit" class="w-full btn-primary">
+              Submit
+            </button>
+          </dl>
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock %}
