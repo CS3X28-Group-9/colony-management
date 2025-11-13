@@ -111,6 +111,9 @@ class MouseForm(forms.ModelForm):
             "earmark",
             "notes",
         ]
+        widgets = {
+            "coat_colour": forms.TextInput,
+        }
 
 
 class ProjectForm(forms.ModelForm):
@@ -118,10 +121,4 @@ class ProjectForm(forms.ModelForm):
         model = models.Project
         fields = [
             "name",
-            "lead",
-            "start_date",
-            "allow_over_18_months",
-            "has_mod_sev_permission",
-            "quota_5_years",
-            "license_constraints",
         ]
