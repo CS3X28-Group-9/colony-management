@@ -7,7 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.views.decorators.http import require_safe
 from django.conf import settings
 
-from .forms import RegistrationForm, CustomAuthenticationForm, MouseForm
+from .forms import RegistrationForm, CustomAuthenticationForm, MouseForm, ProjectForm
 from .models import Mouse, Project
 
 
@@ -60,10 +60,23 @@ def project(request: AuthedRequest, id: int) -> HttpResponse:
     return render(request, "mouseapp/project.html", context)
 
 
+@login_required
 def edit_project(request: AuthedRequest, id: int) -> HttpResponse:
     project: Project = get_object_or_404(Project, id=id)
     if not project.has_write_access(request.user):
         raise PermissionDenied()
+
+    if request.method == "POST":
+        form = ProjectForm(request.POST, instance=project)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(f"/project/{id}")
+        else:
+            print(form.errors)
+    else:
+        form = ProjectForm(instance=project)
+
+    return render(request, "mouseapp/edit_project.html", {"form": form})
 
 
 def login_view(request: HttpRequest) -> HttpResponse:
