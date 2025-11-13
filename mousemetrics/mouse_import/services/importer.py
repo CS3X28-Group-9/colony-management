@@ -35,7 +35,10 @@ class Importer:
         self.has_strain = "strain" in self.field_by_name
 
     def run(
-        self, dataframe: pd.DataFrame, mapping: Dict[str, str]
+        self,
+        dataframe: pd.DataFrame,
+        fixed_fields: dict[str, str],
+        mapping: Dict[str, str],
     ) -> Tuple[List[int], List[int], List[str]]:
         """Persist DataFrame rows using the supplied mapping and project context."""
 
@@ -48,7 +51,7 @@ class Importer:
             savepoint = transaction.savepoint()
             try:
                 defaults, self_fk_raw = apply_mapping(
-                    row, mapping, self.fields, self.project
+                    row, fixed_fields, mapping, self.fields, self.project
                 )
 
                 # Ensure everything is scoped to this project

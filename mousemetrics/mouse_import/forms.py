@@ -4,7 +4,6 @@ from .targets import get_mouse_import_targets
 
 
 class MouseImportForm(forms.ModelForm):
-
     class Meta:
         model = MouseImport
         fields = ["project", "file", "sheet_name", "cell_range"]
@@ -17,27 +16,52 @@ class MouseImportForm(forms.ModelForm):
 
 
 class ColumnMappingForm(forms.Form):
-    def __init__(self, *args, columns=None, **kwargs):
+    def __init__(self, *args, columns=None, project=None, **kwargs):
         super().__init__(*args, **kwargs)
+        self.__project = project
         columns = columns or []
-        req, opt = get_mouse_import_targets()
+        req, opt, field_choices = get_mouse_import_targets(project)
 
         # choices
-        col_choices_req = [(c, c) for c in columns]
-        col_choices_opt = [("", "-- none --")] + [(c, c) for c in columns]
+        col_choices = [(c, c) for c in columns]
+        targets = [(True, *r) for r in req] + [(False, *o) for o in opt]
 
-        for name, label in req:
+        for required, name, label in targets:
+            choices = field_choices.get(name)
+
             self.fields[f"map_{name}"] = forms.ChoiceField(
-                label=label, choices=col_choices_req
+                label=label,
+                choices=col_choices
+                + ([("", "-- none --")] if not required else [])
+                + ([("-- fixed --", "-- fixed --")] if choices else []),
+                required=required,
             )
-        for name, label in opt:
-            self.fields[f"map_{name}"] = forms.ChoiceField(
-                label=label, choices=col_choices_opt, required=False
-            )
+
+            if choices:
+                self.fields[f"fixed_{name}"] = forms.ChoiceField(
+                    label=f"Value for {label}",
+                    choices=choices,
+                    widget=forms.Select(attrs={"data-choices-for": f"{name}"}),
+                )
+                if ("-- new --", "-- new --") in choices:
+                    self.fields[f"fixed_new_{name}"] = forms.CharField(
+                        label=f"Value for {label}",
+                        required=False,
+                    )
 
     def selected_mapping(self):
-        req, opt = get_mouse_import_targets()
+        req, opt, field_choices = get_mouse_import_targets(self.__project)
         mapping = {}
+        fixed = {}
         for name, _ in req + opt:
             mapping[name] = self.cleaned_data.get(f"map_{name}", "") or ""
-        return mapping
+            if name in field_choices and mapping[name] == "-- fixed --":
+                if (fixed_val := self.cleaned_data.get(f"fixed_{name}", "")) or "":
+                    if fixed_val == "-- new --":
+                        fixed[name] = (
+                            self.cleaned_data.get(f"fixed_new_{name}", "") or ""
+                        )
+                    else:
+                        fixed[name] = fixed_val
+
+        return self.cleaned_data, fixed, mapping
