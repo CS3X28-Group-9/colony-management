@@ -25,6 +25,7 @@ class Project(models.Model):
 
     class Meta:
         permissions = [("create_project", "Create projects")]
+        ordering = ["name"]
 
     def has_read_access(self, user: User) -> bool:
         if self.lead and self.lead.pk == user.pk:
@@ -37,6 +38,9 @@ class Project(models.Model):
         if self.lead and self.lead.pk == user.pk:
             return True
         return user.is_superuser
+
+    def mouse_count(self):
+        return self.mouse_set.count()  # type: ignore
 
 
 class StudyPlan(models.Model):
@@ -106,6 +110,13 @@ class Box(models.Model):
         ]
 
 
+class Strain(models.Model):
+    name = models.TextField(unique=True)
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class Mouse(models.Model):
     SEX_CHOICES = {"F": "Female", "M": "Male"}
 
@@ -141,7 +152,7 @@ class Mouse(models.Model):
     date_of_birth = models.DateField()
     tube_number = models.IntegerField()
     box = models.ForeignKey(Box, on_delete=models.PROTECT)
-    strain = models.TextField()
+    strain = models.ForeignKey(Strain, on_delete=models.PROTECT, null=True, blank=True)
     coat_colour = models.TextField(blank=True, null=True)
     earmark = models.CharField(
         max_length=16, blank=True, validators=[EARMARK_VALIDATOR]

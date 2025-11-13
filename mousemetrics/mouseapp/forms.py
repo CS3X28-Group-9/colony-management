@@ -9,12 +9,10 @@ from django.contrib.auth.base_user import BaseUserManager
 
 class CustomAuthenticationForm(AuthenticationForm):
     username = forms.EmailField(
-        label="Email",
         max_length=254,
         widget=forms.EmailInput(
             attrs={
                 "class": "input",
-                "placeholder": "Enter your email",
                 "autocomplete": "email",
                 "name": "username",  # ensures Django receives correct field
             }
@@ -43,11 +41,9 @@ class CustomAuthenticationForm(AuthenticationForm):
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(
         required=True,
-        label="Email",
         widget=forms.EmailInput(
             attrs={
                 "class": "input",
-                "placeholder": "you@example.com",
                 "autocomplete": "email",
             }
         ),
@@ -55,14 +51,12 @@ class RegistrationForm(UserCreationForm):
     first_name = forms.CharField(
         max_length=30,
         required=True,
-        label="First name",
-        widget=forms.TextInput(attrs={"class": "input", "placeholder": "First name"}),
+        widget=forms.TextInput(attrs={"class": "input"}),
     )
     last_name = forms.CharField(
         max_length=30,
         required=True,
-        label="Last name",
-        widget=forms.TextInput(attrs={"class": "input", "placeholder": "Last name"}),
+        widget=forms.TextInput(attrs={"class": "input"}),
     )
 
     class Meta:
@@ -92,8 +86,8 @@ class RegistrationForm(UserCreationForm):
         email = self.cleaned_data["email"]
         user.username = email
         user.email = email
-        user.first_name = self.cleaned_data["first_name"]
-        user.last_name = self.cleaned_data["last_name"]
+        user.first_name = self.cleaned_data["first_name"].capitalize()
+        user.last_name = self.cleaned_data["last_name"].capitalize()
         if commit:
             user.save()
         return user

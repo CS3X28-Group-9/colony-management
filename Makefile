@@ -10,7 +10,6 @@ install:
 dependencies:
 	uv lock
 	uv sync
-	uv run djhtml mousemetrics/. && uv run djcss mousemetrics/.
 
 lint:
 	uv run black . && uv run ruff check .
