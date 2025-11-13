@@ -63,19 +63,32 @@
           <script>
             document.querySelectorAll('[data-choices-for]').forEach(choiceEl => {
               const parent = choiceEl.parentNode.parentNode;
-              if (mapEl.value == '-- fixed --') {
-                parent.classList.remove('hidden');
-              } else {
-                parent.classList.add('hidden');
+              const name = choiceEl.attributes['data-choices-for'].value;
+              const mapEl = document.getElementById('id_map_' + name);
+              const valueEl = document.getElementById('id_fixed_new_' + name);
+              const valueParent = valueEl ? valueEl.parentNode.parentNode : null;
+
+              function updateNew() {
+                if (!valueParent) return;
+                if (mapEl.value == '-- fixed --' && choiceEl.value == '-- new --') {
+                  valueParent.classList.remove('hidden');
+                } else {
+                  valueParent.classList.add('hidden');
+                }
               }
-              const mapEl = document.getElementById('id_' + choiceEl.attributes['data-choices-for'].value);
-              mapEl.addEventListener('change', () => {
+              function updateChoices() {
                 if (mapEl.value == '-- fixed --') {
                   parent.classList.remove('hidden');
                 } else {
                   parent.classList.add('hidden');
                 }
-              });
+                updateNew()
+              }
+
+              updateChoices()
+
+              mapEl.addEventListener('change', updateChoices);
+              choiceEl.addEventListener('change', updateNew);
             });
           </script>
           <div class="flex items-center gap-2 mt-2">

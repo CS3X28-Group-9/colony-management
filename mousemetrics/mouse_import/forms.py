@@ -41,8 +41,13 @@ class ColumnMappingForm(forms.Form):
                 self.fields[f"fixed_{name}"] = forms.ChoiceField(
                     label=f"Value for {label}",
                     choices=choices,
-                    widget=forms.Select(attrs={"data-choices-for": f"map_{name}"}),
+                    widget=forms.Select(attrs={"data-choices-for": f"{name}"}),
                 )
+                if ("-- new --", "-- new --") in choices:
+                    self.fields[f"fixed_new_{name}"] = forms.CharField(
+                        label=f"Value for {label}",
+                        required=False,
+                    )
 
     def selected_mapping(self):
         req, opt, field_choices = get_mouse_import_targets(self.__project)
@@ -51,6 +56,12 @@ class ColumnMappingForm(forms.Form):
         for name, _ in req + opt:
             mapping[name] = self.cleaned_data.get(f"map_{name}", "") or ""
             if name in field_choices and mapping[name] == "-- fixed --":
-                fixed[name] = self.cleaned_data.get(f"fixed_{name}", "") or ""
+                if (fixed_val := self.cleaned_data.get(f"fixed_{name}", "")) or "":
+                    if fixed_val == "-- new --":
+                        fixed[name] = (
+                            self.cleaned_data.get(f"fixed_new_{name}", "") or ""
+                        )
+                    else:
+                        fixed[name] = fixed_val
 
-        return fixed, mapping
+        return self.cleaned_data, fixed, mapping

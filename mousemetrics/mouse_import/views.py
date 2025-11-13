@@ -78,7 +78,11 @@ def import_preview(request: HttpRequest, pk: int) -> HttpResponse:
     import_obj.row_count = len(df)
     import_obj.save(update_fields=["row_count"])
 
-    saved_fixed, saved_mapping = request.session.get(map_key) or (None, None)
+    saved_initial, saved_fixed, saved_mapping = request.session.get(map_key) or (
+        None,
+        None,
+        None,
+    )
 
     if request.method == "POST":
         form = ColumnMappingForm(
@@ -89,13 +93,8 @@ def import_preview(request: HttpRequest, pk: int) -> HttpResponse:
             messages.success(request, "Column mapping saved.")
             return redirect("mouse_import:import_preview", pk=import_obj.pk)
     else:
-        initial = {
-            f"map_{field}": column
-            for field, column in (saved_mapping or {}).items()
-            if column
-        } | {f"fixed_{name}": val for name, val in (saved_fixed or {}).items()}
         form = ColumnMappingForm(
-            columns=columns, initial=initial, project=import_obj.project
+            columns=columns, initial=saved_initial, project=import_obj.project
         )
 
     preview_rows = df.head(PREVIEW_ROW_LIMIT).to_dict(orient="records")
@@ -118,7 +117,7 @@ def import_commit(request: HttpRequest, pk: int) -> HttpResponse:
     map_key = _map_session_key(import_obj.pk)
 
     raw_df = request.session.get(df_key)
-    fixed, mapping = request.session.get(map_key) or (None, None)
+    _, fixed, mapping = request.session.get(map_key) or (None, None, None)
 
     if raw_df is None or mapping is None or fixed is None:
         messages.error(

@@ -7,6 +7,7 @@ FIELD_CHOICES = {
     "strain": lambda project: [
         (strain.name, strain.name) for strain in Strain.objects.all()
     ]
+    + [("-- new --", "-- new --")],
 }
 
 
