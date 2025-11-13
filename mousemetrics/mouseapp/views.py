@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -7,7 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.views.decorators.http import require_safe
 from django.conf import settings
 
-from .forms import RegistrationForm, CustomAuthenticationForm
+from .forms import RegistrationForm, CustomAuthenticationForm, MouseForm
 from .models import Mouse, Project
 
 
@@ -31,6 +31,23 @@ def mouse(request: AuthedRequest, id: int) -> HttpResponse:
     return render(request, "mouseapp/mouse.html", context)
 
 
+@login_required
+def edit_mouse(request: AuthedRequest, id: int) -> HttpResponse:
+    mouse: Mouse = get_object_or_404(Mouse, id=id)
+    if not mouse.has_write_access(request.user):
+        raise PermissionDenied()
+
+    if request.method == "POST":
+        form = MouseForm(request.POST, instance=mouse)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(f"/mouse/{id}")
+    else:
+        form = MouseForm(instance=mouse)
+    
+    return render(request, "mouseapp/edit_mouse.html", {"form": form})
+
+
 @require_safe
 @login_required
 def project(request: AuthedRequest, id: int) -> HttpResponse:
@@ -41,6 +58,12 @@ def project(request: AuthedRequest, id: int) -> HttpResponse:
 
     context = {"project": project, "write_access": write_access}
     return render(request, "mouseapp/project.html", context)
+
+
+def edit_project(request: AuthedRequest, id: int) -> HttpResponse:
+    project: Project = get_object_or_404(Project, id=id)
+    if not project.has_write_access(request.user):
+        raise PermissionDenied()
 
 
 def login_view(request: HttpRequest) -> HttpResponse:

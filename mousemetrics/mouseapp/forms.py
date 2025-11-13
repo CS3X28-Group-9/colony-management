@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth.base_user import BaseUserManager
 
+from .models import Mouse
+
 
 class CustomAuthenticationForm(AuthenticationForm):
     username = forms.EmailField(
@@ -91,3 +93,21 @@ class RegistrationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class MouseForm(forms.ModelForm):
+    class Meta:
+        model = Mouse
+        fields = [
+            "coat_colour",
+            "sex",
+            "mother",
+            "father",
+            "date_of_birth",
+            "tube_number",
+            "box",
+            "strain",
+            "coat_colour",
+            "earmark",
+            "notes",
+        ]
