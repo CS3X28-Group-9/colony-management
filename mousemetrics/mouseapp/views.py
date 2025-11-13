@@ -44,7 +44,7 @@ def edit_mouse(request: AuthedRequest, id: int) -> HttpResponse:
             return HttpResponseRedirect(f"/mouse/{id}")
     else:
         form = MouseForm(instance=mouse)
-    
+
     return render(request, "mouseapp/edit_mouse.html", {"form": form})
 
 
