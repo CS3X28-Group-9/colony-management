@@ -5,13 +5,23 @@
     {% for generation in ancestry %}
       <div class="flex flex-row justify-center">
         {% for mouse in generation %}
-          <div style="min-width: calc(36 * var(--spacing) * pow(2, {{ forloop.parentloop.counter0 }}));" class="flex justify-center align-center">
+          <div
+            style="min-width: calc(36 * var(--spacing) * pow(2, {{ forloop.parentloop.counter0 }}));"
+            class="flex justify-center items-center"
+          >
             {% if mouse is not None %}
               <div class="p-2 m-1 max-w-36 w-36 border rounded-md">
-                <a href="{% url "mouseapp:family_tree" mouse=mouse.id %}">{{ mouse.strain }} {{ mouse.tube_number }}</a><br>
+                <a href="{% url "mouseapp:family_tree" mouse=mouse.id %}">
+                  {{ mouse.strain }} {{ mouse.tube_number }}
+                </a><br>
                 Box: {{ mouse.box.number }}<br>
                 Earmark: {{ mouse.earmark }}
-                <a class="float-end text-xs" href="{% url "mouseapp:mouse" id=mouse.id %}">(Details)</a>
+                <a
+                  class="float-end text-xs"
+                  href="{% url "mouseapp:mouse" id=mouse.id %}"
+                >
+                  (Details)
+                </a>
               </div>
             {% endif %}
           </div>
@@ -19,20 +29,39 @@
       </div>
     {% endfor %}
 
-    <div class="flex flex-row justify-center">
-      {% for node in tree_layout %}
-        {% if node.y == 1 %}
-          <div style="min-width: calc(36 * var(--spacing) * 1);" class="flex justify-center align-center">
-            <div class="p-2 m-1 w-36 border rounded-md">
-              <a href="{% url "mouseapp:family_tree" mouse=node.mouse.id %}">{{ node.mouse.strain }} {{ node.mouse.tube_number }}</a><br>
-              Box: {{ node.mouse.box.number }}<br>
-              Earmark: {{ node.mouse.earmark }}
-              <a class="float-end text-xs" href="{% url "mouseapp:mouse" id=node.mouse.id %}">(Details)</a>
-            </div>
-          </div>
-        {% endif %}
-      {% endfor %}
-    </div>
-  </div>
+    {% if tree_layout %}
+      {# sort by y so generations render top→bottom: parents (0), children (1), etc. #}
+      {% regroup tree_layout|dictsort:"y" by y as levels %}
 
+      {% for level in levels %}
+        <div class="flex flex-row justify-center">
+          {# sort by x so siblings render left→right according to layout #}
+          {% for node in level.list|dictsort:"x" %}
+            <div
+              class="flex justify-center items-center"
+              style="--node-width: {{ node.width }};"
+            >
+              <div
+                class="p-2 m-1 border rounded-md"
+                style="min-width: calc(var(--node-width) * 9rem);"
+              >
+                <a href="{% url "mouseapp:family_tree" mouse=node.mouse.id %}">
+                  {{ node.mouse.strain }} {{ node.mouse.tube_number }}
+                </a><br>
+                Box: {{ node.mouse.box.number }}<br>
+                Earmark: {{ node.mouse.earmark }}
+                <a
+                  class="float-end text-xs"
+                  href="{% url "mouseapp:mouse" id=node.mouse.id %}"
+                >
+                  (Details)
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+  </div>
 {% endblock content %}
