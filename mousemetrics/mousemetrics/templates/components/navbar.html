@@ -1,12 +1,12 @@
-<nav class="border-b border-neutral-300 bg-neutral-200">
+<nav class="border-b border-neutral-300 bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800">
   <div class="flex items-center justify-between py-3 px-4 mx-auto max-w-6xl">
-    <a href="{% url 'mouseapp:home' %}" class="text-xl font-semibold text-neutral-800 hover:text-neutral-600 transition-colors">
+    <a href="{% url 'mouseapp:home' %}" class="text-xl font-semibold text-neutral-800 hover:text-neutral-600 transition-colors dark:text-neutral-100 dark:hover:text-neutral-300">
       MouseMetrics
     </a>
 
     {% if user.is_authenticated %}
       <div class="flex items-center gap-4">
-        <span class="text-neutral-700">Hi, {{ user.first_name }}</span>
+        <span class="text-neutral-700 dark:text-white">Hi, {{ user.first_name }}</span>
         <form action="{% url 'mouseapp:logout' %}" method="post" class="m-0">
           {% csrf_token %}
           <button type="submit" class="btn-primary">Sign Out</button>

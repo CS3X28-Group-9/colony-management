@@ -5,14 +5,14 @@
 
   <div class="m-4">
     <div class="mb-6">
-      <h1 class="text-3xl font-bold text-gray-900 mb-4">
+      <h1 class="text-3xl font-bold text-gray-900 mb-4 dark:text-white">
         Preview Import to {{ import_obj.project.name }}
       </h1>
 
       {% if messages %}
         <div class="space-y-2">
           {% for m in messages %}
-            <div class="flex items-start gap-2 p-3 bg-blue-50 border-l-4 border-blue-500 rounded-r text-blue-800 w-fit">
+            <div class="flex items-start gap-2 p-3 bg-blue-50 border-l-4 border-blue-500 rounded-r text-blue-800 w-fit dark:bg-blue-900 dark:text-blue-200 dark:border-blue-400">
               {% include "components/svgs/info.svg" %}
               <span>{{ m }}</span>
             </div>
@@ -21,34 +21,34 @@
       {% endif %}
     </div>
 
-    <div class="flex flex-wrap gap-3 mb-6 p-4 bg-white border border-gray-200 rounded-lg w-fit">
+    <div class="flex flex-wrap gap-3 mb-6 p-4 bg-white border border-gray-200 rounded-lg w-fit dark:bg-neutral-800 dark:border-neutral-700">
 
-      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-md text-sm">
+      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-md text-sm dark:bg-blue-900 dark:text-blue-300">
         <strong>File:</strong> {{ import_obj.original_filename }}
       </span>
-      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded-md text-sm">
+      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded-md text-sm dark:bg-green-900 dark:text-green-300">
         <strong>Sheet:</strong> {{ import_obj.sheet_name|default_if_none:"(active)"|default:"(active)" }}
       </span>
-      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-50 text-purple-700 rounded-md text-sm">
+      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-50 text-purple-700 rounded-md text-sm dark:bg-purple-900 dark:text-purple-300">
         <strong>Range:</strong> {{ import_obj.cell_range|default_if_none:"(entire sheet)"|default:"(entire sheet)" }}
       </span>
-      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm">
+      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm dark:bg-neutral-700 dark:text-white">
         <strong>Rows:</strong> {{ import_obj.row_count }}
       </span>
     </div>
 
     <div class="flex gap-4">
-      <div class="bg-white border border-gray-200 rounded-lg p-4 w-fit">
-        <h3 class="text-xl font-medium text-gray-900 mb-4">Column Mapping</h3>
+      <div class="bg-white border border-gray-200 rounded-lg p-4 w-fit dark:bg-neutral-800 dark:border-neutral-700">
+        <h3 class="text-xl font-medium text-gray-900 mb-4 dark:text-white">Column Mapping</h3>
 
         <form method="post">
           {% csrf_token %}
           {% for field in form %}
             <div class="relative flex items-center mb-2 w-fit {% if field.name|first == "f" %}ml-4{% endif %}">
-              <label for="{{ field.id_for_label }}" class="w-32 text-gray-700 font-medium"
+              <label for="{{ field.id_for_label }}" class="w-32 text-gray-700 font-medium dark:text-white"
               >{{ field.label }}</label
                 >
-                <div class="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <div class="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white dark:focus:ring-blue-400">
                   {{ field }}
                 </div>
               </div>
@@ -122,14 +122,14 @@
               {% endif %}
             </form>
           {% else %}
-            <p class="mt-2"><em>Save a mapping first to enable commit.</em></p>
+            <p class="mt-2 dark:text-white"><em>Save a mapping first to enable commit.</em></p>
           {% endif %}
         </div>
       </div>
 
       {% if saved_mapping %}
         <div class="saved-mapping-section flex-1">
-          <h3 class="text-xl font-medium text-gray-900">Saved mapping</h3>
+          <h3 class="text-xl font-medium text-gray-900 dark:text-white">Saved mapping</h3>
           <table>
             <thead>
               <tr class="table-header">
@@ -151,7 +151,7 @@
     </div>
 
     <table>
-      <caption class="py-2 text-start text-sm">
+      <caption class="py-2 text-start text-sm dark:text-white">
         Data Preview (first 50 rows)
       </caption>
       <thead>
