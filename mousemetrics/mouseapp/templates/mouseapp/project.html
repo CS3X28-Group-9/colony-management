@@ -2,17 +2,17 @@
 {% block title %}Project{% endblock %}
 {% block content %}
   <div class ="m-4">
-    <div class="flex flex-wrap gap-3 my-4 p-4 bg-white border border-gray-200 rounded-lg w-fit">
-      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-md text-sm">
+    <div class="flex flex-wrap gap-3 my-4 p-4 bg-white border border-gray-200 rounded-lg w-fit dark:bg-neutral-800 dark:border-neutral-700">
+      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-md text-sm dark:bg-blue-900 dark:text-blue-300">
         <strong>Lead:</strong> {{ project.lead }}
       </span>
-      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm">
+      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm dark:bg-neutral-700 dark:text-white">
         <strong>Project start date:</strong> {{ project.start_date }}
       </span>
-      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm">
+      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm dark:bg-neutral-700 dark:text-white">
         <strong>Mice in project:</strong> {{ project.mouse_count }}
       </span>
-      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm">
+      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm dark:bg-neutral-700 dark:text-white">
         <strong>Project quota:</strong>
 
         {% if project.quota_5_years is none %}
@@ -24,7 +24,7 @@
       </span>
     </div>
 
-    <ul>
+    <ul class="dark:text-white">
 
       <li>
         <strong>License constraints:</strong> {{ project.license_constraints }}
@@ -41,7 +41,7 @@
 
       <li>
         <table>
-          <caption class="py-2 text-start text-sm">Mice:</caption>
+          <caption class="py-2 text-start text-sm dark:text-white">Mice:</caption>
           <thead>
             <tr
               class="table-header"

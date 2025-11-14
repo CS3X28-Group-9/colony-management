@@ -14,7 +14,9 @@ html {
     border-neutral-400 shadow-md
     hover:shadow-lg hover:border-neutral-700
     focus:outline-none focus:ring-2 focus:ring-offset-2
-    transition duration-200 ease-in-out;
+    transition duration-200 ease-in-out
+    dark:bg-neutral-600 dark:text-neutral-100 dark:border-neutral-600
+    dark:hover:border-neutral-500;
   }
 
   .btn-secondary {
@@ -26,20 +28,32 @@ html {
     border-neutral-400 shadow-md
     hover:shadow-lg hover:border-neutral-700
     focus:outline-none focus:ring-2 focus:ring-offset-2
-    transition duration-200 ease-in-out;
+    transition duration-200 ease-in-out
+    dark:text-white dark:border-neutral-600
+    dark:hover:border-neutral-500;
   }
 
   .table-data:nth-child(odd) {
-    @apply bg-white hover:bg-gray-300 divide-x-1 divide-gray-300;
+    @apply bg-white hover:bg-gray-300 divide-x-1 divide-gray-300
+    dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:divide-neutral-700 dark:text-white;
   }
 
   .table-data:nth-child(even) {
-    @apply bg-gray-200 hover:bg-gray-300 divide-x-1 divide-gray-300;
+    @apply bg-gray-200 hover:bg-gray-300 divide-x-1 divide-gray-300
+    dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:divide-neutral-600 dark:text-white;
   }
 
+  .left-table-data{
+    @apply border-l-1 border-gray-300 dark:border-neutral-600
+  }
+
+  .right-table-data{
+    @apply border-r-1 border-gray-300 dark:border-neutral-600
+  }
 
   .input-label {
-    @apply text-sm text-gray-500 transform scale-75 -translate-y-4 origin-left start-2.5;
+    @apply text-sm text-gray-500 transform scale-75 -translate-y-4 origin-left start-2.5
+    dark:text-white;
   }
 
   .numeric {
@@ -51,40 +65,47 @@ html {
   }
 
   .table-header-text {
-    @apply px-2 border-2 border-black;
+    @apply px-2 border-2 border-black dark:border-neutral-400 dark:text-white;
   }
 
   .floating-label {
-    @apply text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none focus:border-blue-600 focus:ring-0 focus:outline-none;
+    @apply text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none focus:border-blue-600 focus:ring-0 focus:outline-none
+    dark:text-white dark:bg-neutral-800 dark:border-neutral-600 dark:focus:border-blue-400;
   }
 
   .default-header {
-    @apply text-xl font-medium text-gray-900 text-center;
+    @apply text-xl font-medium text-gray-900 text-center
+    dark:text-neutral-100;
   }
 
   .mouse-flex {
-    @apply flex border-b border-gray-200 pb-3;
+    @apply flex border-b border-gray-200 pb-3 dark:border-neutral-700;
   }
 
   .mouse-row {
-    @apply w-1/3 text-sm font-medium text-gray-600;
+    @apply w-1/3 text-sm font-medium text-gray-600 dark:text-white;
   }
 
   .mouse-data {
-    @apply w-2/3 text-sm text-gray-900;
+    @apply w-2/3 text-sm text-gray-900 dark:text-white;
   }
 
   @layer base {
     a {
-      @apply text-blue-600 hover:underline;
+      @apply text-blue-600 hover:underline dark:text-blue-400;
     }}
 
+  .error-message {
+    @apply text-sm text-red-500 dark:text-red-400;
+  }
+
   .error-message-compact {
-    @apply text-sm text-red-500 leading-tight;
+    @apply text-sm text-red-500 leading-tight dark:text-red-400;
   }
 
   .table-header {
     @apply bg-gray-200 text-gray-700 uppercase text-sm font-semibold
+    dark:bg-neutral-700 dark:text-white
   }
 
   .input {
