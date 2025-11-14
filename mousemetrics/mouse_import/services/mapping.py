@@ -41,25 +41,28 @@ def apply_mapping(
     mapping: dict[str, str],
     fields: Iterable[Field],
     project,
-) -> tuple[dict[str, Any], dict[str, Any]]:
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     """Translate a pandas row into model-ready defaults and deferred relations."""
 
     defaults: dict[str, Any] = {"project": project}
     self_fk_raw: dict[str, Any] = {}
 
+    raw_values = {
+        field.name: fixed_fields.get(field.name) or row.get(mapping.get(field.name))
+        for field in fields
+    }
+
     for field in fields:
-        column_name = mapping.get(field.name)
-        if not column_name:
+        raw_value = raw_values[field.name]
+        if raw_value is None:
             continue
-
-        if not (raw_value := fixed_fields.get(field.name)):
-            raw_value = row.get(column_name)
-
         if isinstance(field, ForeignKey):
             if field.remote_field.model is Mouse:
                 self_fk_raw[field.name] = raw_value
             else:
-                defaults[field.name] = resolve_fk_instance(field, raw_value, project)
+                defaults[field.name] = resolve_fk_instance(
+                    field, raw_value, project, raw_values
+                )
         else:
             defaults[field.name] = normalize_for_field(field, raw_value)
 
@@ -70,4 +73,4 @@ def apply_mapping(
             "deferred_fields": list(self_fk_raw.keys()),
         },
     )
-    return defaults, self_fk_raw
+    return defaults, self_fk_raw, raw_values

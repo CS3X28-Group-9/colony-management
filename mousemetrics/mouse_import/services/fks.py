@@ -13,9 +13,11 @@ from .coercion import normalize_for_field
 logger = logging.getLogger(__name__)
 
 
-def resolve_fk_instance(fk_field: ForeignKey, raw_value: Any, project=None):
+def resolve_fk_instance(
+    fk_field: ForeignKey, raw_value: Any, project=None, raw_values=None
+):
     """Resolve foreign keys without surfacing DB errors to callers."""
-
+    raw_values = raw_values or {}
     target_model = fk_field.remote_field.model
 
     if target_model is Mouse:
@@ -27,6 +29,18 @@ def resolve_fk_instance(fk_field: ForeignKey, raw_value: Any, project=None):
         qs = Mouse.objects.all()
         if project is not None:
             qs = qs.filter(project=project)
+
+        if (strain := raw_values.get("strain")) is not None:
+            qs = qs.filter(
+                strain=resolve_fk_instance(
+                    Mouse._meta.get_field(
+                        "strain"
+                    ),  # pyright: ignore[reportArgumentType] -- strain is a foreign key
+                    strain,
+                    project,
+                    raw_values,
+                )
+            )
         return qs.filter(tube_number=tube_value).first()
 
     if target_model is Box:
@@ -74,14 +88,14 @@ def resolve_fk_instance(fk_field: ForeignKey, raw_value: Any, project=None):
 
 
 def link_self_foreign_keys(
-    pending: list[tuple[int, dict[str, Any]]],
+    pending: list[tuple[int, dict[str, Any], dict[str, Any]]],
     field_by_name: dict[str, Field],
     project,
     errors: list[str],
 ) -> None:
     """Resolve deferred parent links after initial row creation."""
 
-    for pk, raw_map in pending:
+    for pk, raw_map, raw_values in pending:
         if not raw_map:
             continue
 
@@ -94,7 +108,9 @@ def link_self_foreign_keys(
                     continue
                 if field.remote_field.model is not Mouse:
                     continue
-                target = resolve_fk_instance(field, raw_value, project=project)
+                target = resolve_fk_instance(
+                    field, raw_value, project=project, raw_values=raw_values
+                )
                 if target:
                     updates[f"{field_name}_id"] = target.pk
             if updates:

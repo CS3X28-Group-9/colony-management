@@ -45,12 +45,12 @@ class Importer:
         created_ids: List[int] = []
         updated_ids: List[int] = []
         errors: List[str] = []
-        pending_self_fk: List[Tuple[int, Dict[str, Any]]] = []
+        pending_self_fk: List[Tuple[int, Dict[str, Any], dict[str, Any]]] = []
 
         for row_num, (_, row) in enumerate(dataframe.iterrows(), start=1):
             savepoint = transaction.savepoint()
             try:
-                defaults, self_fk_raw = apply_mapping(
+                defaults, self_fk_raw, raw_values = apply_mapping(
                     row, fixed_fields, mapping, self.fields, self.project
                 )
 
@@ -85,7 +85,7 @@ class Importer:
                     updated_ids.append(obj.pk)
 
                 if self_fk_raw:
-                    pending_self_fk.append((obj.pk, self_fk_raw))
+                    pending_self_fk.append((obj.pk, self_fk_raw, raw_values))
 
                 transaction.savepoint_commit(savepoint)
             except (IntegrityError, DatabaseError) as db_exc:
