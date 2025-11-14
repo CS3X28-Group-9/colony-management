@@ -29,6 +29,13 @@
             <dd class="mouse-data">{{ mouse.box.number }}</dd>
           </div>
 
+          {% if mouse.cull_date %}
+            <div class="mouse-flex">
+              <dt class="mouse-row">Culled</dt>
+              <dd class="mouse-data">{{ mouse.cull_date | date:"M d, Y" }}: {{ mouse.cull_reason }}</dd>
+            </div>
+          {% endif %}
+
           <div class="mouse-flex">
             <dt class="mouse-row">Strain</dt>
             <dd class="mouse-data">{{ mouse.strain }}</dd>
