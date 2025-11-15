@@ -47,3 +47,5 @@ include = ["mousemetrics"]
 exclude = ["**/migrations", ".venv", ".direnv", "mousemetrics/mouseapp/admin.py"]
 typeCheckingMode = "basic"
 reportMissingTypeStubs = false
+venvPath = "."
+venv = ".venv"

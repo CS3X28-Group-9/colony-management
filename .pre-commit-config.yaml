@@ -51,13 +51,10 @@ repos:
         #Git
       - id: no-commit-to-branch
     #Type checking
-  - repo: local
+  - repo: https://github.com/RobertCraigie/pyright-python
+    rev: v1.1.407
     hooks:
-      - id: PyRight
-        name: PyRight
-        entry: uv run pyright .
-        language: system
-        files: \.py$
+      - id: pyright
     #Pytest
   - repo: local
     hooks:
