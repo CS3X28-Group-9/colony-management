@@ -37,6 +37,7 @@ def importable_fields() -> Iterator[Field[Any, Any]]:
 
 def apply_mapping(
     row,
+    fixed_fields: dict[str, str],
     mapping: dict[str, str],
     fields: Iterable[Field],
     project,
@@ -51,7 +52,9 @@ def apply_mapping(
         if not column_name:
             continue
 
-        raw_value = row.get(column_name)
+        if not (raw_value := fixed_fields.get(field.name)):
+            raw_value = row.get(column_name)
+
         if isinstance(field, ForeignKey):
             if field.remote_field.model is Mouse:
                 self_fk_raw[field.name] = raw_value

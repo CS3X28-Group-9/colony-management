@@ -48,7 +48,6 @@ def import_form(request: HttpRequest) -> HttpResponse:
 @login_required
 def import_preview(request: HttpRequest, pk: int) -> HttpResponse:
     import_obj = get_object_or_404(MouseImport, pk=pk)
-    import_obj = get_object_or_404(MouseImport, pk=pk)
     print("PREVIEW → id:", import_obj.pk, "cell_range:", repr(import_obj.cell_range))
 
     try:
@@ -79,21 +78,24 @@ def import_preview(request: HttpRequest, pk: int) -> HttpResponse:
     import_obj.row_count = len(df)
     import_obj.save(update_fields=["row_count"])
 
-    saved_mapping = request.session.get(map_key)
+    saved_initial, saved_fixed, saved_mapping = request.session.get(map_key) or (
+        None,
+        None,
+        None,
+    )
 
     if request.method == "POST":
-        form = ColumnMappingForm(request.POST, columns=columns)
+        form = ColumnMappingForm(
+            request.POST, columns=columns, project=import_obj.project
+        )
         if form.is_valid():
             request.session[map_key] = form.selected_mapping()
             messages.success(request, "Column mapping saved.")
             return redirect("mouse_import:import_preview", pk=import_obj.pk)
     else:
-        initial = {
-            f"map_{field}": column
-            for field, column in (saved_mapping or {}).items()
-            if column
-        }
-        form = ColumnMappingForm(columns=columns, initial=initial)
+        form = ColumnMappingForm(
+            columns=columns, initial=saved_initial, project=import_obj.project
+        )
 
     preview_rows = df.head(PREVIEW_ROW_LIMIT).to_dict(orient="records")
 
@@ -103,6 +105,7 @@ def import_preview(request: HttpRequest, pk: int) -> HttpResponse:
         "rows": preview_rows,
         "form": form,
         "saved_mapping": saved_mapping,
+        "saved_fixed": saved_fixed,
     }
     return render(request, "mouse_import/import_preview.html", context)
 
@@ -114,9 +117,9 @@ def import_commit(request: HttpRequest, pk: int) -> HttpResponse:
     map_key = _map_session_key(import_obj.pk)
 
     raw_df = request.session.get(df_key)
-    mapping = request.session.get(map_key)
+    _, fixed, mapping = request.session.get(map_key) or (None, None, None)
 
-    if raw_df is None or mapping is None:
+    if raw_df is None or mapping is None or fixed is None:
         messages.error(
             request,
             "Missing preview data or column mapping. Please re-upload and save the mapping.",
@@ -131,7 +134,7 @@ def import_commit(request: HttpRequest, pk: int) -> HttpResponse:
             range_expr=import_obj.cell_range,
         )
     )
-    created_ids, updated_ids, errors = importer.run(df, mapping)
+    created_ids, updated_ids, errors = importer.run(df, fixed, mapping)
 
     import_obj.committed = True
     import_obj.row_count = len(df)

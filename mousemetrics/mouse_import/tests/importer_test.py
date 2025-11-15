@@ -8,7 +8,11 @@ from mouseapp.models import Project, Mouse, Strain
 
 
 def run_import(
-    project_id: int, sheet: str, cell_range: str, mapping: dict[str, str]
+    project_id: int,
+    sheet: str,
+    cell_range: str,
+    fixed_fields: dict[str, str],
+    mapping: dict[str, str],
 ) -> tuple[list[int], list[int], list[str]]:
     frame = read_range(Path(__file__).with_name("sheet.xlsx"), sheet, cell_range)
     return Importer(
@@ -17,7 +21,7 @@ def run_import(
             sheet=sheet,
             range_expr=cell_range,
         )
-    ).run(frame, mapping)
+    ).run(frame, fixed_fields, mapping)
 
 
 MAPPING: dict[str, str] = {
@@ -46,7 +50,7 @@ def project(db):
 
 
 def test_basic_import(project):
-    created, updated, errors = run_import(project.id, "Sheet1", "A1:J3", MAPPING)
+    created, updated, errors = run_import(project.id, "Sheet1", "A1:J3", {}, MAPPING)
     assert not errors and not updated
 
     m1, m2 = [Mouse.objects.get(pk=pk) for pk in created]
@@ -68,9 +72,20 @@ def test_basic_import(project):
     assert m2.father == m1
 
 
+def test_fixed_strain(project):
+    created, updated, errors = run_import(
+        project.id, "Sheet1", "A1:J2", {"strain": "some-fixed-strain"}, MAPPING
+    )
+
+    (m_id,) = created
+    mouse = Mouse.objects.get(pk=m_id)
+
+    assert mouse.strain.name == "some-fixed-strain"
+
+
 def test_import_same_tube_different_strain(project):
     """Same tube number but different (strain, tube_number) are different unique mice."""
-    created, updated, errors = run_import(project.id, "Sheet2", "A1:J3", MAPPING)
+    created, updated, errors = run_import(project.id, "Sheet2", "A1:J3", {}, MAPPING)
     assert not errors and not updated
     assert len(created) == 2
 
