@@ -95,8 +95,101 @@ def family_tree_ancestry(mouse: Mouse) -> list[list[Mouse | None]]:
     return ancestry
 
 
-def family_tree(request, mouse):
-    mouse = get_object_or_404(Mouse, pk=mouse)
-    ancestry = family_tree_ancestry(mouse)
+def get_children(mouse: Mouse) -> list[Mouse]:
+    """
+    Return a deduplicated list of this mouse's children.
+    Merges maternal + paternal children and keeps stable ordering.
+    """
+    combined = list(mouse.child_set_m.all()) + list(mouse.child_set_f.all())
 
-    return render(request, "mouseapp/family_tree.html", {"ancestry": ancestry})
+    seen: set[int] = set()
+    ordered: list[Mouse] = []
+
+    for child in combined:
+        if child.id not in seen:
+            seen.add(child.id)
+            ordered.append(child)
+
+    return ordered
+
+
+def calculate_family_width(mouse: Mouse) -> float:
+    """Return the total width needed for this mouse's descendant tree."""
+    children = get_children(mouse)
+
+    if not children:
+        return 1.0
+
+    return sum(calculate_family_width(child) for child in children)
+
+
+def layout_family_tree(mouse: Mouse) -> list[dict]:
+    """Compute the hierarchical layout (x, y, width) for the descendant tree."""
+
+    def layout_subtree(mouse_obj: Mouse, start_x: float, level: int) -> list[dict]:
+        children = get_children(mouse_obj)
+
+        if not children:
+            return [
+                {
+                    "mouse": mouse_obj,
+                    "x": start_x + 0.5,
+                    "y": level,
+                    "width": 1.0,
+                }
+            ]
+
+        # Layout all children left → right
+        current_x = start_x
+        nodes: list[dict] = []
+
+        for child in children:
+            child_width = calculate_family_width(child)
+            nodes.extend(layout_subtree(child, current_x, level + 1))
+            current_x += child_width
+
+        # This parent goes centered above all its children
+        total_width = current_x - start_x
+        nodes.append(
+            {
+                "mouse": mouse_obj,
+                "x": start_x + total_width / 2,
+                "y": level,
+                "width": total_width,
+            }
+        )
+
+        return nodes
+
+    return layout_subtree(mouse, 0.0, 0)
+
+
+def family_tree(request: HttpRequest, mouse: int) -> HttpResponse:
+    center_mouse = get_object_or_404(Mouse, pk=mouse)
+
+    # Full ancestry including center
+    full_ancestry = family_tree_ancestry(center_mouse)
+
+    # Check if descendants exist
+    has_descendants = (
+        center_mouse.child_set_m.exists() or center_mouse.child_set_f.exists()
+    )
+
+    if has_descendants:
+        # Remove last generation so the center mouse isn't duplicated
+        ancestry = full_ancestry[:-1]
+        tree_layout = layout_family_tree(center_mouse)
+    else:
+        ancestry = full_ancestry
+        tree_layout = []
+
+    return render(
+        request,
+        "mouseapp/family_tree.html",
+        {
+            "ancestry": ancestry,
+            "tree_layout": tree_layout,
+            "center_mouse": center_mouse,
+            "has_descendants": has_descendants,
+        },
+    )
