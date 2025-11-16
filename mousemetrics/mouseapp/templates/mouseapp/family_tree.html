@@ -37,7 +37,7 @@
                     {{ mouse.strain }} {{ mouse.tube_number }}
                   </a><br>
                   Box: {{ mouse.box.number }}<br>
-                  Earmark: {{ mouse.earmark }}
+                  Earmark: {{ mouse.earmark }}<br>
                   <a class="float-end text-xs" href="{% url "mouseapp:mouse" id=mouse.id %}">
                     (Details)
                   </a>
@@ -69,7 +69,7 @@
                       {{ node.mouse.strain }} {{ node.mouse.tube_number }}
                     </a><br>
                     Box: {{ node.mouse.box.number }}<br>
-                    Earmark: {{ node.mouse.earmark }}
+                    Earmark: {{ node.mouse.earmark }}<br>
                     <a class="float-end text-xs" href="{% url "mouseapp:mouse" id=node.mouse.id %}">
                       (Details)
                     </a>
