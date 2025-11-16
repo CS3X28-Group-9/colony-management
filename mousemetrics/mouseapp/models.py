@@ -182,6 +182,12 @@ class Mouse(models.Model):
             )
         ]
 
+    def descendant_depth(self) -> int:
+        children = list(self.child_set_m.all()) + list(self.child_set_f.all())
+        if not children:
+            return 0
+        return 1 + max(child.descendant_depth() for child in children)
+
     def has_read_access(self, user: User) -> bool:
         return self.project.has_read_access(user) or user.has_perm("mouseapp.edit_mice")
 
