@@ -109,12 +109,14 @@ def layout_family_tree_with_depth(mouse: Mouse) -> list[dict]:
     def layout_subtree(m: Mouse, start_x: float, level: int):
         children = get_children(m)
         if not children:
-            return [{
-                "mouse": m,
-                "x": start_x + 0.5,
-                "y": level,
-                "depth": 0,
-            }], 1.0
+            return [
+                {
+                    "mouse": m,
+                    "x": start_x + 0.5,
+                    "y": level,
+                    "depth": 0,
+                }
+            ], 1.0
 
         current_x = start_x
         nodes = []
@@ -126,12 +128,14 @@ def layout_family_tree_with_depth(mouse: Mouse) -> list[dict]:
             max_child_depth = max(max_child_depth, subtree_nodes[-1]["depth"])
 
         total_width = current_x - start_x
-        nodes.append({
-            "mouse": m,
-            "x": start_x + total_width / 2,
-            "y": level,
-            "depth": 1 + max_child_depth,
-        })
+        nodes.append(
+            {
+                "mouse": m,
+                "x": start_x + total_width / 2,
+                "y": level,
+                "depth": 1 + max_child_depth,
+            }
+        )
         return nodes, total_width
 
     tree_nodes, _ = layout_subtree(mouse, 0.0, 0)
