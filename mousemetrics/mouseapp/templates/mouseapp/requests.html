@@ -141,10 +141,6 @@
         const highlightedRequest = document.getElementById('request-{{ highlighted_request_id }}');
         if (highlightedRequest) {
           highlightedRequest.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          highlightedRequest.classList.add('animate-pulse');
-          setTimeout(function() {
-            highlightedRequest.classList.remove('animate-pulse');
-          }, 2000);
         }
       });
     </script>

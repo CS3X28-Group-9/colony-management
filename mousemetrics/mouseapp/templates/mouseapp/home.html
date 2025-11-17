@@ -14,7 +14,14 @@
               {% endfor %}
 
               {% for project in user.project_set.all %}
-                <li><a href="{% url 'mouseapp:project' project.id %}">Project lead by {{ project.lead }}</a></li>
+                <li>
+                  <a
+                    href="{% url 'mouseapp:project' project.id %}"
+                    class="btn-secondary w-full mb-1"
+                  >
+                    Project led by {{ project.lead }}
+                  </a>
+                </li>
               {% endfor %}
             </ul>
 

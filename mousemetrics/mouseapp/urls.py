@@ -16,17 +16,17 @@ urlpatterns = [
     path("family_tree/<int:mouse>/", views.family_tree, name="family_tree"),
     path("requests/", views.requests_list, name="requests"),
     path(
-        "requests/breeding/create/",
+        "requests/create/breeding/",
         views.create_breeding_request,
         name="create_breeding_request",
     ),
     path(
-        "requests/culling/create/",
+        "requests/create/culling/",
         views.create_culling_request,
         name="create_culling_request",
     ),
     path(
-        "requests/transfer/create/",
+        "requests/create/transfer/",
         views.create_transfer_request,
         name="create_transfer_request",
     ),
