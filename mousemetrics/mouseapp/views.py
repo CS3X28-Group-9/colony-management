@@ -71,8 +71,6 @@ def edit_project(request: AuthedRequest, id: int) -> HttpResponse:
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(f"/project/{id}")
-        else:
-            print(form.errors)
     else:
         form = ProjectForm(instance=project)
 
