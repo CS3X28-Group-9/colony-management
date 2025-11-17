@@ -194,6 +194,7 @@ def get_children(mouse: Mouse) -> list[Mouse]:
             ordered.append(child)
     return ordered
 
+
 def get_descendant_depth(mouse: Mouse) -> int:
     children = get_children(mouse)
     if not children:
