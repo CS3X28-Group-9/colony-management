@@ -3,6 +3,12 @@ from django.test import Client
 from django.urls import reverse
 from django.contrib.auth.models import User
 from .forms import RegistrationForm
+from .models import Strain
+
+
+def ensure_strain(name: str = "C57BL/6") -> Strain:
+    strain, _ = Strain.objects.get_or_create(name=name)
+    return strain
 
 
 @pytest.mark.django_db
@@ -143,7 +149,7 @@ def test_create_request(client: Client):
         date_of_birth="2024-01-01",
         tube_number=1,
         box=box,
-        strain="C57BL/6",
+        strain=ensure_strain(),
     )
 
     url = reverse("mouseapp:create_breeding_request")
@@ -200,7 +206,7 @@ def test_request_status_change_permissions(client: Client):
         date_of_birth="2024-01-01",
         tube_number=1,
         box=box,
-        strain="C57BL/6",
+        strain=ensure_strain(),
     )
 
     request_obj = Request.objects.create(
@@ -260,7 +266,7 @@ def test_request_status_change_requires_mouse_project_access(client: Client):
         date_of_birth="2024-01-01",
         tube_number=1,
         box=box,
-        strain="C57BL/6",
+        strain=ensure_strain(),
     )
 
     request_obj = Request.objects.create(
@@ -325,7 +331,7 @@ def test_notification_created_on_status_change(client: Client):
         date_of_birth="2024-01-01",
         tube_number=1,
         box=box,
-        strain="C57BL/6",
+        strain=ensure_strain(),
     )
 
     request_obj = Request.objects.create(
