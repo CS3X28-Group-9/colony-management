@@ -108,9 +108,9 @@
         <div class="flex justify-between items-center">
           <h3 class="default-header">Requests for this Mouse</h3>
           <div class="flex gap-2">
-            <a href="{% url 'mouseapp:create_breeding_request' %}?mouse={{ mouse.id }}" class="btn-primary text-sm font-semibold">New Breeding Request</a>
-            <a href="{% url 'mouseapp:create_culling_request' %}?mouse={{ mouse.id }}" class="btn-primary text-sm font-semibold">New Culling Request</a>
-            <a href="{% url 'mouseapp:create_transfer_request' %}?mouse={{ mouse.id }}" class="btn-primary text-sm font-semibold">New Transfer Request</a>
+            <a href="{% url 'mouseapp:create_breeding_request' %}?mouse={{ mouse.id }}" class="btn-primary text-sm font-semibold text-center">New Breeding Request</a>
+            <a href="{% url 'mouseapp:create_culling_request' %}?mouse={{ mouse.id }}" class="btn-primary text-sm font-semibold text-center">New Culling Request</a>
+            <a href="{% url 'mouseapp:create_transfer_request' %}?mouse={{ mouse.id }}" class="btn-primary text-sm font-semibold text-center">New Transfer Request</a>
           </div>
         </div>
       </div>

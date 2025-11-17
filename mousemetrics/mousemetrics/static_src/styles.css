@@ -132,11 +132,7 @@
   }
 
   .text-muted-small {
-    @apply text-xs text-gray-500;
-  }
-
-  .link-primary {
-    @apply text-blue-600 hover:text-blue-800;
+    @apply text-xs text-gray-600;
   }
 
   .error-message {
