@@ -83,6 +83,15 @@
           >
             View Family Tree
           </a>
+
+          {% if write_access %}
+            <a
+              href="{% url 'mouseapp:edit_mouse' mouse.id %}"
+              class="inline-flex items-center px-4 py-2 btn-primary"
+            >
+              Edit
+            </a>
+          {% endif %}
         </div>
       </div>
     </div>
