@@ -166,6 +166,9 @@ class Mouse(models.Model):
     earmark = models.CharField(
         max_length=16, blank=True, validators=[EARMARK_VALIDATOR]
     )
+    cull_date = models.DateField(blank=True, null=True)
+    cull_reason = models.TextField(blank=True, null=True)
+
     notes = models.TextField(blank=True)
 
     child_set_m: models.Manager
