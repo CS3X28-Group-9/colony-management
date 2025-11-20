@@ -13,6 +13,8 @@ urlpatterns = [
     path("mouse/<int:id>/edit/", views.edit_mouse, name="edit_mouse"),
     path("project/<int:id>/", views.project, name="project"),
     path("project/<int:id>/edit/", views.edit_project, name="edit_project"),
+    path("project/<int:id>/invite-member/", views.invite_member, name="invite_member"),
+    path("project/<int:id>/remove-member/", views.remove_member, name="remove_member"),
     path("register/", views.register, name="register"),
     path("family_tree/<int:mouse>/", views.family_tree, name="family_tree"),
     # ========================
