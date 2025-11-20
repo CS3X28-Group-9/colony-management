@@ -86,6 +86,20 @@
         >
           Edit
         </a>
+
+        <a
+          href="{% url 'mouseapp:invite_member' project.id %}"
+          class="inline-flex items-center px-4 py-2 btn-primary"
+        >
+          Invite member
+        </a>
+
+        <a
+          href="{% url 'mouseapp:remove_member' project.id %}"
+          class="inline-flex items-center px-4 py-2 btn-primary"
+        >
+          Remove member
+        </a>
       </div>
     {% endif %}
   </div>

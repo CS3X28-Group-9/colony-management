@@ -3,11 +3,18 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.views.decorators.http import require_safe
 from django.conf import settings
 
-from .forms import RegistrationForm, CustomAuthenticationForm, MouseForm, ProjectForm
+from .forms import (
+    RegistrationForm,
+    CustomAuthenticationForm,
+    InviteMemberForm,
+    MouseForm,
+    ProjectForm,
+    RemoveMemberForm,
+)
 from .models import Mouse, Project
 
 
@@ -75,6 +82,46 @@ def edit_project(request: AuthedRequest, id: int) -> HttpResponse:
         form = ProjectForm(instance=project)
 
     return render(request, "mouseapp/edit_project.html", {"form": form})
+
+
+@login_required
+def invite_member(request: AuthedRequest, id: int) -> HttpResponse:
+    project: Project = get_object_or_404(Project, id=id)
+    if not project.has_write_access(request.user):
+        raise PermissionDenied()
+
+    if request.method == "POST":
+        form = InviteMemberForm(request.POST)
+        if form.is_valid():
+            try:
+                user = User.objects.get(email=form.cleaned_data["user"])
+                print(user)
+            except ObjectDoesNotExist:
+                print("no such user")
+
+            return HttpResponseRedirect(f"/project/{id}")
+    else:
+        form = InviteMemberForm()
+
+    return render(request, "mouseapp/invite_member.html", {"form": form})
+
+
+@login_required
+def remove_member(request: AuthedRequest, id: int) -> HttpResponse:
+    project: Project = get_object_or_404(Project, id=id)
+    if not project.has_write_access(request.user):
+        raise PermissionDenied()
+
+    if request.method == "POST":
+        form = RemoveMemberForm(project, request.POST)
+        if form.is_valid():
+            user = User.objects.get(id=form.cleaned_data["user"])
+            project.researchers.remove(user)
+            return HttpResponseRedirect(f"/project/{id}")
+    else:
+        form = RemoveMemberForm(project)
+
+    return render(request, "mouseapp/remove_member.html", {"form": form})
 
 
 def login_view(request: HttpRequest) -> HttpResponse:
