@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import SET_NULL
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
+from django.urls import reverse
 
 
 class Project(models.Model):
@@ -44,6 +45,9 @@ class Project(models.Model):
 
     def __str__(self) -> str:
         return f"Project {self.name}"
+
+    def get_absolute_url(self) -> str:
+        return reverse("mouseapp:project", args=[self.pk])
 
 
 class StudyPlan(models.Model):
@@ -201,6 +205,9 @@ class Mouse(models.Model):
 
     def __str__(self) -> str:
         return f"{self.strain} {self.tube_number}"
+
+    def get_absolute_url(self) -> str:
+        return reverse("mouseapp:mouse", args=[self.pk])
 
 
 class Request(models.Model):
