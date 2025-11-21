@@ -14,7 +14,6 @@ from django.contrib import messages
 from django.db.models import Q
 from django.core.paginator import Paginator
 from datetime import date
-import json
 
 from .forms import (
     RegistrationForm,
