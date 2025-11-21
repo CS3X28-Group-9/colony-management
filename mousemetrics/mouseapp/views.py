@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.http import HttpRequest, HttpResponse
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -10,7 +10,6 @@ from django.views.decorators.http import require_safe
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from django.urls import reverse
 
 from .forms import (
     RegistrationForm,
@@ -53,7 +52,7 @@ def edit_mouse(request: AuthedRequest, id: int) -> HttpResponse:
         form = MouseForm(request.POST, instance=mouse)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(f"/mouse/{id}")
+            return redirect(mouse)
     else:
         form = MouseForm(instance=mouse)
 
@@ -82,7 +81,7 @@ def edit_project(request: AuthedRequest, id: int) -> HttpResponse:
         form = ProjectForm(request.POST, instance=project)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(f"/project/{id}")
+            return redirect(project)
     else:
         form = ProjectForm(instance=project)
 
@@ -123,7 +122,7 @@ def invite_member(request: AuthedRequest, id: int) -> HttpResponse:
             except ObjectDoesNotExist:
                 pass
 
-            return HttpResponseRedirect(reverse("mouseapp:project", args=[id]))
+            return redirect(project)
     else:
         form = InviteMemberForm()
 
@@ -141,7 +140,7 @@ def remove_member(request: AuthedRequest, id: int) -> HttpResponse:
         if form.is_valid():
             user = User.objects.get(id=form.cleaned_data["user"])
             project.researchers.remove(user)
-            return HttpResponseRedirect(f"/project/{id}")
+            return redirect(project)
     else:
         form = RemoveMemberForm(project)
 
@@ -169,7 +168,7 @@ def join_project(request: AuthedRequest, token: str) -> HttpResponse:
         raise PermissionDenied from e
 
     project.researchers.add(request.user)
-    return HttpResponseRedirect(reverse("mouseapp:project", args=[project.pk]))
+    return redirect(project)
 
 
 def login_view(request: HttpRequest) -> HttpResponse:
