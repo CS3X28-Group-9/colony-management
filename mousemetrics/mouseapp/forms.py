@@ -204,7 +204,8 @@ class RequestForm(forms.ModelForm):
     def _set_mouse_queryset(self, project: Project, user: User) -> None:
         """Set the mouse queryset based on the selected project."""
         accessible_mice = [
-            mouse for mouse in Mouse.objects.filter(project=project)
+            mouse
+            for mouse in Mouse.objects.filter(project=project)
             if mouse.has_read_access(user)
         ]
         mouse_field = self.fields["mouse"]
@@ -219,7 +220,9 @@ class RequestForm(forms.ModelForm):
             raise ValidationError("A mouse must be selected.")
         project = self.cleaned_data.get("project")
         if project and mouse.project != project:
-            raise ValidationError("The selected mouse does not belong to the selected project.")
+            raise ValidationError(
+                "The selected mouse does not belong to the selected project."
+            )
         return mouse
 
 
