@@ -125,3 +125,15 @@ class ProjectForm(forms.ModelForm):
         fields = [
             "name",
         ]
+
+
+class InviteMemberForm(forms.Form):
+    user = forms.EmailField()
+
+
+class RemoveMemberForm(forms.Form):
+    def __init__(self, project, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["user"] = forms.ChoiceField(
+            choices=[(u.id, str(u)) for u in project.researchers.all()]
+        )
