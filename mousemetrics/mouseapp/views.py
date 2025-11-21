@@ -151,12 +151,21 @@ def remove_member(request: AuthedRequest, id: int) -> HttpResponse:
 @require_safe
 def join_project(request: AuthedRequest, token: str) -> HttpResponse:
     data = signing.loads(token)
-    if data["user"] != request.user.pk:
-        raise PermissionDenied()
+    try:
+        user_id = data["user"]
+        project_id = data["project"]
+    except KeyError as e:
+        raise PermissionDenied from e
 
-    project = Project.objects.get(pk=data["project"])
-    user: User = request.user
-    project.researchers.add(user)
+    if user_id != request.user.pk:
+        raise PermissionDenied
+
+    try:
+        project = Project.objects.get(Project, pk=project_id)
+    except Project.DoesNotExist as e:
+        raise PermissionDenied from e
+
+    project.researchers.add(request.user)
     return HttpResponseRedirect(reverse("mouseapp:project", args=[project.pk]))
 
 
