@@ -4,8 +4,13 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
+from django.core.mail import send_mail
+from django.core import signing
 from django.views.decorators.http import require_safe
 from django.conf import settings
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.urls import reverse
 
 from .forms import (
     RegistrationForm,
@@ -93,13 +98,31 @@ def invite_member(request: AuthedRequest, id: int) -> HttpResponse:
     if request.method == "POST":
         form = InviteMemberForm(request.POST)
         if form.is_valid():
+            email = form.cleaned_data["user"]
             try:
-                user = User.objects.get(email=form.cleaned_data["user"])
-                print(user)
+                user = User.objects.get(email=email)
+                token = signing.dumps({"user": user.pk, "project": project.pk})
+                mail_html = render_to_string(
+                    "mouseapp/invite_email.html",
+                    context={
+                        "token": token,
+                        "protocol": request.scheme,
+                        "domain": request.get_host(),
+                    },
+                )
+                mail_text = strip_tags(mail_html)
+                send_mail(
+                    subject=f"Invitation to {project.name}",
+                    message=mail_text,
+                    from_email=None,
+                    recipient_list=[email],
+                    fail_silently=False,
+                    html_message=mail_html,
+                )
             except ObjectDoesNotExist:
-                print("no such user")
+                pass
 
-            return HttpResponseRedirect(f"/project/{id}")
+            return HttpResponseRedirect(reverse("mouseapp:project", args=[id]))
     else:
         form = InviteMemberForm()
 
@@ -122,6 +145,19 @@ def remove_member(request: AuthedRequest, id: int) -> HttpResponse:
         form = RemoveMemberForm(project)
 
     return render(request, "mouseapp/remove_member.html", {"form": form})
+
+
+@login_required
+@require_safe
+def join_project(request: AuthedRequest, token: str) -> HttpResponse:
+    data = signing.loads(token)
+    if data["user"] != request.user.pk:
+        raise PermissionDenied()
+
+    project = Project.objects.get(pk=data["project"])
+    user: User = request.user
+    project.researchers.add(user)
+    return HttpResponseRedirect(reverse("mouseapp:project", args=[project.pk]))
 
 
 def login_view(request: HttpRequest) -> HttpResponse:
