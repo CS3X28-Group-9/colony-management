@@ -150,7 +150,9 @@ def remove_member(request: AuthedRequest, id: int) -> HttpResponse:
 @login_required
 @require_safe
 def join_project(request: AuthedRequest, token: str) -> HttpResponse:
-    data = signing.loads(token)
+    SECONDS_IN_MONTH = 60 * 60 * 24 * 31
+
+    data = signing.loads(token, max_age=SECONDS_IN_MONTH)
     try:
         user_id = data["user"]
         project_id = data["project"]
