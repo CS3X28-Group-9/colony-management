@@ -175,6 +175,7 @@ def test_create_request(client: Client):
     response = client.post(
         url,
         {
+            "project": project.pk,
             "mouse": mouse.pk,
             "kind": "B",
             "details": "Test breeding request",

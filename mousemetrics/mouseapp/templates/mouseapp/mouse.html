@@ -137,7 +137,7 @@
                       Created by {{ req.creator.get_full_name|default:req.creator.username }} on {{ req.created_at|date:"M d, Y" }}
                     </p>
                   </div>
-                  <a href="{% url 'mouseapp:requests' %}?id={{ req.id }}" class="btn-secondary text-sm font-semibold ml-2">View</a>
+                  <a href="{% url 'mouseapp:requests' %}#request-{{ req.id }}" class="btn-secondary text-sm font-semibold ml-2">View</a>
                 </div>
               </li>
             {% endfor %}
