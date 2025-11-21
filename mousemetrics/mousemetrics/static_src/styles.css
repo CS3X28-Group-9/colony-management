@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
 @layer components {
   .btn-primary {
     @apply inline-flex items-center justify-center
@@ -91,7 +95,7 @@
   }
 
   .input {
-    @apply w-full px-3 py-2 border border-neutral-300 rounded-lg
+    @apply w-full px-3 py-2 border border-neutral-300 rounded-lg bg-white
     focus:outline-none focus:ring-2 focus:ring-neutral-400;
   }
 
@@ -137,5 +141,50 @@
 
   .error-message {
     @apply mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded;
+  }
+
+  /* Request highlighting using :target pseudo-class */
+  li:target {
+    @apply border-blue-500 border-2 bg-blue-50 ring-2 ring-blue-300;
+  }
+}
+
+/* Notification dropdown checkbox trick - outside @layer for proper compilation */
+.notification-checkbox:not(:checked) ~ .notification-menu {
+  display: none;
+}
+
+.notification-checkbox:checked ~ .notification-menu {
+  display: block;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.notification-checkbox:not(:checked) ~ .notification-menu ~ .notification-overlay {
+  display: none;
+}
+
+.notification-checkbox:checked ~ .notification-menu ~ .notification-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.notification-menu {
+  transition: opacity 0.2s;
+  pointer-events: auto;
+}
+
+#notification-container label[for="notification-toggle"] {
+  pointer-events: auto;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }

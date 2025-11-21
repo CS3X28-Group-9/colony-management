@@ -48,7 +48,7 @@
       {% if requests %}
         <ul class="space-y-3">
           {% for req in requests %}
-            <li id="request-{{ req.id }}" class="bg-white border rounded p-4 {% if highlighted_request_id == req.id %}border-blue-500 border-2 bg-blue-50 ring-2 ring-blue-300{% else %}border-neutral-300{% endif %}">
+            <li id="request-{{ req.id }}" class="bg-white border rounded p-4 border-neutral-300 scroll-mt-24">
               <div class="flex justify-between items-start">
                 <div class="flex-1">
                   <div class="flex items-center gap-3 mb-2">
@@ -134,15 +134,4 @@
       {% endif %}
     </div>
   </div>
-
-  {% if highlighted_request_id %}
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const highlightedRequest = document.getElementById('request-{{ highlighted_request_id }}');
-        if (highlightedRequest) {
-          highlightedRequest.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      });
-    </script>
-  {% endif %}
 {% endblock %}

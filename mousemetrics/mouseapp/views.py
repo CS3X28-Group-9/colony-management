@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -383,7 +383,8 @@ def _prepare_request_form(
             request_obj = form.save(commit=False)
             request_obj.creator = request.user
             request_obj.kind = request_code
-            if request_obj.mouse:
+            # Project is set from the form field, but ensure it matches the mouse's project
+            if request_obj.mouse and request_obj.project != request_obj.mouse.project:
                 request_obj.project = request_obj.mouse.project
             request_obj.save()
 
@@ -405,6 +406,8 @@ def _prepare_request_form(
                 mouse = Mouse.objects.get(id=mouse_id)
                 if mouse.has_read_access(request.user):
                     form.fields["mouse"].initial = mouse.pk
+                    form.fields["project"].initial = mouse.project.pk
+                    form._set_mouse_queryset(mouse.project, request.user)
                 else:
                     mouse_id = None
             except Mouse.DoesNotExist:
@@ -523,6 +526,25 @@ def requests_list(request: AuthedRequest) -> HttpResponse:
 
     page_obj = paginator.get_page(page_number)
 
+    # If we have a highlighted request, redirect with URL fragment for CSS-only scrolling
+    if highlighted_request_id:
+        from django.http import HttpResponseRedirect
+        from django.urls import reverse
+
+        query_params = []
+        if status_filter:
+            query_params.append(f"status={status_filter}")
+        if type_filter:
+            query_params.append(f"type={type_filter}")
+        if page_obj.number != 1:
+            query_params.append(f"page={page_obj.number}")
+        query_string = "&".join(query_params)
+        url = reverse("mouseapp:requests")
+        if query_string:
+            url = f"{url}?{query_string}"
+        url = f"{url}#request-{highlighted_request_id}"
+        return HttpResponseRedirect(url)
+
     context = {
         "page_obj": page_obj,
         "requests": page_obj,
@@ -584,14 +606,50 @@ def mark_notification_read(
     notification = get_object_or_404(
         Notification, id=notification_id, user=request.user
     )
-    notification.read = True
-    notification.save()
+    notification.delete()
     return redirect("mouseapp:home")
 
 
 @login_required
 @require_http_methods(["POST"])
 def mark_all_notifications_read(request: AuthedRequest) -> HttpResponse:
-    Notification.objects.filter(user=request.user, read=False).update(read=True)
-    messages.success(request, "All notifications marked as read.")
+    count = Notification.objects.filter(user=request.user).count()
+    Notification.objects.filter(user=request.user).delete()
+    messages.success(request, f"{count} notification(s) cleared.")
     return redirect("mouseapp:home")
+
+
+@login_required
+@require_safe
+def get_mice_for_project(request: AuthedRequest) -> JsonResponse:
+    """API endpoint to get mice for a specific project."""
+    project_id = request.GET.get("project")
+    if not project_id:
+        return JsonResponse({"error": "Project ID required"}, status=400)
+
+    try:
+        project = Project.objects.get(pk=project_id)
+        if not project.has_read_access(request.user):
+            return JsonResponse({"error": "Permission denied"}, status=403)
+
+        accessible_mice = [
+            mouse
+            for mouse in Mouse.objects.filter(project=project)
+            if mouse.has_read_access(request.user)
+        ]
+
+        mice_data = [
+            {
+                "id": mouse.pk,  # type: ignore[reportAttributeAccessIssue]
+                "strain": str(mouse.strain),
+                "tube_number": mouse.tube_number,
+                "display": f"{mouse.strain} - Tube {mouse.tube_number}",
+            }
+            for mouse in accessible_mice
+        ]
+
+        return JsonResponse({"mice": mice_data})
+    except Project.DoesNotExist:
+        return JsonResponse({"error": "Project not found"}, status=404)
+    except ValueError:
+        return JsonResponse({"error": "Invalid project ID"}, status=400)

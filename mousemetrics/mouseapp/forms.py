@@ -35,7 +35,6 @@ class CustomAuthenticationForm(AuthenticationForm):
     @override
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
-        # Style password field
         self.fields["password"].widget.attrs.update(
             {"class": "input", "autocomplete": "current-password"}
         )

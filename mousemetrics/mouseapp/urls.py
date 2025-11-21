@@ -46,6 +46,11 @@ urlpatterns = [
         name="mark_all_notifications_read",
     ),
     path(
+        "api/mice/",
+        views.get_mice_for_project,
+        name="get_mice_for_project",
+    ),
+    path(
         "login/",
         views.login_view,
         name="login",
