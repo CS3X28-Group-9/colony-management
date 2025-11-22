@@ -234,22 +234,13 @@ def login_view(request: HttpRequest) -> HttpResponse:
         if form.is_valid():
             remember_me = form.cleaned_data.get("remember_me")
             if not remember_me:
-                request.session.set_expiry(0)
-                auth_login(request, form.get_user())
+                request.session.set_expiry(0)  # Session expires on browser close
+            auth_login(request, form.get_user())
             return redirect("mouseapp:home")
     else:
         form = CustomAuthenticationForm()
 
     return render(request, "accounts/login.html", {"form": form})
-
-
-@login_required
-@require_http_methods(["POST"])
-def logout_view(request: AuthedRequest) -> HttpResponse:
-    from django.contrib.auth import logout
-
-    logout(request)
-    return redirect("mouseapp:home")
 
 
 def register(request: HttpRequest) -> HttpResponse:
@@ -632,7 +623,6 @@ def mark_all_notifications_read(request: AuthedRequest) -> HttpResponse:
 
 
 @login_required
-@require_safe
 def get_mice_for_project(request: AuthedRequest) -> JsonResponse:
     """API endpoint to get mice for a specific project."""
     project_id = request.GET.get("project")
