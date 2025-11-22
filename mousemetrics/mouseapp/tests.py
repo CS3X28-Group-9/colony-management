@@ -3,12 +3,68 @@ from django.test import Client
 from django.urls import reverse
 from django.contrib.auth.models import User
 from .forms import RegistrationForm
-from .models import Strain
+from .models import Strain, Project, Box, Mouse, Membership
 
 
 def ensure_strain(name: str = "C57BL/6") -> Strain:
     strain, _ = Strain.objects.get_or_create(name=name)
     return strain
+
+
+@pytest.fixture
+def user(db) -> User:
+    """Create a test user (not logged in)."""
+    return User.objects.create_user(
+        username="testuser@example.com",
+        email="testuser@example.com",
+        password="password123",
+        first_name="Test",
+        last_name="User",
+    )
+
+
+@pytest.fixture
+def logged_in_user(db, client: Client, user: User) -> User:
+    """Create and login a test user."""
+    client.force_login(user)
+    return user
+
+
+@pytest.fixture
+def project(db, user: User) -> Project:
+    """Create a test project with the user as a member."""
+    project = Project.objects.create(
+        name="Test Project",
+        start_date="2024-01-01",
+        license_constraints="Test constraints",
+        lead=user,
+    )
+    Membership.objects.create(project=project, user=user)
+    return project
+
+
+@pytest.fixture
+def box(db, project: Project) -> Box:
+    """Create a test box for a project."""
+    return Box.objects.create(
+        number="1",
+        location="E",
+        box_type="S",
+        project=project,
+    )
+
+
+@pytest.fixture
+def mouse(db, project: Project, box: Box) -> Mouse:
+    """Create a test mouse."""
+    return Mouse.objects.create(
+        project=project,
+        sex="M",
+        date_of_birth="2024-01-01",
+        tube_number=1,
+        box=box,
+        strain=ensure_strain(),
+    )
 
 
 @pytest.mark.django_db
@@ -119,38 +175,11 @@ def test_create_breeding_request_requires_login(client: Client):
 
 
 @pytest.mark.django_db
-def test_create_request(client: Client):
+def test_create_request(
+    client: Client, logged_in_user: User, project: Project, mouse: Mouse
+):
     """Test creating a breeding request."""
-    from .models import Request, Mouse, Project, Box, Membership
-    from django.contrib.auth.models import User
-
-    user = User.objects.create_user(
-        username="requester@example.com",
-        email="requester@example.com",
-        password="password123",
-    )
-    client.force_login(user)
-
-    project = Project.objects.create(
-        name="Test Project",
-        start_date="2024-01-01",
-        license_constraints="Test constraints",
-    )
-    Membership.objects.create(project=project, user=user)
-    box = Box.objects.create(
-        number="1",
-        location="E",
-        box_type="S",
-        project=project,
-    )
-    mouse = Mouse.objects.create(
-        project=project,
-        sex="M",
-        date_of_birth="2024-01-01",
-        tube_number=1,
-        box=box,
-        strain=ensure_strain(),
-    )
+    from .models import Request
 
     url = reverse("mouseapp:create_breeding_request")
     response = client.post(
@@ -164,18 +193,19 @@ def test_create_request(client: Client):
     )
 
     assert response.status_code == 302
-    assert Request.objects.filter(creator=user, kind="B").exists()
-    request_obj = Request.objects.get(creator=user, kind="B")
+    assert Request.objects.filter(creator=logged_in_user, kind="B").exists()
+    request_obj = Request.objects.get(creator=logged_in_user, kind="B")
     assert request_obj.mouse == mouse
     assert request_obj.status == "pending"
     assert request_obj.details == "Test breeding request"
 
 
 @pytest.mark.django_db
-def test_request_status_change_permissions(client: Client):
+def test_request_status_change_permissions(
+    client: Client, project: Project, mouse: Mouse
+):
     """Test that only authorized users can change request status."""
-    from .models import Request, Mouse, Project, Box
-    from django.contrib.auth.models import User
+    from .models import Request
 
     regular_user = User.objects.create_user(
         username="regular@example.com",
@@ -189,26 +219,8 @@ def test_request_status_change_permissions(client: Client):
         is_superuser=True,
     )
 
-    project = Project.objects.create(
-        name="Test Project",
-        start_date="2024-01-01",
-        license_constraints="Test constraints",
-        lead=admin_user,
-    )
-    box = Box.objects.create(
-        number="1",
-        location="E",
-        box_type="S",
-        project=project,
-    )
-    mouse = Mouse.objects.create(
-        project=project,
-        sex="M",
-        date_of_birth="2024-01-01",
-        tube_number=1,
-        box=box,
-        strain=ensure_strain(),
-    )
+    project.lead = admin_user
+    project.save()
 
     request_obj = Request.objects.create(
         creator=regular_user,
@@ -232,10 +244,12 @@ def test_request_status_change_permissions(client: Client):
 
 
 @pytest.mark.django_db
-def test_request_status_change_requires_mouse_project_access(client: Client):
+def test_request_status_change_requires_mouse_project_access(
+    client: Client, project: Project, mouse: Mouse
+):
     """Test that users cannot change request status without mouse/project access."""
-    from .models import Request, Mouse, Project, Box, Membership
-    from django.contrib.auth.models import User, Permission
+    from .models import Request, Membership
+    from django.contrib.auth.models import Permission
     from django.contrib.contenttypes.models import ContentType
 
     requester = User.objects.create_user(
@@ -249,26 +263,8 @@ def test_request_status_change_requires_mouse_project_access(client: Client):
         password="password123",
     )
 
-    project = Project.objects.create(
-        name="Test Project",
-        start_date="2024-01-01",
-        license_constraints="Test constraints",
-        lead=requester,
-    )
-    box = Box.objects.create(
-        number="1",
-        location="E",
-        box_type="S",
-        project=project,
-    )
-    mouse = Mouse.objects.create(
-        project=project,
-        sex="M",
-        date_of_birth="2024-01-01",
-        tube_number=1,
-        box=box,
-        strain=ensure_strain(),
-    )
+    project.lead = requester
+    project.save()
 
     request_obj = Request.objects.create(
         creator=requester,
@@ -298,10 +294,11 @@ def test_request_status_change_requires_mouse_project_access(client: Client):
 
 
 @pytest.mark.django_db
-def test_notification_created_on_status_change(client: Client):
+def test_notification_created_on_status_change(
+    client: Client, project: Project, mouse: Mouse
+):
     """Test that notifications are created when request status changes."""
-    from .models import Request, Mouse, Project, Box, Notification
-    from django.contrib.auth.models import User
+    from .models import Request, Notification
 
     requester = User.objects.create_user(
         username="requester@example.com",
@@ -313,26 +310,6 @@ def test_notification_created_on_status_change(client: Client):
         email="admin@example.com",
         password="password123",
         is_superuser=True,
-    )
-
-    project = Project.objects.create(
-        name="Test Project",
-        start_date="2024-01-01",
-        license_constraints="Test constraints",
-    )
-    box = Box.objects.create(
-        number="1",
-        location="E",
-        box_type="S",
-        project=project,
-    )
-    mouse = Mouse.objects.create(
-        project=project,
-        sex="M",
-        date_of_birth="2024-01-01",
-        tube_number=1,
-        box=box,
-        strain=ensure_strain(),
     )
 
     request_obj = Request.objects.create(
@@ -367,16 +344,9 @@ def test_requests_page_requires_login(client: Client):
 
 
 @pytest.mark.django_db
-def test_notifications_only_visible_to_authenticated_users(client: Client):
+def test_notifications_only_visible_to_authenticated_users(client: Client, user: User):
     """Test that notifications are handled correctly for authenticated and unauthenticated users."""
     from .models import Notification
-    from django.contrib.auth.models import User
-
-    user = User.objects.create_user(
-        username="user@example.com",
-        email="user@example.com",
-        password="password123",
-    )
 
     Notification.objects.create(
         user=user,
