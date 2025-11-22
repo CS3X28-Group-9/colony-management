@@ -293,24 +293,6 @@
   .float-end {
     float: inline-end;
   }
-  .container {
-    width: 100%;
-    @media (width >= 40rem) {
-      max-width: 40rem;
-    }
-    @media (width >= 48rem) {
-      max-width: 48rem;
-    }
-    @media (width >= 64rem) {
-      max-width: 64rem;
-    }
-    @media (width >= 80rem) {
-      max-width: 80rem;
-    }
-    @media (width >= 96rem) {
-      max-width: 96rem;
-    }
-  }
   .m-0 {
     margin: calc(var(--spacing) * 0);
   }
@@ -873,12 +855,6 @@
   .underline {
     text-decoration-line: underline;
   }
-  .opacity-0 {
-    opacity: 0%;
-  }
-  .opacity-100 {
-    opacity: 100%;
-  }
   .shadow-lg {
     --tw-shadow: 0 10px 15px -3px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 4px 6px -4px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
@@ -1033,13 +1009,6 @@
     &:hover {
       @media (hover: hover) {
         color: var(--color-neutral-600);
-      }
-    }
-  }
-  .hover\:text-neutral-700 {
-    &:hover {
-      @media (hover: hover) {
-        color: var(--color-neutral-700);
       }
     }
   }
@@ -1518,7 +1487,6 @@ html {
   inset: 0;
   z-index: 30;
   pointer-events: auto;
-  cursor: pointer;
 }
 .notification-menu {
   transition: opacity 0.2s;
