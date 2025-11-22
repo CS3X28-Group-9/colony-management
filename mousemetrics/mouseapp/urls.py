@@ -5,9 +5,6 @@ from . import views
 app_name = "mouseapp"
 
 urlpatterns = [
-    # ========================
-    # Core app views
-    # ========================
     path("", views.home, name="home"),
     path("mouse/<int:id>/", views.mouse, name="mouse"),
     path("mouse/<int:id>/edit/", views.edit_mouse, name="edit_mouse"),
@@ -15,10 +12,42 @@ urlpatterns = [
     path("project/<int:id>/edit/", views.edit_project, name="edit_project"),
     path("register/", views.register, name="register"),
     path("family_tree/<int:mouse>/", views.family_tree, name="family_tree"),
-    # ========================
-    # Authentication routes
-    # ========================
-    # Using Django’s built-in auth views but pointing to our custom templates in /templates/accounts/
+    path("requests/", views.requests_list, name="requests"),
+    path(
+        "requests/create/breeding/",
+        views.create_breeding_request,
+        name="create_breeding_request",
+    ),
+    path(
+        "requests/create/culling/",
+        views.create_culling_request,
+        name="create_culling_request",
+    ),
+    path(
+        "requests/create/transfer/",
+        views.create_transfer_request,
+        name="create_transfer_request",
+    ),
+    path(
+        "requests/<int:request_id>/update-status/",
+        views.update_request_status,
+        name="update_request_status",
+    ),
+    path(
+        "notifications/<int:notification_id>/read/",
+        views.mark_notification_read,
+        name="mark_notification_read",
+    ),
+    path(
+        "notifications/mark-all-read/",
+        views.mark_all_notifications_read,
+        name="mark_all_notifications_read",
+    ),
+    path(
+        "api/mice/",
+        views.get_mice_for_project,
+        name="get_mice_for_project",
+    ),
     path(
         "login/",
         views.login_view,
@@ -26,7 +55,7 @@ urlpatterns = [
     ),
     path(
         "logout/",
-        auth_views.LogoutView.as_view(next_page="mouseapp:home"),
+        views.logout_view,
         name="logout",
     ),
     path(
