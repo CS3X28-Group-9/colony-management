@@ -492,10 +492,14 @@ def requests_list(request: AuthedRequest) -> HttpResponse:
     if request.user.is_superuser or request.user.has_perm("mouseapp.approve_request"):
         user_requests = Request.objects.all()
     else:
-        user_requests = Request.objects.filter(creator=request.user)
         user_projects = Project.objects.filter(
             Q(lead=request.user) | Q(researchers=request.user)
         ).distinct()
+        if not user_projects.exists():
+            raise PermissionDenied(
+                "You must be a member of at least one project to access requests."
+            )
+        user_requests = Request.objects.filter(creator=request.user)
         project_requests = Request.objects.filter(project__in=user_projects)
         user_requests = (user_requests | project_requests).distinct()
 

@@ -58,7 +58,7 @@
           <tbody>
             {% for mouse in project.mouse_set.all %}
               <tr class="table-data">
-                <td class="left-table-data numeric">
+                <td class="border-l-1 border-gray-300 numeric">
                   <a
                     tabindex="-1"
                     href="{% url 'mouseapp:mouse' mouse.id %}"
@@ -70,7 +70,7 @@
                   <td class="table-padding">{{ mouse.strain }}</td>
                   <td class="table-padding">{{ mouse.coat_colour }}</td>
                   <td class="table-padding">{{ mouse.sex }}</td>
-                  <td class="right-table-data table-padding">{{ mouse.earmark }}</td>
+                  <td class="border-r-1 border-gray-300 table-padding">{{ mouse.earmark }}</td>
                 </tr>
             {% endfor %}
           </tbody>

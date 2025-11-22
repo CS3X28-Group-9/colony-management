@@ -65,9 +65,11 @@
           </div>
           <label for="notification-toggle" class="notification-overlay"></label>
         </div>
-        <a href="{% url 'mouseapp:requests' %}" class="btn-secondary">
-          Requests
-        </a>
+        {% if user.is_superuser or perms.mouseapp.approve_request or user.leading_set.exists or user.project_set.exists %}
+          <a href="{% url 'mouseapp:requests' %}" class="btn-secondary">
+            Requests
+          </a>
+        {% endif %}
         <form action="{% url 'mouseapp:logout' %}" method="post" class="m-0">
           {% csrf_token %}
           <button type="submit" class="btn-primary">Sign Out</button>
