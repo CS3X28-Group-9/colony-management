@@ -10,7 +10,6 @@ from django.views.decorators.http import require_safe, require_http_methods
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from django.contrib import messages
 from django.db.models import Q
 from django.core.paginator import Paginator
 from datetime import date
@@ -244,6 +243,15 @@ def login_view(request: HttpRequest) -> HttpResponse:
     return render(request, "accounts/login.html", {"form": form})
 
 
+@login_required
+@require_http_methods(["POST"])
+def logout_view(request: AuthedRequest) -> HttpResponse:
+    from django.contrib.auth import logout
+
+    logout(request)
+    return redirect("mouseapp:home")
+
+
 def register(request: HttpRequest) -> HttpResponse:
     if not settings.ENABLE_REGISTRATION:
         raise PermissionDenied()
@@ -395,7 +403,6 @@ def _prepare_request_form(
                     message=f"New {request_type.lower()} request created.",
                 )
 
-            messages.success(request, f"{request_type} request created successfully.")
             return redirect("mouseapp:requests"), form, mouse_id
     else:
         form = form_class(user=request.user)
@@ -525,6 +532,12 @@ def requests_list(request: AuthedRequest) -> HttpResponse:
 
     page_obj = paginator.get_page(page_number)
 
+    all_accessible_request_ids = [req.id for req in requests_with_permissions]
+    if all_accessible_request_ids:
+        Notification.objects.filter(
+            user=request.user, request_id__in=all_accessible_request_ids
+        ).delete()
+
     # If we have a highlighted request, redirect with URL fragment for CSS-only scrolling
     if highlighted_request_id:
         from django.http import HttpResponseRedirect
@@ -566,7 +579,6 @@ def update_request_status(request: AuthedRequest, request_id: int) -> HttpRespon
 
     new_status = request.POST.get("status")
     if new_status not in dict(Request.STATUS_CHOICES):
-        messages.error(request, "Invalid status.")
         return redirect("mouseapp:requests")
 
     old_status = request_obj.status
@@ -593,7 +605,6 @@ def update_request_status(request: AuthedRequest, request_id: int) -> HttpRespon
             message=message,
         )
 
-    messages.success(request, f"Request status updated to {new_status}.")
     return redirect("mouseapp:requests")
 
 
@@ -612,9 +623,7 @@ def mark_notification_read(
 @login_required
 @require_http_methods(["POST"])
 def mark_all_notifications_read(request: AuthedRequest) -> HttpResponse:
-    count = Notification.objects.filter(user=request.user).count()
     Notification.objects.filter(user=request.user).delete()
-    messages.success(request, f"{count} notification(s) cleared.")
     return redirect("mouseapp:home")
 
 

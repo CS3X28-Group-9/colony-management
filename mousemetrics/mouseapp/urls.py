@@ -58,7 +58,7 @@ urlpatterns = [
     ),
     path(
         "logout/",
-        auth_views.LogoutView.as_view(next_page="mouseapp:home"),
+        views.logout_view,
         name="logout",
     ),
     path(
