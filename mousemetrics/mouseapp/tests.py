@@ -167,7 +167,6 @@ def test_local_email_normalisation():
 
 @pytest.mark.django_db
 def test_create_breeding_request_requires_login(client: Client):
-    """Test that creating a request requires authentication."""
     url = reverse("mouseapp:create_breeding_request")
     response = client.get(url)
     assert response.status_code == 302
@@ -178,7 +177,6 @@ def test_create_breeding_request_requires_login(client: Client):
 def test_create_request(
     client: Client, logged_in_user: User, project: Project, mouse: Mouse
 ):
-    """Test creating a breeding request."""
     from .models import Request
 
     url = reverse("mouseapp:create_breeding_request")
@@ -204,7 +202,6 @@ def test_create_request(
 def test_request_status_change_permissions(
     client: Client, project: Project, mouse: Mouse
 ):
-    """Test that only authorized users can change request status."""
     from .models import Request
 
     regular_user = User.objects.create_user(
@@ -247,7 +244,6 @@ def test_request_status_change_permissions(
 def test_request_status_change_requires_mouse_project_access(
     client: Client, project: Project, mouse: Mouse
 ):
-    """Test that users cannot change request status without mouse/project access."""
     from .models import Request, Membership
     from django.contrib.auth.models import Permission
     from django.contrib.contenttypes.models import ContentType
@@ -297,7 +293,6 @@ def test_request_status_change_requires_mouse_project_access(
 def test_notification_created_on_status_change(
     client: Client, project: Project, mouse: Mouse
 ):
-    """Test that notifications are created when request status changes."""
     from .models import Request, Notification
 
     requester = User.objects.create_user(
@@ -336,7 +331,6 @@ def test_notification_created_on_status_change(
 
 @pytest.mark.django_db
 def test_requests_page_requires_login(client: Client):
-    """Test that requests page requires authentication."""
     url = reverse("mouseapp:requests")
     response = client.get(url)
     assert response.status_code == 302
@@ -345,7 +339,6 @@ def test_requests_page_requires_login(client: Client):
 
 @pytest.mark.django_db
 def test_notifications_only_visible_to_authenticated_users(client: Client, user: User):
-    """Test that notifications are handled correctly for authenticated and unauthenticated users."""
     from .models import Notification
 
     Notification.objects.create(
