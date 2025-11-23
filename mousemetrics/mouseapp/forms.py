@@ -195,14 +195,21 @@ class RequestForm(forms.ModelForm):
             elif self.instance and self.instance.pk and self.instance.mouse:
                 project = self.instance.mouse.project
                 self.fields["project"].initial = project.pk
-            elif "initial" in kwargs and "project" in kwargs["initial"]:
-                project = kwargs["initial"]["project"]
+            elif (
+                isinstance(project_field, forms.ModelChoiceField)
+                and project_field.initial
+            ):
+                try:
+                    project = Project.objects.get(pk=project_field.initial)
+                    if not project.has_read_access(user):
+                        project = None
+                except (ValueError, TypeError, Project.DoesNotExist):
+                    project = None
 
             if project:
                 self._set_mouse_queryset(project, user)
 
     def _set_mouse_queryset(self, project: Project, user: User) -> None:
-        """Set the mouse queryset based on the selected project."""
         accessible_mice = [
             mouse
             for mouse in Mouse.objects.filter(project=project)
