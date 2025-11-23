@@ -78,8 +78,26 @@
       </li>
     </ul>
 
-    {% if write_access %}
-      <div class="mt-6 pt-6 border-t border-gray-200">
+    <div class="mt-6 pt-6 border-t border-gray-200 flex gap-2 flex-wrap">
+      <a
+        href="{% url 'mouseapp:create_breeding_request' %}?project={{ project.id }}"
+        class="inline-flex items-center px-4 py-2 btn-primary"
+      >
+        New Breeding Request
+      </a>
+      <a
+        href="{% url 'mouseapp:create_culling_request' %}?project={{ project.id }}"
+        class="inline-flex items-center px-4 py-2 btn-primary"
+      >
+        New Culling Request
+      </a>
+      <a
+        href="{% url 'mouseapp:create_transfer_request' %}?project={{ project.id }}"
+        class="inline-flex items-center px-4 py-2 btn-primary"
+      >
+        New Transfer Request
+      </a>
+      {% if write_access %}
         <a
           href="{% url 'mouseapp:edit_project' project.id %}"
           class="inline-flex items-center px-4 py-2 btn-primary"
@@ -100,7 +118,7 @@
         >
           Remove member
         </a>
-      </div>
-    {% endif %}
+      {% endif %}
+    </div>
   </div>
 {% endblock %}

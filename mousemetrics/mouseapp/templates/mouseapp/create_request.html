@@ -10,6 +10,9 @@
       <form method="post">
         {% csrf_token %}
         {{ form.kind }}
+        {% if request.GET.project %}
+          <input type="hidden" name="project" value="{{ request.GET.project }}">
+        {% endif %}
 
         {% if form.errors %}
           <div class="error-message">
@@ -39,11 +42,17 @@
               {{ form.project.label }}
             </label>
             {{ form.project }}
+            <script>
+              document.getElementById('{{ form.project.id_for_label }}').addEventListener('change', function() {
+                if (this.value) {
+                  window.location.href = window.location.pathname + '?project=' + this.value;
+                } else {
+                  window.location.href = window.location.pathname;
+                }
+              });
+            </script>
             {% if form.project.errors %}
               <p class="mt-1 error-message-compact">{{ form.project.errors }}</p>
-            {% endif %}
-            {% if form.project.help_text %}
-              <p class="mt-1 text-sm text-neutral-700 font-medium">{{ form.project.help_text }}</p>
             {% endif %}
           </div>
 
@@ -85,66 +94,4 @@
       </form>
     </div>
   </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const projectSelect = document.getElementById('id_project');
-      const mouseSelect = document.getElementById('id_mouse');
-
-      if (projectSelect && mouseSelect) {
-        // Store the initially selected mouse value
-        const initialMouseValue = mouseSelect.value;
-
-        // Load mice if a project is pre-selected
-        const initialProjectId = projectSelect.value;
-        if (initialProjectId) {
-          loadMiceForProject(initialProjectId, initialMouseValue);
-        }
-
-        projectSelect.addEventListener('change', function() {
-          const projectId = this.value;
-          if (projectId) {
-            loadMiceForProject(projectId);
-          } else {
-            mouseSelect.innerHTML = '<option value="">---------</option>';
-          }
-        });
-      }
-
-      function loadMiceForProject(projectId, preserveMouseValue = null) {
-        fetch(`{% url 'mouseapp:get_mice_for_project' %}?project=${projectId}`)
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Failed to load mice');
-            }
-            return response.json();
-          })
-          .then(data => {
-            mouseSelect.innerHTML = '<option value="">---------</option>';
-            if (data.mice && data.mice.length > 0) {
-              data.mice.forEach(mouse => {
-                const option = document.createElement('option');
-                option.value = mouse.id;
-                option.textContent = mouse.display;
-                // Preserve the initially selected mouse if it matches
-                if (preserveMouseValue && mouse.id == preserveMouseValue) {
-                  option.selected = true;
-                }
-                mouseSelect.appendChild(option);
-              });
-            } else {
-              const option = document.createElement('option');
-              option.value = '';
-              option.textContent = 'No mice available in this project';
-              option.disabled = true;
-              mouseSelect.appendChild(option);
-            }
-          })
-          .catch(error => {
-            console.error('Error loading mice:', error);
-            mouseSelect.innerHTML = '<option value="">Error loading mice</option>';
-          });
-      }
-    });
-  </script>
 {% endblock %}

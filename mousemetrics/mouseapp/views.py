@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -375,13 +375,15 @@ def _prepare_request_form(
     request: AuthedRequest, form_class, request_type: str, request_code: str
 ) -> tuple:
     mouse_id = None
+    project_id = None
+    project = None
+
     if request.method == "POST":
         form = form_class(request.POST, user=request.user)
         if form.is_valid():
             request_obj = form.save(commit=False)
             request_obj.creator = request.user
             request_obj.kind = request_code
-            # Project is set from the form field, but ensure it matches the mouse's project
             if request_obj.mouse and request_obj.project != request_obj.mouse.project:
                 request_obj.project = request_obj.mouse.project
             request_obj.save()
@@ -394,33 +396,59 @@ def _prepare_request_form(
                     message=f"New {request_type.lower()} request created.",
                 )
 
-            return redirect("mouseapp:requests"), form, mouse_id
+            return (
+                redirect("mouseapp:requests"),
+                form,
+                mouse_id,
+                None,
+            )
     else:
-        form = form_class(user=request.user)
         mouse_id = request.GET.get("mouse")
+        project_id = request.GET.get("project")
+        project = None
+        initial = {}
+
         if mouse_id:
             try:
                 mouse = Mouse.objects.get(id=mouse_id)
                 if mouse.has_read_access(request.user):
-                    form.fields["mouse"].initial = mouse.pk
-                    form.fields["project"].initial = mouse.project.pk
-                    form._set_mouse_queryset(mouse.project, request.user)
+                    initial["mouse"] = mouse.pk
+                    initial["project"] = mouse.project.pk
+                    project_id = mouse.project.pk
+                    project = mouse.project
                 else:
                     mouse_id = None
             except Mouse.DoesNotExist:
                 mouse_id = None
 
+        if project_id and not mouse_id:
+            try:
+                project = Project.objects.get(id=project_id)
+                if project.has_read_access(request.user):
+                    initial["project"] = project.pk
+                else:
+                    project_id = None
+                    project = None
+            except (ValueError, TypeError, Project.DoesNotExist):
+                project_id = None
+                project = None
+
+        form = form_class(user=request.user, initial=initial or {})
+        if project:
+            form._set_mouse_queryset(project, request.user)
+
     return (
         None,
         form,
         mouse_id,
+        project,
     )
 
 
 @login_required
 @require_http_methods(["GET", "POST"])
 def create_breeding_request(request: AuthedRequest) -> HttpResponse:
-    redirect_response, form, mouse_id = _prepare_request_form(
+    redirect_response, form, mouse_id, project = _prepare_request_form(
         request, BreedingRequestForm, "Breeding", "B"
     )
     if redirect_response:
@@ -433,6 +461,7 @@ def create_breeding_request(request: AuthedRequest) -> HttpResponse:
             "request_type": "Breeding",
             "request_type_code": "B",
             "mouse_id": mouse_id,
+            "project": project,
         },
     )
 
@@ -440,7 +469,7 @@ def create_breeding_request(request: AuthedRequest) -> HttpResponse:
 @login_required
 @require_http_methods(["GET", "POST"])
 def create_culling_request(request: AuthedRequest) -> HttpResponse:
-    redirect_response, form, mouse_id = _prepare_request_form(
+    redirect_response, form, mouse_id, project = _prepare_request_form(
         request, CullingRequestForm, "Culling", "C"
     )
     if redirect_response:
@@ -453,6 +482,7 @@ def create_culling_request(request: AuthedRequest) -> HttpResponse:
             "request_type": "Culling",
             "request_type_code": "C",
             "mouse_id": mouse_id,
+            "project": project,
         },
     )
 
@@ -460,7 +490,7 @@ def create_culling_request(request: AuthedRequest) -> HttpResponse:
 @login_required
 @require_http_methods(["GET", "POST"])
 def create_transfer_request(request: AuthedRequest) -> HttpResponse:
-    redirect_response, form, mouse_id = _prepare_request_form(
+    redirect_response, form, mouse_id, project = _prepare_request_form(
         request, TransferRequestForm, "Transfer", "T"
     )
     if redirect_response:
@@ -473,6 +503,7 @@ def create_transfer_request(request: AuthedRequest) -> HttpResponse:
             "request_type": "Transfer",
             "request_type_code": "T",
             "mouse_id": mouse_id,
+            "project": project,
         },
     )
 
@@ -533,7 +564,6 @@ def requests_list(request: AuthedRequest) -> HttpResponse:
             user=request.user, request_id__in=all_accessible_request_ids
         ).delete()
 
-    # If we have a highlighted request, redirect with URL fragment for CSS-only scrolling
     if highlighted_request_id:
         from django.http import HttpResponseRedirect
         from django.urls import reverse
@@ -554,7 +584,6 @@ def requests_list(request: AuthedRequest) -> HttpResponse:
 
     context = {
         "page_obj": page_obj,
-        "requests": page_obj,
         "status_filter": status_filter,
         "type_filter": type_filter,
         "highlighted_request_id": highlighted_request_id,
@@ -620,38 +649,3 @@ def mark_notification_read(
 def mark_all_notifications_read(request: AuthedRequest) -> HttpResponse:
     Notification.objects.filter(user=request.user).delete()
     return redirect("mouseapp:home")
-
-
-@login_required
-def get_mice_for_project(request: AuthedRequest) -> JsonResponse:
-    """API endpoint to get mice for a specific project."""
-    project_id = request.GET.get("project")
-    if not project_id:
-        return JsonResponse({"error": "Project ID required"}, status=400)
-
-    try:
-        project = Project.objects.get(pk=project_id)
-        if not project.has_read_access(request.user):
-            return JsonResponse({"error": "Permission denied"}, status=403)
-
-        accessible_mice = [
-            mouse
-            for mouse in Mouse.objects.filter(project=project)
-            if mouse.has_read_access(request.user)
-        ]
-
-        mice_data = [
-            {
-                "id": mouse.pk,  # type: ignore[reportAttributeAccessIssue]
-                "strain": str(mouse.strain),
-                "tube_number": mouse.tube_number,
-                "display": f"{mouse.strain} - Tube {mouse.tube_number}",
-            }
-            for mouse in accessible_mice
-        ]
-
-        return JsonResponse({"mice": mice_data})
-    except Project.DoesNotExist:
-        return JsonResponse({"error": "Project not found"}, status=404)
-    except ValueError:
-        return JsonResponse({"error": "Invalid project ID"}, status=400)
