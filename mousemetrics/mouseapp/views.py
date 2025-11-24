@@ -108,6 +108,7 @@ def invite_member(request: AuthedRequest, id: int) -> HttpResponse:
                         "token": token,
                         "protocol": request.scheme,
                         "domain": request.get_host(),
+                        "project": project,
                     },
                 )
                 mail_text = strip_tags(mail_html)
