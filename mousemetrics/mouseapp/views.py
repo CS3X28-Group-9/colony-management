@@ -164,7 +164,7 @@ def join_project(request: AuthedRequest, token: str) -> HttpResponse:
         raise PermissionDenied
 
     try:
-        project = Project.objects.get(Project, pk=project_id)
+        project = Project.objects.get(pk=project_id)
     except Project.DoesNotExist as e:
         raise PermissionDenied from e
 
