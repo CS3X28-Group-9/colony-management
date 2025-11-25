@@ -3,11 +3,23 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
+from django.core.mail import send_mail
+from django.core import signing
 from django.views.decorators.http import require_safe
 from django.conf import settings
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.urls import reverse
 
-from .forms import RegistrationForm, CustomAuthenticationForm, MouseForm, ProjectForm
+from .forms import (
+    RegistrationForm,
+    CustomAuthenticationForm,
+    InviteMemberForm,
+    MouseForm,
+    ProjectForm,
+    RemoveMemberForm,
+)
 from .models import Mouse, Project
 
 
@@ -75,6 +87,89 @@ def edit_project(request: AuthedRequest, id: int) -> HttpResponse:
         form = ProjectForm(instance=project)
 
     return render(request, "mouseapp/edit_project.html", {"form": form})
+
+
+@login_required
+def invite_member(request: AuthedRequest, id: int) -> HttpResponse:
+    project: Project = get_object_or_404(Project, id=id)
+    if not project.has_write_access(request.user):
+        raise PermissionDenied()
+
+    if request.method == "POST":
+        form = InviteMemberForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data["user"]
+            try:
+                user = User.objects.get(email=email)
+                token = signing.dumps({"user": user.pk, "project": project.pk})
+                mail_html = render_to_string(
+                    "mouseapp/invite_email.html",
+                    context={
+                        "token": token,
+                        "protocol": request.scheme,
+                        "domain": request.get_host(),
+                        "project": project,
+                    },
+                )
+                mail_text = strip_tags(mail_html)
+                send_mail(
+                    subject=f"Invitation to {project.name}",
+                    message=mail_text,
+                    from_email=None,
+                    recipient_list=[email],
+                    fail_silently=False,
+                    html_message=mail_html,
+                )
+            except ObjectDoesNotExist:
+                pass
+
+            return HttpResponseRedirect(reverse("mouseapp:project", args=[id]))
+    else:
+        form = InviteMemberForm()
+
+    return render(request, "mouseapp/invite_member.html", {"form": form})
+
+
+@login_required
+def remove_member(request: AuthedRequest, id: int) -> HttpResponse:
+    project: Project = get_object_or_404(Project, id=id)
+    if not project.has_write_access(request.user):
+        raise PermissionDenied()
+
+    if request.method == "POST":
+        form = RemoveMemberForm(project, request.POST)
+        if form.is_valid():
+            user = User.objects.get(id=form.cleaned_data["user"])
+            project.researchers.remove(user)
+            return HttpResponseRedirect(f"/project/{id}")
+    else:
+        form = RemoveMemberForm(project)
+
+    return render(request, "mouseapp/remove_member.html", {"form": form})
+
+
+@login_required
+@require_safe
+def join_project(request: AuthedRequest, token: str) -> HttpResponse:
+    SECONDS_IN_MONTH = 60 * 60 * 24 * 31
+
+    data = signing.loads(token, max_age=SECONDS_IN_MONTH)
+    try:
+        user_id = data["user"]
+        project_id = data["project"]
+    except KeyError as e:
+        raise PermissionDenied from e
+
+    if user_id != request.user.pk:
+        raise PermissionDenied
+
+    try:
+        project = Project.objects.get(pk=project_id)
+    except Project.DoesNotExist as e:
+        raise PermissionDenied from e
+
+    project.researchers.add(request.user)
+    return HttpResponseRedirect(reverse("mouseapp:project", args=[project.pk]))
 
 
 def login_view(request: HttpRequest) -> HttpResponse:
