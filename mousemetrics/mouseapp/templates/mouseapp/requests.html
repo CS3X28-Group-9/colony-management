@@ -7,11 +7,6 @@
     <div class="card p-6">
       <div class="flex justify-between items-center mb-6">
         <h1 class="page-title">Requests</h1>
-        <div class="flex gap-2">
-          <a href="{% url 'mouseapp:create_breeding_request' %}" class="btn-primary text-sm">New Breeding Request</a>
-          <a href="{% url 'mouseapp:create_culling_request' %}" class="btn-primary text-sm">New Culling Request</a>
-          <a href="{% url 'mouseapp:create_transfer_request' %}" class="btn-primary text-sm">New Transfer Request</a>
-        </div>
       </div>
 
       <!-- Filters -->
@@ -61,6 +56,15 @@
                     {{ req.get_status_display }}
                   </span>
                 </div>
+
+                {% if req.project %}
+                  <p class="text-sm text-muted mb-1">
+                    <strong>Project:</strong>
+                    <a href="{% url 'mouseapp:project' req.project.id %}" class="link-primary">
+                      {{ req.project.name }}
+                    </a>
+                  </p>
+                {% endif %}
 
                 {% if req.mouse %}
                   <p class="text-sm text-muted mb-1">

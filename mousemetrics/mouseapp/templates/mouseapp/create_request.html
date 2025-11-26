@@ -7,6 +7,14 @@
     <div class="card p-6">
       <h1 class="page-title">Create {{ request_type|lower }} request</h1>
 
+      {% if project %}
+        <div class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded">
+          <p class="text-sm text-neutral-700">
+            <strong>Project:</strong> {{ project.name }}
+          </p>
+        </div>
+      {% endif %}
+
       <form method="post">
         {% csrf_token %}
         {{ form.kind }}
@@ -38,25 +46,6 @@
 
         <div class="space-y-4">
           <div>
-            <label for="{{ form.project.id_for_label }}" class="block text-sm font-medium text-neutral-800 mb-1">
-              {{ form.project.label }}
-            </label>
-            {{ form.project }}
-            <script>
-              document.getElementById('{{ form.project.id_for_label }}').addEventListener('change', function() {
-                if (this.value) {
-                  window.location.href = window.location.pathname + '?project=' + this.value;
-                } else {
-                  window.location.href = window.location.pathname;
-                }
-              });
-            </script>
-            {% if form.project.errors %}
-              <p class="mt-1 error-message-compact">{{ form.project.errors }}</p>
-            {% endif %}
-          </div>
-
-          <div>
             <label for="{{ form.mouse.id_for_label }}" class="block text-sm font-medium text-neutral-800 mb-1">
               {{ form.mouse.label }}
             </label>
@@ -87,6 +76,8 @@
           <button type="submit" class="btn-primary">Create Request</button>
           {% if mouse_id %}
             <a href="{% url 'mouseapp:mouse' mouse_id %}" class="btn-secondary">Cancel</a>
+          {% elif project %}
+            <a href="{% url 'mouseapp:project' project.id %}" class="btn-secondary">Cancel</a>
           {% else %}
             <a href="{% url 'mouseapp:requests' %}" class="btn-secondary">Cancel</a>
           {% endif %}
