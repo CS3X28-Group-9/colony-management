@@ -8,7 +8,7 @@ node_modules/
 /mousemetrics/staticfiles
 #temp
 .*/
-*.xlsx
+/mousemetrics/media/
 
 # packaging
 *.egg-info/
