@@ -12,3 +12,4 @@ node_modules/
 
 # packaging
 *.egg-info/
+/.coverage
