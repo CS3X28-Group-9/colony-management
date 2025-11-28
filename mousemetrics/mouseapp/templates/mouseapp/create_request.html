@@ -20,6 +20,10 @@
         {{ form.kind }}
         {% if request.GET.project %}
           <input type="hidden" name="project" value="{{ request.GET.project }}">
+        {% elif project %}
+          <input type="hidden" name="project" value="{{ project.id }}">
+        {% elif form.project.value %}
+          <input type="hidden" name="project" value="{{ form.project.value }}">
         {% endif %}
 
         {% if form.errors %}
