@@ -44,7 +44,7 @@
                             {% endif %}
                           </p>
                           {% if notification.request %}
-                            <a href="{% url 'mouseapp:requests' %}#request-{{ notification.request.id }}" class="text-sm text-blue-600 hover:text-blue-800 underline">View request</a>
+                            <a href="{% url 'mouseapp:requests' %}#request-{{ notification.request.id }}" class="text-sm">View request</a>
                           {% endif %}
                           <p class="text-xs text-neutral-500">{{ notification.created_at|date:"M d, Y g:i A" }}</p>
                         </div>

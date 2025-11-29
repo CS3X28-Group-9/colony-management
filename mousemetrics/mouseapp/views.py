@@ -375,6 +375,7 @@ def _prepare_request_form(
     request: AuthedRequest, form_class, request_type: str, request_code: str
 ) -> tuple:
     mouse_id = None
+    mouse = None
     project_id = None
     project = None
 
@@ -401,6 +402,7 @@ def _prepare_request_form(
                 form,
                 mouse_id,
                 None,
+                None,
             )
     else:
         mouse_id = request.GET.get("mouse")
@@ -418,8 +420,10 @@ def _prepare_request_form(
                     project = mouse.project
                 else:
                     mouse_id = None
+                    mouse = None
             except Mouse.DoesNotExist:
                 mouse_id = None
+                mouse = None
 
         if project_id and not mouse_id:
             try:
@@ -442,13 +446,14 @@ def _prepare_request_form(
         form,
         mouse_id,
         project,
+        mouse,
     )
 
 
 @login_required
 @require_http_methods(["GET", "POST"])
 def create_breeding_request(request: AuthedRequest) -> HttpResponse:
-    redirect_response, form, mouse_id, project = _prepare_request_form(
+    redirect_response, form, mouse_id, project, mouse = _prepare_request_form(
         request, BreedingRequestForm, "Breeding", "B"
     )
     if redirect_response:
@@ -462,6 +467,7 @@ def create_breeding_request(request: AuthedRequest) -> HttpResponse:
             "request_type_code": "B",
             "mouse_id": mouse_id,
             "project": project,
+            "mouse": mouse,
         },
     )
 
@@ -469,7 +475,7 @@ def create_breeding_request(request: AuthedRequest) -> HttpResponse:
 @login_required
 @require_http_methods(["GET", "POST"])
 def create_culling_request(request: AuthedRequest) -> HttpResponse:
-    redirect_response, form, mouse_id, project = _prepare_request_form(
+    redirect_response, form, mouse_id, project, mouse = _prepare_request_form(
         request, CullingRequestForm, "Culling", "C"
     )
     if redirect_response:
@@ -483,6 +489,7 @@ def create_culling_request(request: AuthedRequest) -> HttpResponse:
             "request_type_code": "C",
             "mouse_id": mouse_id,
             "project": project,
+            "mouse": mouse,
         },
     )
 
@@ -490,7 +497,7 @@ def create_culling_request(request: AuthedRequest) -> HttpResponse:
 @login_required
 @require_http_methods(["GET", "POST"])
 def create_transfer_request(request: AuthedRequest) -> HttpResponse:
-    redirect_response, form, mouse_id, project = _prepare_request_form(
+    redirect_response, form, mouse_id, project, mouse = _prepare_request_form(
         request, TransferRequestForm, "Transfer", "T"
     )
     if redirect_response:
@@ -504,6 +511,7 @@ def create_transfer_request(request: AuthedRequest) -> HttpResponse:
             "request_type_code": "T",
             "mouse_id": mouse_id,
             "project": project,
+            "mouse": mouse,
         },
     )
 
