@@ -5,25 +5,24 @@
 {% block content %}
   <div class="max-w-2xl mx-auto mt-6">
     <div class="card p-6">
-      <h1 class="page-title">Create {{ request_type|lower }} request</h1>
-
-      {% if project %}
-        <div class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded">
-          <p class="text-sm text-neutral-700">
-            <strong>Project:</strong> {{ project.name }}
-          </p>
-        </div>
+      <h1 class="page-title">
+        Create {{ request_type|lower }} request
+        {% if project %} - {{ project.name }}{% endif %}
+      </h1>
+      {% if mouse %}
+        <p class="text-sm text-neutral-600 mt-1">{{ mouse.strain }} - Tube {{ mouse.tube_number }}</p>
       {% endif %}
 
       <form method="post">
         {% csrf_token %}
         {{ form.kind }}
-        {% if request.GET.project %}
-          <input type="hidden" name="project" value="{{ request.GET.project }}">
-        {% elif project %}
+        {% if project %}
           <input type="hidden" name="project" value="{{ project.id }}">
-        {% elif form.project.value %}
-          <input type="hidden" name="project" value="{{ form.project.value }}">
+        {% elif request.GET.project %}
+          <input type="hidden" name="project" value="{{ request.GET.project }}">
+        {% endif %}
+        {% if mouse_id %}
+          <input type="hidden" name="mouse" value="{{ mouse_id }}">
         {% endif %}
 
         {% if form.errors %}
@@ -49,18 +48,20 @@
         {% endif %}
 
         <div class="space-y-4">
-          <div>
-            <label for="{{ form.mouse.id_for_label }}" class="block text-sm font-medium text-neutral-800 mb-1">
-              {{ form.mouse.label }}
-            </label>
-            {{ form.mouse }}
-            {% if form.mouse.errors %}
-              <p class="mt-1 error-message-compact">{{ form.mouse.errors }}</p>
-            {% endif %}
-            {% if form.mouse.help_text %}
-              <p class="mt-1 text-sm text-neutral-700 font-medium">{{ form.mouse.help_text }}</p>
-            {% endif %}
-          </div>
+          {% if not mouse_id %}
+            <div>
+              <label for="{{ form.mouse.id_for_label }}" class="block text-sm font-medium text-neutral-800 mb-1">
+                {{ form.mouse.label }}
+              </label>
+              {{ form.mouse }}
+              {% if form.mouse.errors %}
+                <p class="mt-1 error-message-compact">{{ form.mouse.errors }}</p>
+              {% endif %}
+              {% if form.mouse.help_text %}
+                <p class="mt-1 text-sm text-neutral-700 font-medium">{{ form.mouse.help_text }}</p>
+              {% endif %}
+            </div>
+          {% endif %}
 
           <div>
             <label for="{{ form.details.id_for_label }}" class="block text-sm font-medium text-neutral-800 mb-1">

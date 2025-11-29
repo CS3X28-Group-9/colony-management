@@ -60,7 +60,7 @@
                 {% if req.project %}
                   <p class="text-sm text-muted mb-1">
                     <strong>Project:</strong>
-                    <a href="{% url 'mouseapp:project' req.project.id %}" class="link-primary">
+                    <a href="{% url 'mouseapp:project' req.project.id %}">
                       {{ req.project.name }}
                     </a>
                   </p>
@@ -69,7 +69,7 @@
                 {% if req.mouse %}
                   <p class="text-sm text-muted mb-1">
                     <strong>Mouse:</strong>
-                    <a href="{% url 'mouseapp:mouse' req.mouse.id %}" class="link-primary">
+                    <a href="{% url 'mouseapp:mouse' req.mouse.id %}">
                       {{ req.mouse.strain }} - Tube {{ req.mouse.tube_number }}
                     </a>
                   </p>
