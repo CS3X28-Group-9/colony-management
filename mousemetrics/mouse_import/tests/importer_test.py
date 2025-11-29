@@ -77,10 +77,28 @@ def test_fixed_strain(project):
         project.id, "Sheet1", "A1:J2", {"strain": "some-fixed-strain"}, MAPPING
     )
 
+    assert not errors and not updated
     (m_id,) = created
     mouse = Mouse.objects.get(pk=m_id)
 
     assert mouse.strain.name == "some-fixed-strain"
+
+
+def test_parent_strain_filtering(project):
+    # Set up a mouse 'some-fixed-strain 1', one 'Some-strain 1', and a child 'Some-strain 2' with father '1'
+    # Check that the correct father is used
+    created, updated, errors = run_import(
+        project.id, "Sheet1", "A1:J2", {"strain": "some-fixed-strain"}, MAPPING
+    )
+    assert not errors and not updated
+
+    created, updated, errors = run_import(project.id, "Sheet1", "A1:J3", {}, MAPPING)
+
+    m1, m2 = [Mouse.objects.get(pk=pk) for pk in created]
+    if m1.father:
+        m1, m2 = m2, m1
+
+    assert m2.father == m1
 
 
 def test_import_same_tube_different_strain(project):
