@@ -35,25 +35,6 @@ def test_user_creation():
     assert db_user.check_password(user_data["password1"])  # type: ignore reportUnknownMemberType
 
 
-# @pytest.mark.django_db
-# def test_registration_redirect(client: Client):
-#     register_url = reverse("mouseapp:register")
-#     login_url = reverse("mouseapp:login")
-#     user_data = {
-#         "email": "redirect_test@abdn.ac.uk",
-#         "first_name": "Redirect",
-#         "last_name": "Test",
-#         "password1": "a-secure-password",
-#         "password2": "a-secure-password",
-#     }
-
-#     response = client.post(register_url, data=user_data)
-#     assert response.status_code == 302, "Expected a redirect after registration"
-#     assert (
-#         response.url == login_url  # pyright: ignore
-#     ), f"Expected redirect to {login_url}, but got {response.url}"  # pyright: ignore
-
-
 @pytest.mark.django_db
 def test_login_redirect(client: Client):
     login_url = reverse("mouseapp:login")

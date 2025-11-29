@@ -16,7 +16,6 @@ urlpatterns = [
     path("project/<int:id>/invite-member/", views.invite_member, name="invite_member"),
     path("project/<int:id>/remove-member/", views.remove_member, name="remove_member"),
     path("project/join/<str:token>/", views.join_project, name="join_project"),
-    # path("register/", views.register, name="register"),
     path("family_tree/<int:mouse>/", views.family_tree, name="family_tree"),
     # ========================
     # Authentication routes
