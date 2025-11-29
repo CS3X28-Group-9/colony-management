@@ -211,17 +211,32 @@ class Mouse(models.Model):
 
 
 class Request(models.Model):
-    REQUEST_CHOICES = {
-        "B": "Set up breeding pair",
-        "C": "Cull",
-        "T": "Transfer",
-        "Q": "Query",
-    }
+    REQUEST_CHOICES = (
+        ("B", "Set up breeding pair"),
+        ("C", "Cull"),
+        ("T", "Transfer"),
+        ("Q", "Query"),
+    )
+    STATUS_CHOICES = (
+        ("pending", "Pending"),
+        ("accepted", "Accepted"),
+        ("denied", "Denied"),
+        ("completed", "Completed"),
+    )
 
     project = models.ForeignKey(
-        Project, on_delete=models.CASCADE, related_name="requests", null=True
+        Project,
+        on_delete=models.CASCADE,
+        related_name="requests",
+        null=True,
+        blank=True,
     )
-    creator = models.ForeignKey(User, on_delete=models.PROTECT)
+    mouse = models.ForeignKey(
+        Mouse, on_delete=models.CASCADE, related_name="requests", null=True, blank=True
+    )
+    creator = models.ForeignKey(
+        User, on_delete=models.PROTECT, related_name="created_requests"
+    )
     approver = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
@@ -232,19 +247,37 @@ class Request(models.Model):
     approved_date = models.DateField(blank=True, null=True)
     fulfill_date = models.DateField(blank=True, null=True)
     kind = models.CharField(max_length=1, choices=REQUEST_CHOICES)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending")
     details = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         permissions = [
             ("approve_request", "Can approve requests"),
             ("fulfill_request", "Can mark requests fulfilled"),
         ]
+        ordering = ["-created_at"]
+
+    def can_change_status(self, user: User) -> bool:
+        if self.mouse and not self.mouse.has_read_access(user):
+            return False
+        if self.project and not self.project.has_read_access(user):
+            return False
+
+        if self.status == "pending":
+            if user.is_superuser:
+                return True
+            if self.project and self.project.lead and self.project.lead.pk == user.pk:
+                return True
+            if user.has_perm("mouseapp.approve_request"):
+                return True
+            return False
+        return user.is_superuser or user.has_perm("mouseapp.approve_request")
 
     def __str__(self) -> str:
-        kind = Request.REQUEST_CHOICES[self.kind]
-        if kind == Request.REQUEST_CHOICES["B"]:
-            kind = "Breeding"
-        return f"{kind} request from {self.creator.name}"
+        kind_display = dict(Request.REQUEST_CHOICES).get(self.kind, self.kind)
+        return f"{kind_display} request from {self.creator}"
 
 
 class RequestReply(models.Model):
@@ -275,3 +308,22 @@ class Membership(models.Model):
 
     def __str__(self) -> str:
         return f"{self.project}, {self.user}"
+
+
+class Notification(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="notifications"
+    )
+    request = models.ForeignKey(
+        Request,
+        on_delete=models.CASCADE,
+        related_name="notifications",
+        null=True,
+        blank=True,
+    )
+    message = models.TextField()
+    read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
