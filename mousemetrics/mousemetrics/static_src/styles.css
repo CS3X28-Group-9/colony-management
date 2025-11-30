@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
 @layer components {
   .btn-primary {
     @apply inline-flex items-center justify-center
@@ -33,13 +37,6 @@
     @apply bg-gray-200 hover:bg-gray-300 divide-x-1 divide-gray-300;
   }
 
-  .left-table-data{
-    @apply border-l-1 border-gray-300
-  }
-
-  .right-table-data{
-    @apply border-r-1 border-gray-300
-  }
 
   .input-label {
     @apply text-sm text-gray-500 transform scale-75 -translate-y-4 origin-left start-2.5;
@@ -82,11 +79,6 @@
       @apply text-blue-600 hover:underline;
     }}
 
-
-  .error-message {
-    @apply text-sm text-red-500;
-  }
-
   .error-message-compact {
     @apply text-sm text-red-500 leading-tight;
   }
@@ -95,4 +87,73 @@
     @apply bg-gray-200 text-gray-700 uppercase text-sm font-semibold
   }
 
+  .input {
+    @apply w-full px-3 py-2 border border-neutral-300 rounded-lg bg-white
+    focus:outline-none focus:ring-2 focus:ring-neutral-400;
+  }
+
+  .card {
+    @apply bg-neutral-200 border border-neutral-300 rounded-lg p-6;
+  }
+
+
+  .page-title {
+    @apply text-2xl font-semibold mb-4;
+  }
+
+  .text-muted {
+    @apply text-gray-600;
+  }
+
+  .text-muted-small {
+    @apply text-xs text-gray-600;
+  }
+
+  .error-message {
+    @apply mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded;
+  }
+
+  /* Request highlighting using :target pseudo-class */
+  li:target {
+    @apply border-blue-500 border-2 bg-blue-50 ring-2 ring-blue-300;
+  }
+}
+
+/* Notification dropdown checkbox trick - outside @layer for proper compilation */
+.notification-checkbox:not(:checked) ~ .notification-menu {
+  display: none;
+}
+
+.notification-checkbox:checked ~ .notification-menu {
+  display: block;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.notification-checkbox:not(:checked) ~ .notification-menu ~ .notification-overlay {
+  display: none;
+}
+
+.notification-checkbox:checked ~ .notification-menu ~ .notification-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  pointer-events: auto;
+}
+
+.notification-menu {
+  transition: opacity 0.2s;
+  pointer-events: auto;
+}
+
+#notification-container label[for="notification-toggle"] {
+  pointer-events: auto;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
