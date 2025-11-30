@@ -93,7 +93,7 @@ html {
   }
 
   .card {
-    @apply bg-neutral-200 border border-neutral-300 rounded-lg p-4;
+    @apply bg-neutral-200 border border-neutral-300 rounded-lg p-6;
   }
 
 

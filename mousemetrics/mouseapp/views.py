@@ -412,7 +412,8 @@ def _prepare_request_form(
 
         if mouse_id:
             try:
-                mouse = Mouse.objects.get(id=mouse_id)
+                mouse_id_int = int(mouse_id)
+                mouse = Mouse.objects.get(id=mouse_id_int)
                 if mouse.has_read_access(request.user):
                     initial["mouse"] = mouse.pk
                     initial["project"] = mouse.project.pk
@@ -421,13 +422,14 @@ def _prepare_request_form(
                 else:
                     mouse_id = None
                     mouse = None
-            except Mouse.DoesNotExist:
+            except (ValueError, TypeError, Mouse.DoesNotExist):
                 mouse_id = None
                 mouse = None
 
         if project_id and not mouse_id:
             try:
-                project = Project.objects.get(id=project_id)
+                project_id_int = int(project_id)
+                project = Project.objects.get(id=project_id_int)
                 if project.has_read_access(request.user):
                     initial["project"] = project.pk
                 else:
