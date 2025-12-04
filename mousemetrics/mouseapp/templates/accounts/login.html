@@ -3,7 +3,7 @@
 
   <div class="flex justify-center p-4">
     <div
-      class="p-4 sm:p-6 lg:p-8 rounded bg-neutral-200 w-80 shadow-md border border-neutral-300"
+      class="p-4 sm:p-6 lg:p-8 rounded bg-neutral-200 w-80 shadow-md border border-neutral-300 dark:bg-neutral-800 dark:border-neutral-700"
     >
       <form method="post" class="space-y-6">
         <h3 class="default-header">
@@ -60,12 +60,12 @@
                                        }'
               tabindex="-1"
               onmousedown="event.preventDefault()"
-              class="absolute inset-y-0 end-0 flex items-center z-20 px-3 cursor-pointer text-gray-400 rounded-e-md"
+              class="absolute inset-y-0 end-0 flex items-center z-20 px-3 cursor-pointer text-gray-400 rounded-e-md dark:text-gray-500"
             >
-              <span class="eye-slash-icon hover:stroke-blue-600 stroke-current">
+              <span class="eye-slash-icon hover:stroke-blue-600 stroke-current dark:hover:stroke-blue-400">
                 {% include "components/svgs/pass-mode-pass.svg" %}
               </span>
-              <span class="eye-icon hidden hover:stroke-blue-600 stroke-current">
+              <span class="eye-icon hidden hover:stroke-blue-600 stroke-current dark:hover:stroke-blue-400">
                 {% include "components/svgs/text-mode-pass.svg" %}
               </span>
             </button>
@@ -91,21 +91,21 @@
                     id="{{ form.remember_me.id_for_label }}"
                     name="{{ form.remember_me.html_name }}"
                     type="checkbox"
-                    class="bg-gray-50 border border-gray-300 focus:ring-3 focus:ring-blue-300 h-4 w-4 rounded"
+                    class="bg-gray-50 border border-gray-300 focus:ring-3 focus:ring-blue-300 h-4 w-4 rounded dark:bg-neutral-700 dark:border-neutral-600 dark:focus:ring-blue-500"
                     {% if form.remember_me.value %}checked{% endif %}
                   />
                 </div>
                 <div class="text-sm ml-3">
                   <label
                     for="{{ form.remember_me.id_for_label }}"
-                    class="font-medium text-gray-900"
+                    class="font-medium text-gray-900 dark:text-neutral-100"
                   >Remember me</label
                     >
                   </div>
                 </div>
                 <a
                   href="{% url 'mouseapp:password_reset' %}"
-                  class="text-sm ml-auto px-2"
+                  class="text-sm ml-auto px-2 dark:text-white"
                 >Forgotten Password?</a
                   >
                 </div>

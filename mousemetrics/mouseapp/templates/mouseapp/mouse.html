@@ -2,8 +2,8 @@
 {% block title %}Mouse{% endblock %}
 {% block content%}
   <div class="max-w-3xl mx-auto px-4 py-8">
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-      <div class="bg-neutral-200 px-6 py-4">
+    <div class="bg-white rounded-lg shadow-md overflow-hidden dark:bg-neutral-800">
+      <div class="bg-neutral-200 px-6 py-4 dark:bg-neutral-700">
         <h3 class="default-header">Mouse Details</h3>
       </div>
 
@@ -83,7 +83,7 @@
           </div>
         </dl>
 
-        <div class="mt-6 pt-6 border-t border-gray-200">
+        <div class="mt-6 pt-6 border-t border-gray-200 dark:border-neutral-700">
           <a
             href="{% url 'mouseapp:family_tree' mouse=mouse.id %}"
             class="inline-flex items-center px-4 py-2 btn-primary"

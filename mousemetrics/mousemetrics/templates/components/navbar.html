@@ -1,15 +1,15 @@
-<nav class="border-b border-neutral-300 bg-neutral-200">
+<nav class="border-b border-neutral-300 bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800">
   <div class="flex items-center justify-between py-3 px-4 mx-auto max-w-6xl">
-    <a href="{% url 'mouseapp:home' %}" class="text-xl font-semibold text-neutral-800 hover:text-neutral-600 transition-colors">
+    <a href="{% url 'mouseapp:home' %}" class="text-xl font-semibold text-neutral-800 hover:text-neutral-600 transition-colors dark:text-neutral-100 dark:hover:text-neutral-300">
       Labsafe
     </a>
 
     {% if user.is_authenticated %}
       <div class="flex items-center gap-4">
-        <span class="text-neutral-700">Hi, {{ user.first_name }}</span>
+        <span class="text-neutral-700 dark:text-white">Hi, {{ user.first_name }}</span>
         <div class="relative" id="notification-container">
           <input type="checkbox" id="notification-toggle" class="notification-checkbox hidden" />
-          <label for="notification-toggle" tabindex="0" class="relative inline-flex items-center p-2 text-neutral-700 hover:text-neutral-900 transition-colors cursor-pointer z-50" id="notification-dropdown" aria-haspopup="true">
+          <label for="notification-toggle" tabindex="0" class="relative inline-flex items-center p-2 text-neutral-700 hover:text-neutral-900 transition-colors cursor-pointer z-50 dark:text-neutral-100 dark:hover:text-neutral-300" id="notification-dropdown" aria-haspopup="true">
             {% include "components/svgs/bell.svg" %}
             {% if unread_count > 0 %}
               <span class="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full pointer-events-none">
@@ -17,26 +17,26 @@
               </span>
             {% endif %}
           </label>
-          <div class="notification-menu hidden min-w-[320px] absolute right-0 top-full mt-2 bg-white border border-neutral-300 rounded-lg shadow-lg z-50" id="notification-menu" aria-labelledby="notification-dropdown">
-            <div class="p-4 border-b border-neutral-200">
+          <div class="notification-menu hidden min-w-[320px] absolute right-0 top-full mt-2 bg-white border border-neutral-300 rounded-lg shadow-lg z-50 dark:bg-neutral-800 dark:border-neutral-700" id="notification-menu" aria-labelledby="notification-dropdown">
+            <div class="p-4 border-b border-neutral-200 dark:border-neutral-700">
               <div class="flex justify-between items-center gap-4">
-                <h3 class="font-semibold text-neutral-800">Notifications</h3>
+                <h3 class="font-semibold text-neutral-800 dark:text-white">Notifications</h3>
                 {% if recent_notifications %}
                   <form method="post" action="{% url 'mouseapp:mark_all_notifications_read' %}" class="m-0">
                     {% csrf_token %}
-                    <button type="submit" class="text-sm text-neutral-600 hover:text-neutral-900 whitespace-nowrap px-2 py-1 cursor-pointer">Clear all</button>
+                    <button type="submit" class="text-sm text-neutral-600 hover:text-neutral-900 whitespace-nowrap px-2 py-1 cursor-pointer dark:text-neutral-300 dark:hover:text-neutral-100">Clear all</button>
                   </form>
                 {% endif %}
               </div>
             </div>
             <div class="max-h-96 overflow-y-auto">
               {% if recent_notifications %}
-                <ul class="divide-y divide-neutral-200">
+                <ul class="divide-y divide-neutral-200 dark:divide-neutral-700">
                   {% for notification in recent_notifications %}
-                    <li class="p-4 hover:bg-neutral-50 {% if not notification.read %}bg-blue-50{% endif %}">
+                    <li class="p-4 hover:bg-neutral-50 {% if not notification.read %}bg-blue-50{% endif %} dark:hover:bg-neutral-700 {% if not notification.read %}dark:bg-blue-900{% endif %}">
                       <div class="flex justify-between items-start gap-2">
                         <div class="flex-1 space-y-2">
-                          <p class="text-sm text-neutral-800 {% if not notification.read %}font-medium{% endif %}">
+                          <p class="text-sm text-neutral-800 {% if not notification.read %}font-medium{% endif %} dark:text-white">
                             {% if notification.request and "[link]" in notification.message %}
                               {{ notification.message|slice:":-7" }}
                             {% else %}
@@ -44,13 +44,13 @@
                             {% endif %}
                           </p>
                           {% if notification.request %}
-                            <a href="{% url 'mouseapp:requests' %}#request-{{ notification.request.id }}" class="text-sm">View request</a>
+                            <a href="{% url 'mouseapp:requests' %}#request-{{ notification.request.id }}" class="text-sm dark:text-blue-400">View request</a>
                           {% endif %}
-                          <p class="text-xs text-neutral-500">{{ notification.created_at|date:"M d, Y g:i A" }}</p>
+                          <p class="text-xs text-neutral-500 dark:text-neutral-400">{{ notification.created_at|date:"M d, Y g:i A" }}</p>
                         </div>
                         <form method="post" action="{% url 'mouseapp:mark_notification_read' notification.id %}" class="m-0">
                           {% csrf_token %}
-                          <button type="submit" class="text-xs text-neutral-500 hover:text-red-600 cursor-pointer" title="Dismiss notification">×</button>
+                          <button type="submit" class="text-xs text-neutral-500 hover:text-red-600 cursor-pointer dark:text-neutral-400 dark:hover:text-red-400" title="Dismiss notification">×</button>
                         </form>
                       </div>
                     </li>
@@ -58,7 +58,7 @@
                 </ul>
               {% else %}
                 <div class="p-8 text-center">
-                  <p class="text-neutral-500 text-sm">No notifications</p>
+                  <p class="text-neutral-500 text-sm dark:text-neutral-400">No notifications</p>
                 </div>
               {% endif %}
             </div>
