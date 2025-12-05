@@ -45,6 +45,17 @@ def home(request: HttpRequest) -> HttpResponse:
         ).count()
     return render(request, "mouseapp/home.html", context)
 
+def pp(request: HttpRequest) -> HttpResponse:
+    context: dict[str, object] = {}
+    if request.user.is_authenticated:
+        context["notifications"] = Notification.objects.filter(
+            user=request.user
+        ).order_by("-created_at")[:10]
+        context["unread_count"] = Notification.objects.filter(
+            user=request.user, read=False
+        ).count()
+    return render(request, "mouseapp/privacy_policy.html", context)
+
 
 def get_users_to_notify_for_request(request_obj: Request) -> list[User]:
     """Get all users who should be notified when a request is created."""
