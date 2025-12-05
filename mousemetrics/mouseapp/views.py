@@ -45,6 +45,7 @@ def home(request: HttpRequest) -> HttpResponse:
         ).count()
     return render(request, "mouseapp/home.html", context)
 
+
 def pp(request: HttpRequest) -> HttpResponse:
     context: dict[str, object] = {}
     if request.user.is_authenticated:
