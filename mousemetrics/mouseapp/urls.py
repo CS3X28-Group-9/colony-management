@@ -6,7 +6,7 @@ app_name = "mouseapp"
 
 urlpatterns = [
     path("", views.home, name="home"),
-    path("privacy_policy/", views.pp, name="privacy_policy"),
+    path("privacy_policy/", views.privacy_policy, name="privacy_policy"),
     path("mouse/<int:id>/", views.mouse, name="mouse"),
     path("mouse/<int:id>/edit/", views.edit_mouse, name="edit_mouse"),
     path("project/<int:id>/", views.project, name="project"),
