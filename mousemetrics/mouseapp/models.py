@@ -6,7 +6,8 @@ from django.urls import reverse
 
 
 class Project(models.Model):
-    name = models.CharField(max_length=255)
+    id: int
+    name = models.TextField()
     start_date = models.DateField()
     allow_over_18_months = models.BooleanField(default=False)
     has_mod_sev_permission = models.BooleanField(default=False)
@@ -44,24 +45,25 @@ class Project(models.Model):
         return self.mouse_set.count()  # type: ignore
 
     def __str__(self) -> str:
-        return f"Project {self.name}"
+        return f"{self.name}"
 
     def get_absolute_url(self) -> str:
-        return reverse("mouseapp:project", args=[self.pk])
+        return reverse("mouseapp:project", args=[self.id])
 
 
 class StudyPlan(models.Model):
-    STATUS_CHOICES = (
-        ("Draft", "Draft"),
-        ("Submitted", "Submitted"),
-        ("Approved", "Approved"),
-        ("Completed", "Completed"),
-    )
+    STATUS_CHOICES = {
+        "D": "Draft",
+        "S": "Submitted",
+        "A": "Approved",
+        "C": "Completed",
+    }
     SOURCE_CHOICES = {
         "I": "Internal",
         "E": "External",
     }
 
+    id: int
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     creator = models.ForeignKey(User, on_delete=models.PROTECT)
     approver = models.ForeignKey(
@@ -75,13 +77,14 @@ class StudyPlan(models.Model):
     study_id = models.CharField(max_length=50, blank=True, null=True, unique=True)
     approval_date = models.DateField(blank=True, null=True)
 
-    description = models.TextField()
+    description = models.TextField(blank=True)
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
 
     mouse_quota_male = models.IntegerField(blank=True, null=True)
     mouse_quota_female = models.IntegerField(blank=True, null=True)
     mouse_source = models.CharField(
+        max_length=1,
         choices=SOURCE_CHOICES,
         blank=True,
         null=True,
@@ -99,9 +102,9 @@ class StudyPlan(models.Model):
 
 class Box(models.Model):
     LOCATION_CHOICES = {"B": "Breeding", "E": "Experimental"}
-    box_type = models.CharField(
-        max_length=1, choices=[("S", "Shoe"), ("T", "Stock")], default="S"
-    )
+    BOX_TYPE_CHOICES = {"S": "Shoe", "T": "Stock"}
+
+    box_type = models.CharField(max_length=1, choices=BOX_TYPE_CHOICES, default="S")
     location = models.CharField(
         max_length=1,
         choices=LOCATION_CHOICES,
@@ -109,7 +112,7 @@ class Box(models.Model):
     project = models.ForeignKey(
         Project, on_delete=models.PROTECT, null=True, blank=True
     )
-    number = models.CharField(max_length=255)
+    number = models.TextField()
 
     class Meta:
         verbose_name_plural = "Boxes"
@@ -120,7 +123,7 @@ class Box(models.Model):
         ]
 
     def __str__(self) -> str:
-        return self.number
+        return f"Box {self.number}"
 
 
 class Strain(models.Model):
@@ -139,6 +142,7 @@ class Mouse(models.Model):
         code="invalid_earmark",
     )
 
+    id: int
     project = models.ForeignKey(Project, on_delete=models.PROTECT)
     study_plan = models.ForeignKey(
         StudyPlan,
@@ -147,7 +151,7 @@ class Mouse(models.Model):
         null=True,
         related_name="mice_assigned",
     )
-    sex = models.CharField(max_length=1, choices=list(SEX_CHOICES.items()))
+    sex = models.CharField(max_length=1, choices=SEX_CHOICES)
     mother = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
@@ -207,22 +211,22 @@ class Mouse(models.Model):
         return f"{self.strain} {self.tube_number}"
 
     def get_absolute_url(self) -> str:
-        return reverse("mouseapp:mouse", args=[self.pk])
+        return reverse("mouseapp:mouse", args=[self.id])
 
 
 class Request(models.Model):
-    REQUEST_CHOICES = (
-        ("B", "Set up breeding pair"),
-        ("C", "Cull"),
-        ("T", "Transfer"),
-        ("Q", "Query"),
-    )
-    STATUS_CHOICES = (
-        ("pending", "Pending"),
-        ("accepted", "Accepted"),
-        ("denied", "Denied"),
-        ("completed", "Completed"),
-    )
+    REQUEST_CHOICES = {
+        "B": "Set up breeding pair",
+        "C": "Cull",
+        "T": "Transfer",
+        "Q": "Query",
+    }
+    STATUS_CHOICES = {
+        "P": "Pending",
+        "A": "Accepted",
+        "D": "Denied",
+        "C": "Completed",
+    }
 
     project = models.ForeignKey(
         Project,
@@ -247,7 +251,7 @@ class Request(models.Model):
     approved_date = models.DateField(blank=True, null=True)
     fulfill_date = models.DateField(blank=True, null=True)
     kind = models.CharField(max_length=1, choices=REQUEST_CHOICES)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending")
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="P")
     details = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -265,10 +269,10 @@ class Request(models.Model):
         if self.project and not self.project.has_read_access(user):
             return False
 
-        if self.status == "pending":
+        if self.status == "P":
             if user.is_superuser:
                 return True
-            if self.project and self.project.lead and self.project.lead.pk == user.pk:
+            if self.project and self.project.lead and self.project.lead.id == user.pk:
                 return True
             if user.has_perm("mouseapp.approve_request"):
                 return True
