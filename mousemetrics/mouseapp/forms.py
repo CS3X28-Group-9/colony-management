@@ -185,22 +185,22 @@ class RequestForm(forms.ModelForm):
                     project_id_str = self.data.get("project")
                     if project_id_str:
                         project_id = int(project_id_str)
-                        project = Project.objects.get(pk=project_id)
+                        project = Project.objects.get(id=project_id)
                         if not project.has_read_access(user):
                             project = None
                     else:
                         project = None
                 except (ValueError, TypeError, Project.DoesNotExist):
                     project = None
-            elif self.instance and self.instance.pk and self.instance.mouse:
+            elif self.instance and self.instance.id and self.instance.mouse:
                 project = self.instance.mouse.project
-                self.fields["project"].initial = project.pk
+                self.fields["project"].initial = project.id
             elif (
                 isinstance(project_field, forms.ModelChoiceField)
                 and project_field.initial
             ):
                 try:
-                    project = Project.objects.get(pk=project_field.initial)
+                    project = Project.objects.get(id=project_field.initial)
                     if not project.has_read_access(user):
                         project = None
                 except (ValueError, TypeError, Project.DoesNotExist):
@@ -218,7 +218,7 @@ class RequestForm(forms.ModelForm):
         mouse_field = self.fields["mouse"]
         if isinstance(mouse_field, forms.ModelChoiceField):
             mouse_field.queryset = Mouse.objects.filter(
-                id__in=[m.pk for m in accessible_mice]
+                id__in=[m.id for m in accessible_mice]
             )
 
     def clean_mouse(self) -> Mouse:

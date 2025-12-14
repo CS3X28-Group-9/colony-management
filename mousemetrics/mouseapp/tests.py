@@ -194,7 +194,7 @@ def test_create_request(
     assert Request.objects.filter(creator=logged_in_user, kind="B").exists()
     request_obj = Request.objects.get(creator=logged_in_user, kind="B")
     assert request_obj.mouse == mouse
-    assert request_obj.status == "pending"
+    assert request_obj.status == "P"
     assert request_obj.details == "Test breeding request"
 
 
@@ -225,19 +225,19 @@ def test_request_status_change_permissions(
         project=project,
         kind="B",
         details="Test request",
-        status="pending",
+        status="P",
     )
 
     client.force_login(regular_user)
     url = reverse("mouseapp:update_request_status", args=[request_obj.pk])
-    response = client.post(url, {"status": "accepted"})
+    response = client.post(url, {"status": "A"})
     assert response.status_code == 403
 
     client.force_login(admin_user)
-    response = client.post(url, {"status": "accepted"})
+    response = client.post(url, {"status": "A"})
     assert response.status_code == 302
     request_obj.refresh_from_db()
-    assert request_obj.status == "accepted"
+    assert request_obj.status == "A"
 
 
 @pytest.mark.django_db
@@ -268,7 +268,7 @@ def test_request_status_change_requires_mouse_project_access(
         project=project,
         kind="B",
         details="Test request",
-        status="pending",
+        status="P",
     )
 
     content_type = ContentType.objects.get_for_model(Request)
@@ -279,14 +279,14 @@ def test_request_status_change_requires_mouse_project_access(
 
     client.force_login(approver)
     url = reverse("mouseapp:update_request_status", args=[request_obj.pk])
-    response = client.post(url, {"status": "accepted"})
+    response = client.post(url, {"status": "A"})
     assert response.status_code == 403
 
     Membership.objects.create(project=project, user=approver)
-    response = client.post(url, {"status": "accepted"})
+    response = client.post(url, {"status": "A"})
     assert response.status_code == 302
     request_obj.refresh_from_db()
-    assert request_obj.status == "accepted"
+    assert request_obj.status == "A"
 
 
 @pytest.mark.django_db
@@ -313,14 +313,14 @@ def test_notification_created_on_status_change(
         project=project,
         kind="B",
         details="Test request",
-        status="pending",
+        status="P",
     )
 
     assert Notification.objects.filter(user=requester).count() == 0
 
     client.force_login(admin)
     url = reverse("mouseapp:update_request_status", args=[request_obj.pk])
-    client.post(url, {"status": "accepted"})
+    client.post(url, {"status": "A"})
 
     assert Notification.objects.filter(user=requester).count() == 1
     notification = Notification.objects.get(user=requester)
