@@ -192,7 +192,7 @@ class RequestForm(forms.ModelForm):
                         project = None
                 except (ValueError, TypeError, Project.DoesNotExist):
                     project = None
-            elif self.instance and self.instance.id and self.instance.mouse:
+            elif self.instance and self.instance.mouse:
                 project = self.instance.mouse.project
                 self.fields["project"].initial = project.id
             elif (

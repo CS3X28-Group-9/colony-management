@@ -73,7 +73,7 @@ class StudyPlan(models.Model):
         null=True,
         related_name="approved_study_plans",
     )
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="Draft")
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default="Draft")
     study_id = models.CharField(max_length=50, blank=True, null=True, unique=True)
     approval_date = models.DateField(blank=True, null=True)
 
@@ -251,7 +251,7 @@ class Request(models.Model):
     approved_date = models.DateField(blank=True, null=True)
     fulfill_date = models.DateField(blank=True, null=True)
     kind = models.CharField(max_length=1, choices=REQUEST_CHOICES)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="P")
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default="P")
     details = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

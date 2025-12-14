@@ -97,9 +97,9 @@ def mouse(request: AuthedRequest, id: int) -> HttpResponse:
 
     requests_with_permissions = []
     for req in mouse_requests:
-        req.can_change_status = req.can_change_status(
-            request.user
-        )  # pyright: ignore[reportAttributeAccessIssue]
+        req.user_can_change_status = (  # pyright: ignore[reportAttributeAccessIssue]
+            req.can_change_status(request.user)
+        )
         requests_with_permissions.append(req)
 
     context = {
@@ -562,18 +562,18 @@ def requests_list(request: AuthedRequest) -> HttpResponse:
 
     requests_with_permissions = []
     for req in user_requests.order_by("-created_at"):
-        req.can_change_status = req.can_change_status(
-            request.user
-        )  # pyright: ignore[reportAttributeAccessIssue]
+        req.user_can_change_status = (  # pyright: ignore[reportAttributeAccessIssue]
+            req.can_change_status(request.user)
+        )
         requests_with_permissions.append(req)
 
-    request_id = request.GET.get("id")
+    request_id = request.GET.get("id", None)
     highlighted_request_id = None
-    page_number = request.GET.get("page")
+    page_number = request.GET.get("page", 1)
 
     paginator = Paginator(requests_with_permissions, 10)
 
-    if request_id:
+    if request_id is not None:
         try:
             highlighted_request_id = int(request_id)
             for index, req in enumerate(requests_with_permissions):
@@ -648,7 +648,7 @@ def update_request_status(request: AuthedRequest, request_id: int) -> HttpRespon
         and new_status in ["A", "D", "C"]
         and request_obj.creator != request.user
     ):
-        status_display = dict(Request.STATUS_CHOICES).get(new_status, new_status)
+        status_display = Request.STATUS_CHOICES[new_status]
         message = f"Request {status_display.lower()}. [link]"
         Notification.objects.create(
             user=request_obj.creator,
@@ -664,10 +664,10 @@ def update_request_status(request: AuthedRequest, request_id: int) -> HttpRespon
 def mark_notification_read(
     request: AuthedRequest, notification_id: int
 ) -> HttpResponse:
-    notification = get_object_or_404(
-        Notification, id=notification_id, user=request.user
-    )
-    notification.delete()
+    try:
+        Notification.objects.get(id=notification_id, user=request.user).delete()
+    except Notification.DoesNotExist:
+        pass
     return redirect("mouseapp:home")
 
 
