@@ -3,7 +3,7 @@ set -eux
 
 cd mousemetrics
 python manage.py migrate
-python manage.py collectstatic --clear --no-input
+python manage.py collectstatic --clear --no-input &>/dev/null
 
 if [ -n "${MOUSEMETRICS_ROOT_PASSWORD-}" ]; then
   python manage.py createsuperuser --username root --email "root@$MOUSEMETRICS_HOST" --no-input ||:
