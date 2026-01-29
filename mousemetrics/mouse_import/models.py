@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 
 
 class MouseImport(models.Model):
+    id: int
     uploaded_by = models.ForeignKey(
         get_user_model(),
         on_delete=models.SET_NULL,
@@ -20,8 +21,7 @@ class MouseImport(models.Model):
         upload_to="mouse_imports/",
         help_text="Stored under MEDIA_ROOT/mouse_imports/.",
     )
-    original_filename = models.CharField(
-        max_length=255,
+    original_filename = models.TextField(
         blank=True,
         help_text="Original name of the uploaded file.",
     )

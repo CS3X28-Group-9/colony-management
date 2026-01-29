@@ -89,7 +89,7 @@
               </div>
 
               <div class="ml-4 flex flex-col gap-2">
-                {% if req.can_change_status and req.status == 'pending' %}
+                {% if req.user_can_change_status and req.status == 'pending' %}
                   <form method="post" action="{% url 'mouseapp:update_request_status' req.id %}" class="m-0">
                     {% csrf_token %}
                     <input type="hidden" name="status" value="accepted">
@@ -101,7 +101,7 @@
                     <button type="submit" class="btn-secondary text-sm w-full">Deny</button>
                   </form>
                 {% endif %}
-                {% if req.can_change_status and req.status == 'accepted' %}
+                {% if req.user_can_change_status and req.status == 'accepted' %}
                   <form method="post" action="{% url 'mouseapp:update_request_status' req.id %}" class="m-0">
                     {% csrf_token %}
                     <input type="hidden" name="status" value="completed">

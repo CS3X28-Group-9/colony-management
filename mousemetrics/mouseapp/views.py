@@ -46,7 +46,7 @@ def home(request: HttpRequest) -> HttpResponse:
     return render(request, "mouseapp/home.html", context)
 
 
-def pp(request: HttpRequest) -> HttpResponse:
+def privacy_policy(request: HttpRequest) -> HttpResponse:
     context: dict[str, object] = {}
     if request.user.is_authenticated:
         context["notifications"] = Notification.objects.filter(
@@ -97,9 +97,9 @@ def mouse(request: AuthedRequest, id: int) -> HttpResponse:
 
     requests_with_permissions = []
     for req in mouse_requests:
-        req.can_change_status = req.can_change_status(
-            request.user
-        )  # pyright: ignore[reportAttributeAccessIssue]
+        req.user_can_change_status = (  # pyright: ignore[reportAttributeAccessIssue]
+            req.can_change_status(request.user)
+        )
         requests_with_permissions.append(req)
 
     context = {
@@ -168,7 +168,12 @@ def invite_member(request: AuthedRequest, id: int) -> HttpResponse:
             email = form.cleaned_data["user"]
             try:
                 user = User.objects.get(email=email)
-                token = signing.dumps({"user": user.pk, "project": project.pk})
+                token = signing.dumps(
+                    {
+                        "user": user.pk,
+                        "project": project.id,
+                    }
+                )
                 mail_html = render_to_string(
                     "mouseapp/invite_email.html",
                     context={
@@ -302,12 +307,12 @@ def get_descendant_depth(mouse: Mouse) -> int:
 
 
 def layout_family_tree_with_depth(mouse: Mouse) -> list[dict]:
-    def layout_subtree(m: Mouse, start_x: float, level: int):
-        children = get_children(m)
+    def layout_subtree(mouse: Mouse, start_x: float, level: int):
+        children = get_children(mouse)
         if not children:
             return [
                 {
-                    "mouse": m,
+                    "mouse": mouse,
                     "x": start_x + 0.5,
                     "y": level,
                     "depth": 0,
@@ -326,7 +331,7 @@ def layout_family_tree_with_depth(mouse: Mouse) -> list[dict]:
         total_width = current_x - start_x
         nodes.append(
             {
-                "mouse": m,
+                "mouse": mouse,
                 "x": start_x + total_width / 2,
                 "y": level,
                 "depth": 1 + max_child_depth,
@@ -357,7 +362,7 @@ def gridify_descendants(tree_layout: list[dict]) -> list[list[dict | None]]:
 
 
 def family_tree(request: HttpRequest, mouse: int) -> HttpResponse:
-    center_mouse = get_object_or_404(Mouse, pk=mouse)
+    center_mouse = get_object_or_404(Mouse, id=mouse)
     full_ancestry = family_tree_ancestry(center_mouse)
 
     has_descendants = (
@@ -427,9 +432,9 @@ def _prepare_request_form(
                 mouse_id_int = int(mouse_id)
                 mouse = Mouse.objects.get(id=mouse_id_int)
                 if mouse.has_read_access(request.user):
-                    initial["mouse"] = mouse.pk
-                    initial["project"] = mouse.project.pk
-                    project_id = mouse.project.pk
+                    initial["mouse"] = mouse.id
+                    initial["project"] = mouse.project.id
+                    project_id = mouse.project.id
                     project = mouse.project
                 else:
                     mouse_id = None
@@ -443,7 +448,7 @@ def _prepare_request_form(
                 project_id_int = int(project_id)
                 project = Project.objects.get(id=project_id_int)
                 if project.has_read_access(request.user):
-                    initial["project"] = project.pk
+                    initial["project"] = project.id
                 else:
                     project_id = None
                     project = None
@@ -548,27 +553,27 @@ def requests_list(request: AuthedRequest) -> HttpResponse:
         user_requests = (user_requests | project_requests).distinct()
 
     status_filter = request.GET.get("status", "")
-    if status_filter in dict(Request.STATUS_CHOICES):
+    if status_filter in Request.STATUS_CHOICES:
         user_requests = user_requests.filter(status=status_filter)
 
     type_filter = request.GET.get("type", "")
-    if type_filter in dict(Request.REQUEST_CHOICES):
+    if type_filter in Request.REQUEST_CHOICES:
         user_requests = user_requests.filter(kind=type_filter)
 
     requests_with_permissions = []
     for req in user_requests.order_by("-created_at"):
-        req.can_change_status = req.can_change_status(
-            request.user
-        )  # pyright: ignore[reportAttributeAccessIssue]
+        req.user_can_change_status = (  # pyright: ignore[reportAttributeAccessIssue]
+            req.can_change_status(request.user)
+        )
         requests_with_permissions.append(req)
 
-    request_id = request.GET.get("id")
+    request_id = request.GET.get("id", None)
     highlighted_request_id = None
-    page_number = request.GET.get("page")
+    page_number = request.GET.get("page", 1)
 
     paginator = Paginator(requests_with_permissions, 10)
 
-    if request_id:
+    if request_id is not None:
         try:
             highlighted_request_id = int(request_id)
             for index, req in enumerate(requests_with_permissions):
@@ -624,7 +629,7 @@ def update_request_status(request: AuthedRequest, request_id: int) -> HttpRespon
         )
 
     new_status = request.POST.get("status")
-    if new_status not in dict(Request.STATUS_CHOICES):
+    if new_status not in Request.STATUS_CHOICES:
         return redirect("mouseapp:requests")
 
     old_status = request_obj.status
@@ -640,10 +645,10 @@ def update_request_status(request: AuthedRequest, request_id: int) -> HttpRespon
 
     if (
         old_status != new_status
-        and new_status in ["accepted", "denied", "completed"]
+        and new_status in ["A", "D", "C"]
         and request_obj.creator != request.user
     ):
-        status_display = dict(Request.STATUS_CHOICES).get(new_status, new_status)
+        status_display = Request.STATUS_CHOICES[new_status]
         message = f"Request {status_display.lower()}. [link]"
         Notification.objects.create(
             user=request_obj.creator,
@@ -659,10 +664,10 @@ def update_request_status(request: AuthedRequest, request_id: int) -> HttpRespon
 def mark_notification_read(
     request: AuthedRequest, notification_id: int
 ) -> HttpResponse:
-    notification = get_object_or_404(
-        Notification, id=notification_id, user=request.user
-    )
-    notification.delete()
+    try:
+        Notification.objects.get(id=notification_id, user=request.user).delete()
+    except Notification.DoesNotExist:
+        pass
     return redirect("mouseapp:home")
 
 

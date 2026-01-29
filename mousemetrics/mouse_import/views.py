@@ -40,15 +40,15 @@ def import_form(request: HttpRequest) -> HttpResponse:
 
         import_obj.save()
         messages.success(request, "Upload saved. Redirecting to preview…")
-        return redirect("mouse_import:import_preview", pk=import_obj.pk)
+        return redirect("mouse_import:import_preview", id=import_obj.id)
 
     return render(request, "mouse_import/import_form.html", {"form": form})
 
 
 @login_required
-def import_preview(request: HttpRequest, pk: int) -> HttpResponse:
-    import_obj = get_object_or_404(MouseImport, pk=pk)
-    print("PREVIEW → id:", import_obj.pk, "cell_range:", repr(import_obj.cell_range))
+def import_preview(request: HttpRequest, id: int) -> HttpResponse:
+    import_obj = get_object_or_404(MouseImport, id=id)
+    print("PREVIEW → id:", import_obj.id, "cell_range:", repr(import_obj.cell_range))
 
     try:
         df = read_range(
@@ -70,8 +70,8 @@ def import_preview(request: HttpRequest, pk: int) -> HttpResponse:
         )
         return redirect("mouse_import:import_form")
 
-    df_key = _df_session_key(import_obj.pk)
-    map_key = _map_session_key(import_obj.pk)
+    df_key = _df_session_key(import_obj.id)
+    map_key = _map_session_key(import_obj.id)
 
     request.session[df_key] = df.to_json(orient="records")
     columns = list(df.columns)
@@ -91,7 +91,7 @@ def import_preview(request: HttpRequest, pk: int) -> HttpResponse:
         if form.is_valid():
             request.session[map_key] = form.selected_mapping()
             messages.success(request, "Column mapping saved.")
-            return redirect("mouse_import:import_preview", pk=import_obj.pk)
+            return redirect("mouse_import:import_preview", id=import_obj.id)
     else:
         form = ColumnMappingForm(
             columns=columns, initial=saved_initial, project=import_obj.project
@@ -111,10 +111,10 @@ def import_preview(request: HttpRequest, pk: int) -> HttpResponse:
 
 
 @login_required
-def import_commit(request: HttpRequest, pk: int) -> HttpResponse:
-    import_obj = get_object_or_404(MouseImport, pk=pk)
-    df_key = _df_session_key(import_obj.pk)
-    map_key = _map_session_key(import_obj.pk)
+def import_commit(request: HttpRequest, id: int) -> HttpResponse:
+    import_obj = get_object_or_404(MouseImport, id=id)
+    df_key = _df_session_key(import_obj.id)
+    map_key = _map_session_key(import_obj.id)
 
     raw_df = request.session.get(df_key)
     _, fixed, mapping = request.session.get(map_key) or (None, None, None)
@@ -124,12 +124,12 @@ def import_commit(request: HttpRequest, pk: int) -> HttpResponse:
             request,
             "Missing preview data or column mapping. Please re-upload and save the mapping.",
         )
-        return redirect("mouse_import:import_preview", pk=import_obj.pk)
+        return redirect("mouse_import:import_preview", id=import_obj.id)
 
     df = pd.read_json(raw_df, orient="records")
     importer = Importer(
         ImportOptions(
-            project_id=import_obj.project.pk,
+            project_id=import_obj.project.id,
             sheet=import_obj.sheet_name or "",
             range_expr=import_obj.cell_range,
         )
