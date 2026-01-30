@@ -273,14 +273,12 @@ class Request(models.Model):
             return False
 
         if self.status == "P":
-            if user.is_superuser:
-                return True
             if self.project and self.project.lead and self.project.lead.id == user.pk:
                 return True
             if user.has_perm("mouseapp.approve_request"):
                 return True
             return False
-        return user.is_superuser or user.has_perm("mouseapp.approve_request")
+        return user.has_perm("mouseapp.approve_request")
 
     def __str__(self) -> str:
         kind_display = dict(Request.REQUEST_CHOICES).get(self.kind, self.kind)
