@@ -631,10 +631,10 @@ def update_request_status(request: AuthedRequest, request_id: int) -> HttpRespon
     old_status = request_obj.status
     request_obj.status = new_status
 
-    if new_status == "accepted" and not request_obj.approved_date:
+    if new_status == "A" and not request_obj.approved_date:
         request_obj.approved_date = date.today()
         request_obj.approver = request.user
-    if new_status == "completed" and not request_obj.fulfill_date:
+    if new_status == "C" and not request_obj.fulfill_date:
         request_obj.fulfill_date = date.today()
 
     request_obj.save()
