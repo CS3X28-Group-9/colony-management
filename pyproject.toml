@@ -28,6 +28,9 @@ dev = [
   "ruff>=0.13.3",
 ]
 
+[tool.pyrefly.errors]
+untyped-import = "ignore"
+
 [tool.ruff]
 line-length = 88
 indent-width = 4
@@ -54,3 +57,14 @@ typeCheckingMode = "basic"
 reportMissingTypeStubs = false
 venvPath = "."
 venv = ".venv"
+
+[tool.pyrefly]
+project-includes = ["mousemetrics"]
+project-excludes = [
+    "**/migrations",
+    ".venv",
+    ".direnv",
+    "mousemetrics/mouseapp/admin.py",
+]
+search-path=["mousemetrics"]
+infer-with-first-use = false

@@ -120,8 +120,8 @@ def test_login_redirect(client: Client):
 
     assert response.status_code == 302, "Expected a redirect after login"
     assert (
-        response.url == home_url  # pyright: ignore
-    ), f"Expected redirect to {home_url}, but got {response.url}"  # pyright: ignore
+        response["Location"] == home_url
+    ), f"Expected redirect to {home_url}, but got {response["Location"]}"
 
 
 @pytest.mark.django_db
@@ -170,7 +170,7 @@ def test_create_breeding_request_requires_login(client: Client):
     url = reverse("mouseapp:create_breeding_request")
     response = client.get(url)
     assert response.status_code == 302
-    assert "login" in response.url.lower()  # pyright: ignore
+    assert "login" in response["Location"].lower()  # pyright: ignore
 
 
 @pytest.mark.django_db
@@ -334,7 +334,7 @@ def test_requests_page_requires_login(client: Client):
     url = reverse("mouseapp:requests")
     response = client.get(url)
     assert response.status_code == 302
-    assert "login" in response.url.lower()  # pyright: ignore
+    assert "login" in response["Location"].lower()  # pyright: ignore
 
 
 @pytest.mark.django_db

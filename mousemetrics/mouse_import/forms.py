@@ -1,6 +1,7 @@
 from django import forms
 from .models import MouseImport
 from .targets import get_mouse_import_targets
+from typing import List
 
 
 class MouseImportForm(forms.ModelForm):
@@ -24,7 +25,9 @@ class ColumnMappingForm(forms.Form):
 
         # choices
         col_choices = [(c, c) for c in columns]
-        targets = [(True, *r) for r in req] + [(False, *o) for o in opt]
+        targets: List[tuple[bool, str, str]] = [(True, *r) for r in req] + [
+            (False, *o) for o in opt
+        ]
 
         for required, name, label in targets:
             choices = field_choices.get(name)
