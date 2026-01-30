@@ -17,6 +17,11 @@ urlpatterns = [
     path("family_tree/<int:mouse>/", views.family_tree, name="family_tree"),
     path("requests/", views.requests_list, name="requests"),
     path(
+        "requests/<int:request_id>/",
+        views.request_detail,
+        name="request_detail",
+    ),
+    path(
         "requests/create/breeding/",
         views.create_breeding_request,
         name="create_breeding_request",

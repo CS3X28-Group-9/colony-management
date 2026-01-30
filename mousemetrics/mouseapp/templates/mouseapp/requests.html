@@ -46,7 +46,11 @@
             <div class="flex justify-between items-start">
               <div class="flex-1">
                 <div class="flex items-center gap-3 mb-2">
-                  <h3 class="font-semibold text-lg">{{ req.get_kind_display }}</h3>
+                  <h3 class="font-semibold text-lg">
+                    <a href="{% url 'mouseapp:request_detail' req.id %}" class="text-blue-600 hover:text-blue-800">
+                      {{ req.get_kind_display }}
+                    </a>
+                  </h3>
                   <span class="px-2 py-1 rounded text-sm
                                {% if req.status == 'P' %}bg-yellow-100 text-yellow-800
                                {% elif req.status == 'A' %}bg-green-100 text-green-800

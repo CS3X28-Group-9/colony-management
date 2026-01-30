@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Request Details{% endblock %}
+
+{% block content %}
+  <div class="max-w-4xl mx-auto mt-6">
+    <!-- Back to Requests Link -->
+    <div class="mb-4">
+      <a href="{% url 'mouseapp:requests' %}" class="text-blue-600 hover:text-blue-800">← Back to Requests</a>
+    </div>
+
+    <!-- Request Header -->
+    <div class="card p-6 mb-6">
+      <div class="flex justify-between items-start mb-4">
+        <div class="flex-1">
+          <div class="flex items-center gap-3 mb-2">
+            <h1 class="page-title">{{ request_obj.get_kind_display }}</h1>
+            <span class="px-2 py-1 rounded text-sm
+                         {% if request_obj.status == 'P' %}bg-yellow-100 text-yellow-800
+                         {% elif request_obj.status == 'A' %}bg-green-100 text-green-800
+                         {% elif request_obj.status == 'D' %}bg-red-100 text-red-800
+                         {% elif request_obj.status == 'C' %}bg-blue-100 text-blue-800
+                         {% endif %}">
+              {{ request_obj.get_status_display }}
+            </span>
+          </div>
+
+          {% if request_obj.project %}
+            <p class="text-sm text-muted mb-1">
+              <strong>Project:</strong>
+              <a href="{% url 'mouseapp:project' request_obj.project.id %}" class="text-blue-600 hover:text-blue-800">
+                {{ request_obj.project.name }}
+              </a>
+            </p>
+          {% endif %}
+
+          {% if request_obj.mouse %}
+            <p class="text-sm text-muted mb-1">
+              <strong>Mouse:</strong>
+              <a href="{% url 'mouseapp:mouse' request_obj.mouse.id %}" class="text-blue-600 hover:text-blue-800">
+                {{ request_obj.mouse.strain }} - Tube {{ request_obj.mouse.tube_number }}
+              </a>
+            </p>
+          {% endif %}
+
+          <div class="mt-4 p-4 bg-gray-50 rounded border border-gray-200">
+            <p class="text-gray-700 whitespace-pre-wrap">{{ request_obj.details }}</p>
+          </div>
+
+          <div class="text-muted-small space-y-1 mt-4">
+            <p>Created by {{ request_obj.creator.get_full_name|default:request_obj.creator.username }} on {{ request_obj.created_at|date:"M d, Y" }}</p>
+            {% if request_obj.approver %}
+              <p>Approved by {{ request_obj.approver.get_full_name|default:request_obj.approver.username }}{% if request_obj.approved_date %} on {{ request_obj.approved_date|date:"M d, Y" }}{% endif %}</p>
+            {% endif %}
+            {% if request_obj.fulfill_date %}
+              <p>Fulfilled on {{ request_obj.fulfill_date|date:"M d, Y" }}</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="ml-4 flex flex-col gap-2">
+          {% if user_can_change_status and request_obj.status == 'P' %}
+            <form method="post" action="{% url 'mouseapp:update_request_status' request_obj.id %}" class="m-0">
+              {% csrf_token %}
+              <input type="hidden" name="status" value="A">
+              <button type="submit" class="btn-primary text-sm w-full">Accept</button>
+            </form>
+            <form method="post" action="{% url 'mouseapp:update_request_status' request_obj.id %}" class="m-0">
+              {% csrf_token %}
+              <input type="hidden" name="status" value="D">
+              <button type="submit" class="btn-secondary text-sm w-full">Deny</button>
+            </form>
+          {% endif %}
+          {% if user_can_change_status and request_obj.status == 'A' %}
+            <form method="post" action="{% url 'mouseapp:update_request_status' request_obj.id %}" class="m-0">
+              {% csrf_token %}
+              <input type="hidden" name="status" value="C">
+              <button type="submit" class="btn-primary text-sm w-full">Mark Completed</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Replies Section -->
+    <div class="card p-6">
+      <h2 class="text-xl font-semibold mb-4">Replies ({{ page_obj.paginator.count }})</h2>
+
+      <!-- Reply Form -->
+      <div class="mb-6 p-4 bg-gray-50 rounded border border-gray-200">
+        <h3 class="font-medium mb-3">Add a Reply</h3>
+        <form method="post" class="space-y-3">
+          {% csrf_token %}
+          {{ reply_form.message }}
+          {% if reply_form.message.errors %}
+            <div class="text-red-600 text-sm">{{ reply_form.message.errors }}</div>
+          {% endif %}
+          <button type="submit" class="btn-primary">Post Reply</button>
+        </form>
+      </div>
+
+      <!-- Replies List -->
+      {% if page_obj %}
+        <div class="space-y-4">
+          {% for reply in page_obj %}
+            <div class="border border-gray-200 rounded p-4 bg-white">
+              <div class="flex justify-between items-start mb-2">
+                <div>
+                  <p class="font-medium text-gray-900">
+                    {{ reply.user.get_full_name|default:reply.user.username }}
+                  </p>
+                  <p class="text-sm text-muted">{{ reply.timestamp|date:"M d, Y g:i A" }}</p>
+                </div>
+              </div>
+              <div class="mt-2 text-gray-700 whitespace-pre-wrap">{{ reply.message }}</div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+          <div class="mt-6 flex justify-center items-center gap-2">
+            {% if page_obj.has_previous %}
+              <a href="?page=1" class="px-3 py-2 border border-neutral-300 rounded hover:bg-neutral-100">First</a>
+              <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-2 border border-neutral-300 rounded hover:bg-neutral-100">Previous</a>
+            {% endif %}
+
+            <span class="px-4 py-2 text-neutral-700">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-2 border border-neutral-300 rounded hover:bg-neutral-100">Next</a>
+              <a href="?page={{ page_obj.paginator.num_pages }}" class="px-3 py-2 border border-neutral-300 rounded hover:bg-neutral-100">Last</a>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% else %}
+        <p class="text-muted text-center py-8">No replies yet. Be the first to reply!</p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
