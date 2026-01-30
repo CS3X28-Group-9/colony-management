@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.core.mail import send_mail
 from django.core import signing
-from django.views.decorators.http import require_safe, require_http_methods
+from django.views.decorators.http import require_http_methods
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -85,8 +85,8 @@ def get_users_to_notify_for_request(request_obj: Request) -> list[User]:
     return [user for user in users_to_notify if user != request_obj.creator]
 
 
-@require_safe
 @login_required
+@require_http_methods(["GET","POST"])
 def mouse(request: AuthedRequest, id: int) -> HttpResponse:
     mouse: Mouse = get_object_or_404(Mouse, id=id)
     if not mouse.has_read_access(request.user):
@@ -127,8 +127,8 @@ def edit_mouse(request: AuthedRequest, id: int) -> HttpResponse:
     return render(request, "mouseapp/edit_mouse.html", {"form": form})
 
 
-@require_safe
 @login_required
+@require_http_methods(["GET","POST"])
 def project(request: AuthedRequest, id: int) -> HttpResponse:
     project = get_object_or_404(Project, id=id)
     if not project.has_read_access(request.user):
@@ -221,7 +221,7 @@ def remove_member(request: AuthedRequest, id: int) -> HttpResponse:
 
 
 @login_required
-@require_safe
+@require_http_methods(["GET","POST"])
 def join_project(request: AuthedRequest, token: str) -> HttpResponse:
     SECONDS_IN_MONTH = 60 * 60 * 24 * 31
 
@@ -536,7 +536,7 @@ def create_transfer_request(request: AuthedRequest) -> HttpResponse:
 
 
 @login_required
-@require_safe
+@require_http_methods(["GET","POST"])
 def requests_list(request: AuthedRequest) -> HttpResponse:
     if request.user.is_superuser or request.user.has_perm("mouseapp.approve_request"):
         user_requests = Request.objects.all()
