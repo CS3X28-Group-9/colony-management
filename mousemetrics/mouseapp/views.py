@@ -24,6 +24,7 @@ from .forms import (
     BreedingRequestForm,
     CullingRequestForm,
     TransferRequestForm,
+    RequestReplyForm,
 )
 from .models import Mouse, Project, Request, Notification
 from django.contrib.auth.models import Permission
@@ -612,6 +613,46 @@ def requests_list(request: AuthedRequest) -> HttpResponse:
         "highlighted_request_id": highlighted_request_id,
     }
     return render(request, "mouseapp/requests.html", context)
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def request_detail(request: AuthedRequest, request_id: int) -> HttpResponse:
+    request_obj = get_object_or_404(Request, id=request_id)
+
+    # Check read access
+    if request_obj.mouse and not request_obj.mouse.has_read_access(request.user):
+        raise PermissionDenied("You do not have access to this request.")
+    if request_obj.project and not request_obj.project.has_read_access(request.user):
+        raise PermissionDenied("You do not have access to this request.")
+
+    # Handle reply submission
+    reply_form = RequestReplyForm()
+    if request.method == "POST":
+        reply_form = RequestReplyForm(request.POST)
+        if reply_form.is_valid():
+            reply = reply_form.save(commit=False)
+            reply.request = request_obj
+            reply.user = request.user
+            reply.save()
+            return redirect("mouseapp:request_detail", request_id=request_id)
+
+    # Get paginated replies
+    replies = request_obj.replies.all().order_by("timestamp")  # type: ignore[attr-defined]
+    paginator = Paginator(replies, 10)
+    page_number = request.GET.get("page", 1)
+    page_obj = paginator.get_page(page_number)
+
+    # Check if user can change status
+    user_can_change_status = request_obj.can_change_status(request.user)
+
+    context = {
+        "request_obj": request_obj,
+        "reply_form": reply_form,
+        "page_obj": page_obj,
+        "user_can_change_status": user_can_change_status,
+    }
+    return render(request, "mouseapp/request_detail.html", context)
 
 
 @login_required
