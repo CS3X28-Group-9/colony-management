@@ -113,6 +113,7 @@ dependencies = [
     { name = "gunicorn" },
     { name = "openpyxl" },
     { name = "pandas" },
+    { name = "pyrefly" },
     { name = "whitenoise" },
 ]
 
@@ -138,6 +139,7 @@ requires-dist = [
     { name = "gunicorn", specifier = ">=23.0.0" },
     { name = "openpyxl", specifier = ">=3.1.5" },
     { name = "pandas", specifier = ">=2.3.3" },
+    { name = "pyrefly", specifier = ">=0.50.1" },
     { name = "whitenoise", specifier = ">=6.11.0" },
 ]
 
