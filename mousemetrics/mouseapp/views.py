@@ -31,7 +31,7 @@ from django.contrib.contenttypes.models import ContentType
 
 
 class AuthedRequest(HttpRequest):
-    user: User  # pyright: ignore[reportIncompatibleVariableOverride]
+    user: User  # pyrefly: ignore[bad-override]
 
 
 def home(request: HttpRequest) -> HttpResponse:
@@ -86,7 +86,7 @@ def get_users_to_notify_for_request(request_obj: Request) -> list[User]:
 
 
 @login_required
-@require_http_methods(["GET","POST"])
+@require_http_methods(["GET", "POST"])
 def mouse(request: AuthedRequest, id: int) -> HttpResponse:
     mouse: Mouse = get_object_or_404(Mouse, id=id)
     if not mouse.has_read_access(request.user):
@@ -97,9 +97,7 @@ def mouse(request: AuthedRequest, id: int) -> HttpResponse:
 
     requests_with_permissions = []
     for req in mouse_requests:
-        req.user_can_change_status = (  # pyright: ignore[reportAttributeAccessIssue]
-            req.can_change_status(request.user)
-        )
+        req._user = request.user
         requests_with_permissions.append(req)
 
     context = {
@@ -128,7 +126,7 @@ def edit_mouse(request: AuthedRequest, id: int) -> HttpResponse:
 
 
 @login_required
-@require_http_methods(["GET","POST"])
+@require_http_methods(["GET", "POST"])
 def project(request: AuthedRequest, id: int) -> HttpResponse:
     project = get_object_or_404(Project, id=id)
     if not project.has_read_access(request.user):
@@ -221,7 +219,7 @@ def remove_member(request: AuthedRequest, id: int) -> HttpResponse:
 
 
 @login_required
-@require_http_methods(["GET","POST"])
+@require_http_methods(["GET", "POST"])
 def join_project(request: AuthedRequest, token: str) -> HttpResponse:
     SECONDS_IN_MONTH = 60 * 60 * 24 * 31
 
@@ -536,7 +534,7 @@ def create_transfer_request(request: AuthedRequest) -> HttpResponse:
 
 
 @login_required
-@require_http_methods(["GET","POST"])
+@require_http_methods(["GET", "POST"])
 def requests_list(request: AuthedRequest) -> HttpResponse:
     if request.user.is_superuser or request.user.has_perm("mouseapp.approve_request"):
         user_requests = Request.objects.all()
@@ -562,9 +560,7 @@ def requests_list(request: AuthedRequest) -> HttpResponse:
 
     requests_with_permissions = []
     for req in user_requests.order_by("-created_at"):
-        req.user_can_change_status = (  # pyright: ignore[reportAttributeAccessIssue]
-            req.can_change_status(request.user)
-        )
+        req._user = request.user
         requests_with_permissions.append(req)
 
     request_id = request.GET.get("id", None)

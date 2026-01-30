@@ -1,3 +1,4 @@
+from typing import Optional
 from django.db import models
 from django.db.models import SET_NULL
 from django.contrib.auth.models import User
@@ -215,6 +216,7 @@ class Mouse(models.Model):
 
 
 class Request(models.Model):
+    _user: Optional[User] = None
     REQUEST_CHOICES = {
         "B": "Set up breeding pair",
         "C": "Cull",
@@ -278,6 +280,11 @@ class Request(models.Model):
                 return True
             return False
         return user.is_superuser or user.has_perm("mouseapp.approve_request")
+
+    @property
+    def user_can_change_status(self) -> bool:
+        assert self._user is not None
+        return self.can_change_status(self._user)
 
     def __str__(self) -> str:
         kind_display = dict(Request.REQUEST_CHOICES).get(self.kind, self.kind)
