@@ -298,12 +298,34 @@ class RequestReply(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+    quoted_reply = models.ForeignKey(
+        "self",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
 
     class Meta:
         permissions = [("send_reply", "Can send replies and queries on requests")]
 
     def __str__(self) -> str:
         return f"Response to {self.request}"
+
+
+class ReplyReaction(models.Model):
+    reply = models.ForeignKey(
+        RequestReply, on_delete=models.CASCADE, related_name="reactions"
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    emoji = models.CharField(max_length=10)
+
+    class Meta:
+        unique_together = [["reply", "user", "emoji"]]
+        ordering = ["emoji", "user"]
+
+    def __str__(self) -> str:
+        return f"{self.emoji} on reply {self.reply.id} by {self.user}"
 
 
 class Membership(models.Model):

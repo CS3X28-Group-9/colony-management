@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse
 from django.http import HttpRequest, HttpResponse
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
@@ -26,7 +27,7 @@ from .forms import (
     TransferRequestForm,
     RequestReplyForm,
 )
-from .models import Mouse, Project, Request, Notification
+from .models import Mouse, Project, Request, Notification, RequestReply, ReplyReaction
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 
@@ -627,30 +628,76 @@ def request_detail(request: AuthedRequest, request_id: int) -> HttpResponse:
         raise PermissionDenied("You do not have access to this request.")
 
     # Handle reply submission
+    quoted_reply_id = request.GET.get("quote")
+    quoted_reply = None
     reply_form = RequestReplyForm()
+    if quoted_reply_id:
+        try:
+            quoted_reply = RequestReply.objects.get(
+                id=quoted_reply_id, request=request_obj
+            )
+            reply_form = RequestReplyForm(initial={"quoted_reply_id": quoted_reply_id})
+        except RequestReply.DoesNotExist:
+            pass
+
     if request.method == "POST":
         reply_form = RequestReplyForm(request.POST)
         if reply_form.is_valid():
             reply = reply_form.save(commit=False)
             reply.request = request_obj
             reply.user = request.user
+            # Handle quoted_reply_id from form
+            quoted_reply_id = reply_form.cleaned_data.get("quoted_reply_id")
+            if quoted_reply_id:
+                try:
+                    quoted_reply = RequestReply.objects.get(
+                        id=quoted_reply_id, request=request_obj
+                    )
+                    reply.quoted_reply = quoted_reply
+                except RequestReply.DoesNotExist:
+                    pass
             reply.save()
-            return redirect("mouseapp:request_detail", request_id=request_id)
+            return redirect(reverse("mouseapp:request_detail", args=[request_id]))
 
-    # Get paginated replies
-    replies = request_obj.replies.all().order_by("timestamp")  # type: ignore[attr-defined]
-    paginator = Paginator(replies, 10)
+    # Get paginated replies (newest first for pagination)
+    replies = request_obj.replies.all().order_by("-timestamp")  # type: ignore[attr-defined]
+    paginator = Paginator(replies, 4)
     page_number = request.GET.get("page", 1)
     page_obj = paginator.get_page(page_number)
+    # Reverse items for display (oldest at bottom, newest at top)
+    page_obj.object_list = list(reversed(page_obj.object_list))
 
-    # Check if user can change status
     user_can_change_status = request_obj.can_change_status(request.user)
+
+    reply_ids = [reply.id for reply in page_obj.object_list]
+    reactions = ReplyReaction.objects.filter(reply__id__in=reply_ids).select_related(
+        "user", "reply"
+    )
+    reactions_by_reply = {}
+    user_reactions_by_reply = {}  # Track which emojis the current user has reacted with
+
+    for reaction in reactions:
+        reply_id = reaction.reply.id
+        if reply_id not in reactions_by_reply:
+            reactions_by_reply[reply_id] = {}
+        if reaction.emoji not in reactions_by_reply[reply_id]:
+            reactions_by_reply[reply_id][reaction.emoji] = []
+        reactions_by_reply[reply_id][reaction.emoji].append(reaction.user)
+
+        # Track user's reactions
+        if reaction.user == request.user:
+            if reply_id not in user_reactions_by_reply:
+                user_reactions_by_reply[reply_id] = set()
+            user_reactions_by_reply[reply_id].add(reaction.emoji)
 
     context = {
         "request_obj": request_obj,
         "reply_form": reply_form,
         "page_obj": page_obj,
         "user_can_change_status": user_can_change_status,
+        "reactions_by_reply": reactions_by_reply,
+        "user_reactions_by_reply": user_reactions_by_reply,
+        "quoted_reply": quoted_reply,
     }
     return render(request, "mouseapp/request_detail.html", context)
 
@@ -694,6 +741,38 @@ def update_request_status(request: AuthedRequest, request_id: int) -> HttpRespon
         )
 
     return redirect("mouseapp:requests")
+
+
+@login_required
+@require_http_methods(["POST"])
+def toggle_reply_reaction(request: AuthedRequest, reply_id: int) -> HttpResponse:
+    reply = get_object_or_404(RequestReply, id=reply_id)
+
+    # Check access to the request
+    request_obj = reply.request
+    if request_obj.mouse and not request_obj.mouse.has_read_access(request.user):
+        raise PermissionDenied("You do not have access to this request.")
+    if request_obj.project and not request_obj.project.has_read_access(request.user):
+        raise PermissionDenied("You do not have access to this request.")
+
+    emoji = request.POST.get("emoji", "").strip()
+    if not emoji or len(emoji) > 10:
+        return redirect(reverse("mouseapp:request_detail", args=[request_obj.id]))
+
+    # Toggle reaction (add if doesn't exist, remove if exists)
+    reaction, created = ReplyReaction.objects.get_or_create(
+        reply=reply,
+        user=request.user,
+        emoji=emoji,
+    )
+
+    if not created:
+        # Reaction already exists, remove it
+        reaction.delete()
+
+    return redirect(
+        reverse("mouseapp:request_detail", args=[request_obj.id]) + "#reply-form"
+    )
 
 
 @login_required
