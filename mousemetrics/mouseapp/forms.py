@@ -262,6 +262,10 @@ class RequestReplyForm(forms.ModelForm):
             attrs={"class": "input", "rows": 4, "placeholder": "Write your reply..."}
         ),
     )
+    quoted_reply_id = forms.IntegerField(
+        required=False,
+        widget=forms.HiddenInput(),
+    )
 
     class Meta:
         model = RequestReply

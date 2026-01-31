@@ -22,6 +22,11 @@ urlpatterns = [
         name="request_detail",
     ),
     path(
+        "replies/<int:reply_id>/toggle-reaction/",
+        views.toggle_reply_reaction,
+        name="toggle_reply_reaction",
+    ),
+    path(
         "requests/create/breeding/",
         views.create_breeding_request,
         name="create_breeding_request",
