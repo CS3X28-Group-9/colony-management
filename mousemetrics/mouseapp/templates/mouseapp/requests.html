@@ -16,10 +16,10 @@
             <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
             <select name="status" id="status" class="input">
               <option value="">All Statuses</option>
-              <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
-              <option value="accepted" {% if status_filter == 'accepted' %}selected{% endif %}>Accepted</option>
-              <option value="denied" {% if status_filter == 'denied' %}selected{% endif %}>Denied</option>
-              <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>Completed</option>
+              <option value="P" {% if status_filter == 'P' %}selected{% endif %}>Pending</option>
+              <option value="A" {% if status_filter == 'A' %}selected{% endif %}>Accepted</option>
+              <option value="D" {% if status_filter == 'D' %}selected{% endif %}>Denied</option>
+              <option value="C" {% if status_filter == 'C' %}selected{% endif %}>Completed</option>
             </select>
           </div>
           <div>
@@ -48,10 +48,10 @@
                 <div class="flex items-center gap-3 mb-2">
                   <h3 class="font-semibold text-lg">{{ req.get_kind_display }}</h3>
                   <span class="px-2 py-1 rounded text-sm
-                               {% if req.status == 'pending' %}bg-yellow-100 text-yellow-800
-                               {% elif req.status == 'accepted' %}bg-green-100 text-green-800
-                               {% elif req.status == 'denied' %}bg-red-100 text-red-800
-                               {% elif req.status == 'completed' %}bg-blue-100 text-blue-800
+                               {% if req.status == 'P' %}bg-yellow-100 text-yellow-800
+                               {% elif req.status == 'A' %}bg-green-100 text-green-800
+                               {% elif req.status == 'D' %}bg-red-100 text-red-800
+                               {% elif req.status == 'C' %}bg-blue-100 text-blue-800
                                {% endif %}">
                     {{ req.get_status_display }}
                   </span>
@@ -89,22 +89,22 @@
               </div>
 
               <div class="ml-4 flex flex-col gap-2">
-                {% if req.user_can_change_status and req.status == 'pending' %}
+                {% if req.user_can_change_status and req.status == 'P' %}
                   <form method="post" action="{% url 'mouseapp:update_request_status' req.id %}" class="m-0">
                     {% csrf_token %}
-                    <input type="hidden" name="status" value="accepted">
+                    <input type="hidden" name="status" value="A">
                     <button type="submit" class="btn-primary text-sm w-full">Accept</button>
                   </form>
                   <form method="post" action="{% url 'mouseapp:update_request_status' req.id %}" class="m-0">
                     {% csrf_token %}
-                    <input type="hidden" name="status" value="denied">
+                    <input type="hidden" name="status" value="D">
                     <button type="submit" class="btn-secondary text-sm w-full">Deny</button>
                   </form>
                 {% endif %}
-                {% if req.user_can_change_status and req.status == 'accepted' %}
+                {% if req.user_can_change_status and req.status == 'A' %}
                   <form method="post" action="{% url 'mouseapp:update_request_status' req.id %}" class="m-0">
                     {% csrf_token %}
-                    <input type="hidden" name="status" value="completed">
+                    <input type="hidden" name="status" value="C">
                     <button type="submit" class="btn-primary text-sm w-full">Mark Completed</button>
                   </form>
                 {% endif %}
