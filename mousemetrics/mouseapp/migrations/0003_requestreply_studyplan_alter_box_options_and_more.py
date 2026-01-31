@@ -90,6 +90,11 @@ class Migration(migrations.Migration):
                 choices=[("S", "Shoe"), ("T", "Stock")], default="S", max_length=1
             ),
         ),
+        migrations.AlterField(
+            model_name="box",
+            name="number",
+            field=models.TextField(serialize=False),
+        ),
         migrations.AddField(
             model_name="box",
             name="id",
