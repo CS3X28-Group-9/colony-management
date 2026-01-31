@@ -25,7 +25,7 @@ class ColumnMappingForm(forms.Form):
 
         # choices
         col_choices = [(c, c) for c in columns]
-        targets: List[tuple[bool, str, str]] = [(True, *r) for r in req] + [
+        targets: list[tuple[bool, str, str]] = [(True, *r) for r in req] + [
             (False, *o) for o in opt
         ]
 
