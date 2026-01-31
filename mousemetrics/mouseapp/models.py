@@ -286,7 +286,8 @@ class Request(models.Model):
             return False
         return user.has_perm("mouseapp.approve_request")
 
-    def get_status_css_classes(self) -> str:
+    @property
+    def status_css_classes(self) -> str:
         return self.STATUS_CSS_CLASSES.get(self.status, "")
 
     def __str__(self) -> str:
