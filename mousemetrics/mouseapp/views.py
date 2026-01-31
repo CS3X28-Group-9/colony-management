@@ -677,12 +677,7 @@ def request_detail(request: AuthedRequest, request_id: int) -> HttpResponse:
     user_reactions_by_reply = {}  # Track which emojis the current user has reacted with
 
     for reaction in reactions:
-        reply_id = reaction.reply.id
-        if reply_id not in reactions_by_reply:
-            reactions_by_reply[reply_id] = {}
-        if reaction.emoji not in reactions_by_reply[reply_id]:
-            reactions_by_reply[reply_id][reaction.emoji] = []
-        reactions_by_reply[reply_id][reaction.emoji].append(reaction.user)
+        reactions_by_reply.setdefault(reaction.reply.id, {}).setdefault(reaction.emoji, []).append(reaction.user)
 
         # Track user's reactions
         if reaction.user == request.user:
