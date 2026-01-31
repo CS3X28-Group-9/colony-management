@@ -32,7 +32,7 @@
       <li>
         <strong>Members:</strong>
         <ul>
-          {% for user in project.researchers.all %}
+          {% for user in project.researchers.all() %}
             <li>{{ user.username }}</li>
           {% endfor %}
         </ul>
@@ -56,12 +56,12 @@
             </tr>
           </thead>
           <tbody>
-            {% for mouse in project.mouse_set.all %}
+            {% for mouse in project.mouse_set.all() %}
               <tr class="table-data">
                 <td class="border-l-1 border-gray-300 numeric">
                   <a
                     tabindex="-1"
-                    href="{% url 'mouseapp:mouse' mouse.id %}"
+                    href="{{ url('mouseapp:mouse', mouse.id) }}"
                   >{{ mouse.tube_number }}</a
                     >
                   </td>
@@ -80,40 +80,40 @@
 
     <div class="mt-6 pt-6 border-t border-gray-200 flex gap-2 flex-wrap">
       <a
-        href="{% url 'mouseapp:create_breeding_request' %}?project={{ project.id }}"
+        href="{{ url('mouseapp:create_breeding_request') }}?project={{ project.id }}"
         class="inline-flex items-center px-4 py-2 btn-primary"
       >
         New Breeding Request
       </a>
       <a
-        href="{% url 'mouseapp:create_culling_request' %}?project={{ project.id }}"
+        href="{{ url('mouseapp:create_culling_request') }}?project={{ project.id }}"
         class="inline-flex items-center px-4 py-2 btn-primary"
       >
         New Culling Request
       </a>
       <a
-        href="{% url 'mouseapp:create_transfer_request' %}?project={{ project.id }}"
+        href="{{ url('mouseapp:create_transfer_request') }}?project={{ project.id }}"
         class="inline-flex items-center px-4 py-2 btn-primary"
       >
         New Transfer Request
       </a>
       {% if write_access %}
         <a
-          href="{% url 'mouseapp:edit_project' project.id %}"
+          href="{{ url('mouseapp:edit_project', project.id) }}"
           class="inline-flex items-center px-4 py-2 btn-primary"
         >
           Edit
         </a>
 
         <a
-          href="{% url 'mouseapp:invite_member' project.id %}"
+          href="{{ url('mouseapp:invite_member', project.id) }}"
           class="inline-flex items-center px-4 py-2 btn-primary"
         >
           Invite member
         </a>
 
         <a
-          href="{% url 'mouseapp:remove_member' project.id %}"
+          href="{{ url('mouseapp:remove_member', project.id) }}"
           class="inline-flex items-center px-4 py-2 btn-primary"
         >
           Remove member

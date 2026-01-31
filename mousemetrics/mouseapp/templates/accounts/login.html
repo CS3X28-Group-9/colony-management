@@ -1,5 +1,5 @@
 {% extends "base.html" %} {% block title %}Sign In{%endblock %}
-{% block content%}
+{% block content %}
 
   <div class="flex justify-center p-4">
     <div
@@ -9,7 +9,7 @@
         <h3 class="default-header">
           Sign in to LabSafe
         </h3>
-        {% csrf_token %}
+        {{ csrf_input }}
         {% if form.non_field_errors %}
           {% for error in form.non_field_errors %}
             <p class="error-message text-center">{{ error }}</p>
@@ -21,7 +21,7 @@
             type="email"
             id="{{ form.username.id_for_label }}"
             name="{{ form.username.html_name }}"
-            value="{{ form.username.value|default_if_none:'' }}"
+            value="{{ form.username.value or '' }}"
             autocomplete="email"
             autofocus
             required
@@ -104,7 +104,7 @@
                   </div>
                 </div>
                 <a
-                  href="{% url 'mouseapp:password_reset' %}"
+                  href="{{ url('mouseapp:password_reset') }}"
                   class="text-sm ml-auto px-2"
                 >Forgotten Password?</a
                   >
