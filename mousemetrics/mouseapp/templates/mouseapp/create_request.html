@@ -14,7 +14,7 @@
       {% endif %}
 
       <form method="post">
-        {% csrf_token %}
+        {{ csrf_input }}
         {{ form.kind }}
         {% if project %}
           <input type="hidden" name="project" value="{{ project.id }}">
@@ -80,11 +80,11 @@
         <div class="mt-6 flex gap-3">
           <button type="submit" class="btn-primary">Create Request</button>
           {% if mouse_id %}
-            <a href="{% url 'mouseapp:mouse' mouse_id %}" class="btn-secondary">Cancel</a>
+            <a href="{{ url('mouseapp:mouse', mouse_id) }}" class="btn-secondary">Cancel</a>
           {% elif project %}
-            <a href="{% url 'mouseapp:project' project.id %}" class="btn-secondary">Cancel</a>
+            <a href="{{ url('mouseapp:project', project.id) }}" class="btn-secondary">Cancel</a>
           {% else %}
-            <a href="{% url 'mouseapp:requests' %}" class="btn-secondary">Cancel</a>
+            <a href="{{ url('mouseapp:requests') }}" class="btn-secondary">Cancel</a>
           {% endif %}
         </div>
       </form>

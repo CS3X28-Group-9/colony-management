@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block title %}Import Preview{% endblock %}
-{% load dict_extras %}
 {% block content %}
 
   <div class="m-4">
@@ -27,10 +26,10 @@
         <strong>File:</strong> {{ import_obj.original_filename }}
       </span>
       <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded-md text-sm">
-        <strong>Sheet:</strong> {{ import_obj.sheet_name|default_if_none:"(active)"|default:"(active)" }}
+        <strong>Sheet:</strong> {{ import_obj.sheet_name | default('(active)', true) }}
       </span>
       <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-50 text-purple-700 rounded-md text-sm">
-        <strong>Range:</strong> {{ import_obj.cell_range|default_if_none:"(entire sheet)"|default:"(entire sheet)" }}
+        <strong>Range:</strong> {{ import_obj.cell_range | default('(entire sheet)', true) }}
       </span>
       <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm">
         <strong>Rows:</strong> {{ import_obj.row_count }}
@@ -42,9 +41,9 @@
         <h3 class="text-xl font-medium text-gray-900 mb-4">Column Mapping</h3>
 
         <form method="post">
-          {% csrf_token %}
+          {{ csrf_input }}
           {% for field in form %}
-            <div class="relative flex items-center mb-2 w-fit {% if field.name|first == "f" %}ml-4{% endif %}">
+            <div class="relative flex items-center mb-2 w-fit {% if field.name[0] == "f" %}ml-4{% endif %}">
               <label for="{{ field.id_for_label }}" class="w-32 text-gray-700 font-medium"
               >{{ field.label }}</label
                 >
@@ -110,9 +109,9 @@
           {% if saved_mapping %}
             <form
               method="post"
-              action="{% url 'mouse_import:import_commit' import_obj.id %}"
+              action="{{ url('mouse_import:import_commit', import_obj.id) }}"
             >
-              {% csrf_token %}
+              {{ csrf_input }}
               <button type="submit" class="btn-primary">Commit Import</button>
 
               {% if form.non_field_errors %}
@@ -138,10 +137,10 @@
               </tr>
             </thead>
             <tbody>
-              {% for src, dst in saved_mapping.items %}
+              {% for src, dst in saved_mapping.items() %}
                 <tr class="table-data border-2 border-black">
                   <td class="table-padding border-black">{{ src }}</td>
-                  <td class="table-padding border-black">{{ saved_fixed | get_item:src | default:dst }}</td>
+                  <td class="table-padding border-black">{{ saved_fixed | get_ite{{ saved_fixed.get(src) | default(dst, true) }}m:src | default:dst }}</td>
                 </tr>
               {% endfor %}
             </tbody>
@@ -165,7 +164,7 @@
         {% for row in rows %}
           <tr class="table-data">
             {% for c in columns %}
-              <td class="table-padding">{{ row|get_item:c }}</td>
+              <td class="table-padding">{{ row[c] }}</td>
             {% endfor %}
           </tr>
         {% endfor %}

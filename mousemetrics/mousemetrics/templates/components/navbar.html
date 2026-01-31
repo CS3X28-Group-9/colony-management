@@ -1,12 +1,12 @@
 <nav class="border-b border-neutral-300 bg-neutral-200">
   <div class="flex items-center justify-between py-3 px-4 mx-auto max-w-6xl">
-    <a href="{% url 'mouseapp:home' %}" class="text-xl font-semibold text-neutral-800 hover:text-neutral-600 transition-colors">
+    <a href="{{ url('mouseapp:home') }}" class="text-xl font-semibold text-neutral-800 hover:text-neutral-600 transition-colors">
       Labsafe
     </a>
 
-    {% if user.is_authenticated %}
+    {% if request.user.is_authenticated %}
       <div class="flex items-center gap-4">
-        <span class="text-neutral-700">Hi, {{ user.first_name }}</span>
+        <span class="text-neutral-700">Hi, {{ request.user.first_name }}</span>
         <div class="relative" id="notification-container">
           <input type="checkbox" id="notification-toggle" class="notification-checkbox hidden" />
           <label for="notification-toggle" tabindex="0" class="relative inline-flex items-center p-2 text-neutral-700 hover:text-neutral-900 transition-colors cursor-pointer z-50" id="notification-dropdown" aria-haspopup="true">
@@ -22,8 +22,8 @@
               <div class="flex justify-between items-center gap-4">
                 <h3 class="font-semibold text-neutral-800">Notifications</h3>
                 {% if recent_notifications %}
-                  <form method="post" action="{% url 'mouseapp:mark_all_notifications_read' %}" class="m-0">
-                    {% csrf_token %}
+                  <form method="post" action="{{ url('mouseapp:mark_all_notifications_read') }}" class="m-0">
+                    {{ csrf_input }}
                     <button type="submit" class="text-sm text-neutral-600 hover:text-neutral-900 whitespace-nowrap px-2 py-1 cursor-pointer">Clear all</button>
                   </form>
                 {% endif %}
@@ -38,18 +38,18 @@
                         <div class="flex-1 space-y-2">
                           <p class="text-sm text-neutral-800 {% if not notification.read %}font-medium{% endif %}">
                             {% if notification.request and "[link]" in notification.message %}
-                              {{ notification.message|slice:":-7" }}
+                              {{ notification.message[:-7] }}
                             {% else %}
                               {{ notification.message }}
                             {% endif %}
                           </p>
                           {% if notification.request %}
-                            <a href="{% url 'mouseapp:requests' %}#request-{{ notification.request.id }}" class="text-sm">View request</a>
+                            <a href="{{ url('mouseapp:requests') }}#request-{{ notification.request.id }}" class="text-sm">View request</a>
                           {% endif %}
-                          <p class="text-xs text-neutral-500">{{ notification.created_at|date:"M d, Y g:i A" }}</p>
+                          <p class="text-xs text-neutral-500">{{ notification.created_at.strftime("%b %d, %Y %I:%M %p") }}</p>
                         </div>
-                        <form method="post" action="{% url 'mouseapp:mark_notification_read' notification.id %}" class="m-0">
-                          {% csrf_token %}
+                        <form method="post" action="{{ url('mouseapp:mark_notification_read', notification.id) }}" class="m-0">
+                          {{ csrf_input }}
                           <button type="submit" class="text-xs text-neutral-500 hover:text-red-600 cursor-pointer" title="Dismiss notification">×</button>
                         </form>
                       </div>
@@ -65,19 +65,19 @@
           </div>
           <label for="notification-toggle" class="notification-overlay"></label>
         </div>
-        {% if user.is_superuser or perms.mouseapp.approve_request or user.leading_set.exists or user.project_set.exists %}
-          <a href="{% url 'mouseapp:requests' %}" class="btn-secondary">
+        {% if request.user.is_superuser or request.user.has_perm("mouseapp.approve_request") or request.user.leading_set.exists() or request.user.project_set.exists() %}
+          <a href="{{ url('mouseapp:requests') }}" class="btn-secondary">
             Requests
           </a>
         {% endif %}
-        <form action="{% url 'mouseapp:logout' %}" method="post" class="m-0">
-          {% csrf_token %}
+        <form action="{{ url('mouseapp:logout') }}" method="post" class="m-0">
+          {{ csrf_input }}
           <button type="submit" class="btn-primary">Sign Out</button>
         </form>
       </div>
     {% else %}
       <div class="flex items-center gap-4">
-        <a href="{% url 'mouseapp:login' %}" class="btn-primary">
+        <a href="{{ url('mouseapp:login') }}" class="btn-primary">
           Log in
         </a>
 
