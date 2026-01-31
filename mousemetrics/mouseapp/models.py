@@ -216,7 +216,7 @@ class Mouse(models.Model):
 
 
 class Request(models.Model):
-    _user: Optional[User] = None
+    _user: User | None = None
     REQUEST_CHOICES = {
         "B": "Set up breeding pair",
         "C": "Cull",
