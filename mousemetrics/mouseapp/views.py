@@ -622,9 +622,7 @@ def request_detail(request: AuthedRequest, request_id: int) -> HttpResponse:
     request_obj = get_object_or_404(Request, id=request_id)
 
     # Check read access
-    if request_obj.mouse and not request_obj.mouse.has_read_access(request.user):
-        raise PermissionDenied("You do not have access to this request.")
-    if request_obj.project and not request_obj.project.has_read_access(request.user):
+    if not request_obj.has_read_access(request.user):
         raise PermissionDenied("You do not have access to this request.")
 
     # Handle reply submission
@@ -677,11 +675,15 @@ def request_detail(request: AuthedRequest, request_id: int) -> HttpResponse:
     user_reactions_by_reply = {}  # Track which emojis the current user has reacted with
 
     for reaction in reactions:
-        reactions_by_reply.setdefault(reaction.reply.id, {}).setdefault(reaction.emoji, []).append(reaction.user)
+        reactions_by_reply.setdefault(reaction.reply.id, {}).setdefault(
+            reaction.emoji, []
+        ).append(reaction.user)
 
         # Track user's reactions
         if reaction.user == request.user:
-            user_reactions_by_reply.setdefault(reaction.reply.id, set()).add(reaction.emoji)
+            user_reactions_by_reply.setdefault(reaction.reply.id, set()).add(
+                reaction.emoji
+            )
 
     context = {
         "request_obj": request_obj,
@@ -743,14 +745,10 @@ def toggle_reply_reaction(request: AuthedRequest, reply_id: int) -> HttpResponse
 
     # Check access to the request
     request_obj = reply.request
-    if request_obj.mouse and not request_obj.mouse.has_read_access(request.user):
-        raise PermissionDenied("You do not have access to this request.")
-    if request_obj.project and not request_obj.project.has_read_access(request.user):
+    if not request_obj.has_read_access(request.user):
         raise PermissionDenied("You do not have access to this request.")
 
     emoji = request.POST.get("emoji", "").strip()
-    if not emoji or len(emoji) > 10:
-        return redirect(reverse("mouseapp:request_detail", args=[request_obj.id]))
 
     # Toggle reaction (add if doesn't exist, remove if exists)
     reaction, created = ReplyReaction.objects.get_or_create(
