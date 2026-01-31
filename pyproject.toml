@@ -29,6 +29,7 @@ dev = [
   "pytest-cov>=7.0.0",
   "pytest-django>=4.11.1",
   "ruff>=0.13.3",
+  "types-jinja2>=2.11.9",
 ]
 
 [tool.pyrefly.errors]
