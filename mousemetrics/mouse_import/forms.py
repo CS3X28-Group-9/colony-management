@@ -1,7 +1,6 @@
 from django import forms
 from .models import MouseImport
 from .targets import get_mouse_import_targets
-from typing import List
 
 
 class MouseImportForm(forms.ModelForm):
