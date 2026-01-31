@@ -227,6 +227,12 @@ class Request(models.Model):
         "D": "Denied",
         "C": "Completed",
     }
+    STATUS_CSS_CLASSES = {
+        "P": "bg-yellow-100 text-yellow-800",
+        "A": "bg-green-100 text-green-800",
+        "D": "bg-red-100 text-red-800",
+        "C": "bg-blue-100 text-blue-800",
+    }
 
     project = models.ForeignKey(
         Project,
@@ -263,13 +269,18 @@ class Request(models.Model):
         ]
         ordering = ["-created_at"]
 
+    def has_read_access(self, user: User) -> bool:
+        if self.mouse and not self.mouse.has_read_access(user):
+            return False
+        if self.project and not self.project.has_read_access(user):
+            return False
+        return True
+
     def can_change_status(self, user: User) -> bool:
         if user.is_superuser:
             return True
 
-        if self.mouse and not self.mouse.has_read_access(user):
-            return False
-        if self.project and not self.project.has_read_access(user):
+        if not self.has_read_access(user):
             return False
 
         if self.status == "P":
@@ -279,6 +290,10 @@ class Request(models.Model):
                 return True
             return False
         return user.has_perm("mouseapp.approve_request")
+
+    @property
+    def status_css_classes(self) -> str:
+        return self.STATUS_CSS_CLASSES.get(self.status, "")
 
     def __str__(self) -> str:
         kind_display = dict(Request.REQUEST_CHOICES).get(self.kind, self.kind)
@@ -292,12 +307,34 @@ class RequestReply(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+    quoted_reply = models.ForeignKey(
+        "self",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
 
     class Meta:
         permissions = [("send_reply", "Can send replies and queries on requests")]
 
     def __str__(self) -> str:
         return f"Response to {self.request}"
+
+
+class ReplyReaction(models.Model):
+    reply = models.ForeignKey(
+        RequestReply, on_delete=models.CASCADE, related_name="reactions"
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    emoji = models.CharField(max_length=10)
+
+    class Meta:
+        unique_together = [["reply", "user", "emoji"]]
+        ordering = ["emoji", "user"]
+
+    def __str__(self) -> str:
+        return f"{self.emoji} on reply {self.reply.id} by {self.user}"
 
 
 class Membership(models.Model):
