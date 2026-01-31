@@ -228,6 +228,12 @@ class Request(models.Model):
         "D": "Denied",
         "C": "Completed",
     }
+    STATUS_CSS_CLASSES = {
+        "P": "bg-yellow-100 text-yellow-800",
+        "A": "bg-green-100 text-green-800",
+        "D": "bg-red-100 text-red-800",
+        "C": "bg-blue-100 text-blue-800",
+    }
 
     project = models.ForeignKey(
         Project,
@@ -282,9 +288,8 @@ class Request(models.Model):
         return user.has_perm("mouseapp.approve_request")
 
     @property
-    def user_can_change_status(self) -> bool:
-        assert self._user is not None
-        return self.can_change_status(self._user)
+    def status_css_classes(self) -> str:
+        return self.STATUS_CSS_CLASSES.get(self.status, "")
 
     def __str__(self) -> str:
         kind_display = dict(Request.REQUEST_CHOICES).get(self.kind, self.kind)
