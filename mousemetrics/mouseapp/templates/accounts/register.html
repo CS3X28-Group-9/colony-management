@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block title %}Sign Up{% endblock %}
-{% load static %}
 {% block content %}
 
   <div class="flex justify-center p-4">
@@ -11,7 +10,7 @@
         <h3 class="default-header">
           Create your account
         </h3>
-        {% csrf_token %}
+        {{ csrf_input }}
         {% if form.non_field_errors %}
           {% for error in form.non_field_errors %}
             <p class="error-message text-center">{{ error }}</p>
@@ -24,7 +23,7 @@
             type="email"
             id="{{ form.email.id_for_label }}"
             name="{{ form.email.html_name }}"
-            value="{{ form.email.value|default_if_none:'' }}"
+            value="{{ form.email.value or '' }}"
             autocomplete="email"
             class="block px-2.5 pt-5 pb-2.5 w-full floating-label peer"
             required
@@ -47,7 +46,7 @@
               type="text"
               id="{{ form.first_name.id_for_label }}"
               name="{{ form.first_name.html_name }}"
-              value="{{ form.first_name.value|default_if_none:'' }}"
+              value="{{ form.first_name.value or '' }}"
               autocomplete="given-name"
               class="block px-2.5 pt-5 pb-2.5 w-full floating-label peer"
               required
@@ -72,7 +71,7 @@
                 type="text"
                 id="{{ form.last_name.id_for_label }}"
                 name="{{ form.last_name.html_name }}"
-                value="{{ form.last_name.value|default_if_none:'' }}"
+                value="{{ form.last_name.value or '' }}"
                 autocomplete="family-name"
                 class="block px-2.5 pt-5 pb-2.5 w-full floating-label peer"
                 required
@@ -174,7 +173,7 @@
                   <p class="mt-6 text-sm text-center text-gray-600">
                     Already have an account?
                     <a
-                      href="{% url 'mouseapp:login' %}"
+                      href="{{ url('mouseapp:login') }}"
                       class="font-semibold"
                     >
                       Log in

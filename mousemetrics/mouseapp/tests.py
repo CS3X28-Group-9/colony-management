@@ -348,9 +348,9 @@ def test_notifications_only_visible_to_authenticated_users(client: Client, user:
 
     response = client.get(reverse("mouseapp:home"))
     assert response.status_code == 200
-    assert response.context["unread_count"] == 0
+    assert b"Test notification" not in response.content
 
     client.force_login(user)
-    response = client.get(reverse("mouseapp:home"))
+    response = client.get(reverse("mouseapp:home"), follow=True)
     assert response.status_code == 200
-    assert response.context["unread_count"] == 1
+    assert b"Test notification" in response.content

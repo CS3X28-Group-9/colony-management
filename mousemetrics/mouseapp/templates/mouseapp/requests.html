@@ -34,7 +34,7 @@
           </div>
           <button type="submit" class="btn-primary">Filter</button>
           {% if status_filter or type_filter %}
-            <a href="{% url 'mouseapp:requests' %}" class="btn-secondary">Clear</a>
+            <a href="{{ url('mouseapp:requests') }}" class="btn-secondary">Clear</a>
           {% endif %}
         </form>
       </div>
@@ -60,7 +60,7 @@
                 {% if req.project %}
                   <p class="text-sm text-muted mb-1">
                     <strong>Project:</strong>
-                    <a href="{% url 'mouseapp:project' req.project.id %}">
+                    <a href="{{ url('mouseapp:project', req.project.id) }}">
                       {{ req.project.name }}
                     </a>
                   </p>
@@ -69,7 +69,7 @@
                 {% if req.mouse %}
                   <p class="text-sm text-muted mb-1">
                     <strong>Mouse:</strong>
-                    <a href="{% url 'mouseapp:mouse' req.mouse.id %}">
+                    <a href="{{ url('mouseapp:mouse', req.mouse.id) }}">
                       {{ req.mouse.strain }} - Tube {{ req.mouse.tube_number }}
                     </a>
                   </p>
@@ -78,32 +78,32 @@
                 <p class="text-gray-700 mb-2">{{ req.details }}</p>
 
                 <div class="text-muted-small space-y-1">
-                  <p>Created by {{ req.creator.get_full_name|default:req.creator.username }} on {{ req.created_at|date:"M d, Y" }}</p>
+                  <p>Created by {{ req.creator.get_full_name() or req.creator.username }} on {{ req.created_at.strftime("%b %d, %Y") }}</p>
                   {% if req.approver %}
-                    <p>Approved by {{ req.approver.get_full_name|default:req.approver.username }}{% if req.approved_date %} on {{ req.approved_date|date:"M d, Y" }}{% endif %}</p>
+                    <p>Approved by {{ req.approver.get_full_name() or req.approver.username }} {% if req.approved_date %} on {{ req.approved_date.strftime("%b %d, %Y") }}{% endif %}</p>
                   {% endif %}
                   {% if req.fulfill_date %}
-                    <p>Fulfilled on {{ req.fulfill_date|date:"M d, Y" }}</p>
+                    <p>Fulfilled on {{ req.fulfill_date.strftime("%b %d, %Y") }}</p>
                   {% endif %}
                 </div>
               </div>
 
               <div class="ml-4 flex flex-col gap-2">
                 {% if req.user_can_change_status and req.status == 'P' %}
-                  <form method="post" action="{% url 'mouseapp:update_request_status' req.id %}" class="m-0">
-                    {% csrf_token %}
+                  <form method="post" action="{{ url('mouseapp:update_request_status', req.id) }}" class="m-0">
+                    {{ csrf_input }}
                     <input type="hidden" name="status" value="A">
                     <button type="submit" class="btn-primary text-sm w-full">Accept</button>
                   </form>
-                  <form method="post" action="{% url 'mouseapp:update_request_status' req.id %}" class="m-0">
-                    {% csrf_token %}
+                  <form method="post" action="{{ url('mouseapp:update_request_status', req.id) }}" class="m-0">
+                    {{ csrf_input }}
                     <input type="hidden" name="status" value="D">
                     <button type="submit" class="btn-secondary text-sm w-full">Deny</button>
                   </form>
                 {% endif %}
                 {% if req.user_can_change_status and req.status == 'A' %}
-                  <form method="post" action="{% url 'mouseapp:update_request_status' req.id %}" class="m-0">
-                    {% csrf_token %}
+                  <form method="post" action="{{ url('mouseapp:update_request_status', req.id) }}" class="m-0">
+                    {{ csrf_input }}
                     <input type="hidden" name="status" value="C">
                     <button type="submit" class="btn-primary text-sm w-full">Mark Completed</button>
                   </form>
@@ -111,7 +111,7 @@
               </div>
             </div>
           </li>
-        {% empty %}
+        {% else %}
           <p class="text-muted text-center py-8">No requests found.</p>
         {% endfor %}
       </ul>

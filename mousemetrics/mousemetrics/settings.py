@@ -66,24 +66,19 @@ ROOT_URLCONF = "mousemetrics.urls"
 
 TEMPLATES = [
     {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "mousemetrics" / "templates"],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
-                "mouseapp.context_processors.unread_notifications",
-            ],
-        },
-    },
-    {
         "BACKEND": "django.template.backends.jinja2.Jinja2",
-        "DIRS": [BASE_DIR / "mousemetrics" / "templates"],
+        "DIRS": [
+            BASE_DIR / "mousemetrics" / "templates",
+            BASE_DIR / "mouse_import" / "templates",
+            BASE_DIR / "mouseapp" / "templates",
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "environment": "mousemetrics.jinja2.environment",
+            "context_processors": [
+                "django.template.context_processors.request",
+                "mouseapp.context_processors.unread_notifications",
+            ],
         },
     },
 ]
