@@ -25,10 +25,6 @@ repos:
   - repo: https://github.com/rtts/djhtml
     rev: 3.0.10
     hooks:
-      - id: djhtml
-        entry: djhtml --tabwidth 2
-        files: '^mousemetrics/.*\.html$'
-        exclude: ".*/staticfiles/.*"
       - id: djcss
         files: '^mousemetrics/.*\.css$'
         exclude: ".*/staticfiles/.*|.*/static/dist/.*"
