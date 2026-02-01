@@ -1,1 +1,116 @@
-[{"model": "mouseapp.project", "pk": 1, "fields": {"name": "", "start_date": "2000-01-01", "allow_over_18_months": false, "has_mod_sev_permission": false, "quota_5_years": null, "lead": 1, "license_constraints": "None"}}, {"model": "mouseapp.box", "pk": 1, "fields": {"box_type": "S", "location": "", "project": 1, "number": "1"}}, {"model": "mouseapp.strain", "pk": 1, "fields": {"name": "floxed GASP-1"}}, {"model": "mouseapp.strain", "pk": 2, "fields": {"name": "floxed-GASP1"}}, {"model": "mouseapp.mouse", "pk": 1, "fields": {"project": 1, "study_plan": null, "sex": "M", "mother": null, "father": null, "date_of_birth": "2025-10-22", "tube_number": 1, "box": 1, "strain": 1, "coat_colour": "Black", "earmark": "TL+BR", "notes": "."}}, {"model": "mouseapp.mouse", "pk": 2, "fields": {"project": 1, "study_plan": null, "sex": "F", "mother": null, "father": 1, "date_of_birth": "2025-10-22", "tube_number": 2, "box": 1, "strain": 2, "coat_colour": "Black", "earmark": "TL", "notes": "."}}, {"model": "mouseapp.mouse", "pk": 3, "fields": {"project": 1, "study_plan": null, "sex": "M", "mother": 2, "father": null, "date_of_birth": "2025-10-22", "tube_number": 3, "box": 1, "strain": 2, "coat_colour": "Black", "earmark": "TR", "notes": "."}}, {"model": "mouseapp.mouse", "pk": 4, "fields": {"project": 1, "study_plan": null, "sex": "F", "mother": null, "father": null, "date_of_birth": "2025-10-22", "tube_number": 4, "box": 1, "strain": 2, "coat_colour": "Black", "earmark": "BR", "notes": "."}}, {"model": "mouseapp.mouse", "pk": 5, "fields": {"project": 1, "study_plan": null, "sex": "F", "mother": 4, "father": 3, "date_of_birth": "2025-10-22", "tube_number": 5, "box": 1, "strain": 2, "coat_colour": "Black", "earmark": "TR", "notes": "."}}]
+[
+  {
+    "model": "mouseapp.project",
+    "pk": 1,
+    "fields": {
+      "name": "",
+      "start_date": "2000-01-01",
+      "allow_over_18_months": false,
+      "has_mod_sev_permission": false,
+      "quota_5_years": null,
+      "lead": 1,
+      "license_constraints": "None"
+    }
+  },
+  {
+    "model": "mouseapp.box",
+    "pk": 1,
+    "fields": { "box_type": "S", "location": "", "project": 1, "number": "1" }
+  },
+  {
+    "model": "mouseapp.strain",
+    "pk": 1,
+    "fields": { "name": "floxed GASP-1" }
+  },
+  { "model": "mouseapp.strain", "pk": 2, "fields": { "name": "floxed-GASP1" } },
+  {
+    "model": "mouseapp.mouse",
+    "pk": 1,
+    "fields": {
+      "project": 1,
+      "study_plan": null,
+      "sex": "M",
+      "mother": null,
+      "father": null,
+      "date_of_birth": "2025-10-22",
+      "tube_number": 1,
+      "box": 1,
+      "strain": 1,
+      "coat_colour": "Black",
+      "earmark": "TL+BR",
+      "notes": "."
+    }
+  },
+  {
+    "model": "mouseapp.mouse",
+    "pk": 2,
+    "fields": {
+      "project": 1,
+      "study_plan": null,
+      "sex": "F",
+      "mother": null,
+      "father": 1,
+      "date_of_birth": "2025-10-22",
+      "tube_number": 2,
+      "box": 1,
+      "strain": 2,
+      "coat_colour": "Black",
+      "earmark": "TL",
+      "notes": "."
+    }
+  },
+  {
+    "model": "mouseapp.mouse",
+    "pk": 3,
+    "fields": {
+      "project": 1,
+      "study_plan": null,
+      "sex": "M",
+      "mother": 2,
+      "father": null,
+      "date_of_birth": "2025-10-22",
+      "tube_number": 3,
+      "box": 1,
+      "strain": 2,
+      "coat_colour": "Black",
+      "earmark": "TR",
+      "notes": "."
+    }
+  },
+  {
+    "model": "mouseapp.mouse",
+    "pk": 4,
+    "fields": {
+      "project": 1,
+      "study_plan": null,
+      "sex": "F",
+      "mother": null,
+      "father": null,
+      "date_of_birth": "2025-10-22",
+      "tube_number": 4,
+      "box": 1,
+      "strain": 2,
+      "coat_colour": "Black",
+      "earmark": "BR",
+      "notes": "."
+    }
+  },
+  {
+    "model": "mouseapp.mouse",
+    "pk": 5,
+    "fields": {
+      "project": 1,
+      "study_plan": null,
+      "sex": "F",
+      "mother": 4,
+      "father": 3,
+      "date_of_birth": "2025-10-22",
+      "tube_number": 5,
+      "box": 1,
+      "strain": 2,
+      "coat_colour": "Black",
+      "earmark": "TR",
+      "notes": "."
+    }
+  }
+]

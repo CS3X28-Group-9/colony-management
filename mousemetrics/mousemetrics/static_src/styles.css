@@ -37,7 +37,6 @@ html {
     @apply bg-gray-200 hover:bg-gray-300 divide-x-1 divide-gray-300;
   }
 
-
   .input-label {
     @apply text-sm text-gray-500 transform scale-75 -translate-y-4 origin-left start-2.5;
   }
@@ -77,14 +76,15 @@ html {
   @layer base {
     a {
       @apply text-blue-600 hover:underline;
-    }}
+    }
+  }
 
   .error-message-compact {
     @apply text-sm text-red-500 leading-tight;
   }
 
   .table-header {
-    @apply bg-gray-200 text-gray-700 uppercase text-sm font-semibold
+    @apply bg-gray-200 text-gray-700 uppercase text-sm font-semibold;
   }
 
   .input {
@@ -95,7 +95,6 @@ html {
   .card {
     @apply bg-neutral-200 border border-neutral-300 rounded-lg p-6;
   }
-
 
   .page-title {
     @apply text-2xl font-semibold mb-4;
@@ -129,7 +128,9 @@ html {
   animation: fadeIn 0.2s ease-in-out;
 }
 
-.notification-checkbox:not(:checked) ~ .notification-menu ~ .notification-overlay {
+.notification-checkbox:not(:checked)
+~ .notification-menu
+~ .notification-overlay {
   display: none;
 }
 

@@ -1,49 +1,54 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+%}
 
-{% extends "base.html" %} {% block title %}Home{% endblock %}
+<div class="flex flex-col items-center mt-6 gap-6">
+  {% if request.user.is_authenticated %}
+    <div class="flex justify-center mt-6">
+      <div
+        class="inline-block bg-neutral-200 border border-neutral-300 rounded-lg p-4 w-fit"
+      >
+        {% if request.user.leading_set.exists() or
+        request.user.project_set.exists() %}
+        <ul class>
+          {% for project in request.user.leading_set.all() %}
+            <li>
+              <a
+                href="{{ url('mouseapp:project', project.id)}}"
+                class="btn-secondary w-full mb-1"
+              >{{project.name}} - {{ project.researchers.count() }} members</a
+                >
+              </li>
+          {% endfor %} {% for project in request.user.project_set.all() %}
+            <li>
+              <a
+                href="{{ url( 'mouseapp:project', project.id)}}"
+                class="btn-secondary w-full mb-1"
+              >
+                Project led by {{ project.lead }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
 
-{% block content %}
-
-  <div class="flex flex-col items-center mt-6 gap-6">
-    {% if request.user.is_authenticated %}
-      <div class="flex justify-center mt-6">
-        <div class="inline-block bg-neutral-200 border border-neutral-300 rounded-lg p-4 w-fit">
-          {% if request.user.leading_set.exists() or request.user.project_set.exists() %}
-            <ul class>
-              {% for project in request.user.leading_set.all() %}
-                <li><a href="{{ url('mouseapp:project', project.id)}}" class="btn-secondary w-full mb-1">{{project.name}} - {{ project.researchers.count() }} members</a></li>
-              {% endfor %}
-
-              {% for project in request.user.project_set.all() %}
-                <li>
-                  <a
-                    href="{{ url( 'mouseapp:project', project.id)}}"
-                    class="btn-secondary w-full mb-1"
-                  >
-                    Project led by {{ project.lead }}
-                  </a>
-                </li>
-              {% endfor %}
-            </ul>
-
-            <div class="flex justify-center py-3">
-              <a href="{{ url( 'mouse_import:import_form') }}" class="btn-primary">Import Mice</a>
-            </div>
-          {% else %}
-            <h3 class="default-header my-2">
-              No current projects!
-            </h3>
-          {% endif %}
-        </div>
-      </div>
-    {% else %}
-      <div class="flex justify-center mt-6">
-        <div class="inline-block bg-neutral-200 border border-neutral-300 rounded-lg p-4 w-fit">
-          <h3 class="default-header my-2">
-            Login to view projects
-          </h3>
-        </div>
-      </div>
-    {% endif %}
+        <div class="flex justify-center py-3">
+          <a href="{{ url( 'mouse_import:import_form') }}" class="btn-primary"
+          >Import Mice</a
+            >
+          </div>
+  {% else %}
+    <h3 class="default-header my-2">No current projects!</h3>
+  {% endif %}
+</div>
+</div>
+{% else %}
+  <div class="flex justify-center mt-6">
+    <div
+      class="inline-block bg-neutral-200 border border-neutral-300 rounded-lg p-4 w-fit"
+    >
+      <h3 class="default-header my-2">Login to view projects</h3>
+    </div>
   </div>
+{% endif %}
+</div>
 
 {% endblock content %}

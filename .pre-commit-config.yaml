@@ -1,5 +1,5 @@
 repos:
-    #In case of depreciated code when repurposing from stackoverflow or similar
+  #In case of depreciated code when repurposing from stackoverflow or similar
   - repo: https://github.com/adamchainz/django-upgrade
     rev: 1.29.0
     hooks:
@@ -36,7 +36,7 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks.git
     rev: v6.0.0
     hooks:
-        #Filesystem
+      #Filesystem
       - id: check-case-conflict
       - id: check-illegal-windows-names
         #Text formatting
@@ -71,5 +71,5 @@ repos:
     rev: v1.5.0
     hooks:
       - id: detect-secrets
-        args: ['--baseline', '.secrets.baseline']
+        args: ["--baseline", ".secrets.baseline"]
         exclude: package.lock.json

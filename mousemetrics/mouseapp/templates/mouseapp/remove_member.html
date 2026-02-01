@@ -1,9 +1,7 @@
-{% extends "base.html" %}
-{% block title %}Remove Member{% endblock %}
-{% block content %}
-  <form method="POST">
-    {{ csrf_input }}
-    {{ form }}
-    <input type="submit" value="Submit">
-  </form>
+{% extends "base.html" %} {% block title %}Remove Member{% endblock %} {% block
+content %}
+<form method="POST">
+  {{ csrf_input }} {{ form }}
+  <input type="submit" value="Submit" />
+</form>
 {% endblock %}
