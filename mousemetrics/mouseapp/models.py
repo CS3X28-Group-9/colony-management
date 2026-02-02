@@ -324,6 +324,8 @@ class RequestReply(models.Model):
 
 
 class ReplyReaction(models.Model):
+    ALLOWED_EMOJIS = ["👍", "👎", "✅", "❌", "❓"]
+
     reply = models.ForeignKey(
         RequestReply, on_delete=models.CASCADE, related_name="reactions"
     )

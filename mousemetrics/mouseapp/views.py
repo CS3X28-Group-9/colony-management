@@ -750,6 +750,9 @@ def toggle_reply_reaction(request: AuthedRequest, reply_id: int) -> HttpResponse
 
     emoji = request.POST.get("emoji", "").strip()
 
+    if not emoji or emoji not in ReplyReaction.ALLOWED_EMOJIS:
+        return redirect(reverse("mouseapp:request_detail", args=[request_obj.id]))
+
     # Toggle reaction (add if doesn't exist, remove if exists)
     reaction, created = ReplyReaction.objects.get_or_create(
         reply=reply,
