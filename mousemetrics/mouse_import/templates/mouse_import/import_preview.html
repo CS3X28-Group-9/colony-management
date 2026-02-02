@@ -38,10 +38,8 @@
       <span
         class="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-50 text-purple-700 rounded-md text-sm"
       >
-        <strong>Range:</strong> {{
-          import_obj.cell_range | default('(entire
-          sheet)', true)
-        }}
+        <strong>Range:</strong>
+        {{ import_obj.cell_range | default('(entire sheet)', true) }}
       </span>
       <span
         class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm"

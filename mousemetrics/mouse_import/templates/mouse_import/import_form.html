@@ -25,14 +25,7 @@
               <option
                 value=""
                 disabled
-                {%
-                  if
-                  form.project.value
-                  is
-                  none
-                %}
-                  selected
-                {% endif %}
+                {% if form.project.value is none %}selected{% endif %}
                 class="text-gray-500"
               >
                 Select a project
@@ -41,13 +34,7 @@
                 <option
                   value="{{ project.id }}"
                   class="py-2"
-                  {%
-                    if
-                    project.id|string=""
-                    ="form.project.value|string"
-                  %}
-                    selected
-                  {% endif %}
+                  {% if project.id|string == form.project.value|string %}selected{% endif %}
                 >
                   {{ project.name }}
                 </option>
@@ -139,12 +126,11 @@
             {% for error in form.cell_range.errors %}{{ error }}{% endfor %}
           </div>
         {% endif %}
-        {% if messages %}{% for message in messages %}{%
-          if
-          'range_error' in message.tags
-        %}
-          <div class="error-message-compact">{{ message }}</div>
-        {% endif %}{% endfor %}{% endif %}
+        {% if messages %}{% for message in messages %}
+          {% if 'range_error' in message.tags %}
+            <div class="error-message-compact">{{ message }}</div>
+          {% endif %}
+        {% endfor %}{% endif %}
         <br />
 
         {% if form.non_field_errors %}{% for error in form.non_field_errors %}
