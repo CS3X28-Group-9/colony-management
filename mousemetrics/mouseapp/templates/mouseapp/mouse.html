@@ -29,12 +29,12 @@
         </div>
 
         {% if mouse.cull_date %}
-          <div class="mouse-flex">
-            <dt class="mouse-row">Culled</dt>
-            <dd class="mouse-data">
-              {{ mouse.cull_date.strftime("%b %d, %Y") }}: {{ mouse.cull_reason }}
-            </dd>
-          </div>
+        <div class="mouse-flex">
+          <dt class="mouse-row">Culled</dt>
+          <dd class="mouse-data">
+            {{ mouse.cull_date.strftime("%b %d, %Y") }}: {{ mouse.cull_reason }}
+          </dd>
+        </div>
         {% endif %}
 
         <div class="mouse-flex">
@@ -55,26 +55,26 @@
         <div class="mouse-flex">
           <dt class="mouse-row">Mother</dt>
           {% if mouse.mother %}
-            <dd class="mouse-data">
-              <a href="{{ url('mouseapp:mouse', id=mouse.mother.id) }}">
-                {{ mouse.mother.strain }} {{ mouse.mother.tube_number }}
-              </a>
-            </dd>
+          <dd class="mouse-data">
+            <a href="{{ url('mouseapp:mouse', id=mouse.mother.id) }}">
+              {{ mouse.mother.strain }} {{ mouse.mother.tube_number }}
+            </a>
+          </dd>
           {% else %}
-            <dd class="mouse-data">N/A</dd>
+          <dd class="mouse-data">N/A</dd>
           {% endif %}
         </div>
 
         <div class="mouse-flex">
           <dt class="mouse-row">Father</dt>
           {% if mouse.father %}
-            <dd class="mouse-data">
-              <a href="{{ url('mouseapp:mouse', id=mouse.father.id) }}">
-                {{ mouse.father.strain }} {{ mouse.father.tube_number }}
-              </a>
-            </dd>
+          <dd class="mouse-data">
+            <a href="{{ url('mouseapp:mouse', id=mouse.father.id) }}">
+              {{ mouse.father.strain }} {{ mouse.father.tube_number }}
+            </a>
+          </dd>
           {% else %}
-            <dd class="mouse-data">N/A</dd>
+          <dd class="mouse-data">N/A</dd>
           {% endif %}
         </div>
 
@@ -93,12 +93,12 @@
         </a>
 
         {% if write_access %}
-          <a
-            href="{{ url('mouseapp:edit_mouse', mouse.id) }}"
-            class="inline-flex items-center px-4 py-2 btn-primary"
-          >
-            Edit
-          </a>
+        <a
+          href="{{ url('mouseapp:edit_mouse', mouse.id) }}"
+          class="inline-flex items-center px-4 py-2 btn-primary"
+        >
+          Edit
+        </a>
         {% endif %}
       </div>
     </div>
@@ -112,58 +112,58 @@
           <a
             href="{{ url('mouseapp:create_breeding_request') }}?mouse={{ mouse.id }}"
             class="btn-primary text-sm font-semibold text-center"
-          >New Breeding Request</a
-            >
-            <a
-              href="{{ url('mouseapp:create_culling_request') }}?mouse={{ mouse.id }}"
-              class="btn-primary text-sm font-semibold text-center"
+            >New Breeding Request</a
+          >
+          <a
+            href="{{ url('mouseapp:create_culling_request') }}?mouse={{ mouse.id }}"
+            class="btn-primary text-sm font-semibold text-center"
             >New Culling Request</a
-              >
-              <a
-                href="{{ url('mouseapp:create_transfer_request') }}?mouse={{ mouse.id }}"
-                class="btn-primary text-sm font-semibold text-center"
-              >New Transfer Request</a
-                >
-              </div>
-            </div>
-          </div>
-          <div class="p-6">
-            {% if mouse_requests %}
-              <ul class="space-y-2">
-                {% for req in mouse_requests %}
-                  <li class="bg-white border border-neutral-300 rounded p-3">
-                    <div class="flex justify-between items-start">
-                      <div class="flex-1">
-                        <p class="font-medium">
-                          {{ req.get_kind_display }} -
-                          <span
-                            class="px-2 py-1 rounded text-sm {% if req.status == 'P' %}bg-yellow-100 text-yellow-800 {% elif req.status == 'A' %}bg-green-100 text-green-800 {% elif req.status == 'D' %}bg-red-100 text-red-800 {% elif req.status == 'C' %}bg-blue-100 text-blue-800 {% endif %}"
-                          >
-                            {{ req.get_status_display }}
-                          </span>
-                        </p>
-                        <p class="text-sm text-muted mt-1">
-                          {{ req.details|truncate(20, false, '...') }}
-                        </p>
-                        <p class="text-muted-small mt-1">
-                          Created by {{ req.creator.get_full_name() or
-                          req.creator.username }} on {{ req.created_at.strftime("%b %d,
-                          %Y") }}
-                        </p>
-                      </div>
-                      <a
-                        href="{{ url('mouseapp:requests') }}#request-{{ req.id }}"
-                        class="btn-secondary text-sm font-semibold ml-2"
-                      >View</a
-                        >
-                      </div>
-                    </li>
-                {% endfor %}
-              </ul>
-            {% else %}
-              <p class="text-muted">No requests for this mouse yet.</p>
-            {% endif %}
-          </div>
+          >
+          <a
+            href="{{ url('mouseapp:create_transfer_request') }}?mouse={{ mouse.id }}"
+            class="btn-primary text-sm font-semibold text-center"
+            >New Transfer Request</a
+          >
         </div>
       </div>
-      {% endblock %}
+    </div>
+    <div class="p-6">
+      {% if mouse_requests %}
+      <ul class="space-y-2">
+        {% for req in mouse_requests %}
+        <li class="bg-white border border-neutral-300 rounded p-3">
+          <div class="flex justify-between items-start">
+            <div class="flex-1">
+              <p class="font-medium">
+                {{ req.get_kind_display }} -
+                <span
+                  class="px-2 py-1 rounded text-sm {% if req.status == 'P' %}bg-yellow-100 text-yellow-800 {% elif req.status == 'A' %}bg-green-100 text-green-800 {% elif req.status == 'D' %}bg-red-100 text-red-800 {% elif req.status == 'C' %}bg-blue-100 text-blue-800 {% endif %}"
+                >
+                  {{ req.get_status_display }}
+                </span>
+              </p>
+              <p class="text-sm text-muted mt-1">
+                {{ req.details|truncate(20, false, '...') }}
+              </p>
+              <p class="text-muted-small mt-1">
+                Created by {{ req.creator.get_full_name() or
+                req.creator.username }} on {{ req.created_at.strftime("%b %d,
+                %Y") }}
+              </p>
+            </div>
+            <a
+              href="{{ url('mouseapp:requests') }}#request-{{ req.id }}"
+              class="btn-secondary text-sm font-semibold ml-2"
+              >View</a
+            >
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="text-muted">No requests for this mouse yet.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

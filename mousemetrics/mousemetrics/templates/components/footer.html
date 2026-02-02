@@ -3,10 +3,10 @@
 >
   <div class="text-center">
     © LabSafe {% if request.user.is_superuser %}
-      <a href="{{ url('admin:index') }}" class="ml-2">Admin</a>
+    <a href="{{ url('admin:index') }}" class="ml-2">Admin</a>
     {% endif %}
     <a href="{{ url ('mouseapp:privacy_policy') }}" class="ml-2"
-    >Privacy Policy</a
-      >
-    </div>
-  </footer>
+      >Privacy Policy</a
+    >
+  </div>
+</footer>

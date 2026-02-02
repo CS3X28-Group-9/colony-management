@@ -25,7 +25,7 @@ content %}
       <strong>Project quota:</strong>
 
       {% if project.quota_5_years is none %} No quota {% else %} {{
-        project.quota_5_years }} {% endif %}
+      project.quota_5_years }} {% endif %}
     </span>
   </div>
 
@@ -37,7 +37,7 @@ content %}
       <strong>Members:</strong>
       <ul>
         {% for user in project.researchers.all() %}
-          <li>{{ user.username }}</li>
+        <li>{{ user.username }}</li>
         {% endfor %}
       </ul>
     </li>
@@ -60,21 +60,21 @@ content %}
         </thead>
         <tbody>
           {% for mouse in project.mouse_set.all() %}
-            <tr class="table-data">
-              <td class="border-l-1 border-gray-300 numeric">
-                <a tabindex="-1" href="{{ url('mouseapp:mouse', mouse.id) }}"
+          <tr class="table-data">
+            <td class="border-l-1 border-gray-300 numeric">
+              <a tabindex="-1" href="{{ url('mouseapp:mouse', mouse.id) }}"
                 >{{ mouse.tube_number }}</a
-                  >
-                </td>
-                <td class="numeric table-padding">{{ mouse.date_of_birth }}</td>
-                <td class="numeric table-padding">{{ mouse.box.number }}</td>
-                <td class="table-padding">{{ mouse.strain }}</td>
-                <td class="table-padding">{{ mouse.coat_colour }}</td>
-                <td class="table-padding">{{ mouse.sex }}</td>
-                <td class="border-r-1 border-gray-300 table-padding">
-                  {{ mouse.earmark }}
-                </td>
-              </tr>
+              >
+            </td>
+            <td class="numeric table-padding">{{ mouse.date_of_birth }}</td>
+            <td class="numeric table-padding">{{ mouse.box.number }}</td>
+            <td class="table-padding">{{ mouse.strain }}</td>
+            <td class="table-padding">{{ mouse.coat_colour }}</td>
+            <td class="table-padding">{{ mouse.sex }}</td>
+            <td class="border-r-1 border-gray-300 table-padding">
+              {{ mouse.earmark }}
+            </td>
+          </tr>
           {% endfor %}
         </tbody>
       </table>
@@ -101,26 +101,26 @@ content %}
       New Transfer Request
     </a>
     {% if write_access %}
-      <a
-        href="{{ url('mouseapp:edit_project', project.id) }}"
-        class="inline-flex items-center px-4 py-2 btn-primary"
-      >
-        Edit
-      </a>
+    <a
+      href="{{ url('mouseapp:edit_project', project.id) }}"
+      class="inline-flex items-center px-4 py-2 btn-primary"
+    >
+      Edit
+    </a>
 
-      <a
-        href="{{ url('mouseapp:invite_member', project.id) }}"
-        class="inline-flex items-center px-4 py-2 btn-primary"
-      >
-        Invite member
-      </a>
+    <a
+      href="{{ url('mouseapp:invite_member', project.id) }}"
+      class="inline-flex items-center px-4 py-2 btn-primary"
+    >
+      Invite member
+    </a>
 
-      <a
-        href="{{ url('mouseapp:remove_member', project.id) }}"
-        class="inline-flex items-center px-4 py-2 btn-primary"
-      >
-        Remove member
-      </a>
+    <a
+      href="{{ url('mouseapp:remove_member', project.id) }}"
+      class="inline-flex items-center px-4 py-2 btn-primary"
+    >
+      Remove member
+    </a>
     {% endif %}
   </div>
 </div>

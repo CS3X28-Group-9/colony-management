@@ -9,23 +9,23 @@ content %}
       </div>
 
       {% if form.non_field_errors %} {% for error in form.non_field_errors %}
-        <p class="error-message text-center">{{ error }}</p>
+      <p class="error-message text-center">{{ error }}</p>
       {% endfor %} {% endif %}
 
       <div class="p-6">
         <dl class="space-y-4">
           {% for field in form %}
-            <div class="mouse-flex">
-              <dt class="mouse-row">
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-              </dt>
-              <dd class="mouse-data">{{ field }}</dd>
-              {% if field.errors %}
-                <div class="error-message-compact">
-                  {% for error in field.errors %} {{ error }} {% endfor %}
-                </div>
-              {% endif %}
+          <div class="mouse-flex">
+            <dt class="mouse-row">
+              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            </dt>
+            <dd class="mouse-data">{{ field }}</dd>
+            {% if field.errors %}
+            <div class="error-message-compact">
+              {% for error in field.errors %} {{ error }} {% endfor %}
             </div>
+            {% endif %}
+          </div>
           {% endfor %}
 
           <button type="submit" class="w-full btn-primary">Submit</button>
