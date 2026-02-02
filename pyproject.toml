@@ -11,6 +11,7 @@ dependencies = [
   "django-anymail>=13.1",
   "gunicorn>=23.0.0",
   "whitenoise>=6.11.0",
+  "pyrefly>=0.50.1",
 ]
 
 [dependency-groups]
@@ -21,12 +22,15 @@ dev = [
   "djhtml>=3.0.10",
   "pre-commit>=4.3",
   "pre-commit-update>=0.8.0",
-  "pyright>=1.1.406",
+  "pyrefly>=0.50.1",
   "pytest>=8.4.2",
   "pytest-cov>=7.0.0",
   "pytest-django>=4.11.1",
   "ruff>=0.13.3",
 ]
+
+[tool.pyrefly.errors]
+untyped-import = "ignore"
 
 [tool.ruff]
 line-length = 88
@@ -47,10 +51,13 @@ addopts = "--cov=mousemetrics --cov-report term"
 [tool.coverage.run]
 omit = ["*/migrations/*", "mousemetrics/manage.py", "mousemetrics/mousemetrics/*"]
 
-[tool.pyright]
-include = ["mousemetrics"]
-exclude = ["**/migrations", ".venv", ".direnv", "mousemetrics/mouseapp/admin.py"]
-typeCheckingMode = "basic"
-reportMissingTypeStubs = false
-venvPath = "."
-venv = ".venv"
+
+[tool.pyrefly]
+project-includes = ["mousemetrics"]
+project-excludes = [
+    "**/migrations",
+    ".venv",
+    ".direnv"
+]
+search-path=["mousemetrics"]
+infer-with-first-use = false
