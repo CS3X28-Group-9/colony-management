@@ -1,158 +1,158 @@
-{% extends "base.html" %} {% block title %}Import form{% endblock %} {% block
-content %}
+{% extends "base.html" %} {% block title %}Import form{% endblock %}
+{% block content %}
+  <div class="flex justify-center p-4">
+    <div
+      class="p-4 m-4 sm:p-6 lg:p-8 rounded bg-neutral-200 w-max shadow-md border border-neutral-300"
+    >
+      <h1>Mouse Excel Import</h1>
+      <form method="post" enctype="multipart/form-data">
+        {{ csrf_input }}
 
-<div class="flex justify-center p-4">
-  <div
-    class="p-4 m-4 sm:p-6 lg:p-8 rounded bg-neutral-200 w-max shadow-md border border-neutral-300"
-  >
-    <h1>Mouse Excel Import</h1>
-    <form method="post" enctype="multipart/form-data">
-      {{ csrf_input }}
-
-      <div class="flex items-center gap-3">
-        <label
-          for="{{ form.project.id_for_label }}"
-          class="text-sm font-medium text-gray-700 whitespace-nowrap"
-        >
-          Project:
-        </label>
-
-        <div class="relative flex-1">
-          <select
-            id="{{ form.project.id_for_label }}"
-            name="{{ form.project.html_name }}"
-            class="block w-full px-4 py-2.5 text-gray-900 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-gray-400 transition-colors duration-200 cursor-pointer appearance-none"
+        <div class="flex items-center gap-3">
+          <label
+            for="{{ form.project.id_for_label }}"
+            class="text-sm font-medium text-gray-700 whitespace-nowrap"
           >
-            <option
-              value=""
-              disabled
-              {%
-              if
-              form.project.value
-              is
-              none
-              %}selected{%
-              endif
-              %}
-              class="text-gray-500"
-            >
-              Select a project
-            </option>
-            {% for project in user.leading_set.all() %}
-            <option
-              value="{{ project.id }}"
-              class="py-2"
-              {%
-              if
-              project.id|string=""
-              ="form.project.value|string"
-              %}selected{%
-              endif
-              %}
-            >
-              {{ project.name }}
-            </option>
-            {% endfor %}
-          </select>
+            Project:
+          </label>
 
-          <div
-            class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"
-          >
-            {% include "components/svgs/double-chevron.svg" %}
+          <div class="relative flex-1">
+            <select
+              id="{{ form.project.id_for_label }}"
+              name="{{ form.project.html_name }}"
+              class="block w-full px-4 py-2.5 text-gray-900 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-gray-400 transition-colors duration-200 cursor-pointer appearance-none"
+            >
+              <option
+                value=""
+                disabled
+                {%
+                  if
+                  form.project.value
+                  is
+                  none
+                %}
+                  selected
+                {% endif %}
+                class="text-gray-500"
+              >
+                Select a project
+              </option>
+              {% for project in user.leading_set.all() %}
+                <option
+                  value="{{ project.id }}"
+                  class="py-2"
+                  {%
+                    if
+                    project.id|string=""
+                    ="form.project.value|string"
+                  %}
+                    selected
+                  {% endif %}
+                >
+                  {{ project.name }}
+                </option>
+              {% endfor %}
+            </select>
+
+            <div
+              class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"
+            >
+              {% include "components/svgs/double-chevron.svg" %}
+            </div>
           </div>
         </div>
-      </div>
-      {% if form.project.errors %}
-      <div class="error-message-compact">
-        {% for error in form.project.errors %} {{ error }} {% endfor %}
-      </div>
-      {% endif %}
+        {% if form.project.errors %}
+          <div class="error-message-compact">
+            {% for error in form.project.errors %}{{ error }}{% endfor %}
+          </div>
+        {% endif %}
 
-      <br />
-      <label for="file-input" class="sr-only">Choose file</label>
-      <input
-        type="file"
-        id="{{ form.file.id_for_label }}"
-        name="{{ form.file.html_name }}"
-        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all file:mr-4 file:py-2.5 file:px-4 file:rounded-l-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
-        required
-        accept=".xlsm,.xlsx"
-      />
-      {% if form.file.errors %}
-      <div class="error-message-compact">
-        {% for error in form.file.errors %} {{ error }} {% endfor %}
-      </div>
-      {% endif %}
+        <br />
+        <label for="file-input" class="sr-only">Choose file</label>
+        <input
+          type="file"
+          id="{{ form.file.id_for_label }}"
+          name="{{ form.file.html_name }}"
+          class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all file:mr-4 file:py-2.5 file:px-4 file:rounded-l-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
+          required
+          accept=".xlsm,.xlsx"
+        />
+        {% if form.file.errors %}
+          <div class="error-message-compact">
+            {% for error in form.file.errors %}{{ error }}{% endfor %}
+          </div>
+        {% endif %}
 
-      <br />
-      <label
-        for="{{ form.sheet_name.id_for_label }}"
-        class="block text-sm font-medium text-gray-700"
-      >
-        Sheet name
-        <span class="text-gray-500 font-normal"
-          >- Leave blank to use the active worksheet</span
+        <br />
+        <label
+          for="{{ form.sheet_name.id_for_label }}"
+          class="block text-sm font-medium text-gray-700"
         >
-      </label>
-      <input
-        type="text"
-        id="{{ form.sheet_name.id_for_label }}"
-        name="{{ form.sheet_name.html_name }}"
-        class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-        placeholder="e.g., Sheet1"
-        {%
-        if
-        form.sheet_name.value
-        %}value="{{ form.sheet_name.value }}"
-        {%
-        endif
+          Sheet name
+          <span class="text-gray-500 font-normal"
+            >- Leave blank to use the active worksheet</span
+          >
+        </label>
+        <input
+          type="text"
+          id="{{ form.sheet_name.id_for_label }}"
+          name="{{ form.sheet_name.html_name }}"
+          class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+          placeholder="e.g., Sheet1"
+          {%
+            if
+            form.sheet_name.value
+          %}
+            value="{{ form.sheet_name.value }}"
+          {% endif %}
+        />
+        {% if form.sheet.errors %}
+          <div class="error-message-compact">
+            {% for error in form.cell_range.errors %}{{ error }}{% endfor %}
+          </div>
+        {% endif %}
+        <br />
+        <label
+          for="{{ form.cell_range.id_for_label }}"
+          class="block text-sm font-medium text-gray-700"
+        >
+          Cell range
+          <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          id="{{ form.cell_range.id_for_label }}"
+          name="{{ form.cell_range.html_name }}"
+          class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+          placeholder="e.g., A1:M40"
+          {%
+            if
+            form.cell_range.value
+          %}
+            value="{{ form.cell_range.value }}"
+          {% endif %}
+          required
+        />
+        <p class="text-xs text-gray-500">Excel range such as "A1:M40"</p>
+        {% if form.cell_range.errors %}
+          <div class="error-message-compact">
+            {% for error in form.cell_range.errors %}{{ error }}{% endfor %}
+          </div>
+        {% endif %}
+        {% if messages %}{% for message in messages %}{%
+          if
+          'range_error' in message.tags
         %}
-      />
-      {% if form.sheet.errors %}
-      <div class="error-message-compact">
-        {% for error in form.cell_range.errors %} {{ error }} {% endfor %}
-      </div>
-      {% endif %}
-      <br />
-      <label
-        for="{{ form.cell_range.id_for_label }}"
-        class="block text-sm font-medium text-gray-700"
-      >
-        Cell range
-        <span class="text-red-500">*</span>
-      </label>
-      <input
-        type="text"
-        id="{{ form.cell_range.id_for_label }}"
-        name="{{ form.cell_range.html_name }}"
-        class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-        placeholder="e.g., A1:M40"
-        {%
-        if
-        form.cell_range.value
-        %}value="{{ form.cell_range.value }}"
-        {%
-        endif
-        %}
-        required
-      />
-      <p class="text-xs text-gray-500">Excel range such as "A1:M40"</p>
-      {% if form.cell_range.errors %}
-      <div class="error-message-compact">
-        {% for error in form.cell_range.errors %} {{ error }} {% endfor %}
-      </div>
-      {% endif %} {% if messages %} {% for message in messages %} {% if
-      'range_error' in message.tags %}
-      <div class="error-message-compact">{{ message }}</div>
-      {% endif %} {% endfor %} {% endif %}
-      <br />
+          <div class="error-message-compact">{{ message }}</div>
+        {% endif %}{% endfor %}{% endif %}
+        <br />
 
-      {% if form.non_field_errors %} {% for error in form.non_field_errors %}
-      <p class="error-message text-center">{{ error }}</p>
-      {% endfor %} {% endif %}
+        {% if form.non_field_errors %}{% for error in form.non_field_errors %}
+          <p class="error-message text-center">{{ error }}</p>
+        {% endfor %}{% endif %}
 
-      <button type="submit" class="btn-primary">Upload</button>
-    </form>
+        <button type="submit" class="btn-primary">Upload</button>
+      </form>
+    </div>
   </div>
-</div>
 {% endblock %}

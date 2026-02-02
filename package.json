@@ -12,5 +12,8 @@
     "prettier": "^3.8.1",
     "prettier-plugin-jinja-template": "^2.1.0",
     "tailwindcss": "^4.1.14"
+  },
+    "prettier": {
+    "plugins": ["prettier-plugin-jinja-template"]
   }
 }

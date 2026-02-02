@@ -2,8 +2,9 @@
   class="pb-10 pt-1 mt-12 text-xs border-b border-neutral-300 bg-neutral-200"
 >
   <div class="text-center">
-    © LabSafe {% if request.user.is_superuser %}
-    <a href="{{ url('admin:index') }}" class="ml-2">Admin</a>
+    © LabSafe
+    {% if request.user.is_superuser %}
+      <a href="{{ url('admin:index') }}" class="ml-2">Admin</a>
     {% endif %}
     <a href="{{ url ('mouseapp:privacy_policy') }}" class="ml-2"
       >Privacy Policy</a
