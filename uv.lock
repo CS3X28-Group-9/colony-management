@@ -113,6 +113,7 @@ dependencies = [
     { name = "gunicorn" },
     { name = "openpyxl" },
     { name = "pandas" },
+    { name = "psycopg" },
     { name = "pyrefly" },
     { name = "whitenoise" },
 ]
@@ -139,6 +140,7 @@ requires-dist = [
     { name = "gunicorn", specifier = ">=23.0.0" },
     { name = "openpyxl", specifier = ">=3.1.5" },
     { name = "pandas", specifier = ">=2.3.3" },
+    { name = "psycopg", specifier = ">=3.3.2" },
     { name = "pyrefly", specifier = ">=0.50.1" },
     { name = "whitenoise", specifier = ">=6.11.0" },
 ]
@@ -583,6 +585,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/2f/4b/499c0925c9a477fd154aa486cbb72567bb11657e826b835d6667e93ef892/pre_commit_update-0.8.0.tar.gz", hash = "sha256:d1d9785d24d93056ceb9173d3278cf73a05de19e0a604f48aaa012b566679725", size = 20488, upload-time = "2025-06-30T08:27:49.306Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d6/a4/f002e27559d8dc6722ea744b1ef28577437087fcf8ca5126a8dc43787b35/pre_commit_update-0.8.0-py3-none-any.whl", hash = "sha256:bd43a9bb7b5fff432b1634d357d0228bc1067a19e09666f104db43b24e26238a", size = 19209, upload-time = "2025-06-30T08:27:47.762Z" },
+]
+
+[[package]]
+name = "psycopg"
+version = "3.3.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "tzdata", marker = "sys_platform == 'win32'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e0/1a/7d9ef4fdc13ef7f15b934c393edc97a35c281bb7d3c3329fbfcbe915a7c2/psycopg-3.3.2.tar.gz", hash = "sha256:707a67975ee214d200511177a6a80e56e654754c9afca06a7194ea6bbfde9ca7", size = 165630, upload-time = "2025-12-06T17:34:53.899Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8c/51/2779ccdf9305981a06b21a6b27e8547c948d85c41c76ff434192784a4c93/psycopg-3.3.2-py3-none-any.whl", hash = "sha256:3e94bc5f4690247d734599af56e51bae8e0db8e4311ea413f801fef82b14a99b", size = 212774, upload-time = "2025-12-06T17:31:41.414Z" },
 ]
 
 [[package]]
