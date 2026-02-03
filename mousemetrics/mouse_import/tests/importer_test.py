@@ -80,7 +80,7 @@ def test_fixed_strain(project):
     assert not errors and not updated
     (m_id,) = created
     mouse = Mouse.objects.get(pk=m_id)
-
+    assert mouse.strain is not None
     assert mouse.strain.name == "some-fixed-strain"
 
 

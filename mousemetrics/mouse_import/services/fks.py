@@ -33,9 +33,7 @@ def resolve_fk_instance(
         if (strain := raw_values.get("strain")) is not None:
             qs = qs.filter(
                 strain=resolve_fk_instance(
-                    Mouse._meta.get_field(
-                        "strain"
-                    ),  # pyright: ignore[reportArgumentType] -- strain is a foreign key
+                    Mouse._meta.get_field("strain"),
                     strain,
                     project,
                     raw_values,
