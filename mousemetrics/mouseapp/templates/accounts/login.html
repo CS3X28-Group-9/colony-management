@@ -7,8 +7,8 @@
       <form method="post" class="space-y-6">
         <h3 class="default-header">Sign in to LabSafe</h3>
         {{ csrf_input }}
-        {% if form.non_field_errors %}
-          {% for error in form.non_field_errors %}
+        {% if form.non_field_errors() %}
+          {% for error in form.non_field_errors() %}
             <p class="error-message text-center">{{ error }}</p>
           {% endfor %}
         {% endif %}
@@ -18,7 +18,7 @@
             type="email"
             id="{{ form.username.id_for_label }}"
             name="{{ form.username.html_name }}"
-            value="{{ form.username.value or '' }}"
+            value="{{ form.username.value() or '' }}"
             autocomplete="email"
             autofocus
             required
