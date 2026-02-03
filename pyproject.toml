@@ -11,6 +11,7 @@ dependencies = [
   "django-anymail>=13.1",
   "gunicorn>=23.0.0",
   "whitenoise>=6.11.0",
+  "psycopg>=3.3.2",
   "pyrefly>=0.50.1",
   "jinja2>=3.1.6",
   "pyrefly>=0.50.1",
