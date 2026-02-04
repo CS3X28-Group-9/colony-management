@@ -17,7 +17,7 @@
         >
           {% for mouse in generation %}
             <div
-              style="min-width: calc(36 * var(--spacing) * pow(2, {{ loop.index0 }}));"
+              style="min-width: calc(36 * var(--spacing) * pow(2, {{ outer.index0 }}));"
               class="flex justify-center items-center"
             >
               {% if mouse %}
