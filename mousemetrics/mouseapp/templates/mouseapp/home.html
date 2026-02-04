@@ -3,9 +3,7 @@
   <div class="flex flex-col items-center mt-6 gap-6">
     {% if request.user.is_authenticated %}
       <div class="flex justify-center mt-6">
-        <div
-          class="inline-block bg-neutral-200 border border-neutral-300 rounded-lg p-4 w-fit"
-        >
+        <div class="inline-block bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 rounded-lg p-4 w-fit">
           {%
             if request.user.leading_set.exists() or
             request.user.project_set.exists()
@@ -47,9 +45,7 @@
       </div>
     {% else %}
       <div class="flex justify-center mt-6">
-        <div
-          class="inline-block bg-neutral-200 border border-neutral-300 rounded-lg p-4 w-fit"
-        >
+        <div class="inline-block bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 rounded-lg p-4 w-fit">
           <h3 class="default-header my-2">Login to view projects</h3>
         </div>
       </div>
