@@ -137,7 +137,9 @@
                   <div class="flex-1">
                     <p class="font-medium">
                       {{ req.get_kind_display() }} -
-                      <span class="px-2 py-1 rounded text-sm {{ req.get_status_css_classes }}">
+                      <span
+                        class="px-2 py-1 rounded text-sm {{ req.status_css_classes }}"
+                      >
                         {{ req.get_status_display() }}
                       </span>
                     </p>

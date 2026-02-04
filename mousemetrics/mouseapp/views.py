@@ -693,6 +693,7 @@ def request_detail(request: AuthedRequest, request_id: int) -> HttpResponse:
         "reactions_by_reply": reactions_by_reply,
         "user_reactions_by_reply": user_reactions_by_reply,
         "quoted_reply": quoted_reply,
+        "allowed_emojis": ReplyReaction.ALLOWED_EMOJIS,
     }
     return render(request, "mouseapp/request_detail.html", context)
 
