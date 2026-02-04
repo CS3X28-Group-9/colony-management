@@ -62,7 +62,7 @@ repos:
         entry: uv run pytest
         language: system
         pass_filenames: false
-        #lint
+        #html lint
       - id: lint-staged
         name: lint-staged (prettier + jinja)
         entry: npx lint-staged
