@@ -42,7 +42,9 @@ def import_form(request: HttpRequest) -> HttpResponse:
         messages.success(request, "Upload saved. Redirecting to preview…")
         return redirect("mouse_import:import_preview", id=import_obj.id)
 
-    return render(request, "mouse_import/import_form.html", {"form": form})
+    return render(
+        request, "mouse_import/import_form.html", {"form": form, "user": request.user}
+    )
 
 
 @login_required

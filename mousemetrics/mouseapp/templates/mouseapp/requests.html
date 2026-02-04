@@ -1,7 +1,4 @@
-{% extends "base.html" %}
-
-{% block title %}Requests{% endblock %}
-
+{% extends "base.html" %} {% block title %}Requests{% endblock %}
 {% block content %}
   <div class="max-w-6xl mx-auto mt-6">
     <div class="card">
@@ -13,28 +10,66 @@
       <div class="mb-6 bg-white border border-neutral-300 rounded p-4">
         <form method="get" class="flex gap-4 items-end">
           <div>
-            <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <label
+              for="status"
+              class="block text-sm font-medium text-gray-700 mb-1"
+              >Status</label
+            >
             <select name="status" id="status" class="input">
               <option value="">All Statuses</option>
-              <option value="P" {% if status_filter == 'P' %}selected{% endif %}>Pending</option>
-              <option value="A" {% if status_filter == 'A' %}selected{% endif %}>Accepted</option>
-              <option value="D" {% if status_filter == 'D' %}selected{% endif %}>Denied</option>
-              <option value="C" {% if status_filter == 'C' %}selected{% endif %}>Completed</option>
+              <option
+                value="P"
+                {% if status_filter=="P" %}selected{% endif %}
+              >
+                Pending
+              </option>
+              <option
+                value="A"
+                {% if status_filter=="A" %}selected{% endif %}
+              >
+                Accepted
+              </option>
+              <option
+                value="D"
+                {% if status_filter=="D" %}selected{% endif %}
+              >
+                Denied
+              </option>
+              <option
+                value="C"
+                {% if status_filter=="C" %}selected{% endif %}
+              >
+                Completed
+              </option>
             </select>
           </div>
           <div>
-            <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+            <label
+              for="type"
+              class="block text-sm font-medium text-gray-700 mb-1"
+              >Type</label
+            >
             <select name="type" id="type" class="input">
               <option value="">All Types</option>
-              <option value="B" {% if type_filter == 'B' %}selected{% endif %}>Breeding</option>
-              <option value="C" {% if type_filter == 'C' %}selected{% endif %}>Culling</option>
-              <option value="T" {% if type_filter == 'T' %}selected{% endif %}>Transfer</option>
-              <option value="Q" {% if type_filter == 'Q' %}selected{% endif %}>Query</option>
+              <option value="B" {% if type_filter=="B" %}selected{% endif %}>
+                Breeding
+              </option>
+              <option value="C" {% if type_filter=="C" %}selected{% endif %}>
+                Culling
+              </option>
+              <option value="T" {% if type_filter=="T" %}selected{% endif %}>
+                Transfer
+              </option>
+              <option value="Q" {% if type_filter=="Q" %}selected{% endif %}>
+                Query
+              </option>
             </select>
           </div>
           <button type="submit" class="btn-primary">Filter</button>
           {% if status_filter or type_filter %}
-            <a href="{% url 'mouseapp:requests' %}" class="btn-secondary">Clear</a>
+            <a href="{{ url('mouseapp:requests') }}" class="btn-secondary"
+              >Clear</a
+            >
           {% endif %}
         </form>
       </div>
@@ -42,34 +77,43 @@
       <!-- Requests List -->
       <ul class="space-y-3">
         {% for req in page_obj %}
-          <li id="request-{{ req.id }}" class="bg-white border rounded p-4 border-neutral-300 scroll-mt-24">
+          <li
+            id="request-{{ req.id }}"
+            class="bg-white border rounded p-4 border-neutral-300 scroll-mt-24"
+          >
             <div class="flex justify-between items-start">
               <div class="flex-1">
                 <div class="flex items-center gap-3 mb-2">
-                  <h3 class="font-semibold text-lg">{{ req.get_kind_display }}</h3>
-                  <span class="px-2 py-1 rounded text-sm
-                               {% if req.status == 'P' %}bg-yellow-100 text-yellow-800
-                               {% elif req.status == 'A' %}bg-green-100 text-green-800
-                               {% elif req.status == 'D' %}bg-red-100 text-red-800
-                               {% elif req.status == 'C' %}bg-blue-100 text-blue-800
-                               {% endif %}">
-                    {{ req.get_status_display }}
+                  <h3 class="font-semibold text-lg">
+                    {{ req.get_kind_display() }}
+                  </h3>
+                  <span
+                    class="px-2 py-1 rounded text-sm {% if req.status == 'P' %}
+                      bg-yellow-100 text-yellow-800
+                    {% elif req.status == 'A' %}
+                      bg-green-100 text-green-800
+                    {% elif req.status == 'D' %}
+                      bg-red-100 text-red-800
+                    {% elif req.status == 'C' %}
+                      bg-blue-100 text-blue-800
+                    {% endif %}"
+                  >
+                    {{ req.get_status_display() }}
                   </span>
                 </div>
 
                 {% if req.project %}
                   <p class="text-sm text-muted mb-1">
                     <strong>Project:</strong>
-                    <a href="{% url 'mouseapp:project' req.project.id %}">
+                    <a href="{{ url('mouseapp:project', req.project.id) }}">
                       {{ req.project.name }}
                     </a>
                   </p>
                 {% endif %}
-
                 {% if req.mouse %}
                   <p class="text-sm text-muted mb-1">
                     <strong>Mouse:</strong>
-                    <a href="{% url 'mouseapp:mouse' req.mouse.id %}">
+                    <a href="{{ url('mouseapp:mouse', req.mouse.id) }}">
                       {{ req.mouse.strain }} - Tube {{ req.mouse.tube_number }}
                     </a>
                   </p>
@@ -78,59 +122,115 @@
                 <p class="text-gray-700 mb-2">{{ req.details }}</p>
 
                 <div class="text-muted-small space-y-1">
-                  <p>Created by {{ req.creator.get_full_name|default:req.creator.username }} on {{ req.created_at|date:"M d, Y" }}</p>
+                  <p>
+                    Created by
+                    {{
+                      req.creator.get_full_name() or
+                      req.creator.username
+                    }}
+                    on
+                    {{
+                      req.created_at.strftime("%b %d,
+                      %Y")
+                    }}
+                  </p>
                   {% if req.approver %}
-                    <p>Approved by {{ req.approver.get_full_name|default:req.approver.username }}{% if req.approved_date %} on {{ req.approved_date|date:"M d, Y" }}{% endif %}</p>
+                    <p>
+                      Approved by
+                      {{
+                        req.approver.get_full_name() or
+                        req.approver.username
+                      }}
+                      {% if req.approved_date %}
+                        on {{ req.approved_date.strftime("%b %d, %Y") }}
+                      {% endif %}
+                    </p>
                   {% endif %}
                   {% if req.fulfill_date %}
-                    <p>Fulfilled on {{ req.fulfill_date|date:"M d, Y" }}</p>
+                    <p>
+                      Fulfilled on {{ req.fulfill_date.strftime("%b %d, %Y") }}
+                    </p>
                   {% endif %}
                 </div>
               </div>
 
               <div class="ml-4 flex flex-col gap-2">
                 {% if req.user_can_change_status and req.status == 'P' %}
-                  <form method="post" action="{% url 'mouseapp:update_request_status' req.id %}" class="m-0">
-                    {% csrf_token %}
-                    <input type="hidden" name="status" value="A">
-                    <button type="submit" class="btn-primary text-sm w-full">Accept</button>
+                  <form
+                    method="post"
+                    action="{{ url('mouseapp:update_request_status', req.id) }}"
+                    class="m-0"
+                  >
+                    {{ csrf_input }}
+                    <input type="hidden" name="status" value="A" />
+                    <button type="submit" class="btn-primary text-sm w-full">
+                      Accept
+                    </button>
                   </form>
-                  <form method="post" action="{% url 'mouseapp:update_request_status' req.id %}" class="m-0">
-                    {% csrf_token %}
-                    <input type="hidden" name="status" value="D">
-                    <button type="submit" class="btn-secondary text-sm w-full">Deny</button>
+                  <form
+                    method="post"
+                    action="{{ url('mouseapp:update_request_status', req.id) }}"
+                    class="m-0"
+                  >
+                    {{ csrf_input }}
+                    <input type="hidden" name="status" value="D" />
+                    <button type="submit" class="btn-secondary text-sm w-full">
+                      Deny
+                    </button>
                   </form>
                 {% endif %}
                 {% if req.user_can_change_status and req.status == 'A' %}
-                  <form method="post" action="{% url 'mouseapp:update_request_status' req.id %}" class="m-0">
-                    {% csrf_token %}
-                    <input type="hidden" name="status" value="C">
-                    <button type="submit" class="btn-primary text-sm w-full">Mark Completed</button>
+                  <form
+                    method="post"
+                    action="{{ url('mouseapp:update_request_status', req.id) }}"
+                    class="m-0"
+                  >
+                    {{ csrf_input }}
+                    <input type="hidden" name="status" value="C" />
+                    <button type="submit" class="btn-primary text-sm w-full">
+                      Mark Completed
+                    </button>
                   </form>
                 {% endif %}
               </div>
             </div>
           </li>
-        {% empty %}
+        {% else %}
           <p class="text-muted text-center py-8">No requests found.</p>
         {% endfor %}
       </ul>
 
       <!-- Pagination -->
-      {% if page_obj.has_other_pages %}
+      {% if page_obj.has_other_pages() %}
         <div class="mt-6 flex justify-center items-center gap-2">
-          {% if page_obj.has_previous %}
-            <a href="?page=1{% if status_filter %}&status={{ status_filter }}{% endif %}{% if type_filter %}&type={{ type_filter }}{% endif %}{% if highlighted_request_id %}&id={{ highlighted_request_id }}{% endif %}" class="px-3 py-2 border border-neutral-300 rounded hover:bg-neutral-100">First</a>
-            <a href="?page={{ page_obj.previous_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if type_filter %}&type={{ type_filter }}{% endif %}{% if highlighted_request_id %}&id={{ highlighted_request_id }}{% endif %}" class="px-3 py-2 border border-neutral-300 rounded hover:bg-neutral-100">Previous</a>
+          {% if page_obj.has_previous() %}
+            <a
+              href="?page=1{% if status_filter %}&status={{ status_filter }}{% endif %}{% if type_filter %}&type={{ type_filter }}{% endif %}{% if highlighted_request_id %}&id={{ highlighted_request_id }}{% endif %}"
+              class="px-3 py-2 border border-neutral-300 rounded hover:bg-neutral-100"
+              >First</a
+            >
+            <a
+              href="?page={{ page_obj.previous_page_number() }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if type_filter %}&type={{ type_filter }}{% endif %}{% if highlighted_request_id %}&id={{ highlighted_request_id }}{% endif %}"
+              class="px-3 py-2 border border-neutral-300 rounded hover:bg-neutral-100"
+              >Previous</a
+            >
           {% endif %}
 
           <span class="px-4 py-2 text-neutral-700">
             Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
           </span>
 
-          {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if type_filter %}&type={{ type_filter }}{% endif %}{% if highlighted_request_id %}&id={{ highlighted_request_id }}{% endif %}" class="px-3 py-2 border border-neutral-300 rounded hover:bg-neutral-100">Next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if type_filter %}&type={{ type_filter }}{% endif %}{% if highlighted_request_id %}&id={{ highlighted_request_id }}{% endif %}" class="px-3 py-2 border border-neutral-300 rounded hover:bg-neutral-100">Last</a>
+          {% if page_obj.has_next() %}
+            <a
+              href="?page={{ page_obj.next_page_number() }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if type_filter %}&type={{ type_filter }}{% endif %}{% if highlighted_request_id %}&id={{ highlighted_request_id }}{% endif %}"
+              class="px-3 py-2 border border-neutral-300 rounded hover:bg-neutral-100"
+              >Next</a
+            >
+            <a
+              href="?page={{ page_obj.paginator.num_pages }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if type_filter %}&type={{ type_filter }}{% endif %}{% if highlighted_request_id %}&id={{ highlighted_request_id }}{% endif %}"
+              class="px-3 py-2 border border-neutral-300 rounded hover:bg-neutral-100"
+              >Last</a
+            >
           {% endif %}
         </div>
       {% endif %}

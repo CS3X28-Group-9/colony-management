@@ -1,4 +1,3 @@
-{% load static %}
 <!doctype html>
 <html>
   <head>
@@ -10,17 +9,18 @@
     <meta name="color-scheme" content="light" />
     <meta name="description" content="Animal colony management system" />
     <title>{% block title %}Labsafe{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'dist/styles.css' %}" />
+    <link rel="stylesheet" href="{{ static ('dist/styles.css') }}" />
   </head>
 
-  <body
-    class="flex flex-col justify-between h-screen bg-neutral-100"
-  >
+  <body class="flex flex-col justify-between h-screen bg-neutral-100">
     {% include "components/navbar.html" %}
-    <main class="mb-auto">{% block content %} {% endblock %}</main>
+    <main class="mb-auto">{% block content %}{% endblock %}</main>
     {% include "components/footer.html" %}
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1"
+      type="module"
+    ></script>
     <script src="https://unpkg.com/preline/dist/preline.js"></script>
-    <script src="{% static 'js/password-toggle.js' %}"></script>
+    <script src="{{ static('js/password-toggle.js') }}"></script>
   </body>
 </html>

@@ -1,39 +1,36 @@
-{% extends "base.html" %}
-{% block title %}Editing Project{% endblock %}
+{% extends "base.html" %} {% block title %}Editing Project{% endblock %}
 {% block content %}
   <div class="max-w-3xl mx-auto px-4 py-8">
     <form method="post">
-      {% csrf_token %}
+      {{ csrf_input }}
       <div class="bg-white rounded-lg shadow-md overflow-hidden">
         <div class="bg-neutral-200 px-6 py-4">
           <h3 class="default-header">Project Details</h3>
         </div>
 
-        {% if form.non_field_errors %}
-          {% for error in form.non_field_errors %}
-            <p class="error-message text-center">{{ error }}</p>
-          {% endfor %}
-        {% endif %}
+        {% if form.non_field_errors %}{% for error in form.non_field_errors() %}
+          <p class="error-message text-center">{{ error }}</p>
+        {% endfor %}{% endif %}
 
         <div class="p-6">
           <dl class="space-y-4">
             {% for field in form %}
               <div class="mouse-flex">
-                <dt class="mouse-row"><label for="{{ field.id_for_label }}">{{ field.label }}</label></dt>
+                <dt class="mouse-row">
+                  <label for="{{ field.id_for_label }}"
+                    >{{ field.label }}</label
+                  >
+                </dt>
                 <dd class="mouse-data">{{ field }}</dd>
                 {% if field.errors %}
                   <div class="error-message-compact">
-                    {% for error in field.errors %}
-                      {{ error }}
-                    {% endfor %}
+                    {% for error in field.errors %}{{ error }}{% endfor %}
                   </div>
                 {% endif %}
               </div>
             {% endfor %}
 
-            <button type="submit" class="w-full btn-primary">
-              Submit
-            </button>
+            <button type="submit" class="w-full btn-primary">Submit</button>
           </dl>
         </div>
       </div>

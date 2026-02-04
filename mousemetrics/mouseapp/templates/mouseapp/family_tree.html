@@ -1,10 +1,6 @@
-{% extends "base.html" %}
-{% load static %}
-{% block title %}Family Tree{% endblock %}
+{% extends "base.html" %} {% block title %}Family Tree{% endblock %}
 {% block content %}
-
   <div id="tree-wrapper" class="relative overflow-x-scroll">
-
     <svg
       id="tree-lines"
       class="absolute top-0 left-0 pointer-events-none"
@@ -13,32 +9,35 @@
     ></svg>
 
     <div id="tree-content">
-
       {% for generation in ancestry %}
+        {% set outer = loop %}
         <div
           class="flex flex-row justify-center"
-          style="margin-top: calc({{ forloop.counter0 }} * 2.5rem); margin-bottom: calc({{ forloop.counter0 }} * 2.5rem);"
+          style="margin-top: calc({{ outer.index0 }} * 2.5rem); margin-bottom: calc({{ outer.index0 }} * 2.5rem);"
         >
           {% for mouse in generation %}
             <div
-              style="min-width: calc(36 * var(--spacing) * pow(2, {{ forloop.parentloop.counter0 }}));"
+              style="min-width: calc(36 * var(--spacing) * pow(2, {{ outer.index0 }}));"
               class="flex justify-center items-center"
             >
               {% if mouse %}
                 <div
                   class="p-2 m-3 border rounded-md flex-none"
-                  style="width: 12rem;"
+                  style="width: 12rem"
                   id="mouse-{{ mouse.id }}"
                   data-mouse-id="{{ mouse.id }}"
                   data-father-id="{% if mouse.father %}{{ mouse.father.id }}{% endif %}"
                   data-mother-id="{% if mouse.mother %}{{ mouse.mother.id }}{% endif %}"
                 >
-                  <a href="{% url "mouseapp:family_tree" mouse=mouse.id %}">
-                    {{ mouse.strain }} {{ mouse.tube_number }}
-                  </a><br>
-                  Box: {{ mouse.box.number }}<br>
-                  Earmark: {{ mouse.earmark }}<br>
-                  <a class="float-end text-xs" href="{% url "mouseapp:mouse" id=mouse.id %}">
+                  <a href="{{ url('mouseapp:family_tree', mouse=mouse.id) }}">
+                    {{ mouse.strain }} {{ mouse.tube_number }} </a
+                  ><br />
+                  Box: {{ mouse.box.number }}<br />
+                  Earmark: {{ mouse.earmark }}<br />
+                  <a
+                    class="float-end text-xs"
+                    href="{{ url('mouseapp:mouse', id=mouse.id) }}"
+                  >
                     (Details)
                   </a>
                 </div>
@@ -47,50 +46,46 @@
           {% endfor %}
         </div>
       {% endfor %}
-
-      {% if descendants_grid %}
-        {% for level in descendants_grid %}
-          <div
-            class="flex flex-row justify-center"
-            style="margin-top: calc({{ forloop.counter0 }} * 2.5rem); margin-bottom: calc({{ forloop.counter0 }} * 2.5rem);"
-          >
-            {% for node in level %}
-              {% if node %}
-                <div class="flex justify-center items-center">
-                  <div
-                    class="p-2 m-3 border rounded-md flex-none"
-                    style="width: 12rem;"
-                    id="mouse-{{ node.mouse.id }}"
-                    data-mouse-id="{{ node.mouse.id }}"
-                    data-father-id="{% if node.mouse.father %}{{ node.mouse.father.id }}{% endif %}"
-                    data-mother-id="{% if node.mouse.mother %}{{ node.mouse.mother.id }}{% endif %}"
-                  >
-                    <a href="{% url "mouseapp:family_tree" mouse=node.mouse.id %}">
-                      {{ node.mouse.strain }} {{ node.mouse.tube_number }}
-                    </a><br>
-                    Box: {{ node.mouse.box.number }}<br>
-                    Earmark: {{ node.mouse.earmark }}<br>
-                    <a class="float-end text-xs" href="{% url "mouseapp:mouse" id=node.mouse.id %}">
-                      (Details)
-                    </a>
-                  </div>
-                </div>
-              {% else %}
-                <div class="flex justify-center items-center">
-                  <div
-                    class="p-2 m-3 border rounded-md flex-none"
-                    style="width: 12rem; visibility: hidden;"
-                  ></div>
-                </div>
-              {% endif %}
-            {% endfor %}
-          </div>
-        {% endfor %}
-      {% endif %}
-
+      {% if descendants_grid %}{% for level in descendants_grid %}
+        <div
+          class="flex flex-row justify-center"
+          style="margin-top: calc({{ loop.index0 }} * 2.5rem); margin-bottom: calc({{ loop.index0 }} * 2.5rem);"
+        >
+          {% for node in level %}{% if node %}
+            <div class="flex justify-center items-center">
+              <div
+                class="p-2 m-3 border rounded-md flex-none"
+                style="width: 12rem"
+                id="mouse-{{ node.mouse.id }}"
+                data-mouse-id="{{ node.mouse.id }}"
+                data-father-id="{% if node.mouse.father %}{{ node.mouse.father.id }}{% endif %}"
+                data-mother-id="{% if node.mouse.mother %}{{ node.mouse.mother.id }}{% endif %}"
+              >
+                <a href="{{ url('mouseapp:family_tree', node.mouse.id) }}">
+                  {{ node.mouse.strain }} {{ node.mouse.tube_number }} </a
+                ><br />
+                Box: {{ node.mouse.box.number }}<br />
+                Earmark: {{ node.mouse.earmark }}<br />
+                <a
+                  class="float-end text-xs"
+                  href="{{ url('mouseapp:mouse', node.mouse.id) }}"
+                >
+                  (Details)
+                </a>
+              </div>
+            </div>
+          {% else %}
+            <div class="flex justify-center items-center">
+              <div
+                class="p-2 m-3 border rounded-md flex-none"
+                style="width: 12rem; visibility: hidden"
+              ></div>
+            </div>
+          {% endif %}{% endfor %}
+        </div>
+      {% endfor %}{% endif %}
     </div>
   </div>
 
-  <script src="{% static 'js/family-tree-lines.js' %}"></script>
-
+  <script src="{{ static('js/family-tree-lines.js') }}"></script>
 {% endblock content %}

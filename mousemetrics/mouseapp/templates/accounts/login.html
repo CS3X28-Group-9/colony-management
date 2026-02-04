@@ -1,17 +1,14 @@
-{% extends "base.html" %} {% block title %}Sign In{%endblock %}
-{% block content%}
-
+{% extends "base.html" %} {% block title %}Sign In{% endblock %}
+{% block content %}
   <div class="flex justify-center p-4">
     <div
       class="p-4 sm:p-6 lg:p-8 rounded bg-neutral-200 w-80 shadow-md border border-neutral-300"
     >
       <form method="post" class="space-y-6">
-        <h3 class="default-header">
-          Sign in to LabSafe
-        </h3>
-        {% csrf_token %}
-        {% if form.non_field_errors %}
-          {% for error in form.non_field_errors %}
+        <h3 class="default-header">Sign in to LabSafe</h3>
+        {{ csrf_input }}
+        {% if form.non_field_errors() %}
+          {% for error in form.non_field_errors() %}
             <p class="error-message text-center">{{ error }}</p>
           {% endfor %}
         {% endif %}
@@ -21,7 +18,7 @@
             type="email"
             id="{{ form.username.id_for_label }}"
             name="{{ form.username.html_name }}"
-            value="{{ form.username.value|default_if_none:'' }}"
+            value="{{ form.username.value() or '' }}"
             autocomplete="email"
             autofocus
             required
@@ -31,88 +28,93 @@
           <label
             for="{{ form.username.id_for_label }}"
             class="absolute top-4 input-label duration-300 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-          >Email</label
-            >
-            {% if form.username.errors %}
-              <div class="error-message-compact">
-                {% for error in form.username.errors %}
-                  {{ error }}
-                {% endfor %}
-              </div>
-            {% endif %}
-          </div>
+            >Email</label
+          >
+          {% if form.username.errors %}
+            <div class="error-message-compact">
+              {% for error in form.username.errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
 
-          <div class="relative">
-            <input
-              type="password"
-              placeholder=" "
-              id="{{ form.password.id_for_label }}"
-              name="{{ form.password.html_name }}"
-              autocomplete="current-password"
-              class="block px-2.5 pt-5 pb-2.5 w-full floating-label peer"
-              required
-            />
+        <div class="relative">
+          <input
+            type="password"
+            placeholder=" "
+            id="{{ form.password.id_for_label }}"
+            name="{{ form.password.html_name }}"
+            autocomplete="current-password"
+            class="block px-2.5 pt-5 pb-2.5 w-full floating-label peer"
+            required
+          />
 
-            <button
-              type="button"
-              data-hs-toggle-password='{
-                                       "target": "#{{ form.password.id_for_label }}"
-                                       }'
-              tabindex="-1"
-              onmousedown="event.preventDefault()"
-              class="absolute inset-y-0 end-0 flex items-center z-20 px-3 cursor-pointer text-gray-400 rounded-e-md"
-            >
-              <span class="eye-slash-icon hover:stroke-blue-600 stroke-current">
-                {% include "components/svgs/pass-mode-pass.svg" %}
-              </span>
-              <span class="eye-icon hidden hover:stroke-blue-600 stroke-current">
-                {% include "components/svgs/text-mode-pass.svg" %}
-              </span>
-            </button>
-            <label
-              for="{{ form.password.id_for_label }}"
-              class="absolute top-4 input-label duration-300 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+          <button
+            type="button"
+            data-hs-toggle-password='{
+                                     "target": "#{{ form.password.id_for_label }}"
+                                     }'
+            tabindex="-1"
+            onmousedown="event.preventDefault()"
+            class="absolute inset-y-0 end-0 flex items-center z-20 px-3 cursor-pointer text-gray-400 rounded-e-md"
+          >
+            <span class="eye-slash-icon hover:stroke-blue-600 stroke-current">
+              {% include "components/svgs/pass-mode-pass.svg" %}
+            </span>
+            <span class="eye-icon hidden hover:stroke-blue-600 stroke-current">
+              {% include "components/svgs/text-mode-pass.svg" %}
+            </span>
+          </button>
+          <label
+            for="{{ form.password.id_for_label }}"
+            class="absolute top-4 input-label duration-300 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
             >Password</label
-              >
+          >
 
-              {% if form.password.errors %}
-                <div class="error-message-compact">
-                  {% for error in form.password.errors %}
-                    {{ error }}
-                  {% endfor %}
-                </div>
-              {% endif %}
+          {% if form.password.errors %}
+            <div class="error-message-compact">
+              {% for error in form.password.errors %}
+                {{ error }}
+              {% endfor %}
             </div>
+          {% endif %}
+        </div>
 
-            <div class="flex items-start">
-              <div class="flex items-start">
-                <div class="flex items-center h-5">
-                  <input
-                    id="{{ form.remember_me.id_for_label }}"
-                    name="{{ form.remember_me.html_name }}"
-                    type="checkbox"
-                    class="bg-gray-50 border border-gray-300 focus:ring-3 focus:ring-blue-300 h-4 w-4 rounded"
-                    {% if form.remember_me.value %}checked{% endif %}
-                  />
-                </div>
-                <div class="text-sm ml-3">
-                  <label
-                    for="{{ form.remember_me.id_for_label }}"
-                    class="font-medium text-gray-900"
-                  >Remember me</label
-                    >
-                  </div>
-                </div>
-                <a
-                  href="{% url 'mouseapp:password_reset' %}"
-                  class="text-sm ml-auto px-2"
-                >Forgotten Password?</a
-                  >
-                </div>
-                <button type="submit" class="w-full btn-primary">
-                  Login to your account
-                </button>
-              </form>
+        <div class="flex items-start">
+          <div class="flex items-start">
+            <div class="flex items-center h-5">
+              <input
+                id="{{ form.remember_me.id_for_label }}"
+                name="{{ form.remember_me.html_name }}"
+                type="checkbox"
+                class="bg-gray-50 border border-gray-300 focus:ring-3 focus:ring-blue-300 h-4 w-4 rounded"
+                {%
+                  if
+                  form.remember_me.value
+                %}
+                  checked
+                {% endif %}
+              />
+            </div>
+            <div class="text-sm ml-3">
+              <label
+                for="{{ form.remember_me.id_for_label }}"
+                class="font-medium text-gray-900"
+                >Remember me</label
+              >
             </div>
           </div>
+          <a
+            href="{{ url('mouseapp:password_reset') }}"
+            class="text-sm ml-auto px-2"
+            >Forgotten Password?</a
+          >
+        </div>
+        <button type="submit" class="w-full btn-primary">
+          Login to your account
+        </button>
+      </form>
+    </div>
+  </div>
 {% endblock %}

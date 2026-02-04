@@ -1,5 +1,5 @@
 repos:
-    #In case of depreciated code when repurposing from stackoverflow or similar
+  #In case of depreciated code when repurposing from stackoverflow or similar
   - repo: https://github.com/adamchainz/django-upgrade
     rev: 1.29.0
     hooks:
@@ -25,10 +25,6 @@ repos:
   - repo: https://github.com/rtts/djhtml
     rev: 3.0.10
     hooks:
-      - id: djhtml
-        entry: djhtml --tabwidth 2
-        files: '^mousemetrics/.*\.html$'
-        exclude: ".*/staticfiles/.*"
       - id: djcss
         files: '^mousemetrics/.*\.css$'
         exclude: ".*/staticfiles/.*|.*/static/dist/.*"
@@ -36,7 +32,7 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks.git
     rev: v6.0.0
     hooks:
-        #Filesystem
+      #Filesystem
       - id: check-case-conflict
       - id: check-illegal-windows-names
         #Text formatting
@@ -58,12 +54,18 @@ repos:
         name: Pyrefly (type checking)
         pass_filenames: false
         entry: uv run pyrefly check
-    #Pytest
   - repo: local
     hooks:
+        #Pytest
       - id: pytest-mouseapp
         name: pytest-check
         entry: uv run pytest
+        language: system
+        pass_filenames: false
+        #html lint
+      - id: lint-staged
+        name: lint-staged (prettier + jinja)
+        entry: npx lint-staged
         language: system
         pass_filenames: false
     #Detect API Keys
@@ -71,5 +73,5 @@ repos:
     rev: v1.5.0
     hooks:
       - id: detect-secrets
-        args: ['--baseline', '.secrets.baseline']
+        args: ["--baseline", ".secrets.baseline"]
         exclude: package.lock.json
