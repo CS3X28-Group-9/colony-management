@@ -42,7 +42,7 @@ class Project(models.Model):
         return user.is_superuser
 
     def mouse_count(self):
-        return self.mouse_set.count()  # type: ignore
+        return self.mouse_set.count()
 
     def __str__(self) -> str:
         return f"{self.name}"
