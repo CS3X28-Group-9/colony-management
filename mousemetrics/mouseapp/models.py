@@ -217,6 +217,8 @@ class Mouse(models.Model):
 
 class Request(models.Model):
     _user: User | None = None
+    
+    replies: Manager["RequestReply"]
     REQUEST_CHOICES = {
         "B": "Set up breeding pair",
         "C": "Cull",
