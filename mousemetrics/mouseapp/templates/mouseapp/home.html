@@ -4,7 +4,7 @@
     {% if request.user.is_authenticated %}
       <div class="flex justify-center mt-6">
         <div
-          class="inline-block bg-neutral-200 border border-neutral-300 rounded-lg p-4 w-fit"
+          class="inline-block bg-card border border-dynamic rounded-lg p-4 w-fit"
         >
           {% if projects.exists() %}
             <ul>
@@ -39,7 +39,7 @@
     {% else %}
       <div class="flex justify-center mt-6">
         <div
-          class="inline-block bg-neutral-200 border border-neutral-300 rounded-lg p-4 w-fit"
+          class="inline-block bg-card border border-dynamic rounded-lg p-4 w-fit"
         >
           <h3 class="default-header my-2">Log in to view projects</h3>
         </div>
