@@ -12,7 +12,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .forms import ColumnMappingForm, MouseImportForm
 from .models import MouseImport
 from .services.importer import ImportOptions, Importer
-from .services.io_excel import read_range
+from .services.io import read_range
 
 MICE_PAGE_SIZE = 50
 PREVIEW_ROW_LIMIT = 50
@@ -57,10 +57,11 @@ def import_preview(request: HttpRequest, id: int) -> HttpResponse:
             import_obj.file.path,
             import_obj.sheet_name,
             import_obj.cell_range,
+            original_filename=import_obj.original_filename,
         )
     except Exception as exc:  # pragma: no cover - reported to the user
         messages.error(
-            request, f"Error reading Excel range: {exc}", extra_tags="range_error"
+            request, f"Error reading file range: {exc}", extra_tags="range_error"
         )
         return redirect("mouse_import:import_form")
 
