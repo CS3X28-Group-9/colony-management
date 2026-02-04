@@ -1,8 +1,8 @@
 {% extends "base.html" %} {% block title %}Mouse{% endblock %}
 {% block content %}
   <div class="max-w-3xl mx-auto px-4 py-8">
-    <div class="bg-white dark:bg-neutral-800 rounded-lg shadow-md overflow-hidden">
-      <div class="bg-neutral-200 dark:bg-neutral-700 px-6 py-4">
+    <div class="rounded-lg shadow-md overflow-hidden" style="background-color: var(--color-bg-white);">
+      <div class="px-6 py-4" style="background-color: var(--color-bg-secondary);">
         <h3 class="default-header">Mouse Details</h3>
       </div>
 
@@ -85,7 +85,7 @@
           </div>
         </dl>
 
-        <div class="mt-6 pt-6 border-t border-gray-200">
+        <div class="mt-6 pt-6 border-t" style="border-color: var(--color-border);">
           <a
             href="{{ url('mouseapp:family_tree', mouse=mouse.id) }}"
             class="inline-flex items-center px-4 py-2 btn-primary"
@@ -105,8 +105,8 @@
       </div>
     </div>
 
-    <div class="bg-white rounded-lg shadow-md overflow-hidden mt-6">
-      <div class="bg-neutral-200 dark:bg-neutral-700 px-6 py-4">
+    <div class="rounded-lg shadow-md overflow-hidden mt-6" style="background-color: var(--color-bg-white);">
+      <div class="px-6 py-4" style="background-color: var(--color-bg-secondary);">
         <div class="flex justify-between items-center">
           <h3 class="default-header">Requests for this Mouse</h3>
           <div class="flex gap-2">
@@ -132,7 +132,7 @@
         {% if mouse_requests %}
           <ul class="space-y-2">
             {% for req in mouse_requests %}
-              <li class="bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 rounded p-3">
+              <li class="border rounded p-3" style="background-color: var(--color-bg-white); border-color: var(--color-border);">
                 <div class="flex justify-between items-start">
                   <div class="flex-1">
                     <p class="font-medium">
