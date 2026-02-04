@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import SET_NULL
+from django.db.models import SET_NULL, Manager
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.urls import reverse
@@ -217,7 +217,7 @@ class Mouse(models.Model):
 
 class Request(models.Model):
     _user: User | None = None
-    
+
     replies: Manager["RequestReply"]
     REQUEST_CHOICES = {
         "B": "Set up breeding pair",

@@ -4,9 +4,9 @@
 {% block title %}Request Details{% endblock %}
 
 {% block content %}
-  <div class="max-w-4xl mx-auto mt-6">
+  <div class="max-w-6xl mx-auto px-4 mt-6">
     <!-- Back to Requests Link -->
-    <div class="mb-4">
+    <div class="mb-6 px-2">
       <a href="{% url 'mouseapp:requests' %}" class="text-blue-600 hover:text-blue-800">← Back to Requests</a>
     </div>
 
@@ -16,7 +16,7 @@
         <div class="flex-1">
           <div class="flex items-center gap-3 mb-2">
             <h1 class="page-title">{{ request_obj.get_kind_display }}</h1>
-            <span class="px-2 py-1 rounded text-sm {{ request_obj.get_status_css_classes }}">
+            <span class="px-2 py-1 rounded text-sm {{ request_obj.status_css_classes }}">
               {{ request_obj.get_status_display }}
             </span>
           </div>
