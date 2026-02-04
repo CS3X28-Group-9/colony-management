@@ -2,7 +2,7 @@
   <div class="flex items-center justify-between py-3 px-4 mx-auto max-w-6xl">
     <a
       href="{{ url('mouseapp:home') }}"
-      class="text-xl font-semibold text-primary hover:opacity-70 transition-colors"
+      class="text-xl font-semibold text-neutral-800 dark:text-neutral-100 hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors"
     >
       Labsafe
     </a>
@@ -41,6 +41,7 @@
               <div class="flex justify-between items-center gap-4">
                 <h3 class="font-semibold text-primary">Notifications</h3>
                 {% if recent_notifications %}
+<<<<<<< HEAD
                   <form
                     method="post"
                     action="{{ url('mouseapp:mark_all_notifications_read') }}"
@@ -59,6 +60,7 @@
             </div>
             <div class="max-h-96 overflow-y-auto">
               {% if recent_notifications %}
+<<<<<<< HEAD
                 <ul class="divide-y divide-neutral-200 dark:divide-neutral-700">
                   {% for notification in recent_notifications %}
                     <li
@@ -74,6 +76,16 @@
                               notification.message
                             %}
                               {{ notification.message[:-7] }}
+=======
+                <ul class="divide-y border-dynamic">
+                  {% for notification in recent_notifications %}
+                    <li class="p-4 {% if not notification.read %}bg-secondary{% endif %}">
+                      <div class="flex justify-between items-start gap-2">
+                        <div class="flex-1 space-y-2">
+                          <p class="text-sm {% if not notification.read %}font-medium{% endif %} text-primary">
+                            {% if notification.request and "[link]" in notification.message %}
+                              {{ notification.message|slice:":-7" }}
+>>>>>>> 469fc42 (tailwiind)
                             {% else %}
                               {{ notification.message }}
                             {% endif %}

@@ -47,6 +47,48 @@ html {
   }
 }
 
+@layer utilities {
+  .bg-primary {
+    background-color: var(--color-bg-primary);
+  }
+
+  .bg-secondary {
+    background-color: var(--color-bg-secondary);
+  }
+
+  .bg-card {
+    background-color: var(--color-bg-card);
+  }
+
+  .bg-white-dynamic {
+    background-color: var(--color-bg-white);
+  }
+
+  .text-primary {
+    color: var(--color-text-primary);
+  }
+
+  .text-secondary {
+    color: var(--color-text-secondary);
+  }
+
+  .text-muted-dynamic {
+    color: var(--color-text-muted);
+  }
+
+  .border-dynamic {
+    border-color: var(--color-border);
+  }
+
+  .link-dynamic {
+    color: var(--color-link);
+  }
+
+  .link-dynamic:hover {
+    color: var(--color-link-hover);
+  }
+}
+
 @layer components {
   .btn-primary {
     @apply inline-flex items-center justify-center
