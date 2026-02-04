@@ -54,12 +54,18 @@ repos:
         name: Pyrefly (type checking)
         pass_filenames: false
         entry: uv run pyrefly check
-    #Pytest
   - repo: local
     hooks:
+        #Pytest
       - id: pytest-mouseapp
         name: pytest-check
         entry: uv run pytest
+        language: system
+        pass_filenames: false
+        #lint
+      - id: lint-staged
+        name: lint-staged (prettier + jinja)
+        entry: npx lint-staged
         language: system
         pass_filenames: false
     #Detect API Keys
