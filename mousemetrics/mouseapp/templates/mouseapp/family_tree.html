@@ -10,9 +10,10 @@
 
     <div id="tree-content">
       {% for generation in ancestry %}
+        {% set outer = loop %}
         <div
           class="flex flex-row justify-center"
-          style="margin-top: calc({{ loop.index0 }} * 2.5rem); margin-bottom: calc({{ loop.index0 }} * 2.5rem);"
+          style="margin-top: calc({{ outer.index0 }} * 2.5rem); margin-bottom: calc({{ outer.index0 }} * 2.5rem);"
         >
           {% for mouse in generation %}
             <div
