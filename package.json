@@ -5,8 +5,7 @@
   },
   "scripts": {
     "tailwind": "npx @tailwindcss/cli -i ./mousemetrics/mousemetrics/static_src/styles.css -o ./mousemetrics/mousemetrics/static/dist/styles.css --watch",
-    "prettier": "prettier --write \"mousemetrics/**/*.html\"",
-    "prepare": "husky"
+    "prettier": "prettier --write \"mousemetrics/**/*.html\""
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.14",
