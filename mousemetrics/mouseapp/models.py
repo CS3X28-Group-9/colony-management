@@ -7,6 +7,7 @@ from django.urls import reverse
 
 class Project(models.Model):
     id: int
+    mouse_set: Manager["Mouse"]
     name = models.TextField()
     start_date = models.DateField()
     allow_over_18_months = models.BooleanField(default=False)
