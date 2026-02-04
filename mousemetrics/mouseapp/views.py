@@ -658,7 +658,7 @@ def request_detail(request: AuthedRequest, request_id: int) -> HttpResponse:
             return redirect(reverse("mouseapp:request_detail", args=[request_id]))
 
     # Get paginated replies (newest first for pagination)
-    replies = request_obj.replies.all().order_by("-timestamp")  # type: ignore[attr-defined]
+    replies = request_obj.replies.all().order_by("-timestamp")
     paginator = Paginator(replies, 4)
     page_number = request.GET.get("page", 1)
     page_obj = paginator.get_page(page_number)
