@@ -8,7 +8,7 @@
           <h3 class="default-header">Mouse Details</h3>
         </div>
 
-        {% if form.non_field_errors %}{% for error in form.non_field_errors() %}
+        {% if form.non_field_errors() %}{% for error in form.non_field_errors() %}
           <p class="error-message text-center">{{ error }}</p>
         {% endfor %}{% endif %}
 

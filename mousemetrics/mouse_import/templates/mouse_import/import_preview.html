@@ -120,7 +120,7 @@
               Save Mapping
             </button>
 
-            {% if form.non_field_errors %}{% for error in form.non_field_errors %}
+            {% if form.non_field_errors() %}{% for error in form.non_field_errors %}
               <p class="error-message">{{ error }}</p>
             {% endfor %}{% endif %}
           </div>
@@ -133,7 +133,7 @@
           {{ csrf_input }}
           <button type="submit" class="btn-primary">Commit Import</button>
 
-          {% if form.non_field_errors %}{% for error in form.non_field_errors %}
+          {% if form.non_field_errors() %}{% for error in form.non_field_errors %}
             <p class="error-message">{{ error }}</p>
           {% endfor %}{% endif %}
         </form>
@@ -152,11 +152,7 @@
                   <tr class="table-data border-2 border-black">
                     <td class="table-padding border-black">{{ src }}</td>
                     <td class="table-padding border-black">
-                      {{
-                        saved_fixed | get_ite{{ saved_fixed.get(src) | default(dst,
-                        true)
-                      }}m:src
-                      | default:dst }}
+                    {{ saved_fixed.get(src) | default(dst, true) }}
                     </td>
                   </tr>
                 {% endfor %}
@@ -188,6 +184,7 @@
             {% endfor %}
           </tbody>
         </table>
+      {% endif %}
       </div>
     </div>
   </div>
