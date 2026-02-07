@@ -291,9 +291,6 @@ class GraphSVGRenderer:
     GAP_X = 40
     GAP_Y = 80
 
-    # ---------------------------------------------------------
-    # JINJA2 TEMPLATE (Internal String - No external file needed)
-    # ---------------------------------------------------------
     SVG_TEMPLATE = """
     <svg width="{{ width }}" height="{{ height }}" viewBox="{{ viewbox }}" xmlns="http://www.w3.org/2000/svg">
 
