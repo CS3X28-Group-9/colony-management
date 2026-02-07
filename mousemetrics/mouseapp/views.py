@@ -13,7 +13,7 @@ from django.utils.html import strip_tags
 from django.db.models import Q
 from django.core.paginator import Paginator
 from datetime import date
-from collections import deque
+from collections import deque, defaultdict
 from django.urls import reverse
 
 from .forms import (
@@ -387,71 +387,46 @@ def get_descendant_graph(start_mouse, max_depth=10):
                 all_nodes.add(r)
                 queue.append((r, depth + 1))
 
-    ranks = {m: 0 for m in all_nodes}
-    sorted_nodes = list(all_nodes)
+    adj = defaultdict(list)
+    in_degree = {m: 0 for m in all_nodes}
 
-    for _ in range(20):  # Max 20 iterations
-        changed = False
-        for m in sorted_nodes:
-            parents = []
-            if m.father and m.father in all_nodes:
-                parents.append(m.father)
-            if m.mother and m.mother in all_nodes:
-                parents.append(m.mother)
+    for m in all_nodes:
+        if m.father and m.father in all_nodes:
+            adj[m.father].append(m)
+            in_degree[m] += 1
 
-            if parents:
-                parent_ranks = [ranks[p] for p in parents]
-                new_rank = max(parent_ranks) + 1
-                if new_rank > ranks[m]:
-                    ranks[m] = new_rank
-                    changed = True
-        if not changed:
-            break
+        if m.mother and m.mother in all_nodes:
+            adj[m.mother].append(m)
+            in_degree[m] += 1
 
-    for _ in range(5):
-        changed = False
-        for m in all_nodes:
-            if (
-                m.father
-                and m.mother
-                and m.father in all_nodes
-                and m.mother in all_nodes
-            ):
-                f_rank = ranks[m.father]
-                m_rank = ranks[m.mother]
+    queue = deque([m for m, deg in in_degree.items() if deg == 0])
+    ranks = {}
 
-                if f_rank != m_rank:
-                    target_rank = max(f_rank, m_rank)
-                    ranks[m.father] = target_rank
-                    ranks[m.mother] = target_rank
-                    changed = True
+    while queue:
+        node = queue.popleft()
 
-        if not changed:
-            break
+        parent_ranks = []
+        if node.father and node.father in ranks:
+            parent_ranks.append(ranks[node.father])
+        if node.mother and node.mother in ranks:
+            parent_ranks.append(ranks[node.mother])
 
-    for _ in range(10):
-        changed = False
-        for m in sorted_nodes:
-            parents = []
-            if m.father and m.father in all_nodes:
-                parents.append(m.father)
-            if m.mother and m.mother in all_nodes:
-                parents.append(m.mother)
+        if not parent_ranks:
+            ranks[node] = 0
+        else:
+            ranks[node] = max(parent_ranks) + 1
 
-            if parents:
-                parent_ranks = [ranks[p] for p in parents]
-                new_rank = max(parent_ranks) + 1
-                if new_rank > ranks[m]:
-                    ranks[m] = new_rank
-                    changed = True
-        if not changed:
-            break
+        for child in adj[node]:
+            in_degree[child] -= 1
+            if in_degree[child] == 0:
+                queue.append(child)
 
-    # 5. Group into Layers
-    layers = {}
+    for m in all_nodes:
+        if m not in ranks:
+            ranks[m] = 0
+
+    layers = defaultdict(list)
     for m, rank in ranks.items():
-        if rank not in layers:
-            layers[rank] = []
         layers[rank].append(m)
 
     return layers
