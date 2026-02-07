@@ -15,7 +15,7 @@ from django.core.paginator import Paginator
 from datetime import date
 from collections import deque, defaultdict
 from django.urls import reverse
-from jinja2 import Template
+from jinja2 import Environment
 
 from .forms import (
     RegistrationForm,
@@ -389,8 +389,9 @@ class GraphSVGRenderer:
         height = (self.max_y - self.min_y) + (padding * 2)
         viewbox = f"{self.min_x - padding} {self.min_y - padding} {width} {height}"
 
-        # 3. Render
-        template = Template(self.SVG_TEMPLATE)
+        env = Environment(autoescape=True)
+        template = env.from_string(self.SVG_TEMPLATE)
+
         return template.render(
             nodes=self.nodes,
             edges=self.edges,
