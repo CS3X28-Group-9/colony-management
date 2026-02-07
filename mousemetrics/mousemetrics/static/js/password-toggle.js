@@ -17,12 +17,12 @@ document.addEventListener("DOMContentLoaded", function () {
       target.setAttribute("type", isPassword ? "text" : "password");
       toggleBtn.classList.toggle("hs-password-active");
 
-      const eyeIcon = toggleBtn.querySelector('.eye-icon');
-      const eyeSlashIcon = toggleBtn.querySelector('.eye-slash-icon');
+      const eyeIcon = toggleBtn.querySelector(".eye-icon");
+      const eyeSlashIcon = toggleBtn.querySelector(".eye-slash-icon");
 
       if (eyeIcon && eyeSlashIcon) {
-        eyeIcon.classList.toggle('hidden');
-        eyeSlashIcon.classList.toggle('hidden');
+        eyeIcon.classList.toggle("hidden");
+        eyeSlashIcon.classList.toggle("hidden");
       }
 
       requestAnimationFrame(() => {

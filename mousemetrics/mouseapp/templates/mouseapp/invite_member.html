@@ -1,9 +1,7 @@
-{% extends "base.html" %}
-{% block title %}Invite Member{% endblock %}
-{% block content%}
+{% extends "base.html" %} {% block title %}Invite Member{% endblock %}
+{% block content %}
   <form method="POST">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit">
+    {{ csrf_input }} {{ form }}
+    <input type="submit" value="Submit" />
   </form>
 {% endblock %}

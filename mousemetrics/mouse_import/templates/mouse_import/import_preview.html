@@ -1,8 +1,5 @@
-{% extends "base.html" %}
-{% block title %}Import Preview{% endblock %}
-{% load dict_extras %}
+{% extends "base.html" %} {% block title %}Import Preview{% endblock %}
 {% block content %}
-
   <div class="m-4">
     <div class="mb-6">
       <h1 class="text-3xl font-bold text-gray-900 mb-4">
@@ -12,7 +9,9 @@
       {% if messages %}
         <div class="space-y-2">
           {% for m in messages %}
-            <div class="flex items-start gap-2 p-3 bg-blue-50 border-l-4 border-blue-500 rounded-r text-blue-800 w-fit">
+            <div
+              class="flex items-start gap-2 p-3 bg-blue-50 border-l-4 border-blue-500 rounded-r text-blue-800 w-fit"
+            >
               {% include "components/svgs/info.svg" %}
               <span>{{ m }}</span>
             </div>
@@ -20,19 +19,31 @@
         </div>
       {% endif %}
     </div>
-
-    <div class="flex flex-wrap gap-3 mb-6 p-4 bg-white border border-gray-200 rounded-lg w-fit">
-
-      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-md text-sm">
+    <div
+      class="flex flex-wrap gap-3 mb-6 p-4 bg-white border border-gray-200 rounded-lg w-fit"
+    >
+      <span
+        class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-md text-sm"
+      >
         <strong>File:</strong> {{ import_obj.original_filename }}
       </span>
-      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded-md text-sm">
-        <strong>Sheet:</strong> {{ import_obj.sheet_name|default_if_none:"(active)"|default:"(active)" }}
+      <span
+        class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded-md text-sm"
+      >
+        <strong>Sheet:</strong> {{
+          import_obj.sheet_name | default('(active)',
+          true)
+        }}
       </span>
-      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-50 text-purple-700 rounded-md text-sm">
-        <strong>Range:</strong> {{ import_obj.cell_range|default_if_none:"(entire sheet)"|default:"(entire sheet)" }}
+      <span
+        class="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-50 text-purple-700 rounded-md text-sm"
+      >
+        <strong>Range:</strong>
+        {{ import_obj.cell_range | default('(entire sheet)', true) }}
       </span>
-      <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm">
+      <span
+        class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm"
+      >
         <strong>Rows:</strong> {{ import_obj.row_count }}
       </span>
     </div>
@@ -42,57 +53,66 @@
         <h3 class="text-xl font-medium text-gray-900 mb-4">Column Mapping</h3>
 
         <form method="post">
-          {% csrf_token %}
+          {{ csrf_input }}
           {% for field in form %}
-            <div class="relative flex items-center mb-2 w-fit {% if field.name|first == "f" %}ml-4{% endif %}">
-              <label for="{{ field.id_for_label }}" class="w-32 text-gray-700 font-medium"
-              >{{ field.label }}</label
-                >
-                <div class="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                  {{ field }}
-                </div>
-              </div>
-
-              {% if field.errors %}
-                {% for error in field.errors %}
-                  <p class="error-message">{{ error }}</p>
-                {% endfor %}
+            <div class="relative flex items-center mb-2 w-fit">
+              {% if field.name[0] == "f" %}
+                <div class="ml-4"></div>
               {% endif %}
-
+              <label
+                for="{{ field.id_for_label }}"
+                class="w-32 text-gray-700 font-medium"
+                >{{ field.label }}</label
+              >
+              <div
+                class="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                {{ field }}
+              </div>
+              {% if field.errors %}{% for error in field.errors %}
+                <p class="error-message">{{ error }}</p>
+              {% endfor %}{% endif %}
+            </div>
           {% endfor %}
           <script>
-            document.querySelectorAll('[data-choices-for]').forEach(choiceEl => {
-              const parent = choiceEl.parentNode.parentNode;
-              const name = choiceEl.attributes['data-choices-for'].value;
-              const mapEl = document.getElementById('id_map_' + name);
-              const valueEl = document.getElementById('id_fixed_new_' + name);
-              const valueParent = valueEl ? valueEl.parentNode.parentNode : null;
+            document
+              .querySelectorAll("[data-choices-for]")
+              .forEach((choiceEl) => {
+                const parent = choiceEl.parentNode.parentNode;
+                const name = choiceEl.attributes["data-choices-for"].value;
+                const mapEl = document.getElementById("id_map_" + name);
+                const valueEl = document.getElementById("id_fixed_new_" + name);
+                const valueParent = valueEl
+                  ? valueEl.parentNode.parentNode
+                  : null;
 
-              function updateNew() {
-                if (!valueParent) return;
-                if (mapEl.value == '-- fixed --' && choiceEl.value == '-- new --') {
-                  valueParent.classList.remove('hidden');
-                } else {
-                  valueParent.classList.add('hidden');
+                function updateNew() {
+                  if (!valueParent) return;
+                  if (
+                    mapEl.value == "-- fixed --" &&
+                    choiceEl.value == "-- new --"
+                  ) {
+                    valueParent.classList.remove("hidden");
+                  } else {
+                    valueParent.classList.add("hidden");
+                  }
                 }
-              }
-              function updateChoices() {
-                if (mapEl.value == '-- fixed --') {
-                  parent.classList.remove('hidden');
-                } else {
-                  parent.classList.add('hidden');
+                function updateChoices() {
+                  if (mapEl.value == "-- fixed --") {
+                    parent.classList.remove("hidden");
+                  } else {
+                    parent.classList.add("hidden");
+                  }
+                  updateNew();
                 }
-                updateNew()
-              }
 
-              updateChoices()
+                updateChoices();
 
-              mapEl.addEventListener('change', updateChoices);
-              choiceEl.addEventListener('change', updateNew);
-            });
+                mapEl.addEventListener("change", updateChoices);
+                choiceEl.addEventListener("change", updateNew);
+              });
           </script>
           <div class="flex items-center gap-2 mt-2">
-
             <button
               type="submit"
               class="{% if saved_mapping %}btn-secondary{% else %}btn-primary{% endif %} my-2"
@@ -100,76 +120,72 @@
               Save Mapping
             </button>
 
-            {% if form.non_field_errors %}
-              {% for error in form.non_field_errors %}
-                <p class="error-message">{{ error }}</p>
-              {% endfor %}
-            {% endif %}
+            {% if form.non_field_errors() %}{% for error in form.non_field_errors %}
+              <p class="error-message">{{ error }}</p>
+            {% endfor %}{% endif %}
+          </div>
+        </form>
+        {% if saved_mapping %}
+          <form
+            method="post"
+            action="{{ url('mouse_import:import_commit', import_obj.id) }}"
+          >
+            {{ csrf_input }}
+            <button type="submit" class="btn-primary">Commit Import</button>
+
+            {% if form.non_field_errors() %}{% for error in form.non_field_errors %}
+              <p class="error-message">{{ error }}</p>
+            {% endfor %}{% endif %}
           </form>
-
           {% if saved_mapping %}
-            <form
-              method="post"
-              action="{% url 'mouse_import:import_commit' import_obj.id %}"
-            >
-              {% csrf_token %}
-              <button type="submit" class="btn-primary">Commit Import</button>
-
-              {% if form.non_field_errors %}
-                {% for error in form.non_field_errors %}
-                  <p class="error-message">{{ error }}</p>
-                {% endfor %}
-              {% endif %}
-            </form>
+            <div class="saved-mapping-section flex-1">
+              <h3 class="text-xl font-medium text-gray-900">Saved mapping</h3>
+              <table>
+                <thead>
+                  <tr class="table-header">
+                    <th class="table-header-text">Source column</th>
+                    <th class="table-header-text">Target field</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for src, dst in saved_mapping.items() %}
+                    <tr class="table-data border-2 border-black">
+                      <td class="table-padding border-black">{{ src }}</td>
+                      <td class="table-padding border-black">
+                        {{ saved_fixed.get(src) | default(dst, true) }}
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
           {% else %}
             <p class="mt-2"><em>Save a mapping first to enable commit.</em></p>
           {% endif %}
-        </div>
-      </div>
 
-      {% if saved_mapping %}
-        <div class="saved-mapping-section flex-1">
-          <h3 class="text-xl font-medium text-gray-900">Saved mapping</h3>
           <table>
+            <caption class="py-2 text-start text-sm">
+              Data Preview (first 50 rows)
+            </caption>
             <thead>
               <tr class="table-header">
-                <th class="table-header-text">Source column</th>
-                <th class="table-header-text">Target field</th>
+                {% for c in columns %}
+                  <th class="table-header-text">{{ c }}</th>
+                {% endfor %}
               </tr>
             </thead>
             <tbody>
-              {% for src, dst in saved_mapping.items %}
-                <tr class="table-data border-2 border-black">
-                  <td class="table-padding border-black">{{ src }}</td>
-                  <td class="table-padding border-black">{{ saved_fixed | get_item:src | default:dst }}</td>
+              {% for row in rows %}
+                <tr class="table-data">
+                  {% for c in columns %}
+                    <td class="table-padding">{{ row[c] }}</td>
+                  {% endfor %}
                 </tr>
               {% endfor %}
             </tbody>
           </table>
-        </div>
-      {% endif %}
+        {% endif %}
+      </div>
     </div>
-
-    <table>
-      <caption class="py-2 text-start text-sm">
-        Data Preview (first 50 rows)
-      </caption>
-      <thead>
-        <tr class="table-header">
-          {% for c in columns %}
-            <th class="table-header-text">{{ c }}</th>
-          {% endfor %}
-        </tr>
-      </thead>
-      <tbody>
-        {% for row in rows %}
-          <tr class="table-data">
-            {% for c in columns %}
-              <td class="table-padding">{{ row|get_item:c }}</td>
-            {% endfor %}
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
   </div>
 {% endblock %}

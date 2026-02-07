@@ -1,15 +1,11 @@
 {% extends "base.html" %}
-{% load static %}
+
 {% block title %}Family Tree - {{ center_mouse.strain }}{% endblock %}
 
 {% block content %}
   <div class="w-full h-screen overflow-auto bg-gray-50">
-
     <div class="min-w-full min-h-full flex justify-center items-center p-10">
-
       {{ svg_content|safe }}
-
     </div>
-
   </div>
-{% endblock content %}
+{% endblock %}
