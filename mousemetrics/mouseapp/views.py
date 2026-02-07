@@ -15,6 +15,7 @@ from django.core.paginator import Paginator
 from datetime import date
 from collections import deque, defaultdict
 from django.urls import reverse
+from jinja2 import Template
 
 from .forms import (
     RegistrationForm,
@@ -290,76 +291,118 @@ class GraphSVGRenderer:
     GAP_X = 40
     GAP_Y = 80
 
+    # ---------------------------------------------------------
+    # JINJA2 TEMPLATE (Internal String - No external file needed)
+    # ---------------------------------------------------------
+    SVG_TEMPLATE = """
+    <svg width="{{ width }}" height="{{ height }}" viewBox="{{ viewbox }}" xmlns="http://www.w3.org/2000/svg">
+
+        {# 1. Draw Edges (Lines) - Behind nodes #}
+        <g id="edges">
+        {% for edge in edges %}
+            <line x1="{{ edge.x1 }}" y1="{{ edge.y1 }}"
+                  x2="{{ edge.x2 }}" y2="{{ edge.y2 }}"
+                  stroke="black" stroke-width="2" />
+        {% endfor %}
+        </g>
+
+        {# 2. Draw Nodes (Mice) #}
+        <g id="nodes">
+        {% for node in nodes %}
+            <g id="mouse-{{ node.id }}">
+                {# Box Body #}
+                <rect x="{{ node.x }}" y="{{ node.y }}" width="{{ box_w }}" height="{{ box_h }}"
+                    fill="white"
+                    stroke="#e5e7eb"
+                    stroke-width="1"
+                    rx="6" />
+
+                {# Strain Name (Link) #}
+                <a href="{{ node.tree_url }}">
+                    <text x="{{ node.x + 8 }}" y="{{ node.y + 20 }}"
+                          font-family="sans-serif" font-size="14" fill="#2563eb">
+                        {{ node.strain }}
+                    </text>
+                </a>
+
+                {# Box Number #}
+                <text x="{{ node.x + 8 }}" y="{{ node.y + 45 }}"
+                      font-family="sans-serif" font-size="14" fill="black">
+                    {{ node.box_text }}
+                </text>
+
+                {# Earmark #}
+                <text x="{{ node.x + 8 }}" y="{{ node.y + 65 }}"
+                      font-family="sans-serif" font-size="14" fill="black">
+                    {{ node.earmark_text }}
+                </text>
+
+                {# Details Link (Bottom Right) #}
+                <a href="{{ node.detail_url }}">
+                    <text x="{{ node.x + 184 }}" y="{{ node.y + 90 }}" text-anchor="end"
+                          font-family="sans-serif" font-size="10" fill="#2563eb">
+                        (Details)
+                    </text>
+                </a>
+            </g>
+        {% endfor %}
+        </g>
+    </svg>
+    """
+
     def __init__(self):
-        self.parts = []
+        self.nodes = []
+        self.edges = []
         self.min_x = float("inf")
         self.max_x = float("-inf")
         self.min_y = float("inf")
         self.max_y = float("-inf")
 
     def draw_line(self, x1, y1, x2, y2):
-        self.parts.append(
-            f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="black" stroke-width="2" />'
-        )
+        self.edges.append({"x1": x1, "y1": y1, "x2": x2, "y2": y2})
 
     def draw_mouse(self, mouse, x, y, is_focus=False):
+        # 1. Update Bounds
         self.min_x = min(self.min_x, x)
         self.max_x = max(self.max_x, x + self.BOX_W)
         self.min_y = min(self.min_y, y)
         self.max_y = max(self.max_y, y + self.BOX_H)
 
-        tree_url = reverse("mouseapp:family_tree", args=[mouse.id])
-        detail_url = reverse("mouseapp:mouse", args=[mouse.id])
-
-        strain_text = f"{mouse.strain} {mouse.tube_number}"
-        box_text = f"Box: {mouse.box.number if mouse.box else '-'}"
-        earmark_text = f"Earmark: {mouse.earmark if mouse.earmark else '-'}"
-
-        mouse_svg = f"""
-        <g id="mouse-{mouse.id}">
-            <rect x="{x}" y="{y}" width="{self.BOX_W}" height="{self.BOX_H}"
-                  fill="white" stroke="#e5e7eb" stroke-width="1" rx="6" />
-
-            <a href="{tree_url}">
-                <text x="{x + 8}" y="{y + 20}"
-                      font-family="sans-serif" font-size="14" fill="#2563eb">
-                    {strain_text}
-                </text>
-            </a>
-
-            <text x="{x + 8}" y="{y + 45}"
-                  font-family="sans-serif" font-size="14" fill="black">
-                {box_text}
-            </text>
-
-            <text x="{x + 8}" y="{y + 65}"
-                  font-family="sans-serif" font-size="14" fill="black">
-                {earmark_text}
-            </text>
-
-            <a href="{detail_url}">
-                <text x="{x + 184}" y="{y + 90}" text-anchor="end"
-                      font-family="sans-serif" font-size="10" fill="#2563eb">
-                    (Details)
-                </text>
-            </a>
-        </g>
-        """
-        self.parts.append(mouse_svg)
+        # 2. Prepare Data for Template
+        self.nodes.append(
+            {
+                "id": mouse.id,
+                "x": x,
+                "y": y,
+                "is_focus": is_focus,
+                "strain": f"{mouse.strain} {mouse.tube_number}",
+                "box_text": f"Box: {mouse.box.number if mouse.box else '-'}",
+                "earmark_text": f"Earmark: {mouse.earmark if mouse.earmark else '-'}",
+                "tree_url": reverse("mouseapp:family_tree", args=[mouse.id]),
+                "detail_url": reverse("mouseapp:mouse", args=[mouse.id]),
+            }
+        )
 
     def get_final_svg(self):
-        if not self.parts:
+        if not self.nodes:
             return "<svg></svg>"
 
         padding = 50
         width = (self.max_x - self.min_x) + (padding * 2)
         height = (self.max_y - self.min_y) + (padding * 2)
-
         viewbox = f"{self.min_x - padding} {self.min_y - padding} {width} {height}"
 
-        header = f'<svg width="{width}" height="{height}" viewBox="{viewbox}" xmlns="http://www.w3.org/2000/svg">'
-        footer = "</svg>"
-        return header + "".join(self.parts) + footer
+        # 3. Render
+        template = Template(self.SVG_TEMPLATE)
+        return template.render(
+            nodes=self.nodes,
+            edges=self.edges,
+            viewbox=viewbox,
+            width=width,
+            height=height,
+            box_w=self.BOX_W,
+            box_h=self.BOX_H,
+        )
 
 
 def get_descendant_graph(start_mouse, max_depth=10):
