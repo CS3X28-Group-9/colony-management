@@ -16,6 +16,7 @@ from datetime import date
 from collections import deque, defaultdict
 from django.urls import reverse
 from jinja2 import Environment
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 
 from .forms import (
     RegistrationForm,
@@ -291,53 +292,46 @@ class GraphSVGRenderer:
     GAP_X = 40
     GAP_Y = 80
 
-    SVG_TEMPLATE = """
-    <svg width="{{ width }}" height="{{ height }}" viewBox="{{ viewbox }}" xmlns="http://www.w3.org/2000/svg">
+    SVG_TEMPLATE = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+    <svg width="{{ width }}" height="{{ height }}" viewBox="{{ viewbox }}" xmlns="http://www.w3.org/2000/svg" version="1.1">
 
-        {# 1. Draw Edges (Lines) - Behind nodes #}
+        <style>
+            .edge { stroke: black; stroke-width: 2px; }
+            .box  { fill: white; stroke: #e5e7eb; stroke-width: 1px; }
+            text  { font-family: sans-serif; }
+            /* Added cursor pointer so users know it's clickable */
+            .txt-strain { font-size: 14px; fill: #2563eb; font-weight: bold; cursor: pointer; }
+            .txt-info   { font-size: 14px; fill: black; }
+            .txt-link   { font-size: 10px; fill: #2563eb; text-anchor: end; cursor: pointer; }
+
+            /* Hover effect */
+            a:hover text { fill: #1d4ed8; text-decoration: underline; }
+        </style>
+
         <g id="edges">
         {% for edge in edges %}
             <line x1="{{ edge.x1 }}" y1="{{ edge.y1 }}"
                   x2="{{ edge.x2 }}" y2="{{ edge.y2 }}"
-                  stroke="black" stroke-width="2" />
+                  class="edge" />
         {% endfor %}
         </g>
 
-        {# 2. Draw Nodes (Mice) #}
         <g id="nodes">
         {% for node in nodes %}
-            <g id="mouse-{{ node.id }}">
-                {# Box Body #}
-                <rect x="{{ node.x }}" y="{{ node.y }}" width="{{ box_w }}" height="{{ box_h }}"
-                    fill="white"
-                    stroke="#e5e7eb"
-                    stroke-width="1"
-                    rx="6" />
+            <g transform="translate({{ node.x }}, {{ node.y }})">
 
-                {# Strain Name (Link) #}
-                <a href="{{ node.tree_url }}">
-                    <text x="{{ node.x + 8 }}" y="{{ node.y + 20 }}"
-                          font-family="sans-serif" font-size="14" fill="#2563eb">
-                        {{ node.strain }}
-                    </text>
+                <rect width="{{ box_w }}" height="{{ box_h }}" rx="6" class="box" />
+
+                <a href="{{ node.tree_url }}" target="_top">
+                    <text x="8" y="20" class="txt-strain">{{ node.strain }}</text>
                 </a>
 
-                {# Box Number #}
-                <text x="{{ node.x + 8 }}" y="{{ node.y + 45 }}"
-                      font-family="sans-serif" font-size="14" fill="black">
-                    {{ node.box_text }}
-                </text>
+                <text x="8" y="45" class="txt-info">{{ node.box_text }}</text>
+                <text x="8" y="65" class="txt-info">{{ node.earmark_text }}</text>
 
-                {# Earmark #}
-                <text x="{{ node.x + 8 }}" y="{{ node.y + 65 }}"
-                      font-family="sans-serif" font-size="14" fill="black">
-                    {{ node.earmark_text }}
-                </text>
-
-                {# Details Link (Bottom Right) #}
-                <a href="{{ node.detail_url }}">
-                    <text x="{{ node.x + 184 }}" y="{{ node.y + 90 }}" text-anchor="end"
-                          font-family="sans-serif" font-size="10" fill="#2563eb">
+                <a href="{{ node.detail_url }}" target="_top">
+                    <text x="{{ box_w - 8 }}" y="{{ box_h - 10 }}" class="txt-link">
                         (Details)
                     </text>
                 </a>
@@ -359,13 +353,11 @@ class GraphSVGRenderer:
         self.edges.append({"x1": x1, "y1": y1, "x2": x2, "y2": y2})
 
     def draw_mouse(self, mouse, x, y, is_focus=False):
-        # 1. Update Bounds
         self.min_x = min(self.min_x, x)
         self.max_x = max(self.max_x, x + self.BOX_W)
         self.min_y = min(self.min_y, y)
         self.max_y = max(self.max_y, y + self.BOX_H)
 
-        # 2. Prepare Data for Template
         self.nodes.append(
             {
                 "id": mouse.id,
@@ -412,21 +404,14 @@ def get_descendant_graph(start_mouse, max_depth=10):
         if depth >= max_depth:
             continue
 
-        relatives = []
-        if current.father:
-            relatives.append(current.father)
-        if current.mother:
-            relatives.append(current.mother)
-
         children = list(Mouse.objects.filter(father=current)) + list(
             Mouse.objects.filter(mother=current)
         )
-        relatives.extend(children)
 
-        for r in relatives:
-            if r not in all_nodes:
-                all_nodes.add(r)
-                queue.append((r, depth + 1))
+        for child in children:
+            if child not in all_nodes:
+                all_nodes.add(child)
+                queue.append((child, depth + 1))
 
     adj = defaultdict(list)
     in_degree = {m: 0 for m in all_nodes}
@@ -475,12 +460,12 @@ def get_descendant_graph(start_mouse, max_depth=10):
 
 def layout_graph(renderer, start_mouse):
     layers = get_descendant_graph(start_mouse)
-    positions = {}  # Store positions of each mouse box for line drawing
+    positions = {}
 
     sorted_ranks = sorted(layers.keys())
     current_y = 0
 
-    for rank in sorted_ranks:  # draw layer by layer
+    for rank in sorted_ranks:
         mice_in_layer = layers[rank]
         mice_in_layer.sort(
             key=lambda m: (
@@ -512,9 +497,7 @@ def layout_graph(renderer, start_mouse):
 
         current_y += renderer.BOX_H + renderer.GAP_Y
 
-    all_drawn_mice = [
-        m for sublist in layers.values() for m in sublist
-    ]  # draw lines after all boxes are drawn
+    all_drawn_mice = [m for sublist in layers.values() for m in sublist]
 
     for m in all_drawn_mice:
         child_pos = positions[m.id]
@@ -538,20 +521,25 @@ def layout_graph(renderer, start_mouse):
             )
 
 
+@login_required
 def family_tree(request: HttpRequest, mouse: int) -> HttpResponse:
     center_mouse = get_object_or_404(Mouse, id=mouse)
+    return render(request, "mouseapp/family_tree.html", {"center_mouse": center_mouse})
+
+
+@login_required
+@xframe_options_sameorigin
+def family_tree_svg(request: AuthedRequest, id: int) -> HttpResponse:
+    center_mouse = get_object_or_404(Mouse, id=id)
+
+    if not center_mouse.has_read_access(request.user):
+        raise PermissionDenied()
+
     renderer = GraphSVGRenderer()
+    layout_graph(renderer, center_mouse)
+    svg_content = renderer.get_final_svg()
 
-    layout_graph(renderer, center_mouse)  # layout and draw the graph
-
-    return render(
-        request,
-        "mouseapp/family_tree.html",
-        {
-            "svg_content": renderer.get_final_svg(),
-            "center_mouse": center_mouse,
-        },
-    )
+    return HttpResponse(svg_content, content_type="image/svg+xml")
 
 
 def _prepare_request_form(
