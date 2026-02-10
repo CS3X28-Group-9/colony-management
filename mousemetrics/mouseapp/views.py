@@ -528,7 +528,7 @@ def family_tree(request: HttpRequest, mouse: int) -> HttpResponse:
 
 
 @login_required
-@xframe_options_sameorigin
+@csp_override({'frame-ancestors': CSP.SELF})
 def family_tree_svg(request: AuthedRequest, id: int) -> HttpResponse:
     center_mouse = get_object_or_404(Mouse, id=id)
 
