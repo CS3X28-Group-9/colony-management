@@ -404,7 +404,7 @@ def get_descendant_graph(start_mouse, max_depth=10):
         if depth >= max_depth:
             continue
 
-        children = list(Mouse.objects.filter(father=current)) + list(
+        children = list(current.child_set_m.all()) + list(
             Mouse.objects.filter(mother=current)
         )
 
