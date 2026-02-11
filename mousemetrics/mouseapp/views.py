@@ -16,7 +16,8 @@ from datetime import date
 from collections import deque, defaultdict
 from django.urls import reverse
 from jinja2 import Environment
-from django.views.decorators.clickjacking import xframe_options_sameorigin
+from csp.decorators import csp_update
+from csp.constants import SELF
 
 from .forms import (
     RegistrationForm,
@@ -404,7 +405,7 @@ def get_descendant_graph(start_mouse, max_depth=10):
         if depth >= max_depth:
             continue
 
-        children = list(current.child_set_m.all()) + list(
+        children = list(Mouse.objects.filter(father=current)) + list(
             Mouse.objects.filter(mother=current)
         )
 
@@ -528,7 +529,7 @@ def family_tree(request: HttpRequest, mouse: int) -> HttpResponse:
 
 
 @login_required
-@csp_override({'frame-ancestors': CSP.SELF})
+@csp_update({"FRAME_ANCESTORS": SELF})  # type: ignore
 def family_tree_svg(request: AuthedRequest, id: int) -> HttpResponse:
     center_mouse = get_object_or_404(Mouse, id=id)
 
