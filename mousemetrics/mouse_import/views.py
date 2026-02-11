@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from typing import Any, Dict
+import os
+import os.path
 
 import pandas as pd
 from django.contrib import messages
@@ -142,6 +144,10 @@ def import_commit(request: HttpRequest, id: int) -> HttpResponse:
     import_obj.committed = True
     import_obj.row_count = len(df)
     import_obj.error_log = "\n".join(errors)[:5000] if errors else ""
+
+    if os.path.isfile(import_obj.file.path):
+        os.remove(import_obj.file.path)
+
     import_obj.save(update_fields=["committed", "row_count", "error_log"])
 
     request.session.pop(df_key, None)
