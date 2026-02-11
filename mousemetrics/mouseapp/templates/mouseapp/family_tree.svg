@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="{{ width }}" height="{{ height }}" viewBox="{{ viewbox }}" xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <style>
+        .edge { stroke: black; stroke-width: 2px; }
+        .box  { fill: white; stroke: #e5e7eb; stroke-width: 1px; }
+        text  { font-family: sans-serif; }
+        .txt-strain { font-size: 14px; fill: #2563eb; font-weight: bold; cursor: pointer; }
+        .txt-info   { font-size: 14px; fill: black; }
+        .txt-link   { font-size: 10px; fill: #2563eb; text-anchor: end; cursor: pointer; }
+        a:hover text { fill: #1d4ed8; text-decoration: underline; }
+    </style>
+
+    <g id="edges">
+    {% for edge in edges %}
+        <line x1="{{ edge.x1 }}" y1="{{ edge.y1 }}"
+              x2="{{ edge.x2 }}" y2="{{ edge.y2 }}"
+              class="edge" />
+    {% endfor %}
+    </g>
+
+    <g id="nodes">
+    {% for node in nodes %}
+        <g transform="translate({{ node.x }}, {{ node.y }})">
+            <rect width="{{ box_w }}" height="{{ box_h }}" rx="6" class="box" />
+            <a href="{{ node.tree_url }}" target="_top">
+                <text x="8" y="20" class="txt-strain">{{ node.strain }}</text>
+            </a>
+            <text x="8" y="45" class="txt-info">{{ node.box_text }}</text>
+            <text x="8" y="65" class="txt-info">{{ node.earmark_text }}</text>
+            <a href="{{ node.detail_url }}" target="_top">
+                <text x="{{ box_w - 8 }}" y="{{ box_h - 10 }}" class="txt-link">
+                    (Details)
+                </text>
+            </a>
+        </g>
+    {% endfor %}
+    </g>
+</svg>

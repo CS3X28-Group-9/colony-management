@@ -3,7 +3,7 @@
 {% block content %}
   <div class="mb-4 text-right">
     <a
-      href="{{ url('mouseapp:family_tree_svg', id=center_mouse.id) }}"
+      data="{{ url('mouseapp:family_tree_svg', mouse=center_mouse.id) }}"
       download="family_tree_{{ center_mouse.id }}.svg"
       class="btn-primary"
     >
@@ -15,7 +15,7 @@
   >
     <object
       type="image/svg+xml"
-      data="{{ url('mouseapp:family_tree_svg', id=center_mouse.id) }}"
+      data="{{ url('mouseapp:family_tree_svg', mouse=center_mouse.id) }}"
       style="max-width: none;"
       class="mx-auto block"
     >

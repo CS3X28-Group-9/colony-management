@@ -15,7 +15,7 @@ urlpatterns = [
     path("project/<int:id>/remove-member/", views.remove_member, name="remove_member"),
     path("project/join/<str:token>/", views.join_project, name="join_project"),
     path("family_tree/<int:mouse>/", views.family_tree, name="family_tree"),
-    path("family_tree/<int:id>.svg", views.family_tree_svg, name="family_tree_svg"),
+    path("family_tree/<int:mouse>.svg", views.family_tree_svg, name="family_tree_svg"),
     path("requests/", views.requests_list, name="requests"),
     path(
         "requests/create/breeding/",

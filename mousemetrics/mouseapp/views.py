@@ -15,7 +15,6 @@ from django.core.paginator import Paginator
 from datetime import date
 from collections import deque, defaultdict
 from django.urls import reverse
-from jinja2 import Environment
 from csp.decorators import csp_update
 from csp.constants import SELF
 
@@ -293,55 +292,6 @@ class GraphSVGRenderer:
     GAP_X = 40
     GAP_Y = 80
 
-    SVG_TEMPLATE = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-    <svg width="{{ width }}" height="{{ height }}" viewBox="{{ viewbox }}" xmlns="http://www.w3.org/2000/svg" version="1.1">
-
-        <style>
-            .edge { stroke: black; stroke-width: 2px; }
-            .box  { fill: white; stroke: #e5e7eb; stroke-width: 1px; }
-            text  { font-family: sans-serif; }
-            /* Added cursor pointer so users know it's clickable */
-            .txt-strain { font-size: 14px; fill: #2563eb; font-weight: bold; cursor: pointer; }
-            .txt-info   { font-size: 14px; fill: black; }
-            .txt-link   { font-size: 10px; fill: #2563eb; text-anchor: end; cursor: pointer; }
-
-            /* Hover effect */
-            a:hover text { fill: #1d4ed8; text-decoration: underline; }
-        </style>
-
-        <g id="edges">
-        {% for edge in edges %}
-            <line x1="{{ edge.x1 }}" y1="{{ edge.y1 }}"
-                  x2="{{ edge.x2 }}" y2="{{ edge.y2 }}"
-                  class="edge" />
-        {% endfor %}
-        </g>
-
-        <g id="nodes">
-        {% for node in nodes %}
-            <g transform="translate({{ node.x }}, {{ node.y }})">
-
-                <rect width="{{ box_w }}" height="{{ box_h }}" rx="6" class="box" />
-
-                <a href="{{ node.tree_url }}" target="_top">
-                    <text x="8" y="20" class="txt-strain">{{ node.strain }}</text>
-                </a>
-
-                <text x="8" y="45" class="txt-info">{{ node.box_text }}</text>
-                <text x="8" y="65" class="txt-info">{{ node.earmark_text }}</text>
-
-                <a href="{{ node.detail_url }}" target="_top">
-                    <text x="{{ box_w - 8 }}" y="{{ box_h - 10 }}" class="txt-link">
-                        (Details)
-                    </text>
-                </a>
-            </g>
-        {% endfor %}
-        </g>
-    </svg>
-    """
-
     def __init__(self):
         self.nodes = []
         self.edges = []
@@ -382,18 +332,17 @@ class GraphSVGRenderer:
         height = (self.max_y - self.min_y) + (padding * 2)
         viewbox = f"{self.min_x - padding} {self.min_y - padding} {width} {height}"
 
-        env = Environment(autoescape=True)
-        template = env.from_string(self.SVG_TEMPLATE)
+        context = {
+            "nodes": self.nodes,
+            "edges": self.edges,
+            "viewbox": viewbox,
+            "width": width,
+            "height": height,
+            "box_w": self.BOX_W,
+            "box_h": self.BOX_H,
+        }
 
-        return template.render(
-            nodes=self.nodes,
-            edges=self.edges,
-            viewbox=viewbox,
-            width=width,
-            height=height,
-            box_w=self.BOX_W,
-            box_h=self.BOX_H,
-        )
+        return render_to_string("mouseapp/family_tree.svg", context, using="jinja2")
 
 
 def get_descendant_graph(start_mouse, max_depth=10):
@@ -405,14 +354,17 @@ def get_descendant_graph(start_mouse, max_depth=10):
         if depth >= max_depth:
             continue
 
-        children = list(Mouse.objects.filter(father=current)) + list(
-            Mouse.objects.filter(mother=current)
-        )
+        relatives = list(current.child_set_m.all()) + list(current.child_set_f.all())
 
-        for child in children:
-            if child not in all_nodes:
-                all_nodes.add(child)
-                queue.append((child, depth + 1))
+        if current.father:
+            relatives.append(current.father)
+        if current.mother:
+            relatives.append(current.mother)
+
+        for relative in relatives:
+            if relative not in all_nodes:
+                all_nodes.add(relative)
+                queue.append((relative, depth + 1))
 
     adj = defaultdict(list)
     in_degree = {m: 0 for m in all_nodes}
@@ -530,14 +482,17 @@ def family_tree(request: HttpRequest, mouse: int) -> HttpResponse:
 
 @login_required
 @csp_update({"FRAME_ANCESTORS": SELF})  # type: ignore
-def family_tree_svg(request: AuthedRequest, id: int) -> HttpResponse:
-    center_mouse = get_object_or_404(Mouse, id=id)
+def family_tree_svg(request: HttpRequest, mouse: int) -> HttpResponse:
+    center_mouse = get_object_or_404(Mouse, id=mouse)
 
-    if not center_mouse.has_read_access(request.user):
+    user: User = request.user  # type: ignore
+
+    if not center_mouse.has_read_access(user):
         raise PermissionDenied()
 
     renderer = GraphSVGRenderer()
     layout_graph(renderer, center_mouse)
+
     svg_content = renderer.get_final_svg()
 
     return HttpResponse(svg_content, content_type="image/svg+xml")

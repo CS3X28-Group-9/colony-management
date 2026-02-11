@@ -2,6 +2,7 @@ from datetime import date
 import pytest
 from django.urls import reverse
 from mouseapp.models import Mouse, Box, Project, Strain
+from mouseapp.views import get_descendant_graph
 
 
 def s(n):
@@ -37,11 +38,11 @@ def mice(db):
     )
     child = Mouse(strain=s("MF."), sex="M", mother=ref, **kwargs)
 
-    mice_list = (grandfather, father, mother, ref, child)
-    for mouse in mice_list:
+    mice = (grandfather, father, mother, ref, child)
+    for mouse in mice:
         mouse.save()
 
-    return mice_list
+    return mice
 
 
 @pytest.mark.django_db
@@ -90,3 +91,18 @@ def test_render_svg_image(client, mice, django_user_model):
     assert response.status_code == 200
     assert response["Content-Type"] == "image/svg+xml"
     assert "<svg" in response.content.decode()
+
+
+@pytest.mark.django_db
+def test_get_descendant_graph_logic(mice):
+    (grandfather, father, mother, ref, child) = mice
+
+    layers_from_ref = get_descendant_graph(ref)
+
+    all_mice = [m for layer in layers_from_ref.values() for m in layer]
+    assert ref in all_mice
+    assert grandfather in all_mice
+
+    assert grandfather in layers_from_ref[0]
+    assert mother in layers_from_ref[0]
+    assert ref in layers_from_ref[2]
