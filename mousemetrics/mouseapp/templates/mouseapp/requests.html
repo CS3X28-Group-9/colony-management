@@ -17,16 +17,28 @@
             >
             <select name="status" id="status" class="input">
               <option value="">All Statuses</option>
-              <option value="P" {% if status_filter=="P" %}selected{% endif %}>
+              <option
+                value="P"
+                {% if status_filter=="P" %}selected{% endif %}
+              >
                 Pending
               </option>
-              <option value="A" {% if status_filter=="A" %}selected{% endif %}>
+              <option
+                value="A"
+                {% if status_filter=="A" %}selected{% endif %}
+              >
                 Accepted
               </option>
-              <option value="D" {% if status_filter=="D" %}selected{% endif %}>
+              <option
+                value="D"
+                {% if status_filter=="D" %}selected{% endif %}
+              >
                 Denied
               </option>
-              <option value="C" {% if status_filter=="C" %}selected{% endif %}>
+              <option
+                value="C"
+                {% if status_filter=="C" %}selected{% endif %}
+              >
                 Completed
               </option>
             </select>
