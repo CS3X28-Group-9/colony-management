@@ -138,15 +138,7 @@
                     <p class="font-medium">
                       {{ req.get_kind_display() }} -
                       <span
-                        class="px-2 py-1 rounded text-sm {% if req.status == 'P' %}
-                          bg-yellow-100 text-yellow-800
-                        {% elif req.status == 'A' %}
-                          bg-green-100 text-green-800
-                        {% elif req.status == 'D' %}
-                          bg-red-100 text-red-800
-                        {% elif req.status == 'C' %}
-                          bg-blue-100 text-blue-800
-                        {% endif %}"
+                        class="px-2 py-1 rounded text-sm {{ req.status_css_classes }}"
                       >
                         {{ req.get_status_display() }}
                       </span>
@@ -168,7 +160,7 @@
                     </p>
                   </div>
                   <a
-                    href="{{ url('mouseapp:requests') }}#request-{{ req.id }}"
+                    href="{{ url('mouseapp:request_detail', req.id) }}"
                     class="btn-secondary text-sm font-semibold ml-2"
                     >View</a
                   >
