@@ -13,6 +13,9 @@ from django.utils.html import strip_tags
 from django.db.models import Q
 from django.core.paginator import Paginator
 from datetime import date
+from collections import deque, defaultdict
+from django.urls import reverse
+from django.views.decorators.clickjacking import xframe_options_exempt
 
 from .forms import (
     RegistrationForm,
@@ -271,21 +274,6 @@ def register(request: HttpRequest) -> HttpResponse:
     return render(request, "accounts/register.html", {"form": form})
 
 
-def family_tree_ancestry(mouse: Mouse) -> list[list[Mouse | None]]:
-    def parents(m: Mouse | None) -> list[Mouse | None]:
-        if m is not None:
-            return [m.father, m.mother]
-        return [None, None]
-
-    ancestry: list[list[Mouse | None]] = [[mouse]]
-    while any(any(parents(m)) for m in ancestry[-1]):
-        ancestry.append([])
-        for parent in ancestry[-2]:
-            ancestry[-1].extend(parents(parent))
-    ancestry.reverse()
-    return ancestry
-
-
 def get_children(mouse: Mouse) -> list[Mouse]:
     combined = list(mouse.child_set_m.all()) + list(mouse.child_set_f.all())
     seen: set[int] = set()
@@ -297,93 +285,216 @@ def get_children(mouse: Mouse) -> list[Mouse]:
     return ordered
 
 
-def get_descendant_depth(mouse: Mouse) -> int:
-    children = get_children(mouse)
-    if not children:
-        return 0
-    return 1 + max(get_descendant_depth(child) for child in children)
+class GraphSVGRenderer:
+    BOX_W = 192
+    BOX_H = 100
+    GAP_X = 40
+    GAP_Y = 80
 
+    def __init__(self):
+        self.nodes = []
+        self.edges = []
+        self.min_x = float("inf")
+        self.max_x = float("-inf")
+        self.min_y = float("inf")
+        self.max_y = float("-inf")
 
-def layout_family_tree_with_depth(mouse: Mouse) -> list[dict]:
-    def layout_subtree(mouse: Mouse, start_x: float, level: int):
-        children = get_children(mouse)
-        if not children:
-            return [
-                {
-                    "mouse": mouse,
-                    "x": start_x + 0.5,
-                    "y": level,
-                    "depth": 0,
-                }
-            ], 1.0
+    def draw_line(self, x1, y1, x2, y2):
+        self.edges.append({"x1": x1, "y1": y1, "x2": x2, "y2": y2})
 
-        current_x = start_x
-        nodes = []
-        max_child_depth = 0
-        for child in children:
-            subtree_nodes, width = layout_subtree(child, current_x, level + 1)
-            nodes.extend(subtree_nodes)
-            current_x += width
-            max_child_depth = max(max_child_depth, subtree_nodes[-1]["depth"])
+    def draw_mouse(self, mouse, x, y, is_focus=False):
+        self.min_x = min(self.min_x, x)
+        self.max_x = max(self.max_x, x + self.BOX_W)
+        self.min_y = min(self.min_y, y)
+        self.max_y = max(self.max_y, y + self.BOX_H)
 
-        total_width = current_x - start_x
-        nodes.append(
+        self.nodes.append(
             {
-                "mouse": mouse,
-                "x": start_x + total_width / 2,
-                "y": level,
-                "depth": 1 + max_child_depth,
+                "id": mouse.id,
+                "x": x,
+                "y": y,
+                "is_focus": is_focus,
+                "strain": f"{mouse.strain} {mouse.tube_number}",
+                "box_text": f"Box: {mouse.box.number if mouse.box else '-'}",
+                "earmark_text": f"Earmark: {mouse.earmark if mouse.earmark else '-'}",
+                "tree_url": reverse("mouseapp:family_tree", args=[mouse.id]),
+                "detail_url": reverse("mouseapp:mouse", args=[mouse.id]),
             }
         )
-        return nodes, total_width
 
-    tree_nodes, _ = layout_subtree(mouse, 0.0, 0)
-    return tree_nodes
+    def get_final_svg(self):
+        if not self.nodes:
+            return "<svg></svg>"
+
+        padding = 50
+        width = (self.max_x - self.min_x) + (padding * 2)
+        height = (self.max_y - self.min_y) + (padding * 2)
+        viewbox = f"{self.min_x - padding} {self.min_y - padding} {width} {height}"
+
+        context = {
+            "nodes": self.nodes,
+            "edges": self.edges,
+            "viewbox": viewbox,
+            "width": width,
+            "height": height,
+            "box_w": self.BOX_W,
+            "box_h": self.BOX_H,
+        }
+
+        return render_to_string("mouseapp/family_tree.svg", context, using="jinja2")
 
 
-def gridify_descendants(tree_layout: list[dict]) -> list[list[dict | None]]:
-    from collections import defaultdict
+def get_descendant_graph(start_mouse, max_depth=10):
+    all_nodes = {start_mouse}
+    queue = deque([(start_mouse, 0)])
 
-    levels = defaultdict(list)
-    for node in tree_layout:
-        levels[node["y"]].append(node)
+    while queue:
+        current, depth = queue.popleft()
+        if depth >= max_depth:
+            continue
 
-    grid = []
-    for y in sorted(levels.keys()):
-        row_nodes = sorted(levels[y], key=lambda n: n["x"])
-        col_map = {int(n["x"] - 0.5): n for n in row_nodes}
-        min_col = min(col_map.keys())
-        max_col = max(col_map.keys())
-        row = [col_map.get(col) for col in range(min_col, max_col + 1)]
-        grid.append(row)
-    return grid
+        relatives = list(current.child_set_m.all()) + list(current.child_set_f.all())
+
+        if current.father:
+            relatives.append(current.father)
+        if current.mother:
+            relatives.append(current.mother)
+
+        for relative in relatives:
+            if relative not in all_nodes:
+                all_nodes.add(relative)
+                queue.append((relative, depth + 1))
+
+    adj = defaultdict(list)
+    in_degree = {m: 0 for m in all_nodes}
+
+    for m in all_nodes:
+        if m.father and m.father in all_nodes:
+            adj[m.father].append(m)
+            in_degree[m] += 1
+
+        if m.mother and m.mother in all_nodes:
+            adj[m.mother].append(m)
+            in_degree[m] += 1
+
+    queue = deque([m for m, deg in in_degree.items() if deg == 0])
+    ranks = {}
+
+    while queue:
+        node = queue.popleft()
+
+        parent_ranks = []
+        if node.father and node.father in ranks:
+            parent_ranks.append(ranks[node.father])
+        if node.mother and node.mother in ranks:
+            parent_ranks.append(ranks[node.mother])
+
+        if not parent_ranks:
+            ranks[node] = 0
+        else:
+            ranks[node] = max(parent_ranks) + 1
+
+        for child in adj[node]:
+            in_degree[child] -= 1
+            if in_degree[child] == 0:
+                queue.append(child)
+
+    for m in all_nodes:
+        if m not in ranks:
+            ranks[m] = 0
+
+    layers = defaultdict(list)
+    for m, rank in ranks.items():
+        layers[rank].append(m)
+
+    return layers
 
 
+def layout_graph(renderer, start_mouse):
+    layers = get_descendant_graph(start_mouse)
+    positions = {}
+
+    sorted_ranks = sorted(layers.keys())
+    current_y = 0
+
+    for rank in sorted_ranks:
+        mice_in_layer = layers[rank]
+        mice_in_layer.sort(
+            key=lambda m: (
+                m.father_id if m.father else 0,
+                m.mother_id if m.mother else 0,
+            )
+        )
+
+        row_width = (
+            len(mice_in_layer) * renderer.BOX_W
+            + (len(mice_in_layer) - 1) * renderer.GAP_X
+        )
+        start_x = -(row_width / 2)
+
+        for m in mice_in_layer:
+            renderer.draw_mouse(
+                m, start_x, current_y, is_focus=(m.id == start_mouse.id)
+            )
+
+            center_x = start_x + (renderer.BOX_W / 2)
+            positions[m.id] = {
+                "top_x": center_x,
+                "top_y": current_y,
+                "bottom_x": center_x,
+                "bottom_y": current_y + renderer.BOX_H,
+            }
+
+            start_x += renderer.BOX_W + renderer.GAP_X
+
+        current_y += renderer.BOX_H + renderer.GAP_Y
+
+    all_drawn_mice = [m for sublist in layers.values() for m in sublist]
+
+    for m in all_drawn_mice:
+        child_pos = positions[m.id]
+
+        if m.father and m.father.id in positions:
+            father_pos = positions[m.father.id]
+            renderer.draw_line(
+                father_pos["bottom_x"],
+                father_pos["bottom_y"],
+                child_pos["top_x"],
+                child_pos["top_y"],
+            )
+
+        if m.mother and m.mother.id in positions:
+            mother_pos = positions[m.mother.id]
+            renderer.draw_line(
+                mother_pos["bottom_x"],
+                mother_pos["bottom_y"],
+                child_pos["top_x"],
+                child_pos["top_y"],
+            )
+
+
+@login_required
 def family_tree(request: HttpRequest, mouse: int) -> HttpResponse:
     center_mouse = get_object_or_404(Mouse, id=mouse)
-    full_ancestry = family_tree_ancestry(center_mouse)
+    return render(request, "mouseapp/family_tree.html", {"center_mouse": center_mouse})
 
-    has_descendants = (
-        center_mouse.child_set_m.exists() or center_mouse.child_set_f.exists()
-    )
 
-    if has_descendants:
-        ancestry = full_ancestry[:-1]
-        layout = layout_family_tree_with_depth(center_mouse)
-        descendants_grid = gridify_descendants(layout)
-    else:
-        ancestry = full_ancestry
-        descendants_grid = []
-    return render(
-        request,
-        "mouseapp/family_tree.html",
-        {
-            "ancestry": ancestry,
-            "descendants_grid": descendants_grid,
-            "center_mouse": center_mouse,
-            "has_descendants": has_descendants,
-        },
-    )
+@login_required
+@xframe_options_exempt
+def family_tree_svg(request: HttpRequest, mouse: int) -> HttpResponse:
+    center_mouse = get_object_or_404(Mouse, id=mouse)
+
+    user: User = request.user  # type: ignore
+
+    if not center_mouse.has_read_access(user):
+        raise PermissionDenied()
+
+    renderer = GraphSVGRenderer()
+    layout_graph(renderer, center_mouse)
+
+    svg_content = renderer.get_final_svg()
+
+    return HttpResponse(svg_content, content_type="image/svg+xml")
 
 
 def _prepare_request_form(
