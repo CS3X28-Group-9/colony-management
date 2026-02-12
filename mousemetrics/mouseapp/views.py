@@ -15,8 +15,7 @@ from django.core.paginator import Paginator
 from datetime import date
 from collections import deque, defaultdict
 from django.urls import reverse
-from csp.decorators import csp_update
-from csp.constants import SELF
+from django.views.decorators.clickjacking import xframe_options_exempt
 
 from .forms import (
     RegistrationForm,
@@ -481,7 +480,7 @@ def family_tree(request: HttpRequest, mouse: int) -> HttpResponse:
 
 
 @login_required
-@csp_update({"FRAME_ANCESTORS": SELF})  # type: ignore
+@xframe_options_exempt
 def family_tree_svg(request: HttpRequest, mouse: int) -> HttpResponse:
     center_mouse = get_object_or_404(Mouse, id=mouse)
 
