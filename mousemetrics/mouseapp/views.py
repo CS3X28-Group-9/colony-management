@@ -413,7 +413,7 @@ def get_descendant_graph(start_mouse, max_depth=10):
             ]
 
             if children:
-                target_rank = max(ranks[c] for c in children) - 1
+                target_rank = min(ranks[c] for c in children) - 1
                 if ranks[m] < target_rank:
                     ranks[m] = target_rank
                     changed = True
