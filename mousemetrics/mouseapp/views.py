@@ -403,6 +403,23 @@ def get_descendant_graph(start_mouse, max_depth=10):
         if m not in ranks:
             ranks[m] = 0
 
+    for _ in range(len(all_nodes)):
+        changed = False
+        for m in all_nodes:
+            children = [
+                c
+                for c in list(m.child_set_m.all()) + list(m.child_set_f.all())
+                if c in ranks
+            ]
+
+            if children:
+                target_rank = max(ranks[c] for c in children) - 1
+                if ranks[m] < target_rank:
+                    ranks[m] = target_rank
+                    changed = True
+        if not changed:
+            break
+
     layers = defaultdict(list)
     for m, rank in ranks.items():
         layers[rank].append(m)
