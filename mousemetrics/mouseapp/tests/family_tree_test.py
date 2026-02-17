@@ -104,5 +104,10 @@ def test_get_descendant_graph_logic(mice):
     assert grandfather in all_mice
 
     assert grandfather in layers_from_ref[0]
-    assert mother in layers_from_ref[0]
+
+    assert mother in layers_from_ref[1]
+    assert father in layers_from_ref[1]
+
     assert ref in layers_from_ref[2]
+
+    assert child in layers_from_ref[3]
