@@ -9,19 +9,26 @@
         .txt-info   { font-size: 14px; fill: black; }
         .txt-link   { font-size: 10px; fill: #2563eb; text-anchor: end; cursor: pointer; }
         a:hover text { fill: #1d4ed8; text-decoration: underline; }
+        /* Style hooks for interaction */
+        .node, .edge { transition: opacity 0.2s; }
+        .dimmed { opacity: 0.1; }
+        .highlight { opacity: 1 !important; }
     </style>
 
     <g id="edges">
     {% for edge in edges %}
         <line x1="{{ edge.x1 }}" y1="{{ edge.y1 }}"
               x2="{{ edge.x2 }}" y2="{{ edge.y2 }}"
-              class="edge" />
-    {% endfor %}
+              class="edge"
+              data-child-id="node-{{ edge.child_id }}" /> {% endfor %}
     </g>
 
     <g id="nodes">
     {% for node in nodes %}
-        <g transform="translate({{ node.x }}, {{ node.y }})">
+        <g class="node" id="node-{{ node.id }}"
+           data-father="node-{{ node.father_id }}"
+           data-mother="node-{{ node.mother_id }}"
+           transform="translate({{ node.x }}, {{ node.y }})">
             <rect width="{{ box_w }}" height="{{ box_h }}" rx="6" class="box" />
             <a href="{{ node.tree_url }}" target="_top">
                 <text x="8" y="20" class="txt-strain">{{ node.strain }}</text>
@@ -36,4 +43,30 @@
         </g>
     {% endfor %}
     </g>
+
+    <script><![CDATA[
+        document.addEventListener('DOMContentLoaded', () => {
+            const nodes = document.querySelectorAll('.node'), edges = document.querySelectorAll('.edge');
+            function highlight(id) {
+                const n = document.getElementById(id);
+                if (!n || id.includes('None')) return;
+                n.classList.add('highlight');
+                // This links the lines to the child currently being highlighted
+                edges.forEach(e => { if(e.getAttribute('data-child-id') === id) e.classList.add('highlight'); });
+                highlight(n.getAttribute('data-father'));
+                highlight(n.getAttribute('data-mother'));
+            }
+            nodes.forEach(n => {
+                n.addEventListener('mouseenter', () => {
+                    nodes.forEach(x => x.classList.add('dimmed'));
+                    edges.forEach(x => x.classList.add('dimmed'));
+                    highlight(n.id);
+                });
+                n.addEventListener('mouseleave', () => {
+                    nodes.forEach(x => x.classList.remove('dimmed', 'highlight'));
+                    edges.forEach(x => x.classList.remove('dimmed', 'highlight'));
+                });
+            });
+        });
+    ]]></script>
 </svg>

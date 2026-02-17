@@ -299,8 +299,10 @@ class GraphSVGRenderer:
         self.min_y = float("inf")
         self.max_y = float("-inf")
 
-    def draw_line(self, x1, y1, x2, y2):
-        self.edges.append({"x1": x1, "y1": y1, "x2": x2, "y2": y2})
+    def draw_line(self, x1, y1, x2, y2, child_id=None):
+        self.edges.append(
+            {"x1": x1, "y1": y1, "x2": x2, "y2": y2, "child_id": child_id}
+        )
 
     def draw_mouse(self, mouse, x, y, is_focus=False):
         self.min_x = min(self.min_x, x)
@@ -311,6 +313,8 @@ class GraphSVGRenderer:
         self.nodes.append(
             {
                 "id": mouse.id,
+                "father_id": mouse.father_id,
+                "mother_id": mouse.mother_id,
                 "x": x,
                 "y": y,
                 "is_focus": is_focus,
@@ -478,6 +482,7 @@ def layout_graph(renderer, start_mouse):
                 father_pos["bottom_y"],
                 child_pos["top_x"],
                 child_pos["top_y"],
+                child_id=m.id,
             )
 
         if m.mother and m.mother.id in positions:
@@ -487,6 +492,7 @@ def layout_graph(renderer, start_mouse):
                 mother_pos["bottom_y"],
                 child_pos["top_x"],
                 child_pos["top_y"],
+                child_id=m.id,
             )
 
 
