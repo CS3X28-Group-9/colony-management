@@ -290,8 +290,8 @@ class GraphSVGRenderer:
     BOX_H = 100
     GAP_X = 40
     GAP_Y = 80
-    COUPLE_DROP = 18  
-    CHILD_RISE  = 18  
+    COUPLE_DROP = 18
+    CHILD_RISE = 18
 
     def __init__(self):
         self.nodes = []
@@ -330,7 +330,9 @@ class GraphSVGRenderer:
         self.add_path(f"M {left_x} {bar_y} H {right_x}", child_id=child_id)
 
         pre_child_y = cy - self.CHILD_RISE
-        self.add_path(f"M {jx} {bar_y} V {pre_child_y} H {cx} V {cy}", child_id=child_id)
+        self.add_path(
+            f"M {jx} {bar_y} V {pre_child_y} H {cx} V {cy}", child_id=child_id
+        )
 
     def draw_line(self, x1, y1, x2, y2, child_id=None, is_maternal=False):
         mid_y = (y1 + y2) / 2
@@ -338,7 +340,6 @@ class GraphSVGRenderer:
         x1a = x1 + dx
         d = f"M {x1} {y1} H {x1a} V {mid_y} H {x2} V {y2}"
         self.add_path(d, child_id=child_id)
-
 
     def draw_mouse(self, mouse, x, y, is_focus=False):
         self.min_x = min(self.min_x, x)
@@ -520,7 +521,9 @@ def layout_graph(renderer, start_mouse):
         if father_ok and mother_ok:
             father_pos = positions[m.father.id]
             mother_pos = positions[m.mother.id]
-            renderer.draw_couple_to_child(father_pos, mother_pos, child_pos, child_id=m.id)
+            renderer.draw_couple_to_child(
+                father_pos, mother_pos, child_pos, child_id=m.id
+            )
             continue
 
         if father_ok:
@@ -544,6 +547,7 @@ def layout_graph(renderer, start_mouse):
                 child_id=m.id,
                 is_maternal=True,
             )
+
 
 @login_required
 def family_tree(request: HttpRequest, mouse: int) -> HttpResponse:
