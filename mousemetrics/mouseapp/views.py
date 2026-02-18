@@ -15,7 +15,6 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from datetime import date
 from collections import deque, defaultdict
-from django.urls import reverse
 from django.views.decorators.clickjacking import xframe_options_exempt
 
 from .forms import (
