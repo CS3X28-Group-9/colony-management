@@ -205,3 +205,15 @@ EMAIL_BACKEND = (
 
 DEFAULT_FROM_EMAIL = "Mousemetrics <mousemetrics@mousemetrics.ben.soroos.net>"
 SERVER_EMAIL = "Mousemetrics <system@mousemetrics.ben.soroos.net>"
+
+
+# Mouse Import settings
+
+MICE_PAGE_SIZE = 50
+PREVIEW_ROW_LIMIT = 50
+
+# Simple Railway knob:
+TRAIN_ON_SAVE = (
+    os.getenv("MOUSE_IMPORT_TRAIN_ON_SAVE", "true") == "true"
+)  # bool conversion
+TRAIN_MIN_NEW = int(os.getenv("MOUSE_IMPORT_TRAIN_MIN_NEW", "10"))

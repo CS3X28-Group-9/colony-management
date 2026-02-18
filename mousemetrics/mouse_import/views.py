@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import Any, Dict
 
 import pandas as pd
@@ -8,14 +6,18 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
-
 from .forms import ColumnMappingForm, MouseImportForm
 from .models import MouseImport
 from .services.importer import ImportOptions, Importer
 from .services.io import read_range
 
-MICE_PAGE_SIZE = 50
-PREVIEW_ROW_LIMIT = 50
+from .services.mapping_ai import suggest_mapping_for_dataframe, record_mapping_examples
+from .services.mapping_train import maybe_train_mapping_model
+from django.conf import settings
+
+PREVIEW_ROW_LIMIT = settings.PREVIEW_ROW_LIMIT
+TRAIN_ON_SAVE = settings.TRAIN_ON_SAVE
+TRAIN_MIN_NEW = settings.TRAIN_MIN_NEW
 
 
 def _df_session_key(import_pk: int) -> str:
@@ -50,7 +52,6 @@ def import_form(request: HttpRequest) -> HttpResponse:
 @login_required
 def import_preview(request: HttpRequest, id: int) -> HttpResponse:
     import_obj = get_object_or_404(MouseImport, id=id)
-    print("PREVIEW → id:", import_obj.id, "cell_range:", repr(import_obj.cell_range))
 
     try:
         df = read_range(
@@ -59,7 +60,7 @@ def import_preview(request: HttpRequest, id: int) -> HttpResponse:
             import_obj.cell_range,
             original_filename=import_obj.original_filename,
         )
-    except Exception as exc:  # pragma: no cover - reported to the user
+    except Exception as exc:  # pragma: no cover
         messages.error(
             request, f"Error reading file range: {exc}", extra_tags="range_error"
         )
@@ -87,17 +88,42 @@ def import_preview(request: HttpRequest, id: int) -> HttpResponse:
         None,
     )
 
+    suggested_initial = None
+    suggestions_debug = None
+    if saved_initial is None:
+        suggested_initial, suggestions_debug = suggest_mapping_for_dataframe(
+            df, import_obj.project
+        )
+
     if request.method == "POST":
         form = ColumnMappingForm(
             request.POST, columns=columns, project=import_obj.project
         )
         if form.is_valid():
-            request.session[map_key] = form.selected_mapping()
+            initial, fixed, mapping = form.selected_mapping()
+            request.session[map_key] = (initial, fixed, mapping)
+
+            # Record training data from *explicit* mappings only
+            created_n = record_mapping_examples(
+                import_obj, df, user=request.user, mapping=mapping
+            )
+
+            # Trigger training (simple: on-save check) if enabled
+            if TRAIN_ON_SAVE and created_n > 0:
+                outcome = maybe_train_mapping_model(min_new_examples=TRAIN_MIN_NEW)
+
+                # Keep low-noise unless training occurred/failure:
+                msg = outcome.user_message()
+                if msg:
+                    messages.info(request, msg)
+
             messages.success(request, "Column mapping saved.")
             return redirect("mouse_import:import_preview", id=import_obj.id)
     else:
         form = ColumnMappingForm(
-            columns=columns, initial=saved_initial, project=import_obj.project
+            columns=columns,
+            initial=saved_initial or suggested_initial,
+            project=import_obj.project,
         )
 
     preview_rows = df.head(PREVIEW_ROW_LIMIT).to_dict(orient="records")
@@ -109,6 +135,7 @@ def import_preview(request: HttpRequest, id: int) -> HttpResponse:
         "form": form,
         "saved_mapping": saved_mapping,
         "saved_fixed": saved_fixed,
+        "suggestions": suggestions_debug,
     }
     return render(request, "mouse_import/import_preview.html", context)
 
