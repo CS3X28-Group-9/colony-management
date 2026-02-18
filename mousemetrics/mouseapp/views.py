@@ -290,6 +290,8 @@ class GraphSVGRenderer:
     BOX_H = 100
     GAP_X = 40
     GAP_Y = 80
+    COUPLE_DROP = 18  
+    CHILD_RISE  = 18  
 
     def __init__(self):
         self.nodes = []
@@ -299,10 +301,44 @@ class GraphSVGRenderer:
         self.min_y = float("inf")
         self.max_y = float("-inf")
 
-    def draw_line(self, x1, y1, x2, y2, child_id=None):
-        self.edges.append(
-            {"x1": x1, "y1": y1, "x2": x2, "y2": y2, "child_id": child_id}
-        )
+    def add_path(self, d: str, child_id=None):
+        self.edges.append({"type": "path", "d": d, "child_id": child_id})
+
+    def draw_couple_to_child(self, father_pos, mother_pos, child_pos, child_id):
+        """
+        Pedigree-style:
+          father down -> couple bar <- mother down
+                          |
+                        down to child
+        """
+
+        fx, fy = father_pos["bottom_x"], father_pos["bottom_y"]
+        mx, my = mother_pos["bottom_x"], mother_pos["bottom_y"]
+        cx, cy = child_pos["top_x"], child_pos["top_y"]
+
+        bar_y = max(fy, my) + self.COUPLE_DROP
+
+        left_x = min(fx, mx)
+        right_x = max(fx, mx)
+
+        jx = (fx + mx) / 2
+
+        self.add_path(f"M {fx} {fy} V {bar_y}", child_id=child_id)
+
+        self.add_path(f"M {mx} {my} V {bar_y}", child_id=child_id)
+
+        self.add_path(f"M {left_x} {bar_y} H {right_x}", child_id=child_id)
+
+        pre_child_y = cy - self.CHILD_RISE
+        self.add_path(f"M {jx} {bar_y} V {pre_child_y} H {cx} V {cy}", child_id=child_id)
+
+    def draw_line(self, x1, y1, x2, y2, child_id=None, is_maternal=False):
+        mid_y = (y1 + y2) / 2
+        dx = 25 if is_maternal else -25
+        x1a = x1 + dx
+        d = f"M {x1} {y1} H {x1a} V {mid_y} H {x2} V {y2}"
+        self.add_path(d, child_id=child_id)
+
 
     def draw_mouse(self, mouse, x, y, is_focus=False):
         self.min_x = min(self.min_x, x)
@@ -473,9 +509,21 @@ def layout_graph(renderer, start_mouse):
     all_drawn_mice = [m for sublist in layers.values() for m in sublist]
 
     for m in all_drawn_mice:
+        if m.id not in positions:
+            continue
+
         child_pos = positions[m.id]
 
-        if m.father and m.father.id in positions:
+        father_ok = bool(m.father and m.father.id in positions)
+        mother_ok = bool(m.mother and m.mother.id in positions)
+
+        if father_ok and mother_ok:
+            father_pos = positions[m.father.id]
+            mother_pos = positions[m.mother.id]
+            renderer.draw_couple_to_child(father_pos, mother_pos, child_pos, child_id=m.id)
+            continue
+
+        if father_ok:
             father_pos = positions[m.father.id]
             renderer.draw_line(
                 father_pos["bottom_x"],
@@ -483,9 +531,10 @@ def layout_graph(renderer, start_mouse):
                 child_pos["top_x"],
                 child_pos["top_y"],
                 child_id=m.id,
+                is_maternal=False,
             )
 
-        if m.mother and m.mother.id in positions:
+        if mother_ok:
             mother_pos = positions[m.mother.id]
             renderer.draw_line(
                 mother_pos["bottom_x"],
@@ -493,8 +542,8 @@ def layout_graph(renderer, start_mouse):
                 child_pos["top_x"],
                 child_pos["top_y"],
                 child_id=m.id,
+                is_maternal=True,
             )
-
 
 @login_required
 def family_tree(request: HttpRequest, mouse: int) -> HttpResponse:
@@ -514,6 +563,7 @@ def family_tree_svg(request: HttpRequest, mouse: int) -> HttpResponse:
 
     renderer = GraphSVGRenderer()
     layout_graph(renderer, center_mouse)
+    print("SVG nodes:", len(renderer.nodes), "edges:", len(renderer.edges))
 
     svg_content = renderer.get_final_svg()
 

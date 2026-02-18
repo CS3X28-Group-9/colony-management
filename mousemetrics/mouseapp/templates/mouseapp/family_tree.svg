@@ -17,11 +17,15 @@
 
     <g id="edges">
     {% for edge in edges %}
-        <line x1="{{ edge.x1 }}" y1="{{ edge.y1 }}"
-              x2="{{ edge.x2 }}" y2="{{ edge.y2 }}"
-              class="edge"
-              data-child-id="node-{{ edge.child_id }}" /> {% endfor %}
+    <path
+        d="{{ edge.d }}"
+        fill="none"
+        class="edge"
+        data-child-id="node-{{ edge.child_id }}"
+    />
+    {% endfor %}
     </g>
+
 
     <g id="nodes">
     {% for node in nodes %}
