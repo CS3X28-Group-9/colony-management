@@ -101,10 +101,11 @@ def test_get_descendant_graph_logic(mice):
 
     all_mice = [m for layer in layers_from_ref.values() for m in layer]
     assert ref in all_mice
+    assert grandfather in all_mice
     assert grandfather in layers_from_ref[0]
 
-    assert mother in layers_from_ref[0]
     assert father in layers_from_ref[1]
+    assert mother in layers_from_ref[1]
 
     assert ref in layers_from_ref[2]
 
