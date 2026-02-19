@@ -16,6 +16,7 @@ from datetime import date, datetime
 logger = logging.getLogger(__name__)
 
 _RANGE_RE = re.compile(r"^([A-Z]+)(\d+):([A-Z]+)(\d+)$", re.I)
+FORWARD_FILL_SKIP_COLUMNS = ["cull_date", "cull_reason"]
 
 
 def read_range(
@@ -24,6 +25,8 @@ def read_range(
     range_expr: str,
     *,
     original_filename: str | None = None,
+    limit: int | None = None,
+    mapping: dict[str, str] | None = None,
 ) -> pd.DataFrame:
     """
     Reads an Excel-like rectangular range (e.g. A1:M40) into a DataFrame.
@@ -44,11 +47,20 @@ def read_range(
 
     c1, r1, c2, r2 = match.groups()
 
+    if limit:
+        try:
+            # Shorten the range to `limit` if necessary; don't crash if parsing fails
+            r2 = str(max(int(r1) + limit, int(r2)))
+        except ValueError:
+            pass
+
     ext = _infer_extension(file_path, original_filename)
     if ext == ".csv":
-        return _read_csv_range(file_path, c1, r1, c2, r2)
+        df = _read_csv_range(file_path, c1, r1, c2, r2)
+    else:
+        df = _read_excel_range(file_path, sheet_name, c1, r1, c2, r2)
 
-    return _read_excel_range(file_path, sheet_name, c1, r1, c2, r2)
+    return _process_dataframe(df, limit, mapping)
 
 
 def _infer_extension(file_path: PathLike, original_filename: str | None) -> str:
@@ -80,7 +92,7 @@ def _read_excel_range(
         header = [str(v or "").strip() for v in data[0]]
         cols = pd.Index(header)
         df = pd.DataFrame(data[1:], columns=cols)
-        return _process_dataframe(df)
+        return df
 
 
 def _read_csv_range(
@@ -136,7 +148,7 @@ def _read_csv_range(
     header = [str(v or "").strip() for v in df_raw.iloc[0].tolist()]
     df = df_raw.iloc[1:].copy()
     df.columns = pd.Index(header)
-    return _process_dataframe(df)
+    return df
 
 
 def _col_to_index(col: str) -> int:
@@ -174,18 +186,24 @@ def _detect_delimiter(file_path: PathLike, encoding: str) -> str:
         return ","
 
 
-def _process_dataframe(df: pd.DataFrame) -> pd.DataFrame:
+def _process_dataframe(
+    df: pd.DataFrame, limit: int | None, mapping: dict[str, str] | None
+) -> pd.DataFrame:
     if df.empty:
         return df
+
+    if limit:
+        df = df.head(limit)
 
     # blanks / whitespace -> NA
     df = df.replace(r"^\s*$", pd.NA, regex=True)
 
-    # forward-fill
-    df = df.ffill()
-
-    # trim existing strings
+    # forward-fill and trim existing strings
+    ffill_skip_columns = {(mapping or {}).get(c) for c in FORWARD_FILL_SKIP_COLUMNS}
     for col in df.columns:
+        if col not in ffill_skip_columns:
+            df[col] = df[col].ffill()
+
         if df[col].dtype == object:
             df[col] = df[col].apply(lambda v: v.strip() if isinstance(v, str) else v)
 
