@@ -192,13 +192,32 @@
             <a
               href="?page=1{% if status_filter %}&status={{ status_filter }}{% endif %}{% if type_filter %}&type={{ type_filter }}{% endif %}{% if highlighted_request_id %}&id={{ highlighted_request_id }}{% endif %}"
               class="px-3 py-2 border border-neutral-300 rounded hover:bg-neutral-100"
-              >First</a
             >
+              First
+            </a>
+          {% else %}
+            <span
+              class="px-3 py-2 border border-neutral-300 rounded text-neutral-400 cursor-not-allowed opacity-50"
+              aria-disabled="true"
+            >
+              First
+            </span>
+          {% endif %}
+
+          {% if page_obj.has_previous() %}
             <a
               href="?page={{ page_obj.previous_page_number() }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if type_filter %}&type={{ type_filter }}{% endif %}{% if highlighted_request_id %}&id={{ highlighted_request_id }}{% endif %}"
               class="px-3 py-2 border border-neutral-300 rounded hover:bg-neutral-100"
-              >Previous</a
             >
+              Previous
+            </a>
+          {% else %}
+            <span
+              class="px-3 py-2 border border-neutral-300 rounded text-neutral-400 cursor-not-allowed opacity-50"
+              aria-disabled="true"
+            >
+              Previous
+            </span>
           {% endif %}
 
           <span class="px-4 py-2 text-neutral-700">
@@ -209,13 +228,32 @@
             <a
               href="?page={{ page_obj.next_page_number() }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if type_filter %}&type={{ type_filter }}{% endif %}{% if highlighted_request_id %}&id={{ highlighted_request_id }}{% endif %}"
               class="px-3 py-2 border border-neutral-300 rounded hover:bg-neutral-100"
-              >Next</a
             >
+              Next
+            </a>
+          {% else %}
+            <span
+              class="px-3 py-2 border border-neutral-300 rounded text-neutral-400 cursor-not-allowed opacity-50"
+              aria-disabled="true"
+            >
+              Next
+            </span>
+          {% endif %}
+
+          {% if page_obj.has_next() %}
             <a
               href="?page={{ page_obj.paginator.num_pages }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if type_filter %}&type={{ type_filter }}{% endif %}{% if highlighted_request_id %}&id={{ highlighted_request_id }}{% endif %}"
               class="px-3 py-2 border border-neutral-300 rounded hover:bg-neutral-100"
-              >Last</a
             >
+              Last
+            </a>
+          {% else %}
+            <span
+              class="px-3 py-2 border border-neutral-300 rounded text-neutral-400 cursor-not-allowed opacity-50"
+              aria-disabled="true"
+            >
+              Last
+            </span>
           {% endif %}
         </div>
       {% endif %}
