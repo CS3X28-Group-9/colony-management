@@ -21,7 +21,7 @@
         d="{{ edge.d }}"
         fill="none"
         class="edge"
-        data-child-id="node-{{ edge.child_id }}"
+        data-child-ids="{% for cid in edge.child_ids %}node-{{ cid }} {% endfor %}"
     />
     {% endfor %}
     </g>
@@ -56,7 +56,10 @@
                 if (!n || id.includes('None')) return;
                 n.classList.add('highlight');
                 // This links the lines to the child currently being highlighted
-                edges.forEach(e => { if(e.getAttribute('data-child-id') === id) e.classList.add('highlight'); });
+                edges.forEach(e => {
+                    const ids = (e.getAttribute('data-child-ids') || '').trim().split(/\s+/);
+                    if (ids.includes(id)) e.classList.add('highlight');
+                    });
                 highlight(n.getAttribute('data-father'));
                 highlight(n.getAttribute('data-mother'));
             }
