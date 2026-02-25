@@ -302,44 +302,68 @@ class GraphSVGRenderer:
         self.min_y = float("inf")
         self.max_y = float("-inf")
 
-    def add_path(self, d: str, child_id=None):
-        self.edges.append({"type": "path", "d": d, "child_id": child_id})
+    def add_path(self, d: str, child_id=None, child_ids=None):
+        if child_ids is None:
+            child_ids = [child_id] if child_id is not None else []
+        self.edges.append({"type": "path", "d": d, "child_ids": child_ids})
 
-    def draw_couple_to_child(self, father_pos, mother_pos, child_pos, child_id):
-        """
-        Pedigree-style:
-          father down -> couple bar <- mother down
-                          |
-                        down to child
-        """
+    def draw_single_parent_to_children(self, parent_pos, children_pos, child_ids, is_maternal: bool):
+        px, py = parent_pos["bottom_x"], parent_pos["bottom_y"]
 
+        items = sorted(zip(children_pos, child_ids), key=lambda t: t[0]["top_x"])
+        children_pos = [cp for cp, _ in items]
+        child_ids = [cid for _, cid in items]
+
+        if len(children_pos) == 1:
+            cp = children_pos[0]
+            cid = child_ids[0]
+            cx, cy = cp["top_x"], cp["top_y"]
+
+            if abs(cx - px) < 1.0:
+                self.add_path(f"M {px} {py} V {cy}", child_id=cid)
+            else:
+                mid_y = (py + cy) / 2
+                self.add_path(f"M {px} {py} V {mid_y} H {cx} V {cy}", child_id=cid)
+
+            return
+
+        min_child_top_y = min(cp["top_y"] for cp in children_pos)
+        bus_y = min_child_top_y - self.CHILD_RISE
+
+        self.add_path(f"M {px} {py} V {bus_y}", child_ids=child_ids)
+
+        for cp, cid in zip(children_pos, child_ids):
+            cx, cy = cp["top_x"], cp["top_y"]
+            self.add_path(f"M {px} {bus_y} H {cx} V {cy}", child_id=cid)
+
+    def draw_couple_to_children(self, father_pos, mother_pos, children_pos, child_ids):
         fx, fy = father_pos["bottom_x"], father_pos["bottom_y"]
         mx, my = mother_pos["bottom_x"], mother_pos["bottom_y"]
-        cx, cy = child_pos["top_x"], child_pos["top_y"]
 
         bar_y = max(fy, my) + self.COUPLE_DROP
-
         left_x = min(fx, mx)
         right_x = max(fx, mx)
-
         jx = (fx + mx) / 2
 
-        self.add_path(f"M {fx} {fy} V {bar_y}", child_id=child_id)
+        self.add_path(f"M {fx} {fy} V {bar_y}", child_ids=child_ids)
+        self.add_path(f"M {mx} {my} V {bar_y}", child_ids=child_ids)
+        self.add_path(f"M {left_x} {bar_y} H {right_x}", child_ids=child_ids)
 
-        self.add_path(f"M {mx} {my} V {bar_y}", child_id=child_id)
+        min_child_top_y = min(cp["top_y"] for cp in children_pos)
+        bus_y = min_child_top_y - self.CHILD_RISE
 
-        self.add_path(f"M {left_x} {bar_y} H {right_x}", child_id=child_id)
-
-        pre_child_y = cy - self.CHILD_RISE
-        self.add_path(
-            f"M {jx} {bar_y} V {pre_child_y} H {cx} V {cy}", child_id=child_id
-        )
+        for cp, cid in zip(children_pos, child_ids):
+            cx, cy = cp["top_x"], cp["top_y"]
+            self.add_path(f"M {jx} {bar_y} V {bus_y} H {cx} V {cy}", child_id=cid)
 
     def draw_line(self, x1, y1, x2, y2, child_id=None, is_maternal=False):
+        if abs(x2 - x1) < 1.0:
+            self.add_path(f"M {x1} {y1} V {y2}", child_id=child_id)
+            return
+
         mid_y = (y1 + y2) / 2
-        dx = 25 if is_maternal else -25
-        x1a = x1 + dx
-        d = f"M {x1} {y1} H {x1a} V {mid_y} H {x2} V {y2}"
+
+        d = f"M {x1} {y1} V {mid_y} H {x2} V {y2}"
         self.add_path(d, child_id=child_id)
 
     def draw_mouse(self, mouse, x, y, is_focus=False):
@@ -468,7 +492,6 @@ def get_descendant_graph(start_mouse, max_depth=10):
 
     return layers
 
-
 def layout_graph(renderer, start_mouse):
     layers = get_descendant_graph(start_mouse)
     positions = {}
@@ -476,6 +499,7 @@ def layout_graph(renderer, start_mouse):
     sorted_ranks = sorted(layers.keys())
     current_y = 0
 
+    # ---- place nodes ----
     for rank in sorted_ranks:
         mice_in_layer = layers[rank]
         mice_in_layer.sort(
@@ -510,45 +534,46 @@ def layout_graph(renderer, start_mouse):
 
     all_drawn_mice = [m for sublist in layers.values() for m in sublist]
 
-    for m in all_drawn_mice:
-        if m.id not in positions:
+    couple_groups: dict[tuple[int, int], list] = defaultdict(list)
+    single_groups: dict[tuple[int, bool], list] = defaultdict(list)  
+
+    for child in all_drawn_mice:
+        if child.id not in positions:
             continue
 
-        child_pos = positions[m.id]
-
-        father_ok = bool(m.father and m.father.id in positions)
-        mother_ok = bool(m.mother and m.mother.id in positions)
+        father_ok = bool(child.father and child.father.id in positions)
+        mother_ok = bool(child.mother and child.mother.id in positions)
 
         if father_ok and mother_ok:
-            father_pos = positions[m.father.id]
-            mother_pos = positions[m.mother.id]
-            renderer.draw_couple_to_child(
-                father_pos, mother_pos, child_pos, child_id=m.id
-            )
-            continue
+            couple_groups[(child.father.id, child.mother.id)].append(child)
+        elif father_ok:
+            single_groups[(child.father.id, False)].append(child) 
+        elif mother_ok:
+            single_groups[(child.mother.id, True)].append(child)  
 
-        if father_ok:
-            father_pos = positions[m.father.id]
-            renderer.draw_line(
-                father_pos["bottom_x"],
-                father_pos["bottom_y"],
-                child_pos["top_x"],
-                child_pos["top_y"],
-                child_id=m.id,
-                is_maternal=False,
-            )
+    for (fid, mid), children in couple_groups.items():
+        father_pos = positions[fid]
+        mother_pos = positions[mid]
 
-        if mother_ok:
-            mother_pos = positions[m.mother.id]
-            renderer.draw_line(
-                mother_pos["bottom_x"],
-                mother_pos["bottom_y"],
-                child_pos["top_x"],
-                child_pos["top_y"],
-                child_id=m.id,
-                is_maternal=True,
-            )
+        children.sort(key=lambda c: positions[c.id]["top_x"])
+        child_ids = [c.id for c in children]
+        children_pos = [positions[c.id] for c in children]
 
+        renderer.draw_couple_to_children(father_pos, mother_pos, children_pos, child_ids)
+
+    for (pid, is_maternal), children in single_groups.items():
+        parent_pos = positions[pid]
+
+        children.sort(key=lambda c: positions[c.id]["top_x"])
+        child_ids = [c.id for c in children]
+        children_pos = [positions[c.id] for c in children]
+
+        renderer.draw_single_parent_to_children(
+            parent_pos=parent_pos,
+            children_pos=children_pos,
+            child_ids=child_ids,
+            is_maternal=is_maternal,
+        )
 
 @login_required
 def family_tree(request: HttpRequest, mouse: int) -> HttpResponse:
@@ -556,7 +581,6 @@ def family_tree(request: HttpRequest, mouse: int) -> HttpResponse:
     return render(request, "mouseapp/family_tree.html", {"center_mouse": center_mouse})
 
 
-@login_required
 @xframe_options_exempt
 def family_tree_svg(request: HttpRequest, mouse: int) -> HttpResponse:
     center_mouse = get_object_or_404(Mouse, id=mouse)
