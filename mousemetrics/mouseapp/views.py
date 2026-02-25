@@ -568,7 +568,6 @@ def family_tree_svg(request: HttpRequest, mouse: int) -> HttpResponse:
 
     renderer = GraphSVGRenderer()
     layout_graph(renderer, center_mouse)
-    print("SVG nodes:", len(renderer.nodes), "edges:", len(renderer.edges))
 
     svg_content = renderer.get_final_svg()
 
