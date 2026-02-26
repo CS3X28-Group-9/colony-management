@@ -81,13 +81,13 @@
                           {% if notification.request %}
                             {% if notification.reply %}
                               <a
-                                href="{{ url('mouseapp:clear_request_notifications', notification.request.id) }}?reply={{ notification.reply.id }}"
+                                href="{{ url('mouseapp:request_detail', notification.request.id) }}#reply-{{ notification.reply.id }}"
                                 class="text-sm"
                                 >View reply</a
                               >
                             {% else %}
                               <a
-                                href="{{ url('mouseapp:clear_request_notifications', notification.request.id) }}"
+                                href="{{ url('mouseapp:request_detail', notification.request.id) }}"
                                 class="text-sm"
                                 >View request</a
                               >

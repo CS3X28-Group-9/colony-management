@@ -773,6 +773,9 @@ def request_detail(request: AuthedRequest, request_id: int) -> HttpResponse:
     if not request_obj.has_read_access(request.user):
         raise PermissionDenied("You do not have access to this request.")
 
+    # Clear all notifications for this request when user visits the page
+    Notification.objects.filter(user=request.user, request=request_obj).delete()
+
     # Handle reply submission
     quoted_reply_id = request.GET.get("quote")
     quoted_reply = None
@@ -958,24 +961,6 @@ def mark_notification_read(
     except Notification.DoesNotExist:
         pass
     return redirect("mouseapp:home")
-
-
-@login_required
-@require_http_methods(["GET"])
-def clear_request_notifications(
-    request: AuthedRequest, request_id: int
-) -> HttpResponse:
-    request_obj = get_object_or_404(Request, id=request_id)
-
-    if request_obj.has_read_access(request.user):
-        Notification.objects.filter(user=request.user, request=request_obj).delete()
-
-    reply_id = request.GET.get("reply")
-    if reply_id:
-        return redirect(
-            reverse("mouseapp:request_detail", args=[request_id]) + f"#reply-{reply_id}"
-        )
-    return redirect(reverse("mouseapp:request_detail", args=[request_id]))
 
 
 @login_required
