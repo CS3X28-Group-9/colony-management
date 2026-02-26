@@ -175,6 +175,9 @@ def _detect_delimiter(file_path: PathLike, encoding: str) -> str:
 
 
 def _process_dataframe(df: pd.DataFrame) -> pd.DataFrame:
+    idxs = iter(range(len(df.columns)))
+    df.columns = [col or f"unnamed-{next(idxs) + 1}" for col in df.columns]
+
     if df.empty:
         return df
 
