@@ -79,11 +79,19 @@
                             {% endif %}
                           </p>
                           {% if notification.request %}
-                            <a
-                              href="{{ url('mouseapp:requests') }}#request-{{ notification.request.id }}"
-                              class="text-sm"
-                              >View request</a
-                            >
+                            {% if notification.reply %}
+                              <a
+                                href="{{ url('mouseapp:clear_request_notifications', notification.request.id) }}?reply={{ notification.reply.id }}"
+                                class="text-sm"
+                                >View reply</a
+                              >
+                            {% else %}
+                              <a
+                                href="{{ url('mouseapp:clear_request_notifications', notification.request.id) }}"
+                                class="text-sm"
+                                >View request</a
+                              >
+                            {% endif %}
                           {% endif %}
                           <p class="text-xs text-neutral-500">
                             {{ notification.created_at.strftime("%b %d, %Y %I:%M %p") }}

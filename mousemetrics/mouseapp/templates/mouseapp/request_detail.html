@@ -133,7 +133,10 @@
       {% if page_obj %}
         <div class="space-y-4 mb-6">
           {% for reply in page_obj %}
-            <div class="border border-gray-200 rounded p-4 bg-white">
+            <div
+              id="reply-{{ reply.id }}"
+              class="border border-gray-200 rounded p-4 bg-white scroll-mt-24"
+            >
               <div class="flex justify-between items-start mb-2">
                 <div class="flex items-center gap-2">
                   <p class="font-medium text-gray-900">
@@ -315,4 +318,30 @@
       </div>
     </div>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith("#reply-")) {
+        const replyId = hash.substring(7);
+        const replyElement = document.getElementById("reply-" + replyId);
+        if (replyElement) {
+          replyElement.classList.add(
+            "bg-yellow-100",
+            "border-yellow-400",
+            "border-2",
+          );
+          replyElement.scrollIntoView({ behavior: "smooth", block: "center" });
+
+          setTimeout(function () {
+            replyElement.classList.remove(
+              "bg-yellow-100",
+              "border-yellow-400",
+              "border-2",
+            );
+          }, 3000);
+        }
+      }
+    });
+  </script>
 {% endblock %}
