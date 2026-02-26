@@ -5,7 +5,7 @@ install:
 	pip install uv
 	uv lock
 	uv sync
-	npm i
+	npm ci
 
 dependencies:
 	uv lock
