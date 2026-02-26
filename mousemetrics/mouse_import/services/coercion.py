@@ -10,14 +10,19 @@ from django.utils.dateparse import parse_date
 
 logger = logging.getLogger(__name__)
 
+_LEADING_HASH = re.compile(r"^\s*#\s*")
 _SLASH_DATE = re.compile(r"^\s*\d{1,2}/\d{1,2}/\d{2,4}\s*$")
 
 
 def to_int(value: Any) -> Optional[int]:
     """Cast values coming from Excel into integers when possible."""
-
     if value in (None, ""):
         return None
+
+    # for IDs like "#281"
+    if isinstance(value, str):
+        value = _LEADING_HASH.sub("", value).strip()
+
     try:
         return int(float(value))
     except Exception:
