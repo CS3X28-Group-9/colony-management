@@ -20,6 +20,7 @@ def run_import_xlsx(
         sheet,
         cell_range,
         original_filename="sheet.xlsx",
+        mapping=mapping,
     )
     return Importer(
         ImportOptions(
@@ -43,6 +44,7 @@ def run_import_csv(
         sheet,
         cell_range,
         original_filename="sheet.csv",
+        mapping=mapping,
     )
     return Importer(
         ImportOptions(
@@ -64,6 +66,8 @@ MAPPING: dict[str, str] = {
     "father": "Father",
     "mother": "Mother",
     "notes": "Notes",
+    "cull_date": "Cull Date",
+    "cull_reason": "Cull Reason",
 }
 
 
@@ -224,3 +228,21 @@ def test_import_same_tube_different_strain_csv(project):
     assert m2.father is None
     assert m2.mother is None
     assert m2.notes == ""
+
+
+def test_import_cull_forwardfill(project):
+    created, updated, errors = run_import_csv(
+        project.id, "Sheet1", "A1:L3", {}, MAPPING
+    )
+
+    assert not errors and not updated
+    assert len(created) == 2
+
+    m1, m2 = [Mouse.objects.get(pk=pk) for pk in created]
+    if m1.strain != strain("Some-strain"):
+        m1, m2 = m2, m1
+
+    assert m1.cull_date and m1.cull_date.isoformat() == "2024-01-01"
+    assert m1.cull_reason == "Age"
+    assert m2.cull_date is None
+    assert m2.cull_reason is None
