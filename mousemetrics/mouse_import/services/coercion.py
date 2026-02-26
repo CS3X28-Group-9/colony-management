@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import re
 from typing import Any, Optional
 
 import pandas as pd
@@ -8,6 +9,8 @@ import pandas as pd
 from django.utils.dateparse import parse_date
 
 logger = logging.getLogger(__name__)
+
+_SLASH_DATE = re.compile(r"^\s*\d{1,2}/\d{1,2}/\d{2,4}\s*$")
 
 
 def to_int(value: Any) -> Optional[int]:
@@ -28,7 +31,12 @@ def to_date(value: Any):
     if value in (None, ""):
         return None
     try:
-        as_datetime = pd.to_datetime(value, errors="coerce")
+
+        # dd/mm/yyyy for united kingdom users
+        if isinstance(value, str) and _SLASH_DATE.match(value):
+            as_datetime = pd.to_datetime(value, errors="coerce", dayfirst=True)
+        else:
+            as_datetime = pd.to_datetime(value, errors="coerce")
         if pd.isna(as_datetime):
             return parse_date(str(value))
         return as_datetime.date()
