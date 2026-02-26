@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.base_user import BaseUserManager
 from django.db.models import Q
 
-from .models import Mouse, Request, Project
+from .models import Mouse, Request, Project, RequestReply
 
 
 class CustomAuthenticationForm(AuthenticationForm):
@@ -252,3 +252,21 @@ class TransferRequestForm(RequestForm):
         initial="T",
         widget=forms.HiddenInput(),
     )
+
+
+class RequestReplyForm(forms.ModelForm):
+    message = forms.CharField(
+        required=True,
+        label="Reply",
+        widget=forms.Textarea(
+            attrs={"class": "input", "rows": 4, "placeholder": "Write your reply..."}
+        ),
+    )
+    quoted_reply_id = forms.IntegerField(
+        required=False,
+        widget=forms.HiddenInput(),
+    )
+
+    class Meta:
+        model = RequestReply
+        fields = ["message"]
