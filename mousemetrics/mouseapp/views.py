@@ -89,6 +89,21 @@ def get_users_to_notify_for_request(request_obj: Request) -> list[User]:
     return [user for user in users_to_notify if user != request_obj.creator]
 
 
+def get_users_to_notify_for_reply(request_obj: Request, reply_user: User) -> list[User]:
+    users_to_notify = []
+
+    if request_obj.creator:
+        users_to_notify.append(request_obj.creator)
+
+    participants = User.objects.filter(requestreply__request=request_obj).distinct()
+
+    for user in participants:
+        if user not in users_to_notify:
+            users_to_notify.append(user)
+
+    return [user for user in users_to_notify if user != reply_user]
+
+
 @login_required
 @require_http_methods(["GET", "POST"])
 def mouse(request: AuthedRequest, id: int) -> HttpResponse:
@@ -788,6 +803,28 @@ def request_detail(request: AuthedRequest, request_id: int) -> HttpResponse:
                 except RequestReply.DoesNotExist:
                     pass
             reply.save()
+
+            users_to_notify = get_users_to_notify_for_reply(request_obj, request.user)
+            reply_user_name = request.user.get_full_name() or request.user.username
+
+            for user in users_to_notify:
+                if reply.quoted_reply and reply.quoted_reply.user == user:
+                    message = f"{reply_user_name} quoted you in a reply."
+                else:
+                    reply_preview = (
+                        reply.message[:20] + "..."
+                        if len(reply.message) > 20
+                        else reply.message
+                    )
+                    message = f"New reply posted by {reply_user_name}: {reply_preview}"
+
+                Notification.objects.create(
+                    user=user,
+                    request=request_obj,
+                    reply=reply,
+                    message=message,
+                )
+
             return redirect(reverse("mouseapp:request_detail", args=[request_id]))
 
     # Get paginated replies (newest first for pagination)
@@ -895,8 +932,16 @@ def toggle_reply_reaction(request: AuthedRequest, reply_id: int) -> HttpResponse
     )
 
     if not created:
-        # Reaction already exists, remove it
         reaction.delete()
+    else:
+        if reply.user != request.user:
+            reacting_user_name = request.user.get_full_name() or request.user.username
+            Notification.objects.create(
+                user=reply.user,
+                request=request_obj,
+                reply=reply,
+                message=f"{reacting_user_name} reacted {emoji} to your reply.",
+            )
 
     return redirect(
         reverse("mouseapp:request_detail", args=[request_obj.id]) + "#reply-form"
@@ -913,6 +958,24 @@ def mark_notification_read(
     except Notification.DoesNotExist:
         pass
     return redirect("mouseapp:home")
+
+
+@login_required
+@require_http_methods(["GET"])
+def clear_request_notifications(
+    request: AuthedRequest, request_id: int
+) -> HttpResponse:
+    request_obj = get_object_or_404(Request, id=request_id)
+
+    if request_obj.has_read_access(request.user):
+        Notification.objects.filter(user=request.user, request=request_obj).delete()
+
+    reply_id = request.GET.get("reply")
+    if reply_id:
+        return redirect(
+            reverse("mouseapp:request_detail", args=[request_id]) + f"#reply-{reply_id}"
+        )
+    return redirect(reverse("mouseapp:request_detail", args=[request_id]))
 
 
 @login_required

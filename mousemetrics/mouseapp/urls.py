@@ -18,6 +18,11 @@ urlpatterns = [
     path("family_tree/<int:mouse>.svg", views.family_tree_svg, name="family_tree_svg"),
     path("requests/", views.requests_list, name="requests"),
     path(
+        "requests/<int:request_id>/clear-notifications/",
+        views.clear_request_notifications,
+        name="clear_request_notifications",
+    ),
+    path(
         "requests/<int:request_id>/",
         views.request_detail,
         name="request_detail",
