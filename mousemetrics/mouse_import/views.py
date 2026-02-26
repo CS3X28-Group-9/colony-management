@@ -142,6 +142,9 @@ def import_commit(request: HttpRequest, id: int) -> HttpResponse:
     import_obj.committed = True
     import_obj.row_count = len(df)
     import_obj.error_log = "\n".join(errors)[:5000] if errors else ""
+
+    import_obj.file.delete()
+
     import_obj.save(update_fields=["committed", "row_count", "error_log"])
 
     request.session.pop(df_key, None)
