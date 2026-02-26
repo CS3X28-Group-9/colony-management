@@ -3,7 +3,7 @@
 <svg width="{{ width }}" height="{{ height }}" viewBox="{{ viewbox }}" xmlns="http://www.w3.org/2000/svg" version="1.1">
     <style>
         .edge { stroke: black; stroke-width: 2px; }
-        .box  { fill: white; stroke: #e5e7eb; stroke-width: 1px; }
+        .box  { fill: white; stroke: #e5e7eb; stroke-width: 3px; }
         text  { font-family: sans-serif; }
         .txt-strain { font-size: 14px; fill: #2563eb; font-weight: bold; cursor: pointer; }
         .txt-info   { font-size: 14px; fill: black; }
