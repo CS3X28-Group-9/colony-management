@@ -6,13 +6,13 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <meta name="color-scheme" content="light" />
+    <meta name="color-scheme" content="light dark" />
     <meta name="description" content="Animal colony management system" />
     <title>{% block title %}Labsafe{% endblock %}</title>
     <link rel="stylesheet" href="{{ static ('dist/styles.css') }}" />
   </head>
 
-  <body class="flex flex-col justify-between h-screen bg-neutral-100">
+  <body class="flex flex-col justify-between h-screen bg-primary text-primary">
     {% include "components/navbar.html" %}
     <main class="mb-auto">{% block content %}{% endblock %}</main>
     {% include "components/footer.html" %}
