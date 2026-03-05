@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="{{ width }}" height="{{ height }}" viewBox="{{ viewbox }}" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg id="main-svg" width="100%" height="100%" viewBox="{{ viewbox }}" xmlns="http://www.w3.org/2000/svg" version="1.1" style="touch-action:none;">
     <style>
         .edge { stroke: black; stroke-width: 2px; }
         .box  { fill: white; stroke: #e5e7eb; stroke-width: 3px; }
@@ -9,50 +9,54 @@
         .txt-info   { font-size: 14px; fill: black; }
         .txt-link   { font-size: 10px; fill: #2563eb; text-anchor: end; cursor: pointer; }
         a:hover text { fill: #1d4ed8; text-decoration: underline; }
-        /* Style hooks for interaction */
         .node, .edge { transition: opacity 0.2s; }
         .dimmed { opacity: 0.1; }
         .highlight { opacity: 1 !important; }
     </style>
 
-    <g id="edges">
-    {% for edge in edges %}
-        <line x1="{{ edge.x1 }}" y1="{{ edge.y1 }}"
-              x2="{{ edge.x2 }}" y2="{{ edge.y2 }}"
-              class="edge"
-              data-child-id="node-{{ edge.child_id }}" /> {% endfor %}
-    </g>
-
-    <g id="nodes">
-    {% for node in nodes %}
-        <g class="node" id="node-{{ node.id }}"
-           data-father="node-{{ node.father_id }}"
-           data-mother="node-{{ node.mother_id }}"
-           transform="translate({{ node.x }}, {{ node.y }})">
-            <rect width="{{ box_w }}" height="{{ box_h }}" rx="6" class="box" />
-            <a href="{{ node.tree_url }}" target="_top">
-                <text x="8" y="20" class="txt-strain">{{ node.strain }}</text>
-            </a>
-            <text x="8" y="45" class="txt-info">{{ node.box_text }}</text>
-            <text x="8" y="65" class="txt-info">{{ node.earmark_text }}</text>
-            <a href="{{ node.detail_url }}" target="_top">
-                <text x="{{ box_w - 8 }}" y="{{ box_h - 10 }}" class="txt-link">
-                    (Details)
-                </text>
-            </a>
+    <g id="zoom-container">
+        <g id="edges">
+        {% for edge in edges %}
+            <line x1="{{ edge.x1 }}" y1="{{ edge.y1 }}"
+                  x2="{{ edge.x2 }}" y2="{{ edge.y2 }}"
+                  class="edge"
+                  data-child-id="node-{{ edge.child_id }}" />
+        {% endfor %}
         </g>
-    {% endfor %}
+
+        <g id="nodes">
+        {% for node in nodes %}
+            <g class="node" id="node-{{ node.id }}"
+               data-father="node-{{ node.father_id }}"
+               data-mother="node-{{ node.mother_id }}"
+               transform="translate({{ node.x }}, {{ node.y }})">
+                <rect width="{{ box_w }}" height="{{ box_h }}" rx="6" class="box" />
+                <a href="{{ node.tree_url }}" target="_top">
+                    <text x="8" y="20" class="txt-strain">{{ node.strain }}</text>
+                </a>
+                <text x="8" y="45" class="txt-info">{{ node.box_text }}</text>
+                <text x="8" y="65" class="txt-info">{{ node.earmark_text }}</text>
+                <a href="{{ node.detail_url }}" target="_top">
+                    <text x="{{ box_w - 8 }}" y="{{ box_h - 10 }}" class="txt-link">(Details)</text>
+                </a>
+            </g>
+        {% endfor %}
+        </g>
     </g>
 
     <script><![CDATA[
         document.addEventListener('DOMContentLoaded', () => {
-            const nodes = document.querySelectorAll('.node'), edges = document.querySelectorAll('.edge');
+            const svg = document.getElementById('main-svg');
+            const container = document.getElementById('zoom-container');
+
+            const nodes = document.querySelectorAll('.node');
+            const edges = document.querySelectorAll('.edge');
+
             function highlight(id) {
                 const n = document.getElementById(id);
                 if (!n || id.includes('None')) return;
                 n.classList.add('highlight');
-                // This links the lines to the child currently being highlighted
-                edges.forEach(e => { if(e.getAttribute('data-child-id') === id) e.classList.add('highlight'); });
+                edges.forEach(e => { if (e.getAttribute('data-child-id') === id) e.classList.add('highlight'); });
                 highlight(n.getAttribute('data-father'));
                 highlight(n.getAttribute('data-mother'));
             }
@@ -67,6 +71,81 @@
                     edges.forEach(x => x.classList.remove('dimmed', 'highlight'));
                 });
             });
+
+            let scale = 1;
+            let tx = 0;
+            let ty = 0;
+
+            function applyTransform() {
+                container.setAttribute('transform', `translate(${tx} ${ty}) scale(${scale})`);
+            }
+
+            let dragging = false;
+            let lastX = 0;
+            let lastY = 0;
+
+            svg.addEventListener('mousedown', (e) => {
+                dragging = true;
+                lastX = e.clientX;
+                lastY = e.clientY;
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (!dragging) return;
+                const dx = e.clientX - lastX;
+                const dy = e.clientY - lastY;
+                lastX = e.clientX;
+                lastY = e.clientY;
+                tx += dx;
+                ty += dy;
+                applyTransform();
+            });
+
+            window.addEventListener('mouseup', () => {
+                dragging = false;
+            });
+
+            svg.addEventListener('wheel', (e) => {
+                e.preventDefault();
+
+                const rect = svg.getBoundingClientRect();
+                const mx = e.clientX - rect.left;
+                const my = e.clientY - rect.top;
+
+                const zoomFactor = (e.deltaY < 0) ? 1.03 : 1 / 1.03;
+                const newScale = Math.min(3, Math.max(0.1, scale * zoomFactor));
+
+                const k = newScale / scale;
+                tx = mx - k * (mx - tx);
+                ty = my - k * (my - ty);
+
+                scale = newScale;
+                applyTransform();
+            }, { passive: false });
+
+            nodes.forEach(n => {
+                n.addEventListener('click', (e) => {
+                    if (e.target.closest('a')) return;
+
+                    const tr = n.getAttribute("transform");
+                    const m = /translate\(([-0-9.]+),\s*([-0-9.]+)\)/.exec(tr);
+                    if (!m) return;
+
+                    const nodeX = parseFloat(m[1]) + {{ box_w }}/2;
+                    const nodeY = parseFloat(m[2]) + {{ box_h }}/2;
+
+                    const rect = svg.getBoundingClientRect();
+                    const cx = rect.width / 2;
+                    const cy = rect.height / 2;
+
+                    tx = cx - nodeX * scale;
+                    ty = cy - nodeY * scale;
+
+                    applyTransform();
+                });
+            });
+
+            applyTransform();
         });
     ]]></script>
 </svg>
