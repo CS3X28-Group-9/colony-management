@@ -10,14 +10,15 @@
       Download SVG
     </a>
   </div>
+
   <div
-    class="overflow-auto border rounded-lg bg-white shadow-sm p-4 h-[80vh] text-center"
+    class="overflow-hidden border rounded-lg bg-white shadow-sm p-4 h-[80vh] text-center"
   >
     <object
       type="image/svg+xml"
       data="{{ url('mouseapp:family_tree_svg', mouse=center_mouse.id) }}"
-      style="max-width: none;"
-      class="mx-auto block"
+      class="w-full h-full block"
+      style="touch-action: none;"
     >
       Your browser does not support SVG.
     </object>
