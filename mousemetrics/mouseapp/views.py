@@ -819,7 +819,7 @@ def request_detail(request: AuthedRequest, request_id: int) -> HttpResponse:
                         if len(reply.message) > 20
                         else reply.message
                     )
-                    message = f"New reply posted by {reply_user_name}: {reply_preview}"
+                    message = f"New reply posted by {reply_user_name}:\n{reply_preview}"
 
                 Notification.objects.create(
                     user=user,
