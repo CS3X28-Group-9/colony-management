@@ -1,3 +1,4 @@
+from typing import cast
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.http import HttpRequest, HttpResponse
@@ -41,6 +42,9 @@ class AuthedRequest(HttpRequest):
 def home(request: HttpRequest) -> HttpResponse:
     context: dict[str, object] = {}
     if request.user.is_authenticated:
+        context["projects"] = Project.readable_for_user(
+            cast(AuthedRequest, request).user
+        )
         context["notifications"] = Notification.objects.filter(
             user=request.user
         ).order_by("-created_at")[:10]
