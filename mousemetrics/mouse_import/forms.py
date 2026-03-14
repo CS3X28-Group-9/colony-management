@@ -17,8 +17,7 @@ class MouseImportForm(forms.ModelForm):
 class MouseImportSheetRangeForm(forms.ModelForm):
     """Second-step form to capture sheet + cell_range."""
 
-    # drop down for sheet names
-    sheet_name = forms.ChoiceField(required=False)
+    sheet_name = forms.ChoiceField(required=False, choices=())
 
     class Meta:
         model = MouseImport
@@ -28,22 +27,21 @@ class MouseImportSheetRangeForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self._sheet_choices = sheet_choices or []
 
-        # Allow "(active)" via blank string.
         choices: list[tuple[str, str]] = [("", "(active)")] + [
             (s, s) for s in self._sheet_choices
         ]
 
-        # If the instance already has a sheet_name that isn't in the detected list
-        # (e.g. workbook read error), keep it selectable so form rendering/POSTs work.
         current = (getattr(self.instance, "sheet_name", "") or "").strip()
         if current and current not in self._sheet_choices:
             choices.append((current, current))
 
-        sheet_field = self.fields["sheet_name"]
-        # assign as list[tuple[str,str]] for stub-friendly typing
-        sheet_field.widget.choices = [(str(a), str(b)) for a, b in choices]
+        self.fields["sheet_name"] = forms.ChoiceField(
+            required=False,
+            choices=choices,
+            error_messages={"invalid_choice": "Select a valid sheet."},
+        )
 
-        # Basic styling hooks for templates that render {{ field }} directly.
+        sheet_field = self.fields["sheet_name"]
         sheet_field.widget.attrs.setdefault(
             "class",
             "block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all",
@@ -55,24 +53,7 @@ class MouseImportSheetRangeForm(forms.ModelForm):
         self.fields["cell_range"].widget.attrs.setdefault("placeholder", "e.g., A1:M40")
 
     def clean_sheet_name(self):
-        sheet = (self.cleaned_data.get("sheet_name") or "").strip()
-        sheet_field = self.fields["sheet_name"]
-        if not isinstance(sheet_field, forms.ChoiceField):
-            raise TypeError(
-                "MouseImportSheetRangeForm expects 'sheet_name' to be a ChoiceField"
-            )
-
-        widget = sheet_field.widget
-        if not hasattr(widget, "choices"):
-            raise TypeError(
-                "MouseImportSheetRangeForm expects 'sheet_name' widget to support 'choices'"
-            )
-
-        # widget.choices is an iterable of (value, label)
-        allowed = {str(c) for c, _ in widget.choices}  # coerce to str for safety
-        if sheet and sheet not in allowed:
-            raise forms.ValidationError("Select a valid sheet.")
-        return sheet
+        return (self.cleaned_data.get("sheet_name") or "").strip()
 
     def clean_cell_range(self):
         rng = (self.cleaned_data.get("cell_range") or "").strip()
@@ -91,7 +72,6 @@ class ColumnMappingForm(forms.Form):
         columns = list(columns or [])
         req, opt, field_choices = get_mouse_import_targets(project)
 
-        # choices
         col_choices: list[tuple[str, str]] = [(c, c) for c in columns]
         targets: list[tuple[bool, str, str]] = [(True, *r) for r in req] + [
             (False, *o) for o in opt
@@ -100,7 +80,6 @@ class ColumnMappingForm(forms.Form):
         for required, name, label in targets:
             choices_for_field = field_choices.get(name)
 
-            # build choices list as list[tuple[str, str]] for type-friendliness, coercing to str for safety
             base_choices: list[tuple[str, str]] = col_choices + (
                 [("", "-- none --")] if not required else []
             )
@@ -109,7 +88,7 @@ class ColumnMappingForm(forms.Form):
 
             self.fields[f"map_{name}"] = forms.ChoiceField(
                 label=label,
-                choices=[(str(a), str(b)) for a, b in base_choices],
+                choices=base_choices,
                 required=required,
             )
 
