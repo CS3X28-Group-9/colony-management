@@ -19,6 +19,18 @@ def import_obj(project, user, media_root, uploaded_xlsx):
     )
 
 
+@pytest.fixture
+def csv_import_obj(project, user, media_root, uploaded_csv):
+    return MouseImport.objects.create(
+        uploaded_by=user,
+        project=project,
+        file=uploaded_csv,
+        original_filename="sheet.csv",
+        sheet_name="",
+        cell_range="",
+    )
+
+
 def test_import_form_upload_redirects_to_range_step(
     authed_client, project, uploaded_xlsx, media_root
 ):
@@ -150,3 +162,35 @@ def test_import_range_preview_rejects_invalid_sheet(authed_client, import_obj):
 
     assert resp.status_code == 400
     assert resp.json() == {"error": "Select a valid sheet."}
+
+
+def test_import_select_range_hides_sheet_input_for_csv(authed_client, csv_import_obj):
+    resp = authed_client.get(
+        reverse("mouse_import:import_select_range", kwargs={"id": csv_import_obj.id})
+    )
+
+    assert resp.status_code == 200
+    content = resp.content.decode()
+    assert 'name="sheet_name"' not in content
+    assert "CSV file detected" in content
+
+
+def test_import_range_preview_blank_range_uses_default_preview(
+    authed_client, import_obj
+):
+    resp = authed_client.get(
+        reverse("mouse_import:import_range_preview", kwargs={"id": import_obj.id}),
+        {"sheet": "Sheet1"},
+    )
+
+    assert resp.status_code == 200
+    payload = resp.json()
+    assert payload["default_preview"] is True
+    assert payload["boundaries"] == {
+        "first_row": 1,
+        "last_row": 11,
+        "first_column": "A",
+        "last_column": "L",
+    }
+    assert len(payload["columns"]) == 12
+    assert len(payload["rows"]) == 10

@@ -54,3 +54,12 @@ def uploaded_xlsx(view_xlsx_path):
         view_xlsx_path.read_bytes(),
         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     )
+
+
+@pytest.fixture
+def uploaded_csv(sheet_csv_path):
+    return SimpleUploadedFile(
+        "sheet.csv",
+        sheet_csv_path.read_bytes(),
+        content_type="text/csv",
+    )

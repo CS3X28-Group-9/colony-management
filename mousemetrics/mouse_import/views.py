@@ -32,6 +32,23 @@ RANGE_PREVIEW_COL_LIMIT = getattr(settings, "RANGE_PREVIEW_COL_LIMIT", 12)
 RANGE_PREVIEW_CELL_CHAR_LIMIT = getattr(settings, "RANGE_PREVIEW_CELL_CHAR_LIMIT", 120)
 
 
+def _excel_col_name(index: int) -> str:
+    """Convert a 1-based column index to an Excel column name."""
+
+    name = ""
+    n = max(1, index)
+    while n > 0:
+        n, remainder = divmod(n - 1, 26)
+        name = chr(ord("A") + remainder) + name
+    return name
+
+
+def _default_preview_range() -> str:
+    last_col = _excel_col_name(RANGE_PREVIEW_COL_LIMIT)
+    last_row = RANGE_PREVIEW_ROW_LIMIT + 1  # header row + preview rows
+    return f"A1:{last_col}{last_row}"
+
+
 def _df_session_key(import_pk: int) -> str:
     return f"import_df_{import_pk}"
 
@@ -111,11 +128,16 @@ def import_range_preview(request: HttpRequest, id: int) -> JsonResponse:
     sheet = (request.GET.get("sheet") or "").strip() or None
     cell_range_raw = (request.GET.get("cell_range") or "").strip()
 
-    try:
-        cell_range = normalise_cell_range(cell_range_raw)
+    default_preview = not cell_range_raw
+    if default_preview:
+        cell_range = _default_preview_range()
         boundaries = cell_range_boundaries(cell_range)
-    except ValueError as exc:
-        return JsonResponse({"error": str(exc)}, status=400)
+    else:
+        try:
+            cell_range = normalise_cell_range(cell_range_raw)
+            boundaries = cell_range_boundaries(cell_range)
+        except ValueError as exc:
+            return JsonResponse({"error": str(exc)}, status=400)
 
     # Validate sheet name against workbook sheet names when applicable.
     try:
@@ -177,6 +199,7 @@ def import_range_preview(request: HttpRequest, id: int) -> JsonResponse:
                 "columns": truncated_columns,
                 "rows": truncated_rows,
             },
+            "default_preview": default_preview,
         }
     )
 

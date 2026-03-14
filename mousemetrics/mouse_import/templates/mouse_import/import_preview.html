@@ -64,23 +64,29 @@
         >
           {{ csrf_input }}
 
-          <div class="mb-4">
-            <label
-              for="{{ range_form.sheet_name.id_for_label }}"
-              class="block text-sm font-medium text-gray-700"
-            >
-              Sheet
-              <span class="text-gray-500 font-normal"
-                >— leave as “(active)” to use the active worksheet</span
+          {% if sheet_names %}
+            <div class="mb-4">
+              <label
+                for="{{ range_form.sheet_name.id_for_label }}"
+                class="block text-sm font-medium text-gray-700"
               >
-            </label>
-            {{ range_form.sheet_name }}
-            {% if range_form.sheet_name.errors %}
-              <div class="error-message-compact">
-                {% for error in range_form.sheet_name.errors %}{{ error }}{% endfor %}
-              </div>
-            {% endif %}
-          </div>
+                Sheet
+                <span class="text-gray-500 font-normal"
+                  >— leave as “(active)” to use the active worksheet</span
+                >
+              </label>
+              {{ range_form.sheet_name }}
+              {% if range_form.sheet_name.errors %}
+                <div class="error-message-compact">
+                  {% for error in range_form.sheet_name.errors %}{{ error }}{% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          {% else %}
+            <p class="text-sm text-gray-500 mb-4">
+              CSV file detected — no sheet selection required.
+            </p>
+          {% endif %}
 
           <div class="mb-2">
             <label
@@ -166,6 +172,7 @@
             const lastColEl = document.getElementById("range-last-col");
 
             let timer = null;
+            const rangePattern = /^[A-Za-z]+\d+:[A-Za-z]+\d+$/;
 
             function setError(msg) {
               if (!msg) {
@@ -192,16 +199,17 @@
             async function refreshPreview() {
               const cellRange = (rangeEl.value || "").trim();
               const sheet = sheetEl ? (sheetEl.value || "").trim() : "";
+              const compactRange = cellRange.replace(/\s+/g, "");
 
-              if (!cellRange) {
-                setError("");
+              if (compactRange && !rangePattern.test(compactRange)) {
+                setError('Enter a range like "A1:M40"');
                 clearPreview();
                 return;
               }
 
               const params = new URLSearchParams();
               if (sheet) params.set("sheet", sheet);
-              params.set("cell_range", cellRange);
+              if (compactRange) params.set("cell_range", compactRange);
 
               try {
                 const resp = await fetch(previewUrl + "?" + params.toString(), {
@@ -230,7 +238,9 @@
                   bits.push("columns truncated");
                 noteEl.textContent = bits.length
                   ? "Preview is truncated (" + bits.join(", ") + ")."
-                  : "";
+                  : data.default_preview
+                    ? "Showing an initial preview from the start of the file."
+                    : "";
 
                 // Build table
                 headEl.innerHTML = "";
@@ -273,8 +283,8 @@
                 debounce(refreshPreview, 150),
               );
 
-            // Initial preview if values already exist (e.g. back/forward navigation)
-            if ((rangeEl.value || "").trim()) refreshPreview();
+            // Always show an initial preview, even before the user enters a range.
+            refreshPreview();
           })();
         </script>
       </div>
