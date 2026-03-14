@@ -142,6 +142,9 @@ def test_import_range_preview_returns_boundaries_and_truncated_preview(
     assert payload["truncated"]["columns"] is True
     assert payload["truncated"]["rows"] is True
     assert payload["rows"][0][0].endswith("…")
+    assert payload["rows"][4][0] == "row-4-col-1"
+    assert payload["rows"][5][0] == "row-14-col-1"
+    assert payload["rows"][-1][0] == "row-18-col-1"
 
 
 def test_import_range_preview_rejects_invalid_range(authed_client, import_obj):

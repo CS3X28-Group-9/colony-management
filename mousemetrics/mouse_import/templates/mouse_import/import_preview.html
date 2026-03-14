@@ -233,7 +233,7 @@
                 // Note about truncation
                 const bits = [];
                 if (data.truncated && data.truncated.rows)
-                  bits.push("rows truncated");
+                  bits.push("showing start and end rows");
                 if (data.truncated && data.truncated.columns)
                   bits.push("columns truncated");
                 noteEl.textContent = bits.length

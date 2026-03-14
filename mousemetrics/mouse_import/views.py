@@ -155,7 +155,6 @@ def import_range_preview(request: HttpRequest, id: int) -> JsonResponse:
             sheet,
             cell_range,
             original_filename=import_obj.original_filename,
-            limit=RANGE_PREVIEW_ROW_LIMIT,
         )
     except Exception as exc:
         return JsonResponse({"error": str(exc)}, status=400)
@@ -163,6 +162,15 @@ def import_range_preview(request: HttpRequest, id: int) -> JsonResponse:
     if df.empty:
         return JsonResponse(
             {"error": "Selected range does not contain any data."}, status=400
+        )
+
+    truncated_rows = len(df) > RANGE_PREVIEW_ROW_LIMIT
+    if truncated_rows:
+        head_count = (RANGE_PREVIEW_ROW_LIMIT + 1) // 2
+        tail_count = RANGE_PREVIEW_ROW_LIMIT - head_count
+        df = pd.concat(
+            [df.head(head_count), df.tail(tail_count)],
+            ignore_index=True,
         )
 
     # Limit columns for safety/UX
@@ -183,12 +191,6 @@ def import_range_preview(request: HttpRequest, id: int) -> JsonResponse:
     rows = [
         [_truncate(v) for v in row] for row in df.itertuples(index=False, name=None)
     ]
-
-    # Range includes header row; data rows are everything after that.
-    data_rows_in_range = max(
-        0, int(boundaries["last_row"]) - int(boundaries["first_row"])
-    )
-    truncated_rows = data_rows_in_range > RANGE_PREVIEW_ROW_LIMIT
 
     return JsonResponse(
         {
