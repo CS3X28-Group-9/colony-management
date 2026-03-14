@@ -66,24 +66,38 @@
                     >
                       <div class="flex justify-between items-start gap-2">
                         <div class="flex-1 space-y-2">
+                          {% set message_parts = notification.message.split('\n', 1) %}
                           <p
                             class="text-sm text-neutral-800 {% if not notification.read %}font-medium{% endif %}"
                           >
                             {%
                               if notification.request and "[link]" in
-                              notification.message
+                              message_parts[0]
                             %}
-                              {{ notification.message[:-7] }}
+                              {{ message_parts[0][:-7] }}
                             {% else %}
-                              {{ notification.message }}
+                              {{ message_parts[0] }}
                             {% endif %}
                           </p>
+                          {% if message_parts|length > 1 %}
+                            <p class="text-sm text-neutral-600">
+                              {{ message_parts[1] }}
+                            </p>
+                          {% endif %}
                           {% if notification.request %}
-                            <a
-                              href="{{ url('mouseapp:requests') }}#request-{{ notification.request.id }}"
-                              class="text-sm"
-                              >View request</a
-                            >
+                            {% if notification.reply %}
+                              <a
+                                href="{{ url('mouseapp:request_detail', notification.request.id) }}#reply-{{ notification.reply.id }}"
+                                class="text-sm"
+                                >View reply</a
+                              >
+                            {% else %}
+                              <a
+                                href="{{ url('mouseapp:request_detail', notification.request.id) }}"
+                                class="text-sm"
+                                >View request</a
+                              >
+                            {% endif %}
                           {% endif %}
                           <p class="text-xs text-neutral-500">
                             {{ notification.created_at.strftime("%b %d, %Y %I:%M %p") }}

@@ -116,6 +116,10 @@ html {
   li:target {
     @apply border-blue-500 border-2 bg-blue-50 ring-2 ring-blue-300;
   }
+
+  div[id^="reply-"]:target {
+    @apply border-blue-500 border-2 bg-blue-50 ring-2 ring-blue-300;
+  }
 }
 
 /* Notification dropdown checkbox trick - outside @layer for proper compilation */
