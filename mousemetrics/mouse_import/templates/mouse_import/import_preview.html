@@ -201,12 +201,6 @@
               const sheet = sheetEl ? (sheetEl.value || "").trim() : "";
               const compactRange = cellRange.replace(/\s+/g, "");
 
-              if (compactRange && !rangePattern.test(compactRange)) {
-                setError('Enter a range like "A1:M40"');
-                clearPreview();
-                return;
-              }
-
               const params = new URLSearchParams();
               if (sheet) params.set("sheet", sheet);
               if (compactRange) params.set("cell_range", compactRange);
@@ -275,13 +269,30 @@
               }
             }
 
-            rangeEl.addEventListener("input", () =>
-              debounce(refreshPreview, 300),
-            );
-            if (sheetEl)
-              sheetEl.addEventListener("change", () =>
-                debounce(refreshPreview, 150),
-              );
+            function handleRangeInput() {
+              const cellRange = (rangeEl.value || "").trim();
+              const compactRange = cellRange.replace(/\s+/g, "");
+
+              if (timer) window.clearTimeout(timer);
+
+              if (compactRange && !rangePattern.test(compactRange)) {
+                setError('Enter a range like "A1:M40"');
+                clearPreview();
+                return;
+              }
+
+              setError("");
+              debounce(refreshPreview, 300);
+            }
+
+            rangeEl.addEventListener("input", handleRangeInput);
+
+            if (sheetEl) {
+              sheetEl.addEventListener("change", () => {
+                setError("");
+                debounce(refreshPreview, 150);
+              });
+            }
 
             // Always show an initial preview, even before the user enters a range.
             refreshPreview();
