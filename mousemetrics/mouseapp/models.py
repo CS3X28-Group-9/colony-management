@@ -369,6 +369,13 @@ class Notification(models.Model):
         null=True,
         blank=True,
     )
+    reply = models.ForeignKey(
+        "RequestReply",
+        on_delete=models.CASCADE,
+        related_name="notifications",
+        null=True,
+        blank=True,
+    )
     message = models.TextField()
     read = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)

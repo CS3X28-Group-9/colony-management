@@ -19,6 +19,7 @@
         </div>
       {% endif %}
     </div>
+
     <div
       class="flex flex-wrap gap-3 mb-6 p-4 bg-white border border-gray-200 rounded-lg w-fit"
     >
@@ -30,10 +31,8 @@
       <span
         class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded-md text-sm"
       >
-        <strong>Sheet:</strong> {{
-          import_obj.sheet_name | default('(active)',
-          true)
-        }}
+        <strong>Sheet:</strong>
+        {{ import_obj.sheet_name | default('(active)', true) }}
       </span>
       <span
         class="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-50 text-purple-700 rounded-md text-sm"
@@ -224,7 +223,6 @@
                 firstColEl.textContent = data.boundaries.first_column;
                 lastColEl.textContent = data.boundaries.last_column;
 
-                // Note about truncation
                 const bits = [];
                 if (data.truncated && data.truncated.rows)
                   bits.push("showing start and end rows");
@@ -236,7 +234,6 @@
                     ? "Showing an initial preview from the start of the file."
                     : "";
 
-                // Build table
                 headEl.innerHTML = "";
                 bodyEl.innerHTML = "";
 
@@ -335,6 +332,7 @@
                 {% endfor %}{% endif %}
               </div>
             {% endfor %}
+
             <script>
               document
                 .querySelectorAll("[data-choices-for]")
@@ -360,6 +358,7 @@
                       valueParent.classList.add("hidden");
                     }
                   }
+
                   function updateChoices() {
                     if (mapEl.value == "-- fixed --") {
                       parent.classList.remove("hidden");
@@ -375,6 +374,7 @@
                   choiceEl.addEventListener("change", updateNew);
                 });
             </script>
+
             <div class="flex items-center gap-2 mt-2">
               <button
                 type="submit"
@@ -388,6 +388,7 @@
               {% endfor %}{% endif %}
             </div>
           </form>
+
           {% if saved_mapping %}
             <form
               method="post"
@@ -400,6 +401,7 @@
                 <p class="error-message">{{ error }}</p>
               {% endfor %}{% endif %}
             </form>
+
             <div class="saved-mapping-section flex-1">
               <h3 class="text-xl font-medium text-gray-900">Saved mapping</h3>
               <table>
