@@ -1,11 +1,9 @@
-import pytest
-from datetime import date
 from pathlib import Path
 
 
 from mouse_import.services.io import read_range
 from mouse_import.services.importer import Importer, ImportOptions
-from mouseapp.models import Project, Mouse, Strain
+from mouseapp.models import Mouse, Strain
 
 
 def run_import_xlsx(
@@ -73,13 +71,6 @@ MAPPING: dict[str, str] = {
 
 def strain(n):
     return Strain.objects.get_or_create(name=n)[0]
-
-
-@pytest.fixture
-def project(db):
-    project = Project(name="Test Project", start_date=date(2000, 1, 1))
-    project.save()
-    return project
 
 
 def test_basic_import(project):

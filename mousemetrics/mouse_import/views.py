@@ -1,23 +1,52 @@
-from typing import Any, Dict
+from typing import Any, Dict, Callable, TypeVar
 
 import pandas as pd
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse, HttpResponseBase
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_GET
 
-from .forms import ColumnMappingForm, MouseImportForm
+from .forms import ColumnMappingForm, MouseImportForm, MouseImportSheetRangeForm
 from .models import MouseImport
 from .services.importer import ImportOptions, Importer
-from .services.io import read_range
+from .services.io import list_sheet_names, read_range
+from .services.validators import cell_range_boundaries, normalise_cell_range
 
 from .services.mapping_ai import suggest_mapping_for_dataframe, record_mapping_examples
 from .services.mapping_train import maybe_train_mapping_model
 from django.conf import settings
 
+# Type-checker-friendly aliases for decorators
+F = TypeVar("F", bound=Callable[..., HttpResponseBase])
+login_required_decorator: Callable[[F], F] = login_required  # type: ignore[assignment]
+require_get_decorator: Callable[[F], F] = require_GET  # type: ignore[assignment]
+
 PREVIEW_ROW_LIMIT = settings.PREVIEW_ROW_LIMIT
 TRAIN_ON_SAVE = settings.TRAIN_ON_SAVE
 TRAIN_MIN_NEW = settings.TRAIN_MIN_NEW
+
+# Second-step live preview limits (kept intentionally small)
+RANGE_PREVIEW_ROW_LIMIT = getattr(settings, "RANGE_PREVIEW_ROW_LIMIT", 10)
+RANGE_PREVIEW_COL_LIMIT = getattr(settings, "RANGE_PREVIEW_COL_LIMIT", 12)
+RANGE_PREVIEW_CELL_CHAR_LIMIT = getattr(settings, "RANGE_PREVIEW_CELL_CHAR_LIMIT", 120)
+
+
+def _excel_col_name(index: int) -> str:
+    """Convert a 1-based column index to an Excel column name."""
+
+    name = ""
+    n = max(1, index)
+    while n > 0:
+        n, remainder = divmod(n - 1, 26)
+        name = chr(ord("A") + remainder) + name
+    return name
+
+
+def _default_preview_range() -> str:
+    last_col = _excel_col_name(RANGE_PREVIEW_COL_LIMIT)
+    last_row = RANGE_PREVIEW_ROW_LIMIT + 1  # header row + preview rows
+    return f"A1:{last_col}{last_row}"
 
 
 def _df_session_key(import_pk: int) -> str:
@@ -28,7 +57,7 @@ def _map_session_key(import_pk: int) -> str:
     return f"import_map_{import_pk}"
 
 
-@login_required
+@login_required_decorator
 def import_form(request: HttpRequest) -> HttpResponse:
     form = MouseImportForm(request.POST or None, request.FILES or None)
 
@@ -40,18 +69,150 @@ def import_form(request: HttpRequest) -> HttpResponse:
         if uploaded_file is not None:
             import_obj.original_filename = uploaded_file.name
 
+        # Sheet/range are chosen in step 2.
+        import_obj.sheet_name = ""
+        import_obj.cell_range = ""
+
         import_obj.save()
-        messages.success(request, "Upload saved. Redirecting to preview…")
-        return redirect("mouse_import:import_preview", id=import_obj.id)
+        messages.success(request, "Upload saved. Choose sheet and range…")
+        return redirect("mouse_import:import_select_range", id=import_obj.id)
 
     return render(
         request, "mouse_import/import_form.html", {"form": form, "user": request.user}
     )
 
 
-@login_required
+@login_required_decorator
+def import_select_range(request: HttpRequest, id: int) -> HttpResponse:
+    """Step 2: capture sheet_name + cell_range, with live preview."""
+
+    import_obj = get_object_or_404(MouseImport, id=id)
+
+    try:
+        sheets = list_sheet_names(
+            import_obj.file.path, original_filename=import_obj.original_filename
+        )
+    except Exception as exc:  # pragma: no cover - user-facing
+        sheets = []
+        messages.error(request, f"Could not read workbook sheets: {exc}")
+
+    form = MouseImportSheetRangeForm(
+        request.POST or None, instance=import_obj, sheet_choices=sheets
+    )
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+
+        # Range/sheet changes invalidate any cached preview + mapping selections.
+        request.session.pop(_df_session_key(import_obj.id), None)
+        request.session.pop(_map_session_key(import_obj.id), None)
+
+        messages.success(request, "Range saved. Continue to mapping…")
+        return redirect("mouse_import:import_preview", id=import_obj.id)
+
+    context: Dict[str, Any] = {
+        "import_obj": import_obj,
+        "range_form": form,
+        "sheet_names": sheets,
+    }
+    return render(request, "mouse_import/import_preview.html", context)
+
+
+@login_required_decorator
+@require_get_decorator
+def import_range_preview(request: HttpRequest, id: int) -> JsonResponse:
+    """AJAX endpoint used by the sheet/range step to preview a valid range."""
+
+    import_obj = get_object_or_404(MouseImport, id=id)
+
+    sheet = (request.GET.get("sheet") or "").strip() or None
+    cell_range_raw = (request.GET.get("cell_range") or "").strip()
+
+    default_preview = not cell_range_raw
+    if default_preview:
+        cell_range = _default_preview_range()
+        boundaries = cell_range_boundaries(cell_range)
+    else:
+        try:
+            cell_range = normalise_cell_range(cell_range_raw)
+            boundaries = cell_range_boundaries(cell_range)
+        except ValueError as exc:
+            return JsonResponse({"error": str(exc)}, status=400)
+
+    # Validate sheet name against workbook sheet names when applicable.
+    try:
+        sheets = list_sheet_names(
+            import_obj.file.path, original_filename=import_obj.original_filename
+        )
+    except Exception:
+        sheets = []
+    if sheet and sheets and sheet not in sheets:
+        return JsonResponse({"error": "Select a valid sheet."}, status=400)
+
+    try:
+        df = read_range(
+            import_obj.file.path,
+            sheet,
+            cell_range,
+            original_filename=import_obj.original_filename,
+        )
+    except Exception as exc:
+        return JsonResponse({"error": str(exc)}, status=400)
+
+    if df.empty:
+        return JsonResponse(
+            {"error": "Selected range does not contain any data."}, status=400
+        )
+
+    truncated_rows = len(df) > RANGE_PREVIEW_ROW_LIMIT
+    if truncated_rows:
+        head_count = (RANGE_PREVIEW_ROW_LIMIT + 1) // 2
+        tail_count = RANGE_PREVIEW_ROW_LIMIT - head_count
+        df = pd.concat(
+            [df.head(head_count), df.tail(tail_count)],
+            ignore_index=True,
+        )
+
+    # Limit columns for safety/UX
+    truncated_columns = False
+    if len(df.columns) > RANGE_PREVIEW_COL_LIMIT:
+        df = df.iloc[:, :RANGE_PREVIEW_COL_LIMIT]
+        truncated_columns = True
+
+    def _truncate(v: Any) -> str:
+        if v is None:
+            return ""
+        s = str(v)
+        if len(s) <= RANGE_PREVIEW_CELL_CHAR_LIMIT:
+            return s
+        return s[: max(0, RANGE_PREVIEW_CELL_CHAR_LIMIT - 1)] + "…"
+
+    columns = [str(c) for c in df.columns]
+    rows = [
+        [_truncate(v) for v in row] for row in df.itertuples(index=False, name=None)
+    ]
+
+    return JsonResponse(
+        {
+            "boundaries": boundaries,
+            "columns": columns,
+            "rows": rows,
+            "truncated": {
+                "columns": truncated_columns,
+                "rows": truncated_rows,
+            },
+            "default_preview": default_preview,
+        }
+    )
+
+
+@login_required_decorator
 def import_preview(request: HttpRequest, id: int) -> HttpResponse:
     import_obj = get_object_or_404(MouseImport, id=id)
+
+    # Enforce step ordering: must pick a range first.
+    if not (import_obj.cell_range or "").strip():
+        return redirect("mouse_import:import_select_range", id=import_obj.id)
 
     df_key = _df_session_key(import_obj.id)
     map_key = _map_session_key(import_obj.id)
@@ -73,7 +234,7 @@ def import_preview(request: HttpRequest, id: int) -> HttpResponse:
             messages.error(
                 request, f"Error reading file range: {exc}", extra_tags="range_error"
             )
-            return redirect("mouse_import:import_form")
+            return redirect("mouse_import:import_select_range", id=import_obj.id)
 
     if df.empty:
         messages.error(
@@ -81,7 +242,7 @@ def import_preview(request: HttpRequest, id: int) -> HttpResponse:
             "Selected range does not contain any data.",
             extra_tags="range_error",
         )
-        return redirect("mouse_import:import_form")
+        return redirect("mouse_import:import_select_range", id=import_obj.id)
 
     columns = list(df.columns)
     import_obj.row_count = len(df)  # TODO
@@ -145,9 +306,12 @@ def import_preview(request: HttpRequest, id: int) -> HttpResponse:
     return render(request, "mouse_import/import_preview.html", context)
 
 
-@login_required
+@login_required_decorator
 def import_commit(request: HttpRequest, id: int) -> HttpResponse:
     import_obj = get_object_or_404(MouseImport, id=id)
+
+    if not (import_obj.cell_range or "").strip():
+        return redirect("mouse_import:import_select_range", id=import_obj.id)
     df_key = _df_session_key(import_obj.id)
     map_key = _map_session_key(import_obj.id)
 

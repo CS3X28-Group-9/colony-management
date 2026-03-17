@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import csv
 import logging
-import re
 from contextlib import closing
 from os import PathLike
 from pathlib import Path
@@ -13,9 +12,10 @@ from openpyxl import load_workbook
 from openpyxl.worksheet.worksheet import Worksheet
 from datetime import date, datetime
 
+from .validators import excel_col_to_index, parse_cell_range
+
 logger = logging.getLogger(__name__)
 
-_RANGE_RE = re.compile(r"^([A-Z]+)(\d+):([A-Z]+)(\d+)$", re.I)
 FORWARD_FILL_SKIP_COLUMNS = ["cull_date", "cull_reason"]
 
 
@@ -41,16 +41,12 @@ def read_range(
       - Excel workbooks via openpyxl
       - CSV files (delimiter auto-detected), with the SAME range semantics
     """
-    match = _RANGE_RE.match(range_expr.replace(" ", ""))
-    if not match:
-        raise ValueError(f"Invalid range format: {range_expr}")
-
-    c1, r1, c2, r2 = match.groups()
+    c1, r1, c2, r2 = parse_cell_range(range_expr)
 
     if limit:
         try:
             # Shorten the range to `limit` if necessary; don't crash if parsing fails
-            r2 = str(min(int(r1) + limit, int(r2)))
+            r2 = min(r1 + limit, r2)
         except ValueError:
             pass
 
@@ -70,13 +66,32 @@ def _infer_extension(file_path: PathLike, original_filename: str | None) -> str:
     return Path(str(file_path)).suffix.lower()
 
 
+def list_sheet_names(
+    file_path: PathLike, *, original_filename: str | None = None
+) -> list[str]:
+    """
+    Return workbook sheet names for Excel-like files.
+
+    For CSV files, returns an empty list.
+    """
+
+    ext = _infer_extension(file_path, original_filename)
+    if ext == ".csv":
+        return []
+
+    with closing(
+        load_workbook(filename=file_path, data_only=True, read_only=True)
+    ) as workbook:
+        return list(workbook.sheetnames)
+
+
 def _read_excel_range(
     file_path: PathLike,
     sheet_name: str | None,
     c1: str,
-    r1: str,
+    r1: int,
     c2: str,
-    r2: str,
+    r2: int,
 ) -> pd.DataFrame:
     with closing(
         load_workbook(filename=file_path, data_only=True, read_only=True)
@@ -98,12 +113,12 @@ def _read_excel_range(
 def _read_csv_range(
     file_path: PathLike,
     c1: str,
-    r1: str,
+    r1: int,
     c2: str,
-    r2: str,
+    r2: int,
 ) -> pd.DataFrame:
-    c1i = _col_to_index(c1)
-    c2i = _col_to_index(c2)
+    c1i = excel_col_to_index(c1)
+    c2i = excel_col_to_index(c2)
 
     # Rows are 1-indexed, inclusive.
     start_row = int(r1)
@@ -149,17 +164,6 @@ def _read_csv_range(
     df = df_raw.iloc[1:].copy()
     df.columns = pd.Index(header)
     return df
-
-
-def _col_to_index(col: str) -> int:
-    # Convert Excel-style column (A, B, ..., Z, AA, AB, ...) to 0-based index.
-    col = col.upper()
-    n = 0
-    for ch in col:
-        if not ("A" <= ch <= "Z"):
-            raise ValueError(f"Invalid range format: {col}")
-        n = n * 26 + (ord(ch) - ord("A") + 1)
-    return n - 1
 
 
 def _detect_encoding(file_path: PathLike) -> str:
