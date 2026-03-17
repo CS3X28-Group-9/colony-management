@@ -23,6 +23,7 @@ from .forms import (
     InviteMemberForm,
     MouseForm,
     ProjectForm,
+    CreateProjectForm,
     RemoveMemberForm,
     BreedingRequestForm,
     CullingRequestForm,
@@ -154,6 +155,23 @@ def project(request: AuthedRequest, id: int) -> HttpResponse:
 
     context = {"project": project, "write_access": write_access}
     return render(request, "mouseapp/project.html", context)
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def create_project(request: AuthedRequest) -> HttpResponse:
+    if not request.user.has_perm("mouseapp.create_project"):
+        raise PermissionDenied()
+
+    if request.method == "POST":
+        form = CreateProjectForm(request.POST)
+        if form.is_valid():
+            project = form.save()
+            return redirect(project)
+    else:
+        form = CreateProjectForm()
+
+    return render(request, "mouseapp/create_project.html", {"form": form})
 
 
 @login_required

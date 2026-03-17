@@ -15,6 +15,7 @@ urlpatterns = [
     ),
     path("mouse/<int:id>/", views.mouse, name="mouse"),
     path("mouse/<int:id>/edit/", views.edit_mouse, name="edit_mouse"),
+    path("project/create/", views.create_project, name="create_project"),
     path("project/<int:id>/", views.project, name="project"),
     path("project/<int:id>/edit/", views.edit_project, name="edit_project"),
     path("project/<int:id>/invite-member/", views.invite_member, name="invite_member"),
