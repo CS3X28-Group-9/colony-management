@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.base_user import BaseUserManager
 from django.db.models import Q
 
-from .models import Mouse, Request, Project, RequestReply
+from .models import Mouse, Request, Project, RequestReply, StudyPlan
 
 
 class CustomAuthenticationForm(AuthenticationForm):
@@ -96,6 +96,23 @@ class RegistrationForm(UserCreationForm):
 
 
 class MouseForm(forms.ModelForm):
+    def __init__(
+        self,
+        *args: Any,
+        mouse_instance: Mouse | None = None,
+        **kwargs: Any,
+    ) -> None:
+        super().__init__(*args, **kwargs)
+
+        current_mouse = mouse_instance or self.instance
+        field = self.fields.get("study_plan")
+
+        if isinstance(field, forms.ModelChoiceField):
+            if current_mouse and current_mouse.pk:
+                field.queryset = StudyPlan.objects.filter(project=current_mouse.project)
+            else:
+                field.queryset = StudyPlan.objects.none()
+
     class Meta:
         model = Mouse
         fields = [
@@ -109,7 +126,7 @@ class MouseForm(forms.ModelForm):
             "cull_reason",
             "box",
             "strain",
-            "coat_colour",
+            "study_plan",
             "earmark",
             "notes",
         ]
@@ -125,6 +142,53 @@ class ProjectForm(forms.ModelForm):
         fields = [
             "name",
         ]
+
+
+class StudyPlanForm(forms.ModelForm):
+    class Meta:
+        model = StudyPlan
+        fields = [
+            "project",
+            "status",
+            "study_id",
+            "approval_date",
+            "description",
+            "start_date",
+            "end_date",
+            "mouse_quota_male",
+            "mouse_quota_female",
+            "mouse_source",
+        ]
+        widgets = {
+            "approval_date": forms.DateInput(attrs={"type": "date", "class": "input"}),
+            "start_date": forms.DateInput(attrs={"type": "date", "class": "input"}),
+            "end_date": forms.DateInput(attrs={"type": "date", "class": "input"}),
+            "description": forms.Textarea(attrs={"class": "input", "rows": 4}),
+        }
+
+    def __init__(self, *args: Any, user: User | None = None, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+        for field_name, field in self.fields.items():
+            if field_name not in [
+                "approval_date",
+                "start_date",
+                "end_date",
+                "description",
+            ]:
+                existing_class = field.widget.attrs.get("class", "")
+                field.widget.attrs["class"] = f"{existing_class} input".strip()
+
+        if user:
+            accessible_projects = Project.objects.filter(
+                Q(lead=user) | Q(researchers=user)
+            ).distinct()
+            if user.is_superuser:
+                accessible_projects = Project.objects.all()
+
+            project_field = self.fields["project"]
+            if isinstance(project_field, forms.ModelChoiceField):
+                project_field.queryset = accessible_projects
 
 
 class InviteMemberForm(forms.Form):

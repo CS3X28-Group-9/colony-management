@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}
+  {{ title }}
+{% endblock %}
+{% block content %}
+  <div class="max-w-3xl mx-auto px-4 py-8">
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <div class="bg-neutral-200 px-6 py-4">
+        <h3 class="default-header">{{ title }}</h3>
+      </div>
+
+      <div class="p-6">
+        <form method="post">
+          {{ csrf_input }}
+          {{ form.as_p() }}
+
+          <div class="mt-6 pt-6 border-t border-gray-200">
+            <button
+              type="submit"
+              class="inline-flex items-center px-4 py-2 btn-primary"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
