@@ -144,12 +144,12 @@ def edit_mouse(request: AuthedRequest, id: int) -> HttpResponse:
         raise PermissionDenied()
 
     if request.method == "POST":
-        form = MouseForm(request.POST, instance=mouse, mouse_instance=mouse)
+        form = MouseForm(request.POST, instance=mouse)
         if form.is_valid():
             form.save()
             return redirect(mouse)
     else:
-        form = MouseForm(instance=mouse, mouse_instance=mouse)
+        form = MouseForm(instance=mouse)
 
     return render(request, "mouseapp/edit_mouse.html", {"form": form})
 

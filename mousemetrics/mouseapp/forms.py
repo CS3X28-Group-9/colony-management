@@ -96,15 +96,10 @@ class RegistrationForm(UserCreationForm):
 
 
 class MouseForm(forms.ModelForm):
-    def __init__(
-        self,
-        *args: Any,
-        mouse_instance: Mouse | None = None,
-        **kwargs: Any,
-    ) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
 
-        current_mouse = mouse_instance or self.instance
+        current_mouse = self.instance
         field = self.fields.get("study_plan")
 
         if isinstance(field, forms.ModelChoiceField):
