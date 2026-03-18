@@ -111,7 +111,6 @@ class MouseForm(forms.ModelForm):
     class Meta:
         model = Mouse
         fields = [
-            "coat_colour",
             "sex",
             "mother",
             "father",
@@ -121,6 +120,7 @@ class MouseForm(forms.ModelForm):
             "cull_reason",
             "box",
             "strain",
+            "coat_colour",
             "study_plan",
             "earmark",
             "notes",
