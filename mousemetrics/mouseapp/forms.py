@@ -144,9 +144,6 @@ class StudyPlanForm(forms.ModelForm):
         model = StudyPlan
         fields = [
             "project",
-            "status",
-            "study_id",
-            "approval_date",
             "description",
             "start_date",
             "end_date",
@@ -155,7 +152,6 @@ class StudyPlanForm(forms.ModelForm):
             "mouse_source",
         ]
         widgets = {
-            "approval_date": forms.DateInput(attrs={"type": "date", "class": "input"}),
             "start_date": forms.DateInput(attrs={"type": "date", "class": "input"}),
             "end_date": forms.DateInput(attrs={"type": "date", "class": "input"}),
             "description": forms.Textarea(attrs={"class": "input", "rows": 4}),
@@ -165,12 +161,7 @@ class StudyPlanForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         for field_name, field in self.fields.items():
-            if field_name not in [
-                "approval_date",
-                "start_date",
-                "end_date",
-                "description",
-            ]:
+            if field_name not in ["start_date", "end_date", "description"]:
                 existing_class = field.widget.attrs.get("class", "")
                 field.widget.attrs["class"] = f"{existing_class} input".strip()
 

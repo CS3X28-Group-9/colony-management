@@ -218,6 +218,7 @@ def create_study_plan(request: AuthedRequest) -> HttpResponse:
         if form.is_valid():
             study_plan = form.save(commit=False)
             study_plan.creator = request.user
+            study_plan.status = "D"
             study_plan.save()
             return redirect("mouseapp:study_plan", id=study_plan.id)
     else:
