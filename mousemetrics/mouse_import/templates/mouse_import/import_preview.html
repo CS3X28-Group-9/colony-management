@@ -19,6 +19,7 @@
         </div>
       {% endif %}
     </div>
+
     <div
       class="flex flex-wrap gap-3 mb-6 p-4 bg-white border border-gray-200 rounded-lg w-fit"
     >
@@ -30,16 +31,18 @@
       <span
         class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded-md text-sm"
       >
-        <strong>Sheet:</strong> {{
-          import_obj.sheet_name | default('(active)',
-          true)
-        }}
+        <strong>Sheet:</strong>
+        {{ import_obj.sheet_name | default('(active)', true) }}
       </span>
       <span
         class="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-50 text-purple-700 rounded-md text-sm"
       >
         <strong>Range:</strong>
-        {{ import_obj.cell_range | default('(entire sheet)', true) }}
+        {% if range_form is defined %}
+          {{ import_obj.cell_range | default('(not set yet)', true) }}
+        {% else %}
+          {{ import_obj.cell_range | default('(entire sheet)', true) }}
+        {% endif %}
       </span>
       <span
         class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm"
@@ -48,142 +51,405 @@
       </span>
     </div>
 
-    <div class="flex gap-4">
-      <div class="bg-white border border-gray-200 rounded-lg p-4 w-fit">
-        <h3 class="text-xl font-medium text-gray-900 mb-4">Column Mapping</h3>
+    {% if range_form is defined %}
+      <div class="bg-white border border-gray-200 rounded-lg p-4 w-fit mb-6">
+        <h3 class="text-xl font-medium text-gray-900 mb-4">
+          Step 2 — Select sheet and cell range
+        </h3>
 
-        <form method="post">
+        <form
+          method="post"
+          action="{{ url('mouse_import:import_select_range', import_obj.id) }}"
+        >
           {{ csrf_input }}
-          {% for field in form %}
-            <div class="relative flex items-center mb-2 w-fit">
-              {% if field.name[0] == "f" %}
-                <div class="ml-4"></div>
-              {% endif %}
+
+          {% if sheet_names %}
+            <div class="mb-4">
               <label
-                for="{{ field.id_for_label }}"
-                class="w-32 text-gray-700 font-medium"
-                >{{ field.label }}</label
+                for="{{ range_form.sheet_name.id_for_label }}"
+                class="block text-sm font-medium text-gray-700"
               >
-              <div
-                class="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                {{ field }}
+                Sheet
+                <span class="text-gray-500 font-normal"
+                  >— leave as “(active)” to use the active worksheet</span
+                >
+              </label>
+              {{ range_form.sheet_name }}
+              {% if range_form.sheet_name.errors %}
+                <div class="error-message-compact">
+                  {% for error in range_form.sheet_name.errors %}{{ error }}{% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          {% else %}
+            <p class="text-sm text-gray-500 mb-4">
+              CSV file detected — no sheet selection required.
+            </p>
+          {% endif %}
+
+          <div class="mb-2">
+            <label
+              for="{{ range_form.cell_range.id_for_label }}"
+              class="block text-sm font-medium text-gray-700"
+            >
+              Cell range <span class="text-red-500">*</span>
+            </label>
+            {{ range_form.cell_range }}
+            <p class="text-xs text-gray-500">Excel range such as "A1:M40"</p>
+            {% if range_form.cell_range.errors %}
+              <div class="error-message-compact">
+                {% for error in range_form.cell_range.errors %}{{ error }}{% endfor %}
               </div>
-              {% if field.errors %}{% for error in field.errors %}
+            {% endif %}
+          </div>
+
+          <div
+            id="range-preview-error"
+            class="error-message-compact hidden"
+          ></div>
+
+          <div id="range-preview" class="mt-4 hidden">
+            <div class="flex flex-wrap gap-3 mb-3">
+              <span
+                class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm"
+              >
+                <strong>First row:</strong> <span id="range-first-row"></span>
+              </span>
+              <span
+                class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm"
+              >
+                <strong>Last row:</strong> <span id="range-last-row"></span>
+              </span>
+              <span
+                class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm"
+              >
+                <strong>First column:</strong>
+                <span id="range-first-col"></span>
+              </span>
+              <span
+                class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm"
+              >
+                <strong>Last column:</strong> <span id="range-last-col"></span>
+              </span>
+            </div>
+
+            <p id="range-preview-note" class="text-xs text-gray-500 mb-2"></p>
+
+            <table class="border-collapse">
+              <thead id="range-preview-head"></thead>
+              <tbody id="range-preview-body"></tbody>
+            </table>
+          </div>
+
+          <div class="mt-4">
+            <button type="submit" class="btn-primary">
+              Continue to column mapping
+            </button>
+          </div>
+        </form>
+
+        <script>
+          (function () {
+            const sheetEl = document.getElementById(
+              "{{ range_form.sheet_name.id_for_label }}",
+            );
+            const rangeEl = document.getElementById(
+              "{{ range_form.cell_range.id_for_label }}",
+            );
+            const previewUrl =
+              "{{ url('mouse_import:import_range_preview', import_obj.id) }}";
+
+            const errEl = document.getElementById("range-preview-error");
+            const previewEl = document.getElementById("range-preview");
+            const noteEl = document.getElementById("range-preview-note");
+            const headEl = document.getElementById("range-preview-head");
+            const bodyEl = document.getElementById("range-preview-body");
+
+            const firstRowEl = document.getElementById("range-first-row");
+            const lastRowEl = document.getElementById("range-last-row");
+            const firstColEl = document.getElementById("range-first-col");
+            const lastColEl = document.getElementById("range-last-col");
+
+            let timer = null;
+            const rangePattern = /^[A-Za-z]+\d+:[A-Za-z]+\d+$/;
+
+            function setError(msg) {
+              if (!msg) {
+                errEl.classList.add("hidden");
+                errEl.textContent = "";
+                return;
+              }
+              errEl.textContent = msg;
+              errEl.classList.remove("hidden");
+            }
+
+            function clearPreview() {
+              previewEl.classList.add("hidden");
+              noteEl.textContent = "";
+              headEl.innerHTML = "";
+              bodyEl.innerHTML = "";
+            }
+
+            function debounce(fn, ms) {
+              if (timer) window.clearTimeout(timer);
+              timer = window.setTimeout(fn, ms);
+            }
+
+            async function refreshPreview() {
+              const cellRange = (rangeEl.value || "").trim();
+              const sheet = sheetEl ? (sheetEl.value || "").trim() : "";
+              const compactRange = cellRange.replace(/\s+/g, "");
+
+              const params = new URLSearchParams();
+              if (sheet) params.set("sheet", sheet);
+              if (compactRange) params.set("cell_range", compactRange);
+
+              try {
+                const resp = await fetch(previewUrl + "?" + params.toString(), {
+                  headers: { Accept: "application/json" },
+                });
+                const data = await resp.json();
+
+                if (!resp.ok) {
+                  setError(data.error || "Invalid range");
+                  clearPreview();
+                  return;
+                }
+
+                setError("");
+
+                firstRowEl.textContent = data.boundaries.first_row;
+                lastRowEl.textContent = data.boundaries.last_row;
+                firstColEl.textContent = data.boundaries.first_column;
+                lastColEl.textContent = data.boundaries.last_column;
+
+                const bits = [];
+                if (data.truncated && data.truncated.rows)
+                  bits.push("showing start and end rows");
+                if (data.truncated && data.truncated.columns)
+                  bits.push("columns truncated");
+                noteEl.textContent = bits.length
+                  ? "Preview is truncated (" + bits.join(", ") + ")."
+                  : data.default_preview
+                    ? "Showing an initial preview from the start of the file."
+                    : "";
+
+                headEl.innerHTML = "";
+                bodyEl.innerHTML = "";
+
+                const trHead = document.createElement("tr");
+                trHead.className = "table-header";
+                (data.columns || []).forEach((c) => {
+                  const th = document.createElement("th");
+                  th.className = "table-header-text";
+                  th.textContent = c;
+                  trHead.appendChild(th);
+                });
+                headEl.appendChild(trHead);
+
+                (data.rows || []).forEach((row) => {
+                  const tr = document.createElement("tr");
+                  tr.className = "table-data";
+                  (row || []).forEach((cell) => {
+                    const td = document.createElement("td");
+                    td.className = "table-padding";
+                    td.textContent = cell;
+                    tr.appendChild(td);
+                  });
+                  bodyEl.appendChild(tr);
+                });
+
+                previewEl.classList.remove("hidden");
+              } catch (e) {
+                setError("Could not load preview.");
+                clearPreview();
+              }
+            }
+
+            function handleRangeInput() {
+              const cellRange = (rangeEl.value || "").trim();
+              const compactRange = cellRange.replace(/\s+/g, "");
+
+              if (timer) window.clearTimeout(timer);
+
+              if (compactRange && !rangePattern.test(compactRange)) {
+                setError('Enter a range like "A1:M40"');
+                clearPreview();
+                return;
+              }
+
+              setError("");
+              debounce(refreshPreview, 300);
+            }
+
+            rangeEl.addEventListener("input", handleRangeInput);
+
+            if (sheetEl) {
+              sheetEl.addEventListener("change", () => {
+                setError("");
+                debounce(refreshPreview, 150);
+              });
+            }
+
+            // Always show an initial preview, even before the user enters a range.
+            refreshPreview();
+          })();
+        </script>
+      </div>
+    {% endif %}
+
+    {% if form is defined %}
+      <div class="flex gap-4">
+        <div class="bg-white border border-gray-200 rounded-lg p-4 w-fit">
+          <div class="flex items-center justify-between gap-4 mb-4">
+            <h3 class="text-xl font-medium text-gray-900">Column Mapping</h3>
+            <a
+              class="btn-secondary"
+              href="{{ url('mouse_import:import_select_range', import_obj.id) }}"
+              >Change sheet/range</a
+            >
+          </div>
+
+          <form method="post">
+            {{ csrf_input }}
+            {% for field in form %}
+              <div class="relative flex items-center mb-2 w-fit">
+                {% if field.name[0] == "f" %}
+                  <div class="ml-4"></div>
+                {% endif %}
+                <label
+                  for="{{ field.id_for_label }}"
+                  class="w-32 text-gray-700 font-medium"
+                  >{{ field.label }}</label
+                >
+                <div
+                  class="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  {{ field }}
+                </div>
+                {% if field.errors %}{% for error in field.errors %}
+                  <p class="error-message">{{ error }}</p>
+                {% endfor %}{% endif %}
+              </div>
+            {% endfor %}
+
+            <script>
+              document
+                .querySelectorAll("[data-choices-for]")
+                .forEach((choiceEl) => {
+                  const parent = choiceEl.parentNode.parentNode;
+                  const name = choiceEl.attributes["data-choices-for"].value;
+                  const mapEl = document.getElementById("id_map_" + name);
+                  const valueEl = document.getElementById(
+                    "id_fixed_new_" + name,
+                  );
+                  const valueParent = valueEl
+                    ? valueEl.parentNode.parentNode
+                    : null;
+
+                  function updateNew() {
+                    if (!valueParent) return;
+                    if (
+                      mapEl.value == "-- fixed --" &&
+                      choiceEl.value == "-- new --"
+                    ) {
+                      valueParent.classList.remove("hidden");
+                    } else {
+                      valueParent.classList.add("hidden");
+                    }
+                  }
+
+                  function updateChoices() {
+                    if (mapEl.value == "-- fixed --") {
+                      parent.classList.remove("hidden");
+                    } else {
+                      parent.classList.add("hidden");
+                    }
+                    updateNew();
+                  }
+
+                  updateChoices();
+
+                  mapEl.addEventListener("change", updateChoices);
+                  choiceEl.addEventListener("change", updateNew);
+                });
+            </script>
+
+            <div class="flex items-center gap-2 mt-2">
+              <button
+                type="submit"
+                class="{% if saved_mapping %}btn-secondary{% else %}btn-primary{% endif %} my-2"
+              >
+                Save Mapping
+              </button>
+
+              {% if form.non_field_errors() %}{% for error in form.non_field_errors %}
                 <p class="error-message">{{ error }}</p>
               {% endfor %}{% endif %}
             </div>
-          {% endfor %}
-          <script>
-            document
-              .querySelectorAll("[data-choices-for]")
-              .forEach((choiceEl) => {
-                const parent = choiceEl.parentNode.parentNode;
-                const name = choiceEl.attributes["data-choices-for"].value;
-                const mapEl = document.getElementById("id_map_" + name);
-                const valueEl = document.getElementById("id_fixed_new_" + name);
-                const valueParent = valueEl
-                  ? valueEl.parentNode.parentNode
-                  : null;
-
-                function updateNew() {
-                  if (!valueParent) return;
-                  if (
-                    mapEl.value == "-- fixed --" &&
-                    choiceEl.value == "-- new --"
-                  ) {
-                    valueParent.classList.remove("hidden");
-                  } else {
-                    valueParent.classList.add("hidden");
-                  }
-                }
-                function updateChoices() {
-                  if (mapEl.value == "-- fixed --") {
-                    parent.classList.remove("hidden");
-                  } else {
-                    parent.classList.add("hidden");
-                  }
-                  updateNew();
-                }
-
-                updateChoices();
-
-                mapEl.addEventListener("change", updateChoices);
-                choiceEl.addEventListener("change", updateNew);
-              });
-          </script>
-          <div class="flex items-center gap-2 mt-2">
-            <button
-              type="submit"
-              class="{% if saved_mapping %}btn-secondary{% else %}btn-primary{% endif %} my-2"
-            >
-              Save Mapping
-            </button>
-
-            {% if form.non_field_errors() %}{% for error in form.non_field_errors %}
-              <p class="error-message">{{ error }}</p>
-            {% endfor %}{% endif %}
-          </div>
-        </form>
-        {% if saved_mapping %}
-          <form
-            method="post"
-            action="{{ url('mouse_import:import_commit', import_obj.id) }}"
-          >
-            {{ csrf_input }}
-            <button type="submit" class="btn-primary">Commit Import</button>
-
-            {% if form.non_field_errors() %}{% for error in form.non_field_errors %}
-              <p class="error-message">{{ error }}</p>
-            {% endfor %}{% endif %}
           </form>
-          <div class="saved-mapping-section flex-1">
-            <h3 class="text-xl font-medium text-gray-900">Saved mapping</h3>
-            <table>
-              <thead>
-                <tr class="table-header">
-                  <th class="table-header-text">Source column</th>
-                  <th class="table-header-text">Target field</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for src, dst in saved_mapping.items() %}
-                  <tr class="table-data border-2 border-black">
-                    <td class="table-padding border-black">{{ src }}</td>
-                    <td class="table-padding border-black">
-                    {{ saved_fixed.get(src) | default(dst, true) }}
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        {% else %}
-          <p class="mt-2"><em>Save a mapping first to enable commit.</em></p>
-        {% endif %}
 
-        <table>
-          <caption class="py-2 text-start text-sm">
-            Data Preview (first 50 rows)
-          </caption>
-          <thead>
-            <tr class="table-header">
-              {% for c in columns %}
-                <th class="table-header-text">{{ c }}</th>
-              {% endfor %}
-            </tr>
-          </thead>
-          <tbody>
-            {% for row in rows %}
-              <tr class="table-data">
+          {% if saved_mapping %}
+            <form
+              method="post"
+              action="{{ url('mouse_import:import_commit', import_obj.id) }}"
+            >
+              {{ csrf_input }}
+              <button type="submit" class="btn-primary">Commit Import</button>
+
+              {% if form.non_field_errors() %}{% for error in form.non_field_errors %}
+                <p class="error-message">{{ error }}</p>
+              {% endfor %}{% endif %}
+            </form>
+
+            <div class="saved-mapping-section flex-1">
+              <h3 class="text-xl font-medium text-gray-900">Saved mapping</h3>
+              <table>
+                <thead>
+                  <tr class="table-header">
+                    <th class="table-header-text">Source column</th>
+                    <th class="table-header-text">Target field</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for src, dst in saved_mapping.items() %}
+                    <tr class="table-data border-2 border-black">
+                      <td class="table-padding border-black">{{ src }}</td>
+                      <td class="table-padding border-black">
+                        {{ saved_fixed.get(src) | default(dst, true) }}
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <p class="mt-2"><em>Save a mapping first to enable commit.</em></p>
+          {% endif %}
+
+          <table>
+            <caption class="py-2 text-start text-sm">
+              Data Preview (first 50 rows)
+            </caption>
+            <thead>
+              <tr class="table-header">
                 {% for c in columns %}
-                  <td class="table-padding">{{ row[c] }}</td>
+                  <th class="table-header-text">{{ c }}</th>
                 {% endfor %}
               </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {% for row in rows %}
+                <tr class="table-data">
+                  {% for c in columns %}
+                    <td class="table-padding">{{ row[c] }}</td>
+                  {% endfor %}
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    {% endif %}
   </div>
 {% endblock %}

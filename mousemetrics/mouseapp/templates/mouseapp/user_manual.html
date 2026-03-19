@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block title %}User Manual{% endblock %}
+{% block content %}
+  <div class="max-w-5xl mx-auto px-4 py-8">
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <div class="bg-neutral-200 px-6 py-4">
+        <h1 class="default-header">User Manual</h1>
+      </div>
+
+      <div class="p-6 text-neutral-800">
+        <h3 class="text-xl font-semibold mb-4">Basic Usage</h3>
+
+        <img
+          src="{{ static('manual/fig9.png') }}"
+          alt="Front page of the application"
+          class="w-full border border-neutral-300 rounded mb-6"
+        />
+
+        <p>
+          Upon logging in, an interface similar to that shown above is
+          presented, including a list of projects.
+        </p>
+
+        <p class="mt-4">
+          Clicking a project in the list presents the project page. Information
+          about the project’s compliance with the license is present, along with
+          a list of mice associated with the project and buttons for various
+          actions.
+        </p>
+
+        <img
+          src="{{ static('manual/fig10.png') }}"
+          alt="Project page"
+          class="w-full border border-neutral-300 rounded mt-6 mb-6"
+        />
+
+        <p>
+          An individual mouse’s page is accessible by clicking the mouse ID in
+          the list of mice on a project’s page. More information about the
+          individual mouse is listed there, alongside links to edit that
+          information and to view its family tree.
+        </p>
+
+        <p class="mt-4">
+          In the family tree view each mouse is represented by a box headed by
+          its strain and tube number, acting as a link to that mouse’s own
+          family tree. The box also includes a details link directly to the
+          mouse’s information page.
+        </p>
+
+        <p class="mt-4">
+          The family tree shows only mice that are direct ancestors or
+          descendants of the requested mouse. Ancestors are shown with the
+          father of any mouse on the left and the mother on the right.
+        </p>
+
+        <img
+          src="{{ static('manual/fig11.svg') }}"
+          alt="Family tree of a mouse"
+          class="max-w-3xl mx-auto border border-neutral-300 rounded mt-6 mb-6"
+        />
+
+        <h3 class="text-xl font-semibold mt-8 mb-4">Data Import</h3>
+
+        <p>
+          The data import feature is most suitable for data structured as shown
+          below, though more columns may be provided.
+        </p>
+
+        <p class="mt-4">
+          Parent fields refer to the tube number and are assumed to refer to
+          mice of the same strain as the child. Sex is expected to take values
+          of either
+          <code class="px-1 py-0.5 bg-neutral-100 rounded">M</code> or
+          <code class="px-1 py-0.5 bg-neutral-100 rounded">F</code>. Blank
+          values are assumed to be equal to the previous filled value.
+        </p>
+
+        <img
+          src="{{ static('manual/fig12.png') }}"
+          alt="Import format"
+          class="w-full border border-neutral-300 rounded mt-6 mb-6"
+        />
+
+        <p>
+          Data import begins by uploading an Excel spreadsheet to the data
+          import page linked from the front page. The project to which the mice
+          should be added must be chosen.
+        </p>
+
+        <p class="mt-4">
+          The sheet name field refers to the sheet in the spreadsheet that
+          should be used. If left blank, the most recently used sheet will be
+          used.
+        </p>
+
+        <p class="mt-4">
+          The cell range must be specified to include the heading row. In a
+          sheet structured like the example above, the relevant range would be
+          <code class="px-1 py-0.5 bg-neutral-100 rounded">A1:H2</code>.
+        </p>
+
+        <p class="mt-4">
+          On the next page the mapping of columns must be given. Simply select
+          the corresponding column or
+          <code class="px-1 py-0.5 bg-neutral-100 rounded">-- none --</code>
+          if the column is not provided.
+        </p>
+
+        <p class="mt-4">
+          In the case of the strain, the value
+          <code class="px-1 py-0.5 bg-neutral-100 rounded">-- fixed --</code>
+          can also be selected if the spreadsheet does not contain it in a
+          column.
+        </p>
+
+        <p class="mt-4">
+          Once a mapping is chosen it can be saved and the import can be
+          committed, finally adding the mice.
+        </p>
+
+        <img
+          src="{{ static('manual/fig13.png') }}"
+          alt="Import mapping page"
+          class="w-full border border-neutral-300 rounded mt-6 mb-6"
+        />
+
+        <h3 class="text-xl font-semibold mt-8 mb-4">Requests</h3>
+
+        <p>
+          Requests can be created using the buttons on a mouse’s page or on a
+          project’s page. If created from a project page, a mouse must then be
+          chosen.
+        </p>
+
+        <p class="mt-4">
+          Additional relevant details should then be provided such as the
+          location to which a mouse should be transferred or the reason for
+          which they should be culled.
+        </p>
+
+        <p class="mt-4">
+          Once created, requests appear on the related mouse’s page and on the
+          general Requests page accessible from the title bar.
+        </p>
+
+        <p class="mt-4">
+          The general requests page can be filtered using the Status and Type
+          dropdowns. Filters selected do not apply until the Filter button is
+          pressed.
+        </p>
+
+        <p class="mt-4">
+          Pending requests can be accepted or denied, and accepted requests can
+          be marked completed if the user has permission to do so.
+        </p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

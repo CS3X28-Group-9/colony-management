@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg id="main-svg" width="100%" height="100%" viewBox="-262.0 -50 524.0 740" xmlns="http://www.w3.org/2000/svg" version="1.1" style="touch-action:none;">
+    <style>
+        .edge { stroke: black; stroke-width: 2px; }
+        .box  { fill: white; stroke: #e5e7eb; stroke-width: 3px; }
+        text  { font-family: sans-serif; }
+        .txt-strain { font-size: 14px; fill: #2563eb; font-weight: bold; cursor: pointer; }
+        .txt-info   { font-size: 14px; fill: black; }
+        .txt-link   { font-size: 10px; fill: #2563eb; text-anchor: end; cursor: pointer; }
+        a:hover text { fill: #1d4ed8; text-decoration: underline; }
+        .node, .edge { transition: opacity 0.2s; }
+        .dimmed { opacity: 0.1; }
+        .highlight { opacity: 1 !important; }
+    </style>
+
+    <g id="zoom-container">
+        <g id="edges">
+
+            <line x1="0.0" y1="280"
+                  x2="116.0" y2="360"
+                  class="edge"
+                  data-child-id="node-3" />
+
+            <line x1="0.0" y1="100"
+                  x2="0.0" y2="180"
+                  class="edge"
+                  data-child-id="node-2" />
+
+            <line x1="116.0" y1="460"
+                  x2="0.0" y2="540"
+                  class="edge"
+                  data-child-id="node-5" />
+
+            <line x1="-116.0" y1="460"
+                  x2="0.0" y2="540"
+                  class="edge"
+                  data-child-id="node-5" />
+
+        </g>
+
+        <g id="nodes">
+
+            <g class="node" id="node-1"
+               data-father="node-None"
+               data-mother="node-None"
+               transform="translate(-96.0, 0)">
+                <rect width="192" height="100" rx="6" class="box" />
+                <a href="/family_tree/1/" target="_top">
+                    <text x="8" y="20" class="txt-strain">floxed GASP-1 1</text>
+                </a>
+                <text x="8" y="45" class="txt-info">Box: 1</text>
+                <text x="8" y="65" class="txt-info">Earmark: TL+BR</text>
+                <a href="/mouse/1/" target="_top">
+                    <text x="184" y="90" class="txt-link">(Details)</text>
+                </a>
+            </g>
+
+            <g class="node" id="node-2"
+               data-father="node-1"
+               data-mother="node-None"
+               transform="translate(-96.0, 180)">
+                <rect width="192" height="100" rx="6" class="box" />
+                <a href="/family_tree/2/" target="_top">
+                    <text x="8" y="20" class="txt-strain">floxed-GASP1 2</text>
+                </a>
+                <text x="8" y="45" class="txt-info">Box: 1</text>
+                <text x="8" y="65" class="txt-info">Earmark: TL</text>
+                <a href="/mouse/2/" target="_top">
+                    <text x="184" y="90" class="txt-link">(Details)</text>
+                </a>
+            </g>
+
+            <g class="node" id="node-4"
+               data-father="node-None"
+               data-mother="node-None"
+               transform="translate(-212.0, 360)">
+                <rect width="192" height="100" rx="6" class="box" />
+                <a href="/family_tree/4/" target="_top">
+                    <text x="8" y="20" class="txt-strain">floxed-GASP1 4</text>
+                </a>
+                <text x="8" y="45" class="txt-info">Box: 1</text>
+                <text x="8" y="65" class="txt-info">Earmark: BR</text>
+                <a href="/mouse/4/" target="_top">
+                    <text x="184" y="90" class="txt-link">(Details)</text>
+                </a>
+            </g>
+
+            <g class="node" id="node-3"
+               data-father="node-None"
+               data-mother="node-2"
+               transform="translate(20.0, 360)">
+                <rect width="192" height="100" rx="6" class="box" />
+                <a href="/family_tree/3/" target="_top">
+                    <text x="8" y="20" class="txt-strain">floxed-GASP1 3</text>
+                </a>
+                <text x="8" y="45" class="txt-info">Box: 1</text>
+                <text x="8" y="65" class="txt-info">Earmark: TR</text>
+                <a href="/mouse/3/" target="_top">
+                    <text x="184" y="90" class="txt-link">(Details)</text>
+                </a>
+            </g>
+
+            <g class="node" id="node-5"
+               data-father="node-3"
+               data-mother="node-4"
+               transform="translate(-96.0, 540)">
+                <rect width="192" height="100" rx="6" class="box" />
+                <a href="/family_tree/5/" target="_top">
+                    <text x="8" y="20" class="txt-strain">floxed-GASP1 5</text>
+                </a>
+                <text x="8" y="45" class="txt-info">Box: 1</text>
+                <text x="8" y="65" class="txt-info">Earmark: TR</text>
+                <a href="/mouse/5/" target="_top">
+                    <text x="184" y="90" class="txt-link">(Details)</text>
+                </a>
+            </g>
+
+        </g>
+    </g>
+
+    <script><![CDATA[
+        document.addEventListener('DOMContentLoaded', () => {
+            const svg = document.getElementById('main-svg');
+            const container = document.getElementById('zoom-container');
+
+            const nodes = document.querySelectorAll('.node');
+            const edges = document.querySelectorAll('.edge');
+
+            function highlight(id) {
+                const n = document.getElementById(id);
+                if (!n || id.includes('None')) return;
+                n.classList.add('highlight');
+                edges.forEach(e => { if (e.getAttribute('data-child-id') === id) e.classList.add('highlight'); });
+                highlight(n.getAttribute('data-father'));
+                highlight(n.getAttribute('data-mother'));
+            }
+            nodes.forEach(n => {
+                n.addEventListener('mouseenter', () => {
+                    nodes.forEach(x => x.classList.add('dimmed'));
+                    edges.forEach(x => x.classList.add('dimmed'));
+                    highlight(n.id);
+                });
+                n.addEventListener('mouseleave', () => {
+                    nodes.forEach(x => x.classList.remove('dimmed', 'highlight'));
+                    edges.forEach(x => x.classList.remove('dimmed', 'highlight'));
+                });
+            });
+
+            let scale = 1;
+            let tx = 0;
+            let ty = 0;
+
+            function applyTransform() {
+                container.setAttribute('transform', `translate(${tx} ${ty}) scale(${scale})`);
+            }
+
+            let dragging = false;
+            let lastX = 0;
+            let lastY = 0;
+
+            svg.addEventListener('mousedown', (e) => {
+                dragging = true;
+                lastX = e.clientX;
+                lastY = e.clientY;
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (!dragging) return;
+                const dx = e.clientX - lastX;
+                const dy = e.clientY - lastY;
+                lastX = e.clientX;
+                lastY = e.clientY;
+                tx += dx;
+                ty += dy;
+                applyTransform();
+            });
+
+            window.addEventListener('mouseup', () => {
+                dragging = false;
+            });
+
+            svg.addEventListener('wheel', (e) => {
+                e.preventDefault();
+
+                const rect = svg.getBoundingClientRect();
+                const mx = e.clientX - rect.left;
+                const my = e.clientY - rect.top;
+
+                const zoomFactor = (e.deltaY < 0) ? 1.03 : 1 / 1.03;
+                const newScale = Math.min(3, Math.max(0.1, scale * zoomFactor));
+
+                const k = newScale / scale;
+                tx = mx - k * (mx - tx);
+                ty = my - k * (my - ty);
+
+                scale = newScale;
+                applyTransform();
+            }, { passive: false });
+
+            nodes.forEach(n => {
+                n.addEventListener('click', (e) => {
+                    if (e.target.closest('a')) return;
+
+                    const tr = n.getAttribute("transform");
+                    const m = /translate\(([-0-9.]+),\s*([-0-9.]+)\)/.exec(tr);
+                    if (!m) return;
+
+                    const nodeX = parseFloat(m[1]) + 192/2;
+                    const nodeY = parseFloat(m[2]) + 100/2;
+
+                    const rect = svg.getBoundingClientRect();
+                    const cx = rect.width / 2;
+                    const cy = rect.height / 2;
+
+                    tx = cx - nodeX * scale;
+                    ty = cy - nodeY * scale;
+
+                    applyTransform();
+                });
+            });
+
+            applyTransform();
+        });
+    ]]></script>
+</svg>

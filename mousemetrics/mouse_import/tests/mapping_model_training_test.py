@@ -1,4 +1,3 @@
-# mousemetrics/mouse_import/tests/mapping_model_training_test.py
 import pytest
 import pandas as pd
 
@@ -16,16 +15,6 @@ from mouse_import.services.mapping_train import (
     TrainStatus,
     SkipReason,
 )
-from mouseapp.models import Project
-
-
-@pytest.fixture
-def project(db):
-    return Project.objects.create(
-        name="P",
-        start_date="2000-01-01",
-        license_constraints="",
-    )
 
 
 @pytest.fixture
