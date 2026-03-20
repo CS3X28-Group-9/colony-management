@@ -1,0 +1,6 @@
+New reply in your LabSafe request: {{ reply_user_name }} posted a message.
+{% for line in message.splitlines() %}
+  {{ line }}{% if not loop.last %}<br />{% endif %}
+{% endfor %}
+View it here:
+{{ protocol }}://{{ domain }}{{ url('mouseapp:request_detail', request_id=request_obj.id) }}#reply-{{ reply.id }}

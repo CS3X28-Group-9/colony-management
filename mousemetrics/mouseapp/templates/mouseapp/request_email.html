@@ -1,0 +1,7 @@
+New request in your LabSafe: {{ creator_name }} created a {{ request_type }}
+request{% if project_name %}in {{ project_name }}{% endif %}. Request details:
+{% for line in request_details.splitlines() %}
+  {{ line }}{% if not loop.last %}<br />{% endif %}
+{% endfor %}
+View it here:
+{{ protocol }}://{{ domain }}{{ url('mouseapp:request_detail', request_id=request_obj.id) }}
