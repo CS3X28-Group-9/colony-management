@@ -7,6 +7,9 @@ from django.http import HttpRequest, HttpResponse, JsonResponse, HttpResponseBas
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_GET
 
+from mouseapp.models import Project
+from mouseapp.views import AuthedRequest
+
 from .forms import ColumnMappingForm, MouseImportForm, MouseImportSheetRangeForm
 from .models import MouseImport
 from .services.importer import ImportOptions, Importer
@@ -58,7 +61,7 @@ def _map_session_key(import_pk: int) -> str:
 
 
 @login_required_decorator
-def import_form(request: HttpRequest) -> HttpResponse:
+def import_form(request: AuthedRequest) -> HttpResponse:
     form = MouseImportForm(request.POST or None, request.FILES or None)
 
     if request.method == "POST" and form.is_valid():
@@ -78,7 +81,13 @@ def import_form(request: HttpRequest) -> HttpResponse:
         return redirect("mouse_import:import_select_range", id=import_obj.id)
 
     return render(
-        request, "mouse_import/import_form.html", {"form": form, "user": request.user}
+        request,
+        "mouse_import/import_form.html",
+        {
+            "form": form,
+            "user": request.user,
+            "projects": Project.writable_for_user(request.user),
+        },
     )
 
 
