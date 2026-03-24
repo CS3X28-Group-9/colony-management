@@ -177,6 +177,15 @@ class StudyPlanForm(forms.ModelForm):
                 project_field.queryset = accessible_projects
 
 
+class StudyPlanApprovalForm(forms.Form):
+    study_id = forms.CharField(
+        max_length=50,
+        required=True,
+        label="Study ID",
+        widget=forms.TextInput(attrs={"class": "input"}),
+    )
+
+
 class InviteMemberForm(forms.Form):
     user = forms.EmailField()
 

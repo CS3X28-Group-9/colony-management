@@ -20,6 +20,11 @@ urlpatterns = [
     path("study-plan/create/", views.create_study_plan, name="create_study_plan"),
     path("study-plan/<int:id>/", views.study_plan, name="study_plan"),
     path("study-plan/<int:id>/edit/", views.edit_study_plan, name="edit_study_plan"),
+    path(
+        "study-plan/<int:id>/approve/",
+        views.approve_study_plan,
+        name="approve_study_plan",
+    ),
     path("project/<int:id>/invite-member/", views.invite_member, name="invite_member"),
     path("project/<int:id>/remove-member/", views.remove_member, name="remove_member"),
     path("project/join/<str:token>/", views.join_project, name="join_project"),

@@ -30,6 +30,7 @@ from .forms import (
     TransferRequestForm,
     RequestReplyForm,
     StudyPlanForm,
+    StudyPlanApprovalForm,
 )
 from .models import (
     Mouse,
@@ -166,7 +167,12 @@ def project(request: AuthedRequest, id: int) -> HttpResponse:
         raise PermissionDenied()
     write_access = project.has_write_access(request.user)
 
-    context = {"project": project, "write_access": write_access}
+    context = {
+        "project": project,
+        "write_access": write_access,
+        "study_plans": StudyPlan.objects.filter(project=project),
+    }
+
     return render(request, "mouseapp/project.html", context)
 
 
@@ -194,10 +200,20 @@ def study_plan(request: AuthedRequest, id: int) -> HttpResponse:
     if not study_plan.project.has_read_access(request.user):
         raise PermissionDenied()
 
+    approval_form = None
+    if (
+        request.user.has_perm("mouseapp.approve_study_plan")
+        and study_plan.status != "A"
+    ):
+        approval_form = StudyPlanApprovalForm()
+
     return render(
         request,
         "mouseapp/study_plan.html",
-        {"study_plan": study_plan},
+        {
+            "study_plan": study_plan,
+            "approval_form": approval_form,
+        },
     )
 
 
@@ -262,6 +278,28 @@ def edit_study_plan(request: AuthedRequest, id: int) -> HttpResponse:
             "study_plan": study_plan,
         },
     )
+
+
+@login_required
+@require_http_methods(["POST"])
+def approve_study_plan(request: AuthedRequest, id: int) -> HttpResponse:
+    study_plan = get_object_or_404(StudyPlan, id=id)
+
+    if not study_plan.project.has_read_access(request.user):
+        raise PermissionDenied()
+
+    if not request.user.has_perm("mouseapp.approve_study_plan"):
+        raise PermissionDenied()
+
+    form = StudyPlanApprovalForm(request.POST)
+    if form.is_valid():
+        study_plan.study_id = form.cleaned_data["study_id"]
+        study_plan.status = "A"
+        study_plan.approval_date = date.today()
+        study_plan.approver = request.user
+        study_plan.save()
+
+    return redirect("mouseapp:study_plan", id=study_plan.id)
 
 
 @login_required

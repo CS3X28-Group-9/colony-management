@@ -23,7 +23,6 @@
         class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm"
       >
         <strong>Project quota:</strong>
-
         {% if project.quota_5_years is none %}No quota{% else %}{{ project.quota_5_years }}{% endif %}
       </span>
     </div>
@@ -72,6 +71,47 @@
                 <td class="table-padding">{{ mouse.sex }}</td>
                 <td class="border-r-1 border-gray-300 table-padding">
                   {{ mouse.earmark }}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </li>
+
+      <li class="mt-6">
+        <table>
+          <caption class="py-2 text-start text-sm">
+            Study Plans:
+          </caption>
+          <thead>
+            <tr class="table-header">
+              <th class="table-header-text">Description</th>
+              <th class="table-header-text">Start Date</th>
+              <th class="table-header-text">End Date</th>
+              <th class="table-header-text">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for study_plan in study_plans %}
+              <tr class="table-data">
+                <td class="border-l-1 border-gray-300 table-padding">
+                  <a href="{{ url('mouseapp:study_plan', study_plan.id) }}">
+                    {{ study_plan.description or "Untitled" }}
+                  </a>
+                </td>
+                <td class="table-padding">{{ study_plan.start_date }}</td>
+                <td class="table-padding">{{ study_plan.end_date }}</td>
+                <td class="border-r-1 border-gray-300 table-padding">
+                  {{ study_plan.get_status_display() }}
+                </td>
+              </tr>
+            {% else %}
+              <tr class="table-data">
+                <td
+                  colspan="4"
+                  class="border-l-1 border-r-1 border-gray-300 table-padding"
+                >
+                  No study plans yet.
                 </td>
               </tr>
             {% endfor %}
