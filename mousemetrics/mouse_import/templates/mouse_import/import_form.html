@@ -30,7 +30,7 @@
               >
                 Select a project
               </option>
-              {% for project in user.leading_set.all() %}
+              {% for project in projects %}
                 <option
                   value="{{ project.id }}"
                   class="py-2"

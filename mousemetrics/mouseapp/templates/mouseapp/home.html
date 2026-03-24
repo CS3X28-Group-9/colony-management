@@ -6,28 +6,19 @@
         <div
           class="inline-block bg-neutral-200 border border-neutral-300 rounded-lg p-4 w-fit"
         >
-          {%
-            if request.user.leading_set.exists() or
-            request.user.project_set.exists()
-          %}
-            <ul class>
-              {% for project in request.user.leading_set.all() %}
-                <li>
-                  <a
-                    href="{{ url('mouseapp:project', project.id) }}"
-                    class="btn-secondary w-full mb-1"
-                    >{{ project.name }} - {{ project.researchers.count() }}
-                    members</a
-                  >
-                </li>
-              {% endfor %}
-              {% for project in request.user.project_set.all() %}
+          {% if projects.exists() %}
+            <ul>
+              {% for project in projects.all() %}
                 <li>
                   <a
                     href="{{ url( 'mouseapp:project', project.id) }}"
                     class="btn-secondary w-full mb-1"
                   >
-                    Project led by {{ project.lead }}
+                    {% if project.is_lead_by(request.user) %}
+                      {{ project.name }} - {{ project.researchers.count() }} members
+                    {% else %}
+                      Project led by {{ project.lead }}
+                    {% endif %}
                   </a>
                 </li>
               {% endfor %}
