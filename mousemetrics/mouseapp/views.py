@@ -298,10 +298,12 @@ def get_children(mouse: Mouse) -> list[Mouse]:
     combined = list(mouse.child_set_m.all()) + list(mouse.child_set_f.all())
     seen: set[int] = set()
     ordered: list[Mouse] = []
+
     for child in combined:
         if child.id not in seen:
             seen.add(child.id)
             ordered.append(child)
+
     return ordered
 
 
@@ -377,8 +379,7 @@ def get_descendant_graph(start_mouse, max_depth=10):
         if depth >= max_depth:
             continue
 
-        relatives = list(current.child_set_m.all()) + list(current.child_set_f.all())
-
+        relatives = get_children(current)
         if current.father:
             relatives.append(current.father)
         if current.mother:
@@ -390,18 +391,18 @@ def get_descendant_graph(start_mouse, max_depth=10):
                 queue.append((relative, depth + 1))
 
     adj = defaultdict(list)
-    in_degree = {m: 0 for m in all_nodes}
+    in_degree = {mouse: 0 for mouse in all_nodes}
 
-    for m in all_nodes:
-        if m.father and m.father in all_nodes:
-            adj[m.father].append(m)
-            in_degree[m] += 1
+    for mouse in all_nodes:
+        if mouse.father and mouse.father in all_nodes:
+            adj[mouse.father].append(mouse)
+            in_degree[mouse] += 1
 
-        if m.mother and m.mother in all_nodes:
-            adj[m.mother].append(m)
-            in_degree[m] += 1
+        if mouse.mother and mouse.mother in all_nodes:
+            adj[mouse.mother].append(mouse)
+            in_degree[mouse] += 1
 
-    queue = deque([m for m, deg in in_degree.items() if deg == 0])
+    queue = deque([mouse for mouse, deg in in_degree.items() if deg == 0])
     ranks = {}
 
     while queue:
@@ -423,97 +424,234 @@ def get_descendant_graph(start_mouse, max_depth=10):
             if in_degree[child] == 0:
                 queue.append(child)
 
-    for m in all_nodes:
-        if m not in ranks:
-            ranks[m] = 0
+    for mouse in all_nodes:
+        if mouse not in ranks:
+            ranks[mouse] = 0
 
     for _ in range(len(all_nodes)):
         changed = False
-        for m in all_nodes:
-            children = [
-                c
-                for c in list(m.child_set_m.all()) + list(m.child_set_f.all())
-                if c in ranks
-            ]
+
+        for mouse in all_nodes:
+            children = [child for child in get_children(mouse) if child in ranks]
 
             if children:
-                target_rank = min(ranks[c] for c in children) - 1
-                if ranks[m] < target_rank:
-                    ranks[m] = target_rank
+                target_rank = min(ranks[child] for child in children) - 1
+                if ranks[mouse] < target_rank:
+                    ranks[mouse] = target_rank
                     changed = True
+
         if not changed:
             break
 
     layers = defaultdict(list)
-    for m, rank in ranks.items():
-        layers[rank].append(m)
+    for mouse, rank in ranks.items():
+        layers[rank].append(mouse)
 
     return layers
 
 
 def layout_graph(renderer, start_mouse):
     layers = get_descendant_graph(start_mouse)
-    positions = {}
-
     sorted_ranks = sorted(layers.keys())
+    layer_orders = {rank: list(layers[rank]) for rank in sorted_ranks}
+
+    layer_ids = {mouse.id for rank in sorted_ranks for mouse in layer_orders[rank]}
+
+    def get_parent_ids(mouse):
+        parent_ids = []
+        if mouse.father:
+            parent_ids.append(mouse.father.id)
+        if mouse.mother:
+            parent_ids.append(mouse.mother.id)
+        return parent_ids
+
+    def get_child_ids(mouse):
+        return [child.id for child in get_children(mouse) if child.id in layer_ids]
+
+    def normalize_parent_order(mouse):
+        if mouse.father_id and mouse.mother_id:
+            return (mouse.father_id, mouse.mother_id)
+        return (mouse.father_id or 0, mouse.mother_id or 0)
+
+    def parent_pair_key(mouse):
+        father_id = mouse.father_id or 0
+        mother_id = mouse.mother_id or 0
+        if father_id and mother_id:
+            return (min(father_id, mother_id), max(father_id, mother_id))
+        return (father_id, mother_id)
+
+    def sibling_group_key(mouse):
+        return normalize_parent_order(mouse)
+
+    def barycenter_from_ids(related_ids, reference_positions, fallback):
+        xs = [
+            reference_positions[related_id]
+            for related_id in related_ids
+            if related_id in reference_positions
+        ]
+        if xs:
+            return sum(xs) / len(xs)
+        return fallback
+
+    def build_rank_to_x(current_layer_orders):
+        return {
+            rank: {
+                mouse.id: index
+                for index, mouse in enumerate(current_layer_orders[rank])
+            }
+            for rank in sorted_ranks
+        }
+
+    def forward_barycenter_pass():
+        rank_to_x = build_rank_to_x(layer_orders)
+
+        for rank in sorted_ranks:
+            parent_reference = rank_to_x.get(rank - 1, {})
+            current_order = layer_orders[rank]
+            decorated = []
+
+            for index, mouse in enumerate(current_order):
+                bary = barycenter_from_ids(
+                    get_parent_ids(mouse),
+                    parent_reference,
+                    index,
+                )
+                decorated.append(
+                    (
+                        sibling_group_key(mouse),
+                        bary,
+                        mouse.sex,
+                        mouse.id,
+                        mouse,
+                    )
+                )
+
+            decorated.sort(key=lambda item: item[:-1])
+            layer_orders[rank] = [item[-1] for item in decorated]
+
+    def backward_barycenter_pass():
+        rank_to_x = build_rank_to_x(layer_orders)
+
+        for rank in reversed(sorted_ranks):
+            child_reference = rank_to_x.get(rank + 1, {})
+            current_order = layer_orders[rank]
+            decorated = []
+
+            for index, mouse in enumerate(current_order):
+                bary = barycenter_from_ids(
+                    get_child_ids(mouse),
+                    child_reference,
+                    index,
+                )
+                decorated.append(
+                    (
+                        bary,
+                        parent_pair_key(mouse),
+                        mouse.id,
+                        mouse,
+                    )
+                )
+
+            decorated.sort(key=lambda item: item[:-1])
+            layer_orders[rank] = [item[-1] for item in decorated]
+
+    for _ in range(4):
+        forward_barycenter_pass()
+        backward_barycenter_pass()
+
+    positions = {}
     current_y = 0
 
     for rank in sorted_ranks:
-        mice_in_layer = layers[rank]
-        mice_in_layer.sort(
-            key=lambda m: (
-                m.father_id if m.father else 0,
-                m.mother_id if m.mother else 0,
-            )
-        )
+        ordered_mice = layer_orders[rank]
 
         row_width = (
-            len(mice_in_layer) * renderer.BOX_W
-            + (len(mice_in_layer) - 1) * renderer.GAP_X
+            len(ordered_mice) * renderer.BOX_W
+            + (len(ordered_mice) - 1) * renderer.GAP_X
         )
         start_x = -(row_width / 2)
 
-        for m in mice_in_layer:
+        nominal_centers = {}
+        current_x = start_x
+        for mouse in ordered_mice:
+            nominal_centers[mouse.id] = current_x + (renderer.BOX_W / 2)
+            current_x += renderer.BOX_W + renderer.GAP_X
+
+        adjusted_centers = {}
+        for mouse in ordered_mice:
+            target_center = nominal_centers[mouse.id]
+
+            if mouse.father and mouse.mother:
+                father_pos = positions.get(mouse.father.id)
+                mother_pos = positions.get(mouse.mother.id)
+
+                if father_pos and mother_pos:
+                    target_center = (father_pos["top_x"] + mother_pos["top_x"]) / 2
+
+            adjusted_centers[mouse.id] = target_center
+
+        min_gap = renderer.BOX_W + renderer.GAP_X
+        final_centers = {}
+        previous_center = None
+
+        for mouse in ordered_mice:
+            center = adjusted_centers[mouse.id]
+            if previous_center is not None and center < previous_center + min_gap:
+                center = previous_center + min_gap
+
+            final_centers[mouse.id] = center
+            previous_center = center
+
+        if final_centers:
+            centers = [final_centers[mouse.id] for mouse in ordered_mice]
+            current_mid = (centers[0] + centers[-1]) / 2
+            shift = -current_mid
+        else:
+            shift = 0
+
+        for mouse in ordered_mice:
+            center_x = final_centers[mouse.id] + shift
+            x = center_x - (renderer.BOX_W / 2)
+
             renderer.draw_mouse(
-                m, start_x, current_y, is_focus=(m.id == start_mouse.id)
+                mouse,
+                x,
+                current_y,
+                is_focus=(mouse.id == start_mouse.id),
             )
 
-            center_x = start_x + (renderer.BOX_W / 2)
-            positions[m.id] = {
+            positions[mouse.id] = {
                 "top_x": center_x,
                 "top_y": current_y,
                 "bottom_x": center_x,
                 "bottom_y": current_y + renderer.BOX_H,
             }
 
-            start_x += renderer.BOX_W + renderer.GAP_X
-
         current_y += renderer.BOX_H + renderer.GAP_Y
 
-    all_drawn_mice = [m for sublist in layers.values() for m in sublist]
+    for rank in sorted_ranks:
+        for mouse in layer_orders[rank]:
+            child_pos = positions[mouse.id]
 
-    for m in all_drawn_mice:
-        child_pos = positions[m.id]
+            if mouse.father and mouse.father.id in positions:
+                father_pos = positions[mouse.father.id]
+                renderer.draw_line(
+                    father_pos["bottom_x"],
+                    father_pos["bottom_y"],
+                    child_pos["top_x"],
+                    child_pos["top_y"],
+                    child_id=mouse.id,
+                )
 
-        if m.father and m.father.id in positions:
-            father_pos = positions[m.father.id]
-            renderer.draw_line(
-                father_pos["bottom_x"],
-                father_pos["bottom_y"],
-                child_pos["top_x"],
-                child_pos["top_y"],
-                child_id=m.id,
-            )
-
-        if m.mother and m.mother.id in positions:
-            mother_pos = positions[m.mother.id]
-            renderer.draw_line(
-                mother_pos["bottom_x"],
-                mother_pos["bottom_y"],
-                child_pos["top_x"],
-                child_pos["top_y"],
-                child_id=m.id,
-            )
+            if mouse.mother and mouse.mother.id in positions:
+                mother_pos = positions[mouse.mother.id]
+                renderer.draw_line(
+                    mother_pos["bottom_x"],
+                    mother_pos["bottom_y"],
+                    child_pos["top_x"],
+                    child_pos["top_y"],
+                    child_id=mouse.id,
+                )
 
 
 @login_required
