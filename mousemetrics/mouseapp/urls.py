@@ -9,6 +9,11 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("privacy_policy/", views.privacy_policy, name="privacy_policy"),
     path(
+        "accessibility_statement/",
+        views.accessibility_statement,
+        name="accessibility_statement",
+    ),
+    path(
         "manual/",
         TemplateView.as_view(template_name="mouseapp/user_manual.html"),
         name="user_manual",

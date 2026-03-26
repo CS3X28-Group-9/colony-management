@@ -4,11 +4,14 @@
     {% if request.user.is_superuser %}
       <a href="{{ url('admin:index') }}" class="ml-2">Admin</a>
     {% endif %}
-    <a href="{{ url ('mouseapp:privacy_policy') }}" class="ml-2"
-      >Privacy Policy</a
-    >
+     <a href="{{ url ('mouseapp:privacy_policy') }}" class="ml-2"
+       >Privacy Policy</a
+     >
     <a href="{{ url ('mouseapp:user_manual') }}" class="ml-2"
       >User Manual</a
     >
+    <a href="{{ url ('mouseapp:accessibility_statement') }}" class="ml-2">
+      Accessibility Statement
+    </a>
   </div>
 </footer>

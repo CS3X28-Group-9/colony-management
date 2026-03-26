@@ -1,11 +1,11 @@
 <nav class="border-b border-dynamic bg-secondary">
   <div class="flex items-center justify-between py-3 px-4 mx-auto max-w-6xl">
-    <a
+    <h1><a
       href="{{ url('mouseapp:home') }}"
       class="text-xl font-semibold text-primary hover:opacity-80 transition-opacity"
     >
       Labsafe
-    </a>
+    </a></h1>
 
     {% if request.user.is_authenticated %}
       <div class="flex items-center gap-4 flex-wrap justify-end">
@@ -42,6 +42,8 @@
               >
                 {{ unread_count }}
               </span>
+            {% else %}
+              <p hidden>no notifications</p>
             {% endif %}
           </label>
           <div
@@ -51,7 +53,7 @@
           >
             <div class="p-4 border-b border-dynamic">
               <div class="flex justify-between items-center gap-4">
-                <h3 class="font-semibold text-primary">Notifications</h3>
+                <h2 class="font-semibold text-primary">Notifications</h2>
                 {% if recent_notifications %}
                   <form
                     method="post"

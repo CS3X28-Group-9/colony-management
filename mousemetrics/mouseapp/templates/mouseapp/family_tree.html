@@ -1,16 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Family Tree - {{ center_mouse.strain }}{% endblock %}
 {% block content %}
-  <div class="mb-4 text-right">
-    <a
-      data="{{ url('mouseapp:family_tree_svg', mouse=center_mouse.id) }}"
-      download="family_tree_{{ center_mouse.id }}.svg"
-      class="btn-primary"
-    >
-      Download SVG
-    </a>
-  </div>
-
   <div
     class="overflow-hidden border rounded-lg bg-white shadow-sm p-4 h-[80vh] text-center"
   >
