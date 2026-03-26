@@ -45,6 +45,8 @@ FIELD_SYNONYMS: dict[str, list[str]] = {
     "notes": ["notes", "comment", "comments", "remarks", "remark"],
     "box": ["box", "cage", "location"],
     "strain": ["strain", "line"],
+    "death_date": ["death date", "cull date"],
+    "death_reason": ["death reason", "cull reason"],
 }
 
 

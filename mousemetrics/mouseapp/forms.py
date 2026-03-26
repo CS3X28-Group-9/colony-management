@@ -125,9 +125,11 @@ class MouseForm(forms.ModelForm):
             "father",
             "date_of_birth",
             "tube_number",
-            "cull_date",
-            "cull_reason",
+            "death_date",
+            "death_cause",
+            "death_reason",
             "box",
+            "genotype",
             "strain",
             "coat_colour",
             "study_plan",
@@ -136,7 +138,6 @@ class MouseForm(forms.ModelForm):
         ]
         widgets = {
             "coat_colour": forms.TextInput,
-            "cull_reason": forms.TextInput,
         }
 
 

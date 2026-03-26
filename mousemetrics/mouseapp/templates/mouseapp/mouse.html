@@ -28,15 +28,19 @@
             <dd class="mouse-data">{{ mouse.box.number }}</dd>
           </div>
 
-          {% if mouse.cull_date %}
+          {% if mouse.death_date %}
             <div class="mouse-flex">
-              <dt class="mouse-row">Culled</dt>
+              <dt class="mouse-row">Died ({{ mouse.get_death_cause_display() }})</dt>
               <dd class="mouse-data">
-                {{ mouse.cull_date.strftime("%b %d, %Y") }}:
-                {{ mouse.cull_reason }}
+                {{ mouse.death_date.strftime("%b %d, %Y") }}{% if mouse.death_reason %}: {{ mouse.death_reason }}{% endif %}
               </dd>
             </div>
           {% endif %}
+
+          <div class="mouse-flex">
+            <dt class="mouse-row">Genotype</dt>
+            <dd class="mouse-data">{{ mouse.genotype }}</dd>
+          </div>
 
           <div class="mouse-flex">
             <dt class="mouse-row">Strain</dt>
