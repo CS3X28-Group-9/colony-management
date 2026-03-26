@@ -18,6 +18,17 @@
             <dd class="mouse-data">{{ mouse.date_of_birth }}</dd>
           </div>
 
+          {% set exceeded = mouse.age_months > 18 and not mouse.project.allow_over_18_months %}
+          <div class="mouse-flex ">
+            <dt class="mouse-row ">Age</dt>
+            <dd class="mouse-data {% if exceeded %}text-amber-700{% endif %}">
+              {{ mouse.age_months }} months
+              {% if exceeded %}
+                (Project license does not allow mice older than 18 months)
+              {% endif %}
+            </dd>
+          </div>
+
           <div class="mouse-flex">
             <dt class="mouse-row">Tube Number</dt>
             <dd class="mouse-data">{{ mouse.tube_number }}</dd>

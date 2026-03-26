@@ -1,3 +1,4 @@
+from datetime import date
 from django.db import models
 from django.db.models import SET_NULL, Manager, query, Q
 from django.contrib.auth.models import User
@@ -242,6 +243,13 @@ class Mouse(models.Model):
         return self.project.has_write_access(user) or user.has_perm(
             "mouseapp.edit_mice"
         )
+
+    @property
+    def age_months(self) -> int:
+        def months(d: date) -> int:
+            return d.year * 12 + d.month
+
+        return months(date.today()) - months(self.date_of_birth)
 
     def __str__(self) -> str:
         return f"{self.genotype} {self.strain} {self.tube_number}"

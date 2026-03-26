@@ -19,12 +19,18 @@
       >
         <strong>Mice in project:</strong> {{ project.mouse_count() }}
       </span>
-      <span
-        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-sm bg-secondary text-secondary"
-      >
-        <strong>Project quota:</strong>
-        {% if project.quota_5_years is none %}No quota{% else %}{{ project.quota_5_years }}{% endif %}
-      </span>
+      {% if project.quota_5_years is not none %}
+        {% set exceeded = project.quota_5_years < project.mouse_count() %}
+        <span
+          class="inline-flex items-center gap-2 px-3 py-1.5 {% if exceeded %}bg-orange-800 text-gray-100{% else %}bg-secondary text-secondary{% endif %} rounded-md text-sm"
+        >
+          <strong>Project quota:</strong>
+            {{ project.quota_5_years }}
+            {% if exceeded %}
+              (Over quota!)
+            {% endif %}
+        </span>
+      {% endif %}
     </div>
 
     <ul class="text-primary">
@@ -49,6 +55,7 @@
             <tr class="table-header">
               <th class="table-header-text">Mouse ID</th>
               <th class="table-header-text">Date of Birth</th>
+              <th class="table-header-text">Age</th>
               <th class="table-header-text">Box Number</th>
               <th class="table-header-text">Strain</th>
               <th class="table-header-text">Coat Colour</th>
@@ -64,7 +71,14 @@
                      >Mouse {{ mouse.tube_number }}</a
                    >
                 </td>
+                {% set exceeded = mouse.age_months > 18 and not project.allow_over_18_months %}
                 <td class="numeric table-padding">{{ mouse.date_of_birth }}</td>
+                <td
+                  class="numeric table-padding {% if exceeded %}bg-orange-800 text-gray-100{% endif %}"
+                  {% if exceeded %}title="Project license does not allow mice older than 18 months"{% endif %}
+                >
+                  {{ mouse.age_months }}mo
+                </td>
                 <td class="numeric table-padding">{{ mouse.box.number }}</td>
                 <td class="table-padding">{{ mouse.strain }}</td>
                 <td class="table-padding">{{ mouse.coat_colour }}</td>
