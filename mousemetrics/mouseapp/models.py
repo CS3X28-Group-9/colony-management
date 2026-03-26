@@ -235,6 +235,38 @@ class Mouse(models.Model):
         return reverse("mouseapp:mouse", args=[self.id])
 
 
+class MouseObservation(models.Model):
+    TYPE_CHOICES = {
+        "PH": "Phenotype",
+        "ML": "Missing Limbs",
+        "MA": "Missing Appendages",
+        "CE": "Cloudy Eyes",
+        "RT": "Ring Tail",
+        "KT": "Kinky Tail",
+        "CT": "Curly Tail",
+        "CM": "Coat Missing",
+        "OT": "Overgrown Teeth",
+        "": "Other",
+    }
+    mouse = models.ForeignKey(
+        Mouse, on_delete=models.CASCADE, related_name="observations"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+
+    type = models.CharField(
+        max_length=2, blank=True, null=True, choices=TYPE_CHOICES, default=""
+    )
+    details = models.TextField(blank=True, null=True)
+
+    @property
+    def type_text(self):
+        return self.TYPE_CHOICES[self.type or ""]
+
+    class Meta:
+        ordering = ["created_at"]
+
+
 class Request(models.Model):
     _user: User | None = None
 
