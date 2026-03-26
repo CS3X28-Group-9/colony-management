@@ -44,6 +44,21 @@
           </div>
 
           <div class="mouse-flex">
+            <dt class="mouse-row">Study Plan</dt>
+            {% if mouse.study_plan %}
+              <dd class="mouse-data">
+                <a
+                  href="{{ url('mouseapp:study_plan', id=mouse.study_plan.id) }}"
+                >
+                  {{ mouse.study_plan }}
+                </a>
+              </dd>
+            {% else %}
+              <dd class="mouse-data">Not assigned</dd>
+            {% endif %}
+          </div>
+
+          <div class="mouse-flex">
             <dt class="mouse-row">Coat Colour</dt>
             <dd class="mouse-data">{{ mouse.coat_colour }}</dd>
           </div>

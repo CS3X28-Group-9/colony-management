@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import SET_NULL, Manager
+from django.db.models import SET_NULL, Manager, query, Q
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.urls import reverse
@@ -27,20 +27,40 @@ class Project(models.Model):
     license_constraints = models.TextField()
 
     class Meta:
-        permissions = [("create_project", "Create projects")]
+        permissions = [
+            ("create_project", "Create projects"),
+            ("manage_projects", "Manage projects"),
+        ]
         ordering = ["name"]
 
+    @classmethod
+    def readable_for_user(cls, user: User) -> query.QuerySet:
+        if user.is_superuser or user.has_perm("mouseapp.manage_projects"):
+            return cls.objects.get_queryset()
+        # pyrefly: ignore[missing-attribute] - dynamic attrs don't play well with typeck
+        return cls.objects.filter(Q(lead=user) | Q(researchers=user))
+
+    @classmethod
+    def writable_for_user(cls, user: User) -> query.QuerySet:
+        if user.is_superuser or user.has_perm("mouseapp.manage_projects"):
+            return cls.objects.get_queryset()
+        # pyrefly: ignore[missing-attribute] - dynamic attrs don't play well with typeck
+        return user.leading_set.get_queryset()
+
+    def is_lead_by(self, user: User | None) -> bool:
+        return user is not None and self.lead is not None and user.id == self.lead.id
+
     def has_read_access(self, user: User) -> bool:
-        if self.lead and self.lead.pk == user.pk:
-            return True
-        if user.is_superuser:
-            return True
-        return self.researchers.filter(pk=user.pk).exists()
+        return (
+            self.has_write_access(user) or self.researchers.filter(pk=user.pk).exists()
+        )
 
     def has_write_access(self, user: User) -> bool:
-        if self.lead and self.lead.pk == user.pk:
-            return True
-        return user.is_superuser
+        return (
+            user.is_superuser
+            or user.has_perm("mouseapp.manage_projects")
+            or self.is_lead_by(user)
+        )
 
     def mouse_count(self):
         return self.mouse_set.count()
@@ -74,7 +94,7 @@ class StudyPlan(models.Model):
         null=True,
         related_name="approved_study_plans",
     )
-    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default="Draft")
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default="D")
     study_id = models.CharField(max_length=50, blank=True, null=True, unique=True)
     approval_date = models.DateField(blank=True, null=True)
 
@@ -288,7 +308,7 @@ class Request(models.Model):
             return False
 
         if self.status == "P":
-            if self.project and self.project.lead and self.project.lead.id == user.pk:
+            if self.project and self.project.has_write_access(user):
                 return True
             if user.has_perm("mouseapp.approve_request"):
                 return True
