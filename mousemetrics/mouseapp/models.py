@@ -94,7 +94,7 @@ class StudyPlan(models.Model):
         null=True,
         related_name="approved_study_plans",
     )
-    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default="Draft")
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default="D")
     study_id = models.CharField(max_length=50, blank=True, null=True, unique=True)
     approval_date = models.DateField(blank=True, null=True)
 

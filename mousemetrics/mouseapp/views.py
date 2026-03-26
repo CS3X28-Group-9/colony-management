@@ -29,8 +29,19 @@ from .forms import (
     CullingRequestForm,
     TransferRequestForm,
     RequestReplyForm,
+    StudyPlanForm,
+    StudyPlanApprovalForm,
 )
-from .models import Mouse, Project, Request, Notification, RequestReply, ReplyReaction
+from .models import (
+    Mouse,
+    Project,
+    Request,
+    Notification,
+    RequestReply,
+    ReplyReaction,
+    StudyPlan,
+)
+
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 
@@ -156,7 +167,12 @@ def project(request: AuthedRequest, id: int) -> HttpResponse:
         raise PermissionDenied()
     write_access = project.has_write_access(request.user)
 
-    context = {"project": project, "write_access": write_access}
+    context = {
+        "project": project,
+        "write_access": write_access,
+        "study_plans": StudyPlan.objects.filter(project=project),
+    }
+
     return render(request, "mouseapp/project.html", context)
 
 
@@ -175,6 +191,115 @@ def edit_project(request: AuthedRequest, id: int) -> HttpResponse:
         form = ProjectForm(instance=project)
 
     return render(request, "mouseapp/edit_project.html", {"form": form})
+
+
+@login_required
+def study_plan(request: AuthedRequest, id: int) -> HttpResponse:
+    study_plan = get_object_or_404(StudyPlan, id=id)
+
+    if not study_plan.project.has_read_access(request.user):
+        raise PermissionDenied()
+
+    approval_form = None
+    if (
+        request.user.has_perm("mouseapp.approve_study_plan")
+        and study_plan.status != "A"
+    ):
+        approval_form = StudyPlanApprovalForm()
+
+    return render(
+        request,
+        "mouseapp/study_plan.html",
+        {
+            "study_plan": study_plan,
+            "approval_form": approval_form,
+        },
+    )
+
+
+@login_required
+def create_study_plan(request: AuthedRequest) -> HttpResponse:
+    project_id = request.GET.get("project")
+    initial = {}
+
+    if project_id:
+        try:
+            project = Project.objects.get(id=int(project_id))
+            if not project.has_write_access(request.user):
+                raise PermissionDenied()
+            initial["project"] = project
+        except (ValueError, TypeError, Project.DoesNotExist):
+            project = None
+    else:
+        project = None
+
+    if request.method == "POST":
+        form = StudyPlanForm(request.POST, user=request.user)
+        if form.is_valid():
+            study_plan = form.save(commit=False)
+            study_plan.creator = request.user
+            study_plan.status = "D"
+            study_plan.save()
+            return redirect("mouseapp:study_plan", id=study_plan.id)
+    else:
+        form = StudyPlanForm(user=request.user, initial=initial)
+
+    return render(
+        request,
+        "mouseapp/study_plan_form.html",
+        {
+            "form": form,
+            "title": "Create Study Plan",
+        },
+    )
+
+
+@login_required
+def edit_study_plan(request: AuthedRequest, id: int) -> HttpResponse:
+    study_plan = get_object_or_404(StudyPlan, id=id)
+
+    if not study_plan.project.has_write_access(request.user):
+        raise PermissionDenied()
+
+    if request.method == "POST":
+        form = StudyPlanForm(request.POST, instance=study_plan, user=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("mouseapp:study_plan", id=study_plan.id)
+    else:
+        form = StudyPlanForm(instance=study_plan, user=request.user)
+
+    return render(
+        request,
+        "mouseapp/study_plan_form.html",
+        {
+            "form": form,
+            "title": "Edit Study Plan",
+            "study_plan": study_plan,
+        },
+    )
+
+
+@login_required
+@require_http_methods(["POST"])
+def approve_study_plan(request: AuthedRequest, id: int) -> HttpResponse:
+    study_plan = get_object_or_404(StudyPlan, id=id)
+
+    if not study_plan.project.has_read_access(request.user):
+        raise PermissionDenied()
+
+    if not request.user.has_perm("mouseapp.approve_study_plan"):
+        raise PermissionDenied()
+
+    form = StudyPlanApprovalForm(request.POST)
+    if form.is_valid():
+        study_plan.study_id = form.cleaned_data["study_id"]
+        study_plan.status = "A"
+        study_plan.approval_date = date.today()
+        study_plan.approver = request.user
+        study_plan.save()
+
+    return redirect("mouseapp:study_plan", id=study_plan.id)
 
 
 @login_required
