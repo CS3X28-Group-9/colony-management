@@ -148,6 +148,10 @@
             >Confirm Password</label
           >
         </div>
+
+        {% if invite_token %}
+          <input type="hidden" name="invite_token" value="{{ invite_token }}" />
+        {% endif %}
         {% if form.password2.errors %}{% for error in form.password2.errors %}
           <p class="error-message-compact">{{ error }}</p>
         {% endfor %}{% endif %}
