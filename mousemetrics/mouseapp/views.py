@@ -22,6 +22,7 @@ from .forms import (
     RegistrationForm,
     CustomAuthenticationForm,
     InviteMemberForm,
+    ObservationForm,
     MouseForm,
     ProjectForm,
     RemoveMemberForm,
@@ -34,6 +35,7 @@ from .forms import (
 )
 from .models import (
     Mouse,
+    MouseObservation,
     Project,
     Request,
     Notification,
@@ -134,10 +136,15 @@ def mouse(request: AuthedRequest, id: int) -> HttpResponse:
         req._user = request.user
         requests_with_permissions.append(req)
 
+    observation_form = None
+    if write_access:
+        observation_form = ObservationForm()
+
     context = {
         "mouse": mouse,
         "write_access": write_access,
         "mouse_requests": requests_with_permissions,
+        "observation_form": observation_form,
     }
     return render(request, "mouseapp/mouse.html", context)
 
@@ -156,7 +163,29 @@ def edit_mouse(request: AuthedRequest, id: int) -> HttpResponse:
     else:
         form = MouseForm(instance=mouse)
 
-    return render(request, "mouseapp/edit_mouse.html", {"form": form})
+    return render(
+        request, "mouseapp/form.html", {"form": form, "title": "Editing Mouse"}
+    )
+
+
+@login_required
+def observe_mouse(request: AuthedRequest, id: int) -> HttpResponse:
+    mouse: Mouse = get_object_or_404(Mouse, id=id)
+    if not mouse.has_write_access(request.user):
+        raise PermissionDenied()
+
+    if request.method == "POST":
+        observation = MouseObservation(user=request.user, mouse=mouse)
+        form = ObservationForm(request.POST, instance=observation)
+        if form.is_valid():
+            form.save()
+            return redirect(mouse)
+    else:
+        form = ObservationForm()
+
+    return render(
+        request, "mouseapp/form.html", {"form": form, "title": "Adding Observation"}
+    )
 
 
 @login_required
