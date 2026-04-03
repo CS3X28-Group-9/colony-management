@@ -1,6 +1,5 @@
 New request in your LabSafe:<br />
-{{ creator_name }} created a {{ request_type }}
-request{% if project_name %}in {{ project_name }}{% endif %}.<br />
+{{ creator_name }} created a {{ request_type }} request{% if project_name %} in {{ project_name }}{% endif %}.<br />
 <br />
 Request details:<br />
 {% for line in request_details.splitlines() %}
