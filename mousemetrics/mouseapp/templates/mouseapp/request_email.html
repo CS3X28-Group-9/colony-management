@@ -8,5 +8,5 @@ Request details:<br />
 <br />
 <a
   href="{{ protocol }}://{{ domain }}{{ url('mouseapp:request_detail', request_id=request_obj.id) }}"
-  >View request</a
+  >{{ protocol }}://{{ domain }}{{ url('mouseapp:request_detail', request_id=request_obj.id) }}</a
 >
