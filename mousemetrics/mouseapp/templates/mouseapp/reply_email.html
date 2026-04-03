@@ -7,5 +7,5 @@ New reply in your LabSafe request:<br />
 <br />
 <a
   href="{{ protocol }}://{{ domain }}{{ url('mouseapp:request_detail', request_id=request_obj.id) }}#reply-{{ reply.id }}"
-  >View reply</a
+  >{{ protocol }}://{{ domain }}{{ url('mouseapp:request_detail', request_id=request_obj.id) }}#reply-{{ reply.id }}</a
 >
