@@ -9,6 +9,19 @@
     <meta name="color-scheme" content="light dark" />
     <meta name="description" content="Animal colony management system" />
     <title>{% block title %}Labsafe{% endblock %}</title>
+    <script>
+      (function () {
+        var k = "labsafe-color-scheme";
+        var t = localStorage.getItem(k) || "system";
+        if (t !== "light" && t !== "dark" && t !== "system") t = "system";
+        var dark =
+          t === "dark" ||
+          (t === "system" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.dataset.colorScheme = t;
+        document.documentElement.classList.toggle("dark", dark);
+      })();
+    </script>
     <link rel="stylesheet" href="{{ static ('dist/styles.css') }}" />
   </head>
 
@@ -21,6 +34,7 @@
       type="module"
     ></script>
     <script src="https://unpkg.com/preline/dist/preline.js"></script>
+    <script src="{{ static('js/theme.js') }}"></script>
     <script src="{{ static('js/password-toggle.js') }}"></script>
   </body>
 </html>

@@ -1,16 +1,15 @@
 @import "tailwindcss";
 
-/* Tailwind CSS v4 dark mode configuration */
-/* Uses prefers-color-scheme (Tailwind's default) and supports .dark class for manual override */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  /* Light mode colors */
   --color-bg-primary: oklch(98.5% 0.002 247.839);
   --color-bg-secondary: oklch(96.7% 0.003 264.542);
   --color-bg-card: oklch(92.8% 0.006 264.531);
   --color-bg-white: oklch(100% 0 0);
   --color-text-primary: oklch(21% 0.034 264.665);
   --color-text-secondary: oklch(44.6% 0.03 256.802);
-  --color-text-muted: oklch(44.6% 0.03 256.802);
+  --color-text-muted: var(--color-text-secondary);
   --color-border: oklch(87.2% 0.01 258.338);
   --color-primary: oklch(70.7% 0.022 261.325);
   --color-primary-hover: oklch(55.1% 0.027 264.364);
@@ -21,41 +20,19 @@
   --color-table-row-odd: oklch(100% 0 0);
   --color-table-row-even: oklch(92.8% 0.006 264.531);
   --color-table-text: oklch(21% 0.034 264.665);
+  --color-bg-input: oklch(100% 0 0);
+  --color-input-border: oklch(87.2% 0.01 258.338);
 }
 
-/* Dark mode colors - works with Tailwind's dark: variant */
-@media (prefers-color-scheme: dark) {
-  :root:not(.light) {
-    --color-bg-primary: oklch(21% 0.034 264.665);
-    --color-bg-secondary: oklch(37.3% 0.034 259.733);
-    --color-bg-card: oklch(30% 0.02 260);
-    --color-bg-white: oklch(30% 0.02 260);
-    --color-text-primary: oklch(98.5% 0.002 247.839);
-    --color-text-secondary: oklch(70.7% 0.022 261.325);
-    --color-text-muted: oklch(70.7% 0.022 261.325);
-    --color-border: oklch(25% 0.015 260);
-    --color-primary: oklch(55.1% 0.027 264.364);
-    --color-primary-hover: oklch(70.7% 0.022 261.325);
-    --color-link: oklch(70.7% 0.165 254.624);
-    --color-link-hover: oklch(80.9% 0.105 251.813);
-    --color-table-header-bg: oklch(37.3% 0.034 259.733);
-    --color-table-header-text: oklch(98.5% 0.002 247.839);
-    --color-table-row-odd: oklch(30% 0.02 260);
-    --color-table-row-even: oklch(37.3% 0.034 259.733);
-    --color-table-text: oklch(98.5% 0.002 247.839);
-  }
-}
-
-.dark,
-[data-theme="dark"] {
+html.dark {
   --color-bg-primary: oklch(21% 0.034 264.665);
   --color-bg-secondary: oklch(37.3% 0.034 259.733);
   --color-bg-card: oklch(30% 0.02 260);
-  --color-bg-white: oklch(30% 0.02 260);
+  --color-bg-white: var(--color-bg-card);
   --color-text-primary: oklch(98.5% 0.002 247.839);
-  --color-text-secondary: oklch(70.7% 0.022 261.325);
-  --color-text-muted: oklch(70.7% 0.022 261.325);
-  --color-border: oklch(25% 0.015 260);
+  --color-text-secondary: oklch(76% 0.02 261.325);
+  --color-text-muted: var(--color-text-secondary);
+  --color-border: oklch(32% 0.02 260);
   --color-primary: oklch(55.1% 0.027 264.364);
   --color-primary-hover: oklch(70.7% 0.022 261.325);
   --color-link: oklch(70.7% 0.165 254.624);
@@ -65,54 +42,12 @@
   --color-table-row-odd: oklch(30% 0.02 260);
   --color-table-row-even: oklch(37.3% 0.034 259.733);
   --color-table-text: oklch(98.5% 0.002 247.839);
+  --color-bg-input: oklch(22% 0.03 264);
+  --color-input-border: oklch(52% 0.02 260);
 }
 
 html {
   scroll-behavior: smooth;
-}
-
-<<<<<<< HEAD
-/* Dynamic color scheme via CSS variables */
-:root {
-  --color-bg-primary: oklch(98.5% 0.002 247.839); /* neutral-100 */
-  --color-bg-secondary: oklch(96.7% 0.003 264.542); /* neutral-200 */
-  --color-bg-card: oklch(92.8% 0.006 264.531); /* neutral-300 */
-  --color-bg-white: oklch(100% 0 0); /* white */
-  --color-text-primary: oklch(21% 0.034 264.665); /* neutral-900 */
-  --color-text-secondary: oklch(44.6% 0.03 256.802); /* neutral-600 */
-  --color-text-muted: oklch(44.6% 0.03 256.802); /* neutral-600 */
-  --color-border: oklch(87.2% 0.01 258.338); /* neutral-300 */
-  --color-primary: oklch(70.7% 0.022 261.325); /* neutral-400 */
-  --color-primary-hover: oklch(55.1% 0.027 264.364); /* neutral-600 */
-  --color-link: oklch(54.6% 0.245 262.881); /* blue-600 */
-  --color-link-hover: oklch(48.8% 0.243 264.376); /* blue-700 */
-  --color-table-header-bg: oklch(92.8% 0.006 264.531); /* neutral-300 */
-  --color-table-header-text: oklch(37.3% 0.034 259.733); /* gray-700 */
-  --color-table-row-odd: oklch(100% 0 0); /* white */
-  --color-table-row-even: oklch(92.8% 0.006 264.531); /* neutral-300 */
-  --color-table-text: oklch(21% 0.034 264.665); /* neutral-900 */
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg-primary: oklch(21% 0.034 264.665); /* neutral-900 */
-    --color-bg-secondary: oklch(37.3% 0.034 259.733); /* neutral-700 */
-    --color-bg-card: oklch(30% 0.02 260); /* neutral-800 */
-    --color-bg-white: oklch(30% 0.02 260); /* neutral-800 */
-    --color-text-primary: oklch(98.5% 0.002 247.839); /* neutral-100 */
-    --color-text-secondary: oklch(70.7% 0.022 261.325); /* neutral-400 */
-    --color-text-muted: oklch(70.7% 0.022 261.325); /* neutral-400 */
-    --color-border: oklch(25% 0.015 260); /* neutral-950 */
-    --color-primary: oklch(55.1% 0.027 264.364); /* neutral-600 */
-    --color-primary-hover: oklch(70.7% 0.022 261.325); /* neutral-400 */
-    --color-link: oklch(70.7% 0.165 254.624); /* blue-400 */
-    --color-link-hover: oklch(80.9% 0.105 251.813); /* blue-300 */
-    --color-table-header-bg: oklch(37.3% 0.034 259.733); /* neutral-700 */
-    --color-table-header-text: oklch(98.5% 0.002 247.839); /* neutral-100 */
-    --color-table-row-odd: oklch(30% 0.02 260); /* neutral-800 */
-    --color-table-row-even: oklch(37.3% 0.034 259.733); /* neutral-700 */
-    --color-table-text: oklch(98.5% 0.002 247.839); /* neutral-100 */
-  }
 }
 
 @layer utilities {
@@ -146,6 +81,10 @@ html {
 
   .border-dynamic {
     border-color: var(--color-border);
+  }
+
+  .border-strong {
+    border-color: var(--color-input-border);
   }
 
   .link-dynamic {
@@ -289,19 +228,37 @@ html {
   .input {
     @apply w-full px-3 py-2 border rounded-lg
     focus:outline-none focus:ring-2;
-    background-color: var(--color-bg-white);
-    border-color: var(--color-border);
+    background-color: var(--color-bg-input);
+    border-color: var(--color-input-border);
+    border-width: 1px;
     color: var(--color-text-primary);
   }
 
   .input:focus {
     --tw-ring-color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .input::placeholder {
+    color: var(--color-text-secondary);
+    opacity: 1;
   }
 
   .card {
     @apply border rounded-lg p-6;
     background-color: var(--color-bg-card);
     border-color: var(--color-border);
+  }
+
+  .study-plan-form p {
+    @apply mb-4;
+  }
+
+  .study-plan-form label {
+    color: var(--color-text-primary);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.25rem;
   }
 
   .page-title {
@@ -322,17 +279,13 @@ html {
     @apply mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded;
   }
 
-  /* Request highlighting using :target pseudo-class */
-  li:target {
-    @apply border-blue-500 border-2 bg-blue-50 ring-2 ring-blue-300;
-  }
-
+  li:target,
   div[id^="reply-"]:target {
-    @apply border-blue-500 border-2 bg-blue-50 ring-2 ring-blue-300;
+    @apply border-blue-500 border-2 bg-blue-50 ring-2 ring-blue-300
+    dark:border-blue-400 dark:bg-neutral-900/80 dark:ring-blue-500/40;
   }
 }
 
-/* Notification dropdown checkbox trick - outside @layer for proper compilation */
 .notification-checkbox:not(:checked) ~ .notification-menu {
   display: none;
 }
