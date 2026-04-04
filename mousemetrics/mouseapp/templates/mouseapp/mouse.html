@@ -1,8 +1,8 @@
 {% extends "base.html" %} {% block title %}Mouse{% endblock %}
 {% block content %}
   <div class="max-w-3xl mx-auto px-4 py-8">
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-      <div class="bg-neutral-200 px-6 py-4">
+    <div class="rounded-lg shadow-md overflow-hidden bg-white-dynamic">
+      <div class="px-6 py-4 bg-secondary">
         <h3 class="default-header">Mouse Details</h3>
       </div>
 
@@ -100,7 +100,7 @@
           </div>
         </dl>
 
-        <div class="mt-6 pt-6 border-t border-gray-200">
+        <div class="mt-6 pt-6 border-t border-dynamic">
           <a
             href="{{ url('mouseapp:family_tree', mouse=mouse.id) }}"
             class="inline-flex items-center px-4 py-2 btn-primary"
@@ -117,6 +117,33 @@
             </a>
           {% endif %}
         </div>
+      </div>
+    </div>
+
+    <div class="rounded-lg shadow-md overflow-hidden mt-6 bg-white-dynamic">
+      <div class="px-6 py-4 bg-secondary">
+        <div class="flex justify-between items-center">
+          <h3 class="default-header">Observations</h3>
+        </div>
+      </div>
+      <div class="p-6">
+        {% for observation in mouse.observations.all() %}
+          <div class="mb-6">
+            On {{ observation.created_at.strftime('%b %d, %Y at %I:%M %p') }} by {{ observation.user or 'a deleted user' }}: {{ observation.type_text }}
+
+            <p class="ml-6 mb-3">
+              {{observation.details}}
+            </p>
+            <hr>
+          </div>
+        {% endfor %}
+        {% if observation_form %}
+          <form method="post" action="{{ url('mouseapp:observe_mouse', mouse.id) }}">
+            {{csrf_input}}
+            {{ observation_form.as_p() }}
+            <button type="submit" class="w-full btn-primary mt-2">Add Observation</button>
+          </form>
+        {% endif %}
       </div>
     </div>
 
@@ -147,7 +174,7 @@
         {% if mouse_requests %}
           <ul class="space-y-2">
             {% for req in mouse_requests %}
-              <li class="bg-white border border-neutral-300 rounded p-3">
+              <li class="border rounded p-3 bg-white-dynamic border-dynamic">
                 <div class="flex justify-between items-start">
                   <div class="flex-1">
                     <p class="font-medium">
