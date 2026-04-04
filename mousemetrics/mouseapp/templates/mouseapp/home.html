@@ -34,6 +34,16 @@
           {% else %}
             <h3 class="default-header my-2">No current projects!</h3>
           {% endif %}
+          {% if request.user.has_perm('mouseapp.create_project') %}
+            <div class="flex justify-center py-3">
+              <a
+                href="{{ url( 'mouseapp:create_project') }}"
+                class="btn-primary"
+              >
+                Create Project
+              </a>
+            </div>
+          {% endif %}
         </div>
       </div>
     {% else %}

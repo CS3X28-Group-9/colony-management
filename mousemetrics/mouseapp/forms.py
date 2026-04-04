@@ -159,6 +159,37 @@ class ProjectForm(forms.ModelForm):
         ]
 
 
+class CreateProjectForm(forms.ModelForm):
+    lead = forms.ModelChoiceField(
+        queryset=User.objects.all(),
+        to_field_name="email",
+        widget=forms.EmailInput(attrs={"class": "input"}),
+        label="Lead (Email)",
+    )
+
+    class Meta:
+        model = Project
+        fields = [
+            "name",
+            "lead",
+            "start_date",
+            "allow_over_18_months",
+            "has_mod_sev_permission",
+            "quota_5_years",
+            "license_constraints",
+        ]
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "input"}),
+            "start_date": forms.DateInput(attrs={"class": "input"}),
+            "quota_5_years": forms.NumberInput(attrs={"class": "input"}),
+            "license_constraints": forms.Textarea(attrs={"class": "input"}),
+        }
+        labels = {
+            "allow_over_18_months": "Allowed mice older than 18 months",
+            "has_mod_sev_permission": "Allowed moderate & severe condition mice",
+        }
+
+
 class StudyPlanForm(forms.ModelForm):
     class Meta:
         model = StudyPlan
