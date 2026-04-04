@@ -434,6 +434,8 @@ def login_view(request: HttpRequest) -> HttpResponse:
             if not remember_me:
                 request.session.set_expiry(0)  # Session expires on browser close
             auth_login(request, form.get_user())
+            if next := request.GET.get("next"):
+                return redirect(next)
             return redirect("mouseapp:home")
     else:
         form = CustomAuthenticationForm()
@@ -445,9 +447,7 @@ def register(request: HttpRequest) -> HttpResponse:
     invite_token = request.GET.get("invite") or request.POST.get("invite_token")
     invited_email = None
 
-    if not settings.ENABLE_REGISTRATION:
-        if not invite_token:
-            raise PermissionDenied()
+    if invite_token:
         try:
             SECONDS_IN_MONTH = 60 * 60 * 24 * 31
             data = signing.loads(invite_token, max_age=SECONDS_IN_MONTH)
@@ -455,10 +455,14 @@ def register(request: HttpRequest) -> HttpResponse:
         except (signing.BadSignature, KeyError):
             raise PermissionDenied()
 
+    if not settings.ENABLE_REGISTRATION and not invite_token:
+        raise PermissionDenied()
+
     if request.method == "POST":
         form = RegistrationForm(request.POST, invited_email=invited_email)
         if form.is_valid():
             form.save()
+            assert invite_token
             if invite_token:
                 return redirect(reverse("mouseapp:join_project", args=[invite_token]))
             return redirect("mouseapp:login")
