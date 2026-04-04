@@ -360,10 +360,9 @@ def invite_member(request: AuthedRequest, id: int) -> HttpResponse:
         if form.is_valid():
             email = form.cleaned_data["user"]
             try:
-                user = User.objects.get(email=email)
                 token = signing.dumps(
                     {
-                        "user": user.pk,
+                        "email": email,
                         "project": project.id,
                     }
                 )
@@ -413,26 +412,33 @@ def remove_member(request: AuthedRequest, id: int) -> HttpResponse:
     return render(request, "mouseapp/remove_member.html", {"form": form})
 
 
-@login_required
 @require_http_methods(["GET", "POST"])
 def join_project(request: AuthedRequest, token: str) -> HttpResponse:
     SECONDS_IN_MONTH = 60 * 60 * 24 * 31
 
-    data = signing.loads(token, max_age=SECONDS_IN_MONTH)
     try:
-        user_id = data["user"]
+        data = signing.loads(token, max_age=SECONDS_IN_MONTH)
+    except signing.BadSignature as e:
+        raise PermissionDenied from e
+
+    try:
+        email = data["email"]
         project_id = data["project"]
     except KeyError as e:
         raise PermissionDenied from e
 
-    if user_id != request.user.pk:
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        return redirect(reverse("mouseapp:register") + f"?invite={token}")
+
+    if not request.user.is_authenticated:
+        return redirect(reverse("mouseapp:login") + f"?next={request.path}")
+
+    if request.user != user:
         raise PermissionDenied
 
-    try:
-        project = Project.objects.get(pk=project_id)
-    except Project.DoesNotExist as e:
-        raise PermissionDenied from e
-
+    project = get_object_or_404(Project, pk=project_id)
     project.researchers.add(request.user)
     return redirect(project)
 
@@ -446,6 +452,8 @@ def login_view(request: HttpRequest) -> HttpResponse:
             if not remember_me:
                 request.session.set_expiry(0)  # Session expires on browser close
             auth_login(request, form.get_user())
+            if next := request.GET.get("next"):
+                return redirect(next)
             return redirect("mouseapp:home")
     else:
         form = CustomAuthenticationForm()
@@ -454,16 +462,34 @@ def login_view(request: HttpRequest) -> HttpResponse:
 
 
 def register(request: HttpRequest) -> HttpResponse:
-    if not settings.ENABLE_REGISTRATION:
+    invite_token = request.GET.get("invite") or request.POST.get("invite_token")
+    invited_email = None
+
+    if invite_token:
+        try:
+            SECONDS_IN_MONTH = 60 * 60 * 24 * 31
+            data = signing.loads(invite_token, max_age=SECONDS_IN_MONTH)
+            invited_email = data["email"]
+        except (signing.BadSignature, KeyError):
+            raise PermissionDenied()
+
+    if not settings.ENABLE_REGISTRATION and not invite_token:
         raise PermissionDenied()
+
     if request.method == "POST":
-        form = RegistrationForm(request.POST)
+        form = RegistrationForm(request.POST, invited_email=invited_email)
         if form.is_valid():
             form.save()
+            assert invite_token
+            if invite_token:
+                return redirect(reverse("mouseapp:join_project", args=[invite_token]))
             return redirect("mouseapp:login")
     else:
-        form = RegistrationForm()
-    return render(request, "accounts/register.html", {"form": form})
+        form = RegistrationForm(invited_email=invited_email)
+
+    return render(
+        request, "accounts/register.html", {"form": form, "invite_token": invite_token}
+    )
 
 
 def get_children(mouse: Mouse) -> list[Mouse]:

@@ -66,7 +66,9 @@ class RegistrationForm(UserCreationForm):
         fields = ("email", "first_name", "last_name", "password1", "password2")
 
     @override
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+    def __init__(
+        self, *args: Any, invited_email: str | None = None, **kwargs: Any
+    ) -> None:
         super().__init__(*args, **kwargs)
         self.fields["password1"].widget.attrs.update(
             {"class": "input", "autocomplete": "new-password"}
@@ -75,9 +77,16 @@ class RegistrationForm(UserCreationForm):
             {"class": "input", "autocomplete": "new-password"}
         )
 
+        self._invited_email = invited_email
+        if invited_email:
+            self.fields["email"].initial = invited_email
+            self.fields["email"].disabled = True
+
     def clean_email(self) -> str:
         cleaned_data = self.cleaned_data
-        email = BaseUserManager.normalize_email(cleaned_data["email"])
+        email = BaseUserManager.normalize_email(
+            self._invited_email if self._invited_email else cleaned_data["email"]
+        )
         if User.objects.filter(email=email).exists():
             raise ValidationError("This email is already registered.")
         return email
