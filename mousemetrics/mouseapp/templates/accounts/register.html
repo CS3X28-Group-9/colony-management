@@ -14,7 +14,12 @@
           <p class="error-message text-center">{{ error }}</p>
         {% endfor %}{% endif %}
 
-        <div class="relative {% if form.email.field.disabled %}bg-neutral-50{% endif %}">
+        <div
+          class="relative {% if form.email.field.disabled %}
+            cursor-not-allowed opacity-50
+          {% endif %}"
+          {% if form.email.field.disabled %}aria-disabled="True"{% endif %}
+        >
           <input
             placeholder=" "
             type="email"
