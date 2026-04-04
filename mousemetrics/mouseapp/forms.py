@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.base_user import BaseUserManager
 from django.db.models import Q
 
-from .models import Mouse, Request, Project, RequestReply, StudyPlan
+from .models import Mouse, MouseObservation, Request, Project, RequestReply, StudyPlan
 
 
 class CustomAuthenticationForm(AuthenticationForm):
@@ -137,6 +137,26 @@ class MouseForm(forms.ModelForm):
         widgets = {
             "coat_colour": forms.TextInput,
             "cull_reason": forms.TextInput,
+        }
+
+
+class ObservationForm(forms.ModelForm):
+    def clean(self):
+        data = super().clean()
+
+        if data and not (data["type"] or data["details"]):
+            raise ValidationError('"Other" observations require details')
+
+    class Meta:
+        model = MouseObservation
+        fields = [
+            "type",
+            "details",
+        ]
+
+        widgets = {
+            "type": forms.Select(attrs={"class": "input"}),
+            "details": forms.Textarea(attrs={"class": "input"}),
         }
 
 

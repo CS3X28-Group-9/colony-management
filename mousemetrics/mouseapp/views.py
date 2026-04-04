@@ -22,6 +22,7 @@ from .forms import (
     RegistrationForm,
     CustomAuthenticationForm,
     InviteMemberForm,
+    ObservationForm,
     MouseForm,
     ProjectForm,
     RemoveMemberForm,
@@ -34,6 +35,7 @@ from .forms import (
 )
 from .models import (
     Mouse,
+    MouseObservation,
     Project,
     Request,
     Notification,
@@ -134,10 +136,15 @@ def mouse(request: AuthedRequest, id: int) -> HttpResponse:
         req._user = request.user
         requests_with_permissions.append(req)
 
+    observation_form = None
+    if write_access:
+        observation_form = ObservationForm()
+
     context = {
         "mouse": mouse,
         "write_access": write_access,
         "mouse_requests": requests_with_permissions,
+        "observation_form": observation_form,
     }
     return render(request, "mouseapp/mouse.html", context)
 
@@ -156,7 +163,29 @@ def edit_mouse(request: AuthedRequest, id: int) -> HttpResponse:
     else:
         form = MouseForm(instance=mouse)
 
-    return render(request, "mouseapp/edit_mouse.html", {"form": form})
+    return render(
+        request, "mouseapp/form.html", {"form": form, "title": "Editing Mouse"}
+    )
+
+
+@login_required
+def observe_mouse(request: AuthedRequest, id: int) -> HttpResponse:
+    mouse: Mouse = get_object_or_404(Mouse, id=id)
+    if not mouse.has_write_access(request.user):
+        raise PermissionDenied()
+
+    if request.method == "POST":
+        observation = MouseObservation(user=request.user, mouse=mouse)
+        form = ObservationForm(request.POST, instance=observation)
+        if form.is_valid():
+            form.save()
+            return redirect(mouse)
+    else:
+        form = ObservationForm()
+
+    return render(
+        request, "mouseapp/form.html", {"form": form, "title": "Adding Observation"}
+    )
 
 
 @login_required
@@ -713,6 +742,42 @@ def _prepare_request_form(
                     message=f"New {request_type.lower()} request created.",
                 )
 
+                if user.email:
+                    creator_name = (
+                        request_obj.creator.get_full_name()
+                        or request_obj.creator.username
+                    )
+                    project_name = (
+                        request_obj.project.name if request_obj.project else ""
+                    )
+                    kind_display = dict(Request.REQUEST_CHOICES).get(
+                        request_obj.kind, request_obj.kind
+                    )
+
+                    subject = f"New request on {project_name} ({kind_display})"
+
+                    mail_html = render_to_string(
+                        "mouseapp/request_email.html",
+                        context={
+                            "protocol": request.scheme,
+                            "domain": request.get_host(),
+                            "request_obj": request_obj,
+                            "creator_name": creator_name,
+                            "project_name": project_name,
+                            "request_type": request_type,
+                            "request_details": request_obj.details,
+                        },
+                    )
+                    mail_text = strip_tags(mail_html)
+                    send_mail(
+                        subject=subject,
+                        message=mail_text,
+                        from_email=None,
+                        recipient_list=[user.email],
+                        fail_silently=False,
+                        html_message=mail_html,
+                    )
+
             return (
                 redirect("mouseapp:requests"),
                 form,
@@ -978,6 +1043,38 @@ def request_detail(request: AuthedRequest, request_id: int) -> HttpResponse:
                     reply=reply,
                     message=message,
                 )
+
+                if user.email:
+                    kind_display = dict(Request.REQUEST_CHOICES).get(
+                        request_obj.kind, request_obj.kind
+                    )
+                    project_name = (
+                        request_obj.project.name
+                        if request_obj.project
+                        else "your request"
+                    )
+                    subject = f"New reply on {project_name} ({kind_display})"
+
+                    mail_html = render_to_string(
+                        "mouseapp/reply_email.html",
+                        context={
+                            "protocol": request.scheme,
+                            "domain": request.get_host(),
+                            "request_obj": request_obj,
+                            "reply": reply,
+                            "reply_user_name": reply_user_name,
+                            "message": message,
+                        },
+                    )
+                    mail_text = strip_tags(mail_html)
+                    send_mail(
+                        subject=subject,
+                        message=mail_text,
+                        from_email=None,
+                        recipient_list=[user.email],
+                        fail_silently=False,
+                        html_message=mail_html,
+                    )
 
             return redirect(reverse("mouseapp:request_detail", args=[request_id]))
 

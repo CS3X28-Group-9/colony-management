@@ -1,0 +1,11 @@
+New reply in your LabSafe request:<br />
+{{ reply_user_name }} posted a message.<br />
+<br />
+{% for line in message.splitlines() %}
+  {{ line }}{% if not loop.last %}<br />{% endif %}
+{% endfor %}
+<br />
+<a
+  href="{{ protocol }}://{{ domain }}{{ url('mouseapp:request_detail', request_id=request_obj.id) }}#reply-{{ reply.id }}"
+  >{{ protocol }}://{{ domain }}{{ url('mouseapp:request_detail', request_id=request_obj.id) }}#reply-{{ reply.id }}</a
+>

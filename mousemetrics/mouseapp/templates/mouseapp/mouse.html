@@ -123,6 +123,33 @@
     <div class="bg-white rounded-lg shadow-md overflow-hidden mt-6">
       <div class="bg-neutral-200 px-6 py-4">
         <div class="flex justify-between items-center">
+          <h3 class="default-header">Observations</h3>
+        </div>
+      </div>
+      <div class="p-6">
+        {% for observation in mouse.observations.all() %}
+          <div class="mb-6">
+            On {{ observation.created_at.strftime('%b %d, %Y at %I:%M %p') }} by {{ observation.user or 'a deleted user' }}: {{ observation.type_text }}
+
+            <p class="ml-6 mb-3">
+              {{observation.details}}
+            </p>
+            <hr>
+          </div>
+        {% endfor %}
+        {% if observation_form %}
+          <form method="post" action="{{ url('mouseapp:observe_mouse', mouse.id) }}">
+            {{csrf_input}}
+            {{ observation_form.as_p() }}
+            <button type="submit" class="w-full btn-primary mt-2">Add Observation</button>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md overflow-hidden mt-6">
+      <div class="bg-neutral-200 px-6 py-4">
+        <div class="flex justify-between items-center">
           <h3 class="default-header">Requests for this Mouse</h3>
           <div class="flex gap-2">
             <a

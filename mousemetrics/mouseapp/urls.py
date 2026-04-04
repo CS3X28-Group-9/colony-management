@@ -15,6 +15,7 @@ urlpatterns = [
     ),
     path("mouse/<int:id>/", views.mouse, name="mouse"),
     path("mouse/<int:id>/edit/", views.edit_mouse, name="edit_mouse"),
+    path("mouse/<int:id>/observe/", views.observe_mouse, name="observe_mouse"),
     path("project/<int:id>/", views.project, name="project"),
     path("project/<int:id>/edit/", views.edit_project, name="edit_project"),
     path("study-plan/create/", views.create_study_plan, name="create_study_plan"),

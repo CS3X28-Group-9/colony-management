@@ -3,6 +3,7 @@ from .models import (
     Box,
     Membership,
     Mouse,
+    MouseObservation,
     Project,
     Request,
     Strain,
@@ -13,6 +14,7 @@ from .models import (
 admin.site.register(Box)
 admin.site.register(Membership)
 admin.site.register(Mouse)
+admin.site.register(MouseObservation)
 admin.site.register(Project)
 admin.site.register(Request)
 admin.site.register(Strain)
