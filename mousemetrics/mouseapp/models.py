@@ -154,8 +154,17 @@ class Strain(models.Model):
         return self.name
 
 
+class Genotype(models.Model):
+    name = models.TextField(unique=True)
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class Mouse(models.Model):
     SEX_CHOICES = {"F": "Female", "M": "Male"}
+
+    DEATH_CAUSE_CHOICES = {"C": "Cull", "N": "Natural", "O": "Other"}
 
     EARMARK_VALIDATOR = RegexValidator(
         regex=r"^([TB][RL])*$",
@@ -190,13 +199,19 @@ class Mouse(models.Model):
     date_of_birth = models.DateField()
     tube_number = models.IntegerField()
     box = models.ForeignKey(Box, on_delete=models.PROTECT)
+    genotype = models.ForeignKey(
+        Genotype, on_delete=models.PROTECT, null=True, blank=True
+    )
     strain = models.ForeignKey(Strain, on_delete=models.PROTECT, null=True, blank=True)
     coat_colour = models.TextField(blank=True, null=True)
     earmark = models.CharField(
         max_length=16, blank=True, validators=[EARMARK_VALIDATOR]
     )
-    cull_date = models.DateField(blank=True, null=True)
-    cull_reason = models.TextField(blank=True, null=True)
+    death_date = models.DateField(blank=True, null=True)
+    death_cause = models.CharField(
+        max_length=1, choices=DEATH_CAUSE_CHOICES, blank=True, null=True
+    )
+    death_reason = models.TextField(blank=True, null=True)
 
     notes = models.TextField(blank=True)
 
@@ -229,7 +244,7 @@ class Mouse(models.Model):
         )
 
     def __str__(self) -> str:
-        return f"{self.strain} {self.tube_number}"
+        return f"{self.genotype} {self.strain} {self.tube_number}"
 
     def get_absolute_url(self) -> str:
         return reverse("mouseapp:mouse", args=[self.id])
