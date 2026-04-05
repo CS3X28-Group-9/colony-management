@@ -1,8 +1,8 @@
 {% extends "base.html" %} {% block title %}Study Plan{% endblock %}
 {% block content %}
   <div class="max-w-3xl mx-auto px-4 py-8">
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-      <div class="bg-neutral-200 px-6 py-4">
+    <div class="bg-white-dynamic rounded-lg shadow-md overflow-hidden">
+      <div class="bg-secondary px-6 py-4">
         <h3 class="default-header">Study Plan Details</h3>
       </div>
 
@@ -78,7 +78,7 @@
         </dl>
 
         {% if approval_form %}
-          <div class="mt-6 pt-6 border-t border-gray-200">
+          <div class="mt-6 pt-6 border-b border-gray-200">
             <form
               method="post"
               action="{{ url('mouseapp:approve_study_plan', id=study_plan.id) }}"
@@ -96,7 +96,7 @@
         {% endif %}
 
         {% if study_plan.project.has_write_access(request.user) %}
-          <div class="mt-6 pt-6 border-t border-gray-200">
+          <div class="mt-6 pt-6">
             <a
               href="{{ url('mouseapp:edit_study_plan', id=study_plan.id) }}"
               class="inline-flex items-center px-4 py-2 btn-primary"
