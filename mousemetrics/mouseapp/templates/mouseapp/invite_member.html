@@ -1,7 +1,51 @@
 {% extends "base.html" %} {% block title %}Invite Member{% endblock %}
 {% block content %}
-  <form method="POST">
-    {{ csrf_input }} {{ form }}
-    <input type="submit" value="Submit" />
-  </form>
+  <div class="flex justify-center p-4">
+    <div
+      class="p-4 sm:p-6 lg:p-8 rounded bg-neutral-200 w-80 shadow-md border border-neutral-300"
+    >
+      <h3 class="text-2xl font-semibold text-slate-900 mb-1">
+        Invite new team member
+      </h3>
+      <p class="text-sm text-slate-500 mb-8">
+        Send an invitation to collaborate.
+      </p>
+
+      <form method="post" class="space-y-5">
+        {{ csrf_input }}
+
+        <div class="relative">
+          <input
+            type="email"
+            id="{{ form.user.id_for_label }}"
+            name="{{ form.user.html_name }}"
+            value="{{ form.user.value() or '' }}"
+            autocomplete="email"
+            autofocus
+            required
+            placeholder=" "
+            class="block px-2.5 pt-5 pb-2.5 w-full floating-label peer"
+          />
+          <label
+            for="{{ form.user.id_for_label }}"
+            class="absolute top-4 input-label duration-300 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+            >Email</label
+          >
+          {% if form.user.errors %}
+            <div class="error-message-compact">
+              {% for error in form.user.errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+        <button type="submit" class="w-full py-2.5 px-4 btn-primary">
+          Send Invite
+        </button>
+      </form>
+      <a class="mt-6 text-center text-sm" href="{{ url('mouseapp:login') }}"
+        >Return to project</a
+      >
+    </div>
+  </div>
 {% endblock %}

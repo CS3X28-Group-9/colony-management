@@ -64,8 +64,8 @@ MAPPING: dict[str, str] = {
     "father": "Father",
     "mother": "Mother",
     "notes": "Notes",
-    "cull_date": "Cull Date",
-    "cull_reason": "Cull Reason",
+    "death_date": "Cull Date",
+    "death_reason": "Cull Reason",
 }
 
 
@@ -233,7 +233,7 @@ def test_import_cull_forwardfill(project):
     if m1.strain != strain("Some-strain"):
         m1, m2 = m2, m1
 
-    assert m1.cull_date and m1.cull_date.isoformat() == "2024-01-01"
-    assert m1.cull_reason == "Age"
-    assert m2.cull_date is None
-    assert m2.cull_reason is None
+    assert m1.death_date and m1.death_date.isoformat() == "2024-01-01"
+    assert m1.death_reason == "Age"
+    assert m2.death_date is None
+    assert m2.death_reason is None

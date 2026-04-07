@@ -5,7 +5,7 @@
       class="p-4 sm:p-6 lg:p-8 rounded bg-neutral-200 w-80 shadow-md border border-neutral-300"
     >
       <form method="post" class="space-y-6">
-        <h3 class="default-header">Sign in to LabSafe</h3>
+        <h2 class="default-header">Sign in to LabSafe</h2>
         {{ csrf_input }}
         {% if form.non_field_errors() %}
           {% for error in form.non_field_errors() %}

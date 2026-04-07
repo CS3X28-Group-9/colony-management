@@ -1,0 +1,111 @@
+{% extends "base.html" %} {% block title %}Study Plan{% endblock %}
+{% block content %}
+  <div class="max-w-3xl mx-auto px-4 py-8">
+    <div class="bg-white-dynamic rounded-lg shadow-md overflow-hidden">
+      <div class="bg-secondary px-6 py-4">
+        <h3 class="default-header">Study Plan Details</h3>
+      </div>
+
+      <div class="p-6">
+        <dl class="space-y-4">
+          <div class="mouse-flex">
+            <dt class="mouse-row">Project</dt>
+            <dd class="mouse-data">
+              <a href="{{ url('mouseapp:project', study_plan.project.id) }}">
+                {{ study_plan.project }}
+              </a>
+            </dd>
+          </div>
+
+          <div class="mouse-flex">
+            <dt class="mouse-row">Creator</dt>
+            <dd class="mouse-data">{{ study_plan.creator }}</dd>
+          </div>
+
+          <div class="mouse-flex">
+            <dt class="mouse-row">Status</dt>
+            <dd class="mouse-data">{{ study_plan.get_status_display() }}</dd>
+          </div>
+
+          {% if study_plan.status == "A" %}
+            <div class="mouse-flex">
+              <dt class="mouse-row">Approver</dt>
+              <dd class="mouse-data">{{ study_plan.approver }}</dd>
+            </div>
+
+            <div class="mouse-flex">
+              <dt class="mouse-row">Study ID</dt>
+              <dd class="mouse-data">{{ study_plan.study_id }}</dd>
+            </div>
+
+            <div class="mouse-flex">
+              <dt class="mouse-row">Approval Date</dt>
+              <dd class="mouse-data">{{ study_plan.approval_date }}</dd>
+            </div>
+          {% endif %}
+
+          <div class="mouse-flex">
+            <dt class="mouse-row">Description</dt>
+            <dd class="mouse-data">{{ study_plan.description }}</dd>
+          </div>
+
+          <div class="mouse-flex">
+            <dt class="mouse-row">Start Date</dt>
+            <dd class="mouse-data">{{ study_plan.start_date }}</dd>
+          </div>
+
+          <div class="mouse-flex">
+            <dt class="mouse-row">End Date</dt>
+            <dd class="mouse-data">{{ study_plan.end_date }}</dd>
+          </div>
+
+          <div class="mouse-flex">
+            <dt class="mouse-row">Male Mouse Quota</dt>
+            <dd class="mouse-data">{{ study_plan.mouse_quota_male }}</dd>
+          </div>
+
+          <div class="mouse-flex">
+            <dt class="mouse-row">Female Mouse Quota</dt>
+            <dd class="mouse-data">{{ study_plan.mouse_quota_female }}</dd>
+          </div>
+
+          <div class="mouse-flex">
+            <dt class="mouse-row">Mouse Source</dt>
+            <dd class="mouse-data">
+              {{ study_plan.get_mouse_source_display() }}
+            </dd>
+          </div>
+        </dl>
+
+        {% if approval_form %}
+          <div class="mt-6 pt-6 border-b border-gray-200">
+            <form
+              method="post"
+              action="{{ url('mouseapp:approve_study_plan', id=study_plan.id) }}"
+            >
+              {{ csrf_input }}
+              {{ approval_form.as_p() }}
+              <button
+                type="submit"
+                class="inline-flex items-center px-4 py-2 btn-primary"
+              >
+                Approve
+              </button>
+            </form>
+          </div>
+        {% endif %}
+
+        {% if study_plan.project.has_write_access(request.user) %}
+          <div class="mt-6 pt-6">
+            <a
+              href="{{ url('mouseapp:edit_study_plan', id=study_plan.id) }}"
+              class="inline-flex items-center px-4 py-2 btn-primary"
+            >
+              Edit
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -16,7 +16,7 @@ from .validators import excel_col_to_index, parse_cell_range
 
 logger = logging.getLogger(__name__)
 
-FORWARD_FILL_SKIP_COLUMNS = ["cull_date", "cull_reason"]
+FORWARD_FILL_SKIP_COLUMNS = ["death_date", "death_reason", "death_cause"]
 
 
 def read_range(

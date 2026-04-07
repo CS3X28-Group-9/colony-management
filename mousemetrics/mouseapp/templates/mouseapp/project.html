@@ -2,33 +2,38 @@
 {% block content %}
   <div class="m-4">
     <div
-      class="flex flex-wrap gap-3 my-4 p-4 bg-white border border-gray-200 rounded-lg w-fit"
+      class="flex flex-wrap gap-3 my-4 p-4 border rounded-lg w-fit bg-white-dynamic border-dynamic"
     >
       <span
-        class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-md text-sm"
+        class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-800 rounded-md text-sm"
       >
         <strong>Lead:</strong> {{ project.lead }}
       </span>
       <span
-        class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm"
+        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-sm bg-secondary text-secondary"
       >
         <strong>Project start date:</strong> {{ project.start_date }}
       </span>
       <span
-        class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm"
+        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-sm bg-secondary text-secondary"
       >
         <strong>Mice in project:</strong> {{ project.mouse_count() }}
       </span>
-      <span
-        class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm"
-      >
-        <strong>Project quota:</strong>
-
-        {% if project.quota_5_years is none %}No quota{% else %}{{ project.quota_5_years }}{% endif %}
-      </span>
+      {% if project.quota_5_years is not none %}
+        {% set exceeded = project.quota_5_years < project.mouse_count() %}
+        <span
+          class="inline-flex items-center gap-2 px-3 py-1.5 {% if exceeded %}bg-orange-800 text-gray-100{% else %}bg-secondary text-secondary{% endif %} rounded-md text-sm"
+        >
+          <strong>Project quota:</strong>
+            {{ project.quota_5_years }}
+            {% if exceeded %}
+              (Over quota!)
+            {% endif %}
+        </span>
+      {% endif %}
     </div>
 
-    <ul>
+    <ul class="text-primary">
       <li>
         <strong>License constraints:</strong> {{ project.license_constraints }}
       </li>
@@ -43,13 +48,14 @@
 
       <li>
         <table>
-          <caption class="py-2 text-start text-sm">
+          <caption class="py-2 text-start text-sm text-primary">
             Mice:
           </caption>
           <thead>
             <tr class="table-header">
               <th class="table-header-text">Mouse ID</th>
               <th class="table-header-text">Date of Birth</th>
+              <th class="table-header-text">Age</th>
               <th class="table-header-text">Box Number</th>
               <th class="table-header-text">Strain</th>
               <th class="table-header-text">Coat Colour</th>
@@ -60,18 +66,66 @@
           <tbody>
             {% for mouse in project.mouse_set.all() %}
               <tr class="table-data">
-                <td class="border-l-1 border-gray-300 numeric">
-                  <a tabindex="-1" href="{{ url('mouseapp:mouse', mouse.id) }}"
-                    >{{ mouse.tube_number }}</a
-                  >
+                <td class="border-l-1 numeric border-dynamic px-2">
+                   <a tabindex="-1" href="{{ url('mouseapp:mouse', mouse.id) }}"
+                     >Mouse {{ mouse.tube_number }}</a
+                   >
                 </td>
+                {% set exceeded = mouse.age_months > 18 and not project.allow_over_18_months %}
                 <td class="numeric table-padding">{{ mouse.date_of_birth }}</td>
+                <td
+                  class="numeric table-padding {% if exceeded %}bg-orange-800 text-gray-100{% endif %}"
+                  {% if exceeded %}title="Project license does not allow mice older than 18 months"{% endif %}
+                >
+                  {{ mouse.age_months }}mo
+                </td>
                 <td class="numeric table-padding">{{ mouse.box.number }}</td>
                 <td class="table-padding">{{ mouse.strain }}</td>
                 <td class="table-padding">{{ mouse.coat_colour }}</td>
                 <td class="table-padding">{{ mouse.sex }}</td>
-                <td class="border-r-1 border-gray-300 table-padding">
+                <td class="border-r-1 table-padding border-dynamic">
                   {{ mouse.earmark }}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </li>
+
+      <li class="mt-6">
+        <table>
+          <caption class="py-2 text-start text-sm">
+            Study Plans:
+          </caption>
+          <thead>
+            <tr class="table-header">
+              <th class="table-header-text">Description</th>
+              <th class="table-header-text">Start Date</th>
+              <th class="table-header-text">End Date</th>
+              <th class="table-header-text">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for study_plan in study_plans %}
+              <tr class="table-data">
+                <td class="border-l-1 border-gray-300 table-padding">
+                  <a href="{{ url('mouseapp:study_plan', study_plan.id) }}">
+                    {{ study_plan.description or "Untitled" }}
+                  </a>
+                </td>
+                <td class="table-padding">{{ study_plan.start_date }}</td>
+                <td class="table-padding">{{ study_plan.end_date }}</td>
+                <td class="border-r-1 border-gray-300 table-padding">
+                  {{ study_plan.get_status_display() }}
+                </td>
+              </tr>
+            {% else %}
+              <tr class="table-data">
+                <td
+                  colspan="4"
+                  class="border-l-1 border-r-1 border-gray-300 table-padding"
+                >
+                  No study plans yet.
                 </td>
               </tr>
             {% endfor %}
@@ -80,7 +134,7 @@
       </li>
     </ul>
 
-    <div class="mt-6 pt-6 border-t border-gray-200 flex gap-2 flex-wrap">
+    <div class="mt-6 pt-6 border-t border-dynamic flex gap-2 flex-wrap">
       <a
         href="{{ url('mouseapp:create_breeding_request') }}?project={{ project.id }}"
         class="inline-flex items-center px-4 py-2 btn-primary"
@@ -100,6 +154,13 @@
         New Transfer Request
       </a>
       {% if write_access %}
+        <a
+          href="{{ url('mouseapp:create_study_plan') }}?project={{ project.id }}"
+          class="inline-flex items-center px-4 py-2 btn-primary"
+        >
+          Create Study Plan
+        </a>
+
         <a
           href="{{ url('mouseapp:edit_project', project.id) }}"
           class="inline-flex items-center px-4 py-2 btn-primary"

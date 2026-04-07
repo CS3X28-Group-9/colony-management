@@ -22,15 +22,29 @@ from .forms import (
     RegistrationForm,
     CustomAuthenticationForm,
     InviteMemberForm,
+    ObservationForm,
     MouseForm,
     ProjectForm,
+    CreateProjectForm,
     RemoveMemberForm,
     BreedingRequestForm,
     CullingRequestForm,
     TransferRequestForm,
     RequestReplyForm,
+    StudyPlanForm,
+    StudyPlanApprovalForm,
 )
-from .models import Mouse, Project, Request, Notification, RequestReply, ReplyReaction
+from .models import (
+    Mouse,
+    MouseObservation,
+    Project,
+    Request,
+    Notification,
+    RequestReply,
+    ReplyReaction,
+    StudyPlan,
+)
+
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 
@@ -64,6 +78,18 @@ def privacy_policy(request: HttpRequest) -> HttpResponse:
             user=request.user, read=False
         ).count()
     return render(request, "mouseapp/privacy_policy.html", context)
+
+
+def accessibility_statement(request: HttpRequest) -> HttpResponse:
+    context: dict[str, object] = {}
+    if request.user.is_authenticated:
+        context["notifications"] = Notification.objects.filter(
+            user=request.user
+        ).order_by("-created_at")[:10]
+        context["unread_count"] = Notification.objects.filter(
+            user=request.user, read=False
+        ).count()
+    return render(request, "mouseapp/accessibility_statement.html", context)
 
 
 def get_users_to_notify_for_request(request_obj: Request) -> list[User]:
@@ -123,10 +149,15 @@ def mouse(request: AuthedRequest, id: int) -> HttpResponse:
         req._user = request.user
         requests_with_permissions.append(req)
 
+    observation_form = None
+    if write_access:
+        observation_form = ObservationForm()
+
     context = {
         "mouse": mouse,
         "write_access": write_access,
         "mouse_requests": requests_with_permissions,
+        "observation_form": observation_form,
     }
     return render(request, "mouseapp/mouse.html", context)
 
@@ -145,7 +176,29 @@ def edit_mouse(request: AuthedRequest, id: int) -> HttpResponse:
     else:
         form = MouseForm(instance=mouse)
 
-    return render(request, "mouseapp/edit_mouse.html", {"form": form})
+    return render(
+        request, "mouseapp/form.html", {"form": form, "title": "Editing Mouse"}
+    )
+
+
+@login_required
+def observe_mouse(request: AuthedRequest, id: int) -> HttpResponse:
+    mouse: Mouse = get_object_or_404(Mouse, id=id)
+    if not mouse.has_write_access(request.user):
+        raise PermissionDenied()
+
+    if request.method == "POST":
+        observation = MouseObservation(user=request.user, mouse=mouse)
+        form = ObservationForm(request.POST, instance=observation)
+        if form.is_valid():
+            form.save()
+            return redirect(mouse)
+    else:
+        form = ObservationForm()
+
+    return render(
+        request, "mouseapp/form.html", {"form": form, "title": "Adding Observation"}
+    )
 
 
 @login_required
@@ -156,8 +209,30 @@ def project(request: AuthedRequest, id: int) -> HttpResponse:
         raise PermissionDenied()
     write_access = project.has_write_access(request.user)
 
-    context = {"project": project, "write_access": write_access}
+    context = {
+        "project": project,
+        "write_access": write_access,
+        "study_plans": StudyPlan.objects.filter(project=project),
+    }
+
     return render(request, "mouseapp/project.html", context)
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def create_project(request: AuthedRequest) -> HttpResponse:
+    if not request.user.has_perm("mouseapp.create_project"):
+        raise PermissionDenied()
+
+    if request.method == "POST":
+        form = CreateProjectForm(request.POST)
+        if form.is_valid():
+            project = form.save()
+            return redirect(project)
+    else:
+        form = CreateProjectForm()
+
+    return render(request, "mouseapp/create_project.html", {"form": form})
 
 
 @login_required
@@ -178,6 +253,115 @@ def edit_project(request: AuthedRequest, id: int) -> HttpResponse:
 
 
 @login_required
+def study_plan(request: AuthedRequest, id: int) -> HttpResponse:
+    study_plan = get_object_or_404(StudyPlan, id=id)
+
+    if not study_plan.project.has_read_access(request.user):
+        raise PermissionDenied()
+
+    approval_form = None
+    if (
+        request.user.has_perm("mouseapp.approve_study_plan")
+        and study_plan.status != "A"
+    ):
+        approval_form = StudyPlanApprovalForm()
+
+    return render(
+        request,
+        "mouseapp/study_plan.html",
+        {
+            "study_plan": study_plan,
+            "approval_form": approval_form,
+        },
+    )
+
+
+@login_required
+def create_study_plan(request: AuthedRequest) -> HttpResponse:
+    project_id = request.GET.get("project")
+    initial = {}
+
+    if project_id:
+        try:
+            project = Project.objects.get(id=int(project_id))
+            if not project.has_write_access(request.user):
+                raise PermissionDenied()
+            initial["project"] = project
+        except (ValueError, TypeError, Project.DoesNotExist):
+            project = None
+    else:
+        project = None
+
+    if request.method == "POST":
+        form = StudyPlanForm(request.POST, user=request.user)
+        if form.is_valid():
+            study_plan = form.save(commit=False)
+            study_plan.creator = request.user
+            study_plan.status = "D"
+            study_plan.save()
+            return redirect("mouseapp:study_plan", id=study_plan.id)
+    else:
+        form = StudyPlanForm(user=request.user, initial=initial)
+
+    return render(
+        request,
+        "mouseapp/study_plan_form.html",
+        {
+            "form": form,
+            "title": "Create Study Plan",
+        },
+    )
+
+
+@login_required
+def edit_study_plan(request: AuthedRequest, id: int) -> HttpResponse:
+    study_plan = get_object_or_404(StudyPlan, id=id)
+
+    if not study_plan.project.has_write_access(request.user):
+        raise PermissionDenied()
+
+    if request.method == "POST":
+        form = StudyPlanForm(request.POST, instance=study_plan, user=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("mouseapp:study_plan", id=study_plan.id)
+    else:
+        form = StudyPlanForm(instance=study_plan, user=request.user)
+
+    return render(
+        request,
+        "mouseapp/study_plan_form.html",
+        {
+            "form": form,
+            "title": "Edit Study Plan",
+            "study_plan": study_plan,
+        },
+    )
+
+
+@login_required
+@require_http_methods(["POST"])
+def approve_study_plan(request: AuthedRequest, id: int) -> HttpResponse:
+    study_plan = get_object_or_404(StudyPlan, id=id)
+
+    if not study_plan.project.has_read_access(request.user):
+        raise PermissionDenied()
+
+    if not request.user.has_perm("mouseapp.approve_study_plan"):
+        raise PermissionDenied()
+
+    form = StudyPlanApprovalForm(request.POST)
+    if form.is_valid():
+        study_plan.study_id = form.cleaned_data["study_id"]
+        study_plan.status = "A"
+        study_plan.approval_date = date.today()
+        study_plan.approver = request.user
+        study_plan.save()
+
+    return redirect("mouseapp:study_plan", id=study_plan.id)
+
+
+@login_required
 def invite_member(request: AuthedRequest, id: int) -> HttpResponse:
     project: Project = get_object_or_404(Project, id=id)
     if not project.has_write_access(request.user):
@@ -188,10 +372,9 @@ def invite_member(request: AuthedRequest, id: int) -> HttpResponse:
         if form.is_valid():
             email = form.cleaned_data["user"]
             try:
-                user = User.objects.get(email=email)
                 token = signing.dumps(
                     {
-                        "user": user.pk,
+                        "email": email,
                         "project": project.id,
                     }
                 )
@@ -241,26 +424,33 @@ def remove_member(request: AuthedRequest, id: int) -> HttpResponse:
     return render(request, "mouseapp/remove_member.html", {"form": form})
 
 
-@login_required
 @require_http_methods(["GET", "POST"])
 def join_project(request: AuthedRequest, token: str) -> HttpResponse:
     SECONDS_IN_MONTH = 60 * 60 * 24 * 31
 
-    data = signing.loads(token, max_age=SECONDS_IN_MONTH)
     try:
-        user_id = data["user"]
+        data = signing.loads(token, max_age=SECONDS_IN_MONTH)
+    except signing.BadSignature as e:
+        raise PermissionDenied from e
+
+    try:
+        email = data["email"]
         project_id = data["project"]
     except KeyError as e:
         raise PermissionDenied from e
 
-    if user_id != request.user.pk:
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        return redirect(reverse("mouseapp:register") + f"?invite={token}")
+
+    if not request.user.is_authenticated:
+        return redirect(reverse("mouseapp:login") + f"?next={request.path}")
+
+    if request.user != user:
         raise PermissionDenied
 
-    try:
-        project = Project.objects.get(pk=project_id)
-    except Project.DoesNotExist as e:
-        raise PermissionDenied from e
-
+    project = get_object_or_404(Project, pk=project_id)
     project.researchers.add(request.user)
     return redirect(project)
 
@@ -274,6 +464,8 @@ def login_view(request: HttpRequest) -> HttpResponse:
             if not remember_me:
                 request.session.set_expiry(0)  # Session expires on browser close
             auth_login(request, form.get_user())
+            if next := request.GET.get("next"):
+                return redirect(next)
             return redirect("mouseapp:home")
     else:
         form = CustomAuthenticationForm()
@@ -282,16 +474,34 @@ def login_view(request: HttpRequest) -> HttpResponse:
 
 
 def register(request: HttpRequest) -> HttpResponse:
-    if not settings.ENABLE_REGISTRATION:
+    invite_token = request.GET.get("invite") or request.POST.get("invite_token")
+    invited_email = None
+
+    if invite_token:
+        try:
+            SECONDS_IN_MONTH = 60 * 60 * 24 * 31
+            data = signing.loads(invite_token, max_age=SECONDS_IN_MONTH)
+            invited_email = data["email"]
+        except (signing.BadSignature, KeyError):
+            raise PermissionDenied()
+
+    if not settings.ENABLE_REGISTRATION and not invite_token:
         raise PermissionDenied()
+
     if request.method == "POST":
-        form = RegistrationForm(request.POST)
+        form = RegistrationForm(request.POST, invited_email=invited_email)
         if form.is_valid():
             form.save()
+            assert invite_token
+            if invite_token:
+                return redirect(reverse("mouseapp:join_project", args=[invite_token]))
             return redirect("mouseapp:login")
     else:
-        form = RegistrationForm()
-    return render(request, "accounts/register.html", {"form": form})
+        form = RegistrationForm(invited_email=invited_email)
+
+    return render(
+        request, "accounts/register.html", {"form": form, "invite_token": invite_token}
+    )
 
 
 def get_children(mouse: Mouse) -> list[Mouse]:
@@ -704,6 +914,42 @@ def _prepare_request_form(
                     message=f"New {request_type.lower()} request created.",
                 )
 
+                if user.email:
+                    creator_name = (
+                        request_obj.creator.get_full_name()
+                        or request_obj.creator.username
+                    )
+                    project_name = (
+                        request_obj.project.name if request_obj.project else ""
+                    )
+                    kind_display = dict(Request.REQUEST_CHOICES).get(
+                        request_obj.kind, request_obj.kind
+                    )
+
+                    subject = f"New request on {project_name} ({kind_display})"
+
+                    mail_html = render_to_string(
+                        "mouseapp/request_email.html",
+                        context={
+                            "protocol": request.scheme,
+                            "domain": request.get_host(),
+                            "request_obj": request_obj,
+                            "creator_name": creator_name,
+                            "project_name": project_name,
+                            "request_type": request_type,
+                            "request_details": request_obj.details,
+                        },
+                    )
+                    mail_text = strip_tags(mail_html)
+                    send_mail(
+                        subject=subject,
+                        message=mail_text,
+                        from_email=None,
+                        recipient_list=[user.email],
+                        fail_silently=False,
+                        html_message=mail_html,
+                    )
+
             return (
                 redirect("mouseapp:requests"),
                 form,
@@ -969,6 +1215,38 @@ def request_detail(request: AuthedRequest, request_id: int) -> HttpResponse:
                     reply=reply,
                     message=message,
                 )
+
+                if user.email:
+                    kind_display = dict(Request.REQUEST_CHOICES).get(
+                        request_obj.kind, request_obj.kind
+                    )
+                    project_name = (
+                        request_obj.project.name
+                        if request_obj.project
+                        else "your request"
+                    )
+                    subject = f"New reply on {project_name} ({kind_display})"
+
+                    mail_html = render_to_string(
+                        "mouseapp/reply_email.html",
+                        context={
+                            "protocol": request.scheme,
+                            "domain": request.get_host(),
+                            "request_obj": request_obj,
+                            "reply": reply,
+                            "reply_user_name": reply_user_name,
+                            "message": message,
+                        },
+                    )
+                    mail_text = strip_tags(mail_html)
+                    send_mail(
+                        subject=subject,
+                        message=mail_text,
+                        from_email=None,
+                        recipient_list=[user.email],
+                        fail_silently=False,
+                        html_message=mail_html,
+                    )
 
             return redirect(reverse("mouseapp:request_detail", args=[request_id]))
 

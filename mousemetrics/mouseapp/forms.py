@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.base_user import BaseUserManager
 from django.db.models import Q
 
-from .models import Mouse, Request, Project, RequestReply
+from .models import Mouse, MouseObservation, Request, Project, RequestReply, StudyPlan
 
 
 class CustomAuthenticationForm(AuthenticationForm):
@@ -66,7 +66,9 @@ class RegistrationForm(UserCreationForm):
         fields = ("email", "first_name", "last_name", "password1", "password2")
 
     @override
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+    def __init__(
+        self, *args: Any, invited_email: str | None = None, **kwargs: Any
+    ) -> None:
         super().__init__(*args, **kwargs)
         self.fields["password1"].widget.attrs.update(
             {"class": "input", "autocomplete": "new-password"}
@@ -75,9 +77,16 @@ class RegistrationForm(UserCreationForm):
             {"class": "input", "autocomplete": "new-password"}
         )
 
+        self._invited_email = invited_email
+        if invited_email:
+            self.fields["email"].initial = invited_email
+            self.fields["email"].disabled = True
+
     def clean_email(self) -> str:
         cleaned_data = self.cleaned_data
-        email = BaseUserManager.normalize_email(cleaned_data["email"])
+        email = BaseUserManager.normalize_email(
+            self._invited_email if self._invited_email else cleaned_data["email"]
+        )
         if User.objects.filter(email=email).exists():
             raise ValidationError("This email is already registered.")
         return email
@@ -96,26 +105,59 @@ class RegistrationForm(UserCreationForm):
 
 
 class MouseForm(forms.ModelForm):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+        current_mouse = self.instance
+        field = self.fields.get("study_plan")
+
+        if isinstance(field, forms.ModelChoiceField):
+            if current_mouse and current_mouse.pk:
+                field.queryset = StudyPlan.objects.filter(project=current_mouse.project)
+            else:
+                field.queryset = StudyPlan.objects.none()
+
     class Meta:
         model = Mouse
         fields = [
-            "coat_colour",
             "sex",
             "mother",
             "father",
             "date_of_birth",
             "tube_number",
-            "cull_date",
-            "cull_reason",
+            "death_date",
+            "death_cause",
+            "death_reason",
             "box",
+            "genotype",
             "strain",
             "coat_colour",
+            "study_plan",
             "earmark",
             "notes",
         ]
         widgets = {
             "coat_colour": forms.TextInput,
-            "cull_reason": forms.TextInput,
+        }
+
+
+class ObservationForm(forms.ModelForm):
+    def clean(self):
+        data = super().clean()
+
+        if data and not (data["type"] or data["details"]):
+            raise ValidationError('"Other" observations require details')
+
+    class Meta:
+        model = MouseObservation
+        fields = [
+            "type",
+            "details",
+        ]
+
+        widgets = {
+            "type": forms.Select(attrs={"class": "input"}),
+            "details": forms.Textarea(attrs={"class": "input"}),
         }
 
 
@@ -125,6 +167,84 @@ class ProjectForm(forms.ModelForm):
         fields = [
             "name",
         ]
+
+
+class CreateProjectForm(forms.ModelForm):
+    lead = forms.ModelChoiceField(
+        queryset=User.objects.all(),
+        to_field_name="email",
+        widget=forms.EmailInput(attrs={"class": "input"}),
+        label="Lead (Email)",
+    )
+
+    class Meta:
+        model = Project
+        fields = [
+            "name",
+            "lead",
+            "start_date",
+            "allow_over_18_months",
+            "has_mod_sev_permission",
+            "quota_5_years",
+            "license_constraints",
+        ]
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "input"}),
+            "start_date": forms.DateInput(attrs={"class": "input"}),
+            "quota_5_years": forms.NumberInput(attrs={"class": "input"}),
+            "license_constraints": forms.Textarea(attrs={"class": "input"}),
+        }
+        labels = {
+            "allow_over_18_months": "Allowed mice older than 18 months",
+            "has_mod_sev_permission": "Allowed moderate & severe condition mice",
+        }
+
+
+class StudyPlanForm(forms.ModelForm):
+    class Meta:
+        model = StudyPlan
+        fields = [
+            "project",
+            "description",
+            "start_date",
+            "end_date",
+            "mouse_quota_male",
+            "mouse_quota_female",
+            "mouse_source",
+        ]
+        widgets = {
+            "start_date": forms.DateInput(attrs={"type": "date", "class": "input"}),
+            "end_date": forms.DateInput(attrs={"type": "date", "class": "input"}),
+            "description": forms.Textarea(attrs={"class": "input", "rows": 4}),
+        }
+
+    def __init__(self, *args: Any, user: User | None = None, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+        for field_name, field in self.fields.items():
+            if field_name not in ["start_date", "end_date", "description"]:
+                existing_class = field.widget.attrs.get("class", "")
+                field.widget.attrs["class"] = f"{existing_class} input".strip()
+
+        if user:
+            accessible_projects = Project.objects.filter(
+                Q(lead=user) | Q(researchers=user)
+            ).distinct()
+            if user.is_superuser:
+                accessible_projects = Project.objects.all()
+
+            project_field = self.fields["project"]
+            if isinstance(project_field, forms.ModelChoiceField):
+                project_field.queryset = accessible_projects
+
+
+class StudyPlanApprovalForm(forms.Form):
+    study_id = forms.CharField(
+        max_length=50,
+        required=True,
+        label="Study ID",
+        widget=forms.TextInput(attrs={"class": "input"}),
+    )
 
 
 class InviteMemberForm(forms.Form):

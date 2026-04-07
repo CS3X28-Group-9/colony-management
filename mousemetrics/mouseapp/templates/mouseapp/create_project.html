@@ -1,11 +1,11 @@
-{% extends "base.html" %} {% block title %}Editing Mouse{% endblock %}
+{% extends "base.html" %} {% block title %}Creating Project{% endblock %}
 {% block content %}
   <div class="max-w-3xl mx-auto px-4 py-8">
     <form method="post">
       {{ csrf_input }}
       <div class="bg-white rounded-lg shadow-md overflow-hidden">
         <div class="bg-neutral-200 px-6 py-4">
-          <h3 class="default-header">Mouse Details</h3>
+          <h3 class="default-header">Create Project</h3>
         </div>
 
         {% if form.non_field_errors() %}{% for error in form.non_field_errors() %}

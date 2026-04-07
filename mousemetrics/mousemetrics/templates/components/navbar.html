@@ -1,15 +1,27 @@
-<nav class="border-b border-neutral-300 bg-neutral-200">
+<nav class="border-b border-dynamic bg-secondary">
   <div class="flex items-center justify-between py-3 px-4 mx-auto max-w-6xl">
-    <a
+    <h1><a
       href="{{ url('mouseapp:home') }}"
-      class="text-xl font-semibold text-neutral-800 hover:text-neutral-600 transition-colors"
+      class="text-xl font-semibold text-primary hover:opacity-80 transition-opacity"
     >
       Labsafe
-    </a>
+    </a></h1>
 
     {% if request.user.is_authenticated %}
-      <div class="flex items-center gap-4">
-        <span class="text-neutral-700">Hi, {{ request.user.first_name }}</span>
+      <div class="flex items-center gap-4 flex-wrap justify-end">
+        <label class="flex items-center gap-2 text-sm text-secondary">
+          <span class="whitespace-nowrap">Theme</span>
+          <select
+            id="labsafe-color-scheme-select"
+            class="text-sm rounded-lg border border-dynamic bg-white-dynamic text-primary px-2 py-1 cursor-pointer"
+            aria-label="Color theme"
+          >
+            <option value="system">System</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </label>
+        <span class="text-secondary">Hi, {{ request.user.first_name }}</span>
         <div class="relative" id="notification-container">
           <input
             type="checkbox"
@@ -19,7 +31,7 @@
           <label
             for="notification-toggle"
             tabindex="0"
-            class="relative inline-flex items-center p-2 text-neutral-700 hover:text-neutral-900 transition-colors cursor-pointer z-50"
+            class="relative inline-flex items-center p-2 text-secondary hover:opacity-70 transition-colors cursor-pointer z-50"
             id="notification-dropdown"
             aria-haspopup="true"
           >
@@ -30,16 +42,18 @@
               >
                 {{ unread_count }}
               </span>
+            {% else %}
+              <p hidden>no notifications</p>
             {% endif %}
           </label>
           <div
-            class="notification-menu hidden min-w-[320px] absolute right-0 top-full mt-2 bg-white border border-neutral-300 rounded-lg shadow-lg z-50"
+            class="notification-menu hidden min-w-[320px] absolute right-0 top-full mt-2 bg-white-dynamic border-dynamic border rounded-lg shadow-lg z-50"
             id="notification-menu"
             aria-labelledby="notification-dropdown"
           >
-            <div class="p-4 border-b border-neutral-200">
+            <div class="p-4 border-b border-dynamic">
               <div class="flex justify-between items-center gap-4">
-                <h3 class="font-semibold text-neutral-800">Notifications</h3>
+                <h2 class="font-semibold text-primary">Notifications</h2>
                 {% if recent_notifications %}
                   <form
                     method="post"
@@ -49,7 +63,7 @@
                     {{ csrf_input }}
                     <button
                       type="submit"
-                      class="text-sm text-neutral-600 hover:text-neutral-900 whitespace-nowrap px-2 py-1 cursor-pointer"
+                      class="text-sm text-muted-dynamic hover:opacity-70 whitespace-nowrap px-2 py-1 cursor-pointer"
                     >
                       Clear all
                     </button>
@@ -59,16 +73,16 @@
             </div>
             <div class="max-h-96 overflow-y-auto">
               {% if recent_notifications %}
-                <ul class="divide-y divide-neutral-200">
+                <ul class="divide-y border-dynamic">
                   {% for notification in recent_notifications %}
                     <li
-                      class="p-4 hover:bg-neutral-50 {% if not notification.read %}bg-blue-50{% endif %}"
+                      class="p-4 {% if not notification.read %}bg-secondary{% endif %}"
                     >
                       <div class="flex justify-between items-start gap-2">
                         <div class="flex-1 space-y-2">
                           {% set message_parts = notification.message.split('\n', 1) %}
                           <p
-                            class="text-sm text-neutral-800 {% if not notification.read %}font-medium{% endif %}"
+                            class="text-sm text-primary {% if not notification.read %}font-medium{% endif %}"
                           >
                             {%
                               if notification.request and "[link]" in
@@ -80,7 +94,7 @@
                             {% endif %}
                           </p>
                           {% if message_parts|length > 1 %}
-                            <p class="text-sm text-neutral-600">
+                            <p class="text-sm text-muted-dynamic">
                               {{ message_parts[1] }}
                             </p>
                           {% endif %}
@@ -99,7 +113,7 @@
                               >
                             {% endif %}
                           {% endif %}
-                          <p class="text-xs text-neutral-500">
+                          <p class="text-xs text-muted-dynamic">
                             {{ notification.created_at.strftime("%b %d, %Y %I:%M %p") }}
                           </p>
                         </div>
@@ -111,7 +125,7 @@
                           {{ csrf_input }}
                           <button
                             type="submit"
-                            class="text-xs text-neutral-500 hover:text-red-600 cursor-pointer"
+                            class="text-xs text-muted-dynamic hover:text-red-600 dark:hover:text-red-400 cursor-pointer"
                             title="Dismiss notification"
                           >
                             ×
@@ -123,7 +137,7 @@
                 </ul>
               {% else %}
                 <div class="p-8 text-center">
-                  <p class="text-neutral-500 text-sm">No notifications</p>
+                  <p class="text-sm text-muted-dynamic">No notifications</p>
                 </div>
               {% endif %}
             </div>
@@ -145,7 +159,19 @@
         </form>
       </div>
     {% else %}
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-4 flex-wrap justify-end">
+        <label class="flex items-center gap-2 text-sm text-secondary">
+          <span class="whitespace-nowrap">Theme</span>
+          <select
+            id="labsafe-color-scheme-select"
+            class="text-sm rounded-lg border border-dynamic bg-white-dynamic text-primary px-2 py-1 cursor-pointer"
+            aria-label="Color theme"
+          >
+            <option value="system">System</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </label>
         <a href="{{ url('mouseapp:login') }}" class="btn-primary"> Log in </a>
       </div>
     {% endif %}

@@ -1,26 +1,42 @@
 <!doctype html>
-<html>
+<html lang="en-gb">
   <head>
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <meta name="color-scheme" content="light" />
+    <meta name="color-scheme" content="light dark" />
     <meta name="description" content="Animal colony management system" />
     <title>{% block title %}Labsafe{% endblock %}</title>
+    <script>
+      (function () {
+        var k = "labsafe-color-scheme";
+        var t = localStorage.getItem(k) || "system";
+        if (t !== "light" && t !== "dark" && t !== "system") t = "system";
+        var dark =
+          t === "dark" ||
+          (t === "system" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches &&
+            !window.matchMedia("(prefers-contrast: more)").matches);
+        document.documentElement.dataset.colorScheme = t;
+        document.documentElement.classList.toggle("dark", dark);
+      })();
+    </script>
     <link rel="stylesheet" href="{{ static ('dist/styles.css') }}" />
   </head>
 
-  <body class="flex flex-col justify-between h-screen bg-neutral-100">
+  <body class="flex flex-col justify-between h-screen bg-primary text-primary">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     {% include "components/navbar.html" %}
-    <main class="mb-auto">{% block content %}{% endblock %}</main>
+    <main class="mb-auto" id="main-content">{% block content %}{% endblock %}</main>
     {% include "components/footer.html" %}
     <script
       src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1"
       type="module"
     ></script>
     <script src="https://unpkg.com/preline/dist/preline.js"></script>
+    <script src="{{ static('js/theme.js') }}"></script>
     <script src="{{ static('js/password-toggle.js') }}"></script>
   </body>
 </html>

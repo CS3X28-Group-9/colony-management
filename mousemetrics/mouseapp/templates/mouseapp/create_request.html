@@ -5,12 +5,12 @@
 {% block content %}
   <div class="max-w-2xl mx-auto mt-6">
     <div class="card">
-      <h1 class="page-title">
+      <h2 class="page-title">
         Create {{ request_type|lower }} request
         {% if project %}- {{ project.name }}{% endif %}
-      </h1>
+      </h2>
       {% if mouse %}
-        <p class="text-sm text-neutral-600 mt-1">
+        <p class="text-sm text-secondary mt-1">
           {{ mouse.strain }} - Tube {{ mouse.tube_number }}
         </p>
       {% endif %}
@@ -55,7 +55,7 @@
             <div>
               <label
                 for="{{ form.mouse.id_for_label }}"
-                class="block text-sm font-medium text-neutral-800 mb-1"
+                class="block text-sm font-medium text-primary mb-1"
               >
                 {{ form.mouse.label }}
               </label>
@@ -66,7 +66,7 @@
                 </p>
               {% endif %}
               {% if form.mouse.help_text %}
-                <p class="mt-1 text-sm text-neutral-700 font-medium">
+                <p class="mt-1 text-sm text-secondary">
                   {{ form.mouse.help_text }}
                 </p>
               {% endif %}
@@ -76,7 +76,7 @@
           <div>
             <label
               for="{{ form.details.id_for_label }}"
-              class="block text-sm font-medium text-neutral-800 mb-1"
+              class="block text-sm font-medium text-primary mb-1"
             >
               {{ form.details.label }}
             </label>
@@ -87,7 +87,7 @@
               </p>
             {% endif %}
             {% if form.details.help_text %}
-              <p class="mt-1 text-sm text-neutral-700 font-medium">
+              <p class="mt-1 text-sm text-secondary" id="id_details_helptext">
                 {{ form.details.help_text }}
               </p>
             {% endif %}

@@ -9,21 +9,27 @@
         {{ csrf_input }}
         {% if form.non_field_errors %}{%
           for error in
-          form.non_field_errors
+          form.non_field_errors()
         %}
           <p class="error-message text-center">{{ error }}</p>
         {% endfor %}{% endif %}
 
-        <div class="relative">
+        <div
+          class="relative {% if form.email.field.disabled %}
+            cursor-not-allowed opacity-50
+          {% endif %}"
+          {% if form.email.field.disabled %}aria-disabled="True"{% endif %}
+        >
           <input
             placeholder=" "
             type="email"
             id="{{ form.email.id_for_label }}"
             name="{{ form.email.html_name }}"
-            value="{{ form.email.value or '' }}"
+            value="{{ form.email.value() or '' }}"
             autocomplete="email"
             class="block px-2.5 pt-5 pb-2.5 w-full floating-label peer"
             required
+            {% if form.email.field.disabled %}disabled{% endif %}
           />
           <label
             for="{{ form.email.id_for_label }}"
@@ -40,7 +46,7 @@
             type="text"
             id="{{ form.first_name.id_for_label }}"
             name="{{ form.first_name.html_name }}"
-            value="{{ form.first_name.value or '' }}"
+            value="{{ form.first_name.value() or '' }}"
             autocomplete="given-name"
             class="block px-2.5 pt-5 pb-2.5 w-full floating-label peer"
             required
@@ -62,7 +68,7 @@
             type="text"
             id="{{ form.last_name.id_for_label }}"
             name="{{ form.last_name.html_name }}"
-            value="{{ form.last_name.value or '' }}"
+            value="{{ form.last_name.value() or '' }}"
             autocomplete="family-name"
             class="block px-2.5 pt-5 pb-2.5 w-full floating-label peer"
             required
@@ -148,6 +154,10 @@
             >Confirm Password</label
           >
         </div>
+
+        {% if invite_token %}
+          <input type="hidden" name="invite_token" value="{{ invite_token }}" />
+        {% endif %}
         {% if form.password2.errors %}{% for error in form.password2.errors %}
           <p class="error-message-compact">{{ error }}</p>
         {% endfor %}{% endif %}

@@ -1,9 +1,9 @@
 {% extends "base.html" %} {% block title %}Mouse{% endblock %}
 {% block content %}
   <div class="max-w-3xl mx-auto px-4 py-8">
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-      <div class="bg-neutral-200 px-6 py-4">
-        <h3 class="default-header">Mouse Details</h3>
+    <div class="rounded-lg shadow-md overflow-hidden bg-white-dynamic">
+      <div class="px-6 py-4 bg-secondary">
+        <h2 class="default-header">Mouse Details</h2>
       </div>
 
       <div class="p-6">
@@ -18,6 +18,17 @@
             <dd class="mouse-data">{{ mouse.date_of_birth }}</dd>
           </div>
 
+          {% set exceeded = mouse.age_months > 18 and not mouse.project.allow_over_18_months %}
+          <div class="mouse-flex ">
+            <dt class="mouse-row ">Age</dt>
+            <dd class="mouse-data {% if exceeded %}text-amber-700{% endif %}">
+              {{ mouse.age_months }} months
+              {% if exceeded %}
+                (Project license does not allow mice older than 18 months)
+              {% endif %}
+            </dd>
+          </div>
+
           <div class="mouse-flex">
             <dt class="mouse-row">Tube Number</dt>
             <dd class="mouse-data">{{ mouse.tube_number }}</dd>
@@ -28,19 +39,38 @@
             <dd class="mouse-data">{{ mouse.box.number }}</dd>
           </div>
 
-          {% if mouse.cull_date %}
+          {% if mouse.death_date %}
             <div class="mouse-flex">
-              <dt class="mouse-row">Culled</dt>
+              <dt class="mouse-row">Died ({{ mouse.get_death_cause_display() }})</dt>
               <dd class="mouse-data">
-                {{ mouse.cull_date.strftime("%b %d, %Y") }}:
-                {{ mouse.cull_reason }}
+                {{ mouse.death_date.strftime("%b %d, %Y") }}{% if mouse.death_reason %}: {{ mouse.death_reason }}{% endif %}
               </dd>
             </div>
           {% endif %}
 
           <div class="mouse-flex">
+            <dt class="mouse-row">Genotype</dt>
+            <dd class="mouse-data">{{ mouse.genotype }}</dd>
+          </div>
+
+          <div class="mouse-flex">
             <dt class="mouse-row">Strain</dt>
             <dd class="mouse-data">{{ mouse.strain }}</dd>
+          </div>
+
+          <div class="mouse-flex">
+            <dt class="mouse-row">Study Plan</dt>
+            {% if mouse.study_plan %}
+              <dd class="mouse-data">
+                <a
+                  href="{{ url('mouseapp:study_plan', id=mouse.study_plan.id) }}"
+                >
+                  {{ mouse.study_plan }}
+                </a>
+              </dd>
+            {% else %}
+              <dd class="mouse-data">Not assigned</dd>
+            {% endif %}
           </div>
 
           <div class="mouse-flex">
@@ -85,7 +115,7 @@
           </div>
         </dl>
 
-        <div class="mt-6 pt-6 border-t border-gray-200">
+        <div class="mt-6 pt-6 border-t border-dynamic">
           <a
             href="{{ url('mouseapp:family_tree', mouse=mouse.id) }}"
             class="inline-flex items-center px-4 py-2 btn-primary"
@@ -102,6 +132,33 @@
             </a>
           {% endif %}
         </div>
+      </div>
+    </div>
+
+    <div class="rounded-lg shadow-md overflow-hidden mt-6 bg-white-dynamic">
+      <div class="px-6 py-4 bg-secondary">
+        <div class="flex justify-between items-center">
+          <h3 class="default-header">Observations</h3>
+        </div>
+      </div>
+      <div class="p-6">
+        {% for observation in mouse.observations.all() %}
+          <div class="mb-6">
+            On {{ observation.created_at.strftime('%b %d, %Y at %I:%M %p') }} by {{ observation.user or 'a deleted user' }}: {{ observation.type_text }}
+
+            <p class="ml-6 mb-3">
+              {{observation.details}}
+            </p>
+            <hr>
+          </div>
+        {% endfor %}
+        {% if observation_form %}
+          <form method="post" action="{{ url('mouseapp:observe_mouse', mouse.id) }}">
+            {{csrf_input}}
+            {{ observation_form.as_p() }}
+            <button type="submit" class="w-full btn-primary mt-2">Add Observation</button>
+          </form>
+        {% endif %}
       </div>
     </div>
 
@@ -132,7 +189,7 @@
         {% if mouse_requests %}
           <ul class="space-y-2">
             {% for req in mouse_requests %}
-              <li class="bg-white border border-neutral-300 rounded p-3">
+              <li class="border rounded p-3 bg-white-dynamic border-dynamic">
                 <div class="flex justify-between items-start">
                   <div class="flex-1">
                     <p class="font-medium">

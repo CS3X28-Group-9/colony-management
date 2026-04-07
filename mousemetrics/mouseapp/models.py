@@ -1,3 +1,4 @@
+from datetime import date
 from django.db import models
 from django.db.models import SET_NULL, Manager, query, Q
 from django.contrib.auth.models import User
@@ -94,7 +95,7 @@ class StudyPlan(models.Model):
         null=True,
         related_name="approved_study_plans",
     )
-    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default="Draft")
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default="D")
     study_id = models.CharField(max_length=50, blank=True, null=True, unique=True)
     approval_date = models.DateField(blank=True, null=True)
 
@@ -154,8 +155,17 @@ class Strain(models.Model):
         return self.name
 
 
+class Genotype(models.Model):
+    name = models.TextField(unique=True)
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class Mouse(models.Model):
     SEX_CHOICES = {"F": "Female", "M": "Male"}
+
+    DEATH_CAUSE_CHOICES = {"C": "Cull", "N": "Natural", "O": "Other"}
 
     EARMARK_VALIDATOR = RegexValidator(
         regex=r"^([TB][RL])*$",
@@ -190,13 +200,19 @@ class Mouse(models.Model):
     date_of_birth = models.DateField()
     tube_number = models.IntegerField()
     box = models.ForeignKey(Box, on_delete=models.PROTECT)
+    genotype = models.ForeignKey(
+        Genotype, on_delete=models.PROTECT, null=True, blank=True
+    )
     strain = models.ForeignKey(Strain, on_delete=models.PROTECT, null=True, blank=True)
     coat_colour = models.TextField(blank=True, null=True)
     earmark = models.CharField(
         max_length=16, blank=True, validators=[EARMARK_VALIDATOR]
     )
-    cull_date = models.DateField(blank=True, null=True)
-    cull_reason = models.TextField(blank=True, null=True)
+    death_date = models.DateField(blank=True, null=True)
+    death_cause = models.CharField(
+        max_length=1, choices=DEATH_CAUSE_CHOICES, blank=True, null=True
+    )
+    death_reason = models.TextField(blank=True, null=True)
 
     notes = models.TextField(blank=True)
 
@@ -228,11 +244,50 @@ class Mouse(models.Model):
             "mouseapp.edit_mice"
         )
 
+    @property
+    def age_months(self) -> int:
+        def months(d: date) -> int:
+            return d.year * 12 + d.month
+
+        return months(date.today()) - months(self.date_of_birth)
+
     def __str__(self) -> str:
-        return f"{self.strain} {self.tube_number}"
+        return f"{self.genotype} {self.strain} {self.tube_number}"
 
     def get_absolute_url(self) -> str:
         return reverse("mouseapp:mouse", args=[self.id])
+
+
+class MouseObservation(models.Model):
+    TYPE_CHOICES = {
+        "PH": "Phenotype",
+        "ML": "Missing Limbs",
+        "MA": "Missing Appendages",
+        "CE": "Cloudy Eyes",
+        "RT": "Ring Tail",
+        "KT": "Kinky Tail",
+        "CT": "Curly Tail",
+        "CM": "Coat Missing",
+        "OT": "Overgrown Teeth",
+        "": "Other",
+    }
+    mouse = models.ForeignKey(
+        Mouse, on_delete=models.CASCADE, related_name="observations"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+
+    type = models.CharField(
+        max_length=2, blank=True, null=True, choices=TYPE_CHOICES, default=""
+    )
+    details = models.TextField(blank=True, null=True)
+
+    @property
+    def type_text(self):
+        return self.TYPE_CHOICES[self.type or ""]
+
+    class Meta:
+        ordering = ["created_at"]
 
 
 class Request(models.Model):
