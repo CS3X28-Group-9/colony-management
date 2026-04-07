@@ -1,0 +1,5963 @@
+[
+{
+  "model": "mouseapp.project",
+  "pk": 1,
+  "fields": {
+    "name": "",
+    "start_date": "2000-01-01",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": 1,
+    "license_constraints": "None"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 2,
+  "fields": {
+    "name": "Tree Project Linear",
+    "start_date": "2026-03-15",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "Auto-generated stress test data"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 3,
+  "fields": {
+    "name": "Tree Project Wide-Siblings",
+    "start_date": "2026-03-05",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "Auto-generated stress test data"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 4,
+  "fields": {
+    "name": "Tree Project Sibling-Mating",
+    "start_date": "2026-02-23",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "Auto-generated stress test data"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 5,
+  "fields": {
+    "name": "Tree Project Parent-Child-Backcross",
+    "start_date": "2026-02-13",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "Auto-generated stress test data"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 6,
+  "fields": {
+    "name": "Tree Project Uncle-Niece",
+    "start_date": "2026-02-03",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "Auto-generated stress test data"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 7,
+  "fields": {
+    "name": "Tree Project Cousin-Mating",
+    "start_date": "2026-01-24",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "Auto-generated stress test data"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 8,
+  "fields": {
+    "name": "Tree Project Founder-Reused-Deep",
+    "start_date": "2026-01-14",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "Auto-generated stress test data"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 9,
+  "fields": {
+    "name": "Tree Project Diamond-Collapse",
+    "start_date": "2026-01-04",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "Auto-generated stress test data"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 10,
+  "fields": {
+    "name": "Tree Project Stress-Ladder",
+    "start_date": "2025-12-25",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "Auto-generated stress test data"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 11,
+  "fields": {
+    "name": "Tree Project Merged-Branches",
+    "start_date": "2025-12-15",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "Auto-generated stress test data"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 12,
+  "fields": {
+    "name": "Barycenter Test 5797",
+    "start_date": "2026-03-25",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "Barycenter layout test"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 13,
+  "fields": {
+    "name": "STRESS Huge Wide Siblings",
+    "start_date": "2026-03-25",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "generated stress test project"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 14,
+  "fields": {
+    "name": "STRESS Sibling Ladder",
+    "start_date": "2026-03-25",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "generated stress test project"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 15,
+  "fields": {
+    "name": "STRESS Founder Backcross Chain",
+    "start_date": "2026-03-25",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "generated stress test project"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 16,
+  "fields": {
+    "name": "STRESS Deep Diamond Stack",
+    "start_date": "2026-03-25",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "generated stress test project"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 17,
+  "fields": {
+    "name": "STRESS Cousin Web",
+    "start_date": "2026-03-25",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "generated stress test project"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 18,
+  "fields": {
+    "name": "STRESS Wide Deep Hybrid",
+    "start_date": "2026-03-25",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "generated stress test project"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 19,
+  "fields": {
+    "name": "STRESS Founder Reuse Both Sides",
+    "start_date": "2026-03-25",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "generated stress test project"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 20,
+  "fields": {
+    "name": "STRESS Three Layer Chaos",
+    "start_date": "2026-03-25",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "generated stress test project"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 21,
+  "fields": {
+    "name": "STRESS Ladder XL",
+    "start_date": "2026-03-25",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "generated stress test project"
+  }
+},
+{
+  "model": "mouseapp.project",
+  "pk": 22,
+  "fields": {
+    "name": "STRESS Mega Mixed",
+    "start_date": "2026-03-25",
+    "allow_over_18_months": false,
+    "has_mod_sev_permission": false,
+    "quota_5_years": null,
+    "lead": null,
+    "license_constraints": "generated stress test project"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 1,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2025-10-22",
+    "tube_number": 1,
+    "box": 1,
+    "strain": 1,
+    "coat_colour": "Black",
+    "earmark": "TL+BR",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "."
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 2,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": 1,
+    "date_of_birth": "2025-10-22",
+    "tube_number": 2,
+    "box": 1,
+    "strain": 2,
+    "coat_colour": "Black",
+    "earmark": "TL",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "."
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 3,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 2,
+    "father": null,
+    "date_of_birth": "2025-10-22",
+    "tube_number": 3,
+    "box": 1,
+    "strain": 2,
+    "coat_colour": "Black",
+    "earmark": "TR",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "."
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 4,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2025-10-22",
+    "tube_number": 4,
+    "box": 1,
+    "strain": 2,
+    "coat_colour": "Black",
+    "earmark": "BR",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "."
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 5,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 4,
+    "father": 3,
+    "date_of_birth": "2025-10-22",
+    "tube_number": 5,
+    "box": 1,
+    "strain": 2,
+    "coat_colour": "Black",
+    "earmark": "TR",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "."
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 6,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 55616,
+    "box": 2,
+    "strain": 3,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 7,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 80209,
+    "box": 2,
+    "strain": 3,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 8,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 7,
+    "father": 6,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 78250,
+    "box": 2,
+    "strain": 3,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 9,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 7,
+    "father": 6,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 80501,
+    "box": 2,
+    "strain": 3,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 10,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 9,
+    "father": 6,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 79849,
+    "box": 2,
+    "strain": 3,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 11,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 9,
+    "father": 8,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 83774,
+    "box": 2,
+    "strain": 3,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 12,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 10,
+    "father": 11,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 63340,
+    "box": 2,
+    "strain": 3,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 13,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 10,
+    "father": 11,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 71984,
+    "box": 2,
+    "strain": 3,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 14,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 10,
+    "father": 11,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 71739,
+    "box": 2,
+    "strain": 3,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 15,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 10,
+    "father": 11,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 64634,
+    "box": 2,
+    "strain": 3,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 16,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 10,
+    "father": 11,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 69296,
+    "box": 2,
+    "strain": 3,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 17,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 10,
+    "father": 11,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 52179,
+    "box": 2,
+    "strain": 3,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 18,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 17,
+    "father": 6,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 58991,
+    "box": 2,
+    "strain": 3,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 19,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 18,
+    "father": 11,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 50257,
+    "box": 2,
+    "strain": 3,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 20,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 7,
+    "father": 19,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 53601,
+    "box": 2,
+    "strain": 3,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 21,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 81112,
+    "box": 3,
+    "strain": 4,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 22,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 79430,
+    "box": 3,
+    "strain": 4,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 23,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 22,
+    "father": 21,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 70070,
+    "box": 3,
+    "strain": 4,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 24,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 22,
+    "father": 21,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 83208,
+    "box": 3,
+    "strain": 4,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 25,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 24,
+    "father": 21,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 82952,
+    "box": 3,
+    "strain": 4,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 26,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 24,
+    "father": 23,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 52722,
+    "box": 3,
+    "strain": 4,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 27,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 25,
+    "father": 26,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 88857,
+    "box": 3,
+    "strain": 4,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 28,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 25,
+    "father": 26,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 59520,
+    "box": 3,
+    "strain": 4,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 29,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 25,
+    "father": 26,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 77061,
+    "box": 3,
+    "strain": 4,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 30,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 25,
+    "father": 26,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 54163,
+    "box": 3,
+    "strain": 4,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 31,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 25,
+    "father": 26,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 74780,
+    "box": 3,
+    "strain": 4,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 32,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 25,
+    "father": 26,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 80106,
+    "box": 3,
+    "strain": 4,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 33,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 32,
+    "father": 21,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 50685,
+    "box": 3,
+    "strain": 4,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 34,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 33,
+    "father": 26,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 85012,
+    "box": 3,
+    "strain": 4,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 35,
+  "fields": {
+    "project": 1,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 22,
+    "father": 34,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 78155,
+    "box": 3,
+    "strain": 4,
+    "coat_colour": null,
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": ""
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 36,
+  "fields": {
+    "project": 2,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 1001,
+    "box": 4,
+    "strain": 5,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 37,
+  "fields": {
+    "project": 2,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 1002,
+    "box": 4,
+    "strain": 5,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 38,
+  "fields": {
+    "project": 2,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 37,
+    "father": 36,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 1003,
+    "box": 4,
+    "strain": 5,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 39,
+  "fields": {
+    "project": 2,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": 38,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 1004,
+    "box": 4,
+    "strain": 5,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 40,
+  "fields": {
+    "project": 2,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 39,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 1005,
+    "box": 4,
+    "strain": 5,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 41,
+  "fields": {
+    "project": 3,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 2001,
+    "box": 5,
+    "strain": 6,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 42,
+  "fields": {
+    "project": 3,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 2002,
+    "box": 5,
+    "strain": 6,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 43,
+  "fields": {
+    "project": 3,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 42,
+    "father": 41,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 2010,
+    "box": 5,
+    "strain": 6,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 44,
+  "fields": {
+    "project": 3,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 42,
+    "father": 41,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 2011,
+    "box": 5,
+    "strain": 6,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 45,
+  "fields": {
+    "project": 3,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 42,
+    "father": 41,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 2012,
+    "box": 5,
+    "strain": 6,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 46,
+  "fields": {
+    "project": 3,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 42,
+    "father": 41,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 2013,
+    "box": 5,
+    "strain": 6,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 47,
+  "fields": {
+    "project": 3,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 42,
+    "father": 41,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 2014,
+    "box": 5,
+    "strain": 6,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 48,
+  "fields": {
+    "project": 3,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 42,
+    "father": 41,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 2015,
+    "box": 5,
+    "strain": 6,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 49,
+  "fields": {
+    "project": 3,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 42,
+    "father": 41,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 2016,
+    "box": 5,
+    "strain": 6,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 50,
+  "fields": {
+    "project": 3,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 42,
+    "father": 41,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 2017,
+    "box": 5,
+    "strain": 6,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 51,
+  "fields": {
+    "project": 3,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 42,
+    "father": 41,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 2018,
+    "box": 5,
+    "strain": 6,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 52,
+  "fields": {
+    "project": 3,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 42,
+    "father": 41,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 2019,
+    "box": 5,
+    "strain": 6,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 53,
+  "fields": {
+    "project": 4,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3001,
+    "box": 6,
+    "strain": 7,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 54,
+  "fields": {
+    "project": 4,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3002,
+    "box": 6,
+    "strain": 7,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 55,
+  "fields": {
+    "project": 4,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 54,
+    "father": 53,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3003,
+    "box": 6,
+    "strain": 7,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 56,
+  "fields": {
+    "project": 4,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 54,
+    "father": 53,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3004,
+    "box": 6,
+    "strain": 7,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 57,
+  "fields": {
+    "project": 4,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 56,
+    "father": 55,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3005,
+    "box": 6,
+    "strain": 7,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 58,
+  "fields": {
+    "project": 5,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 4001,
+    "box": 7,
+    "strain": 8,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 59,
+  "fields": {
+    "project": 5,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 4002,
+    "box": 7,
+    "strain": 8,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 60,
+  "fields": {
+    "project": 5,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 59,
+    "father": 58,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 4003,
+    "box": 7,
+    "strain": 8,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 61,
+  "fields": {
+    "project": 5,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 60,
+    "father": 58,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 4004,
+    "box": 7,
+    "strain": 8,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 62,
+  "fields": {
+    "project": 6,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 5001,
+    "box": 8,
+    "strain": 9,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 63,
+  "fields": {
+    "project": 6,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 5002,
+    "box": 8,
+    "strain": 9,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 64,
+  "fields": {
+    "project": 6,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 63,
+    "father": 62,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 5003,
+    "box": 8,
+    "strain": 9,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 65,
+  "fields": {
+    "project": 6,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 63,
+    "father": 62,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 5004,
+    "box": 8,
+    "strain": 9,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 66,
+  "fields": {
+    "project": 6,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 65,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 5005,
+    "box": 8,
+    "strain": 9,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 67,
+  "fields": {
+    "project": 6,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 66,
+    "father": 64,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 5006,
+    "box": 8,
+    "strain": 9,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 68,
+  "fields": {
+    "project": 7,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 6001,
+    "box": 9,
+    "strain": 10,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 69,
+  "fields": {
+    "project": 7,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 6002,
+    "box": 9,
+    "strain": 10,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 70,
+  "fields": {
+    "project": 7,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 69,
+    "father": 68,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 6003,
+    "box": 9,
+    "strain": 10,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 71,
+  "fields": {
+    "project": 7,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 69,
+    "father": 68,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 6004,
+    "box": 9,
+    "strain": 10,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 72,
+  "fields": {
+    "project": 7,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": 70,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 6005,
+    "box": 9,
+    "strain": 10,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 73,
+  "fields": {
+    "project": 7,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 71,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 6006,
+    "box": 9,
+    "strain": 10,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 74,
+  "fields": {
+    "project": 7,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 73,
+    "father": 72,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 6007,
+    "box": 9,
+    "strain": 10,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 75,
+  "fields": {
+    "project": 8,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 7001,
+    "box": 10,
+    "strain": 11,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 76,
+  "fields": {
+    "project": 8,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 7002,
+    "box": 10,
+    "strain": 11,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 77,
+  "fields": {
+    "project": 8,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 76,
+    "father": 75,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 7003,
+    "box": 10,
+    "strain": 11,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 78,
+  "fields": {
+    "project": 8,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 76,
+    "father": 75,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 7004,
+    "box": 10,
+    "strain": 11,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 79,
+  "fields": {
+    "project": 8,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 78,
+    "father": 77,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 7005,
+    "box": 10,
+    "strain": 11,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 80,
+  "fields": {
+    "project": 8,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 78,
+    "father": 75,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 7006,
+    "box": 10,
+    "strain": 11,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 81,
+  "fields": {
+    "project": 8,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 80,
+    "father": 79,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 7007,
+    "box": 10,
+    "strain": 11,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 82,
+  "fields": {
+    "project": 8,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 76,
+    "father": 81,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 7008,
+    "box": 10,
+    "strain": 11,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 83,
+  "fields": {
+    "project": 9,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 8001,
+    "box": 11,
+    "strain": 12,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 84,
+  "fields": {
+    "project": 9,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 8002,
+    "box": 11,
+    "strain": 12,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 85,
+  "fields": {
+    "project": 9,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 84,
+    "father": 83,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 8003,
+    "box": 11,
+    "strain": 12,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 86,
+  "fields": {
+    "project": 9,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 84,
+    "father": 83,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 8004,
+    "box": 11,
+    "strain": 12,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 87,
+  "fields": {
+    "project": 9,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 86,
+    "father": 85,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 8005,
+    "box": 11,
+    "strain": 12,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 88,
+  "fields": {
+    "project": 9,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 86,
+    "father": 85,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 8006,
+    "box": 11,
+    "strain": 12,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 89,
+  "fields": {
+    "project": 10,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 9001,
+    "box": 12,
+    "strain": 13,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 90,
+  "fields": {
+    "project": 10,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 9002,
+    "box": 12,
+    "strain": 13,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 91,
+  "fields": {
+    "project": 10,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 90,
+    "father": 89,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 9003,
+    "box": 12,
+    "strain": 13,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 92,
+  "fields": {
+    "project": 10,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 90,
+    "father": 89,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 9004,
+    "box": 12,
+    "strain": 13,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 93,
+  "fields": {
+    "project": 10,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 92,
+    "father": 89,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 9005,
+    "box": 12,
+    "strain": 13,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 94,
+  "fields": {
+    "project": 10,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 92,
+    "father": 91,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 9006,
+    "box": 12,
+    "strain": 13,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 95,
+  "fields": {
+    "project": 10,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 93,
+    "father": 94,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 9010,
+    "box": 12,
+    "strain": 13,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 96,
+  "fields": {
+    "project": 10,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 93,
+    "father": 94,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 9011,
+    "box": 12,
+    "strain": 13,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 97,
+  "fields": {
+    "project": 10,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 93,
+    "father": 94,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 9012,
+    "box": 12,
+    "strain": 13,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 98,
+  "fields": {
+    "project": 10,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 93,
+    "father": 94,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 9013,
+    "box": 12,
+    "strain": 13,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 99,
+  "fields": {
+    "project": 10,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 93,
+    "father": 94,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 9014,
+    "box": 12,
+    "strain": 13,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 100,
+  "fields": {
+    "project": 10,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 93,
+    "father": 94,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 9015,
+    "box": 12,
+    "strain": 13,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 101,
+  "fields": {
+    "project": 10,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 100,
+    "father": 89,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 9020,
+    "box": 12,
+    "strain": 13,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 102,
+  "fields": {
+    "project": 10,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 101,
+    "father": 94,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 9021,
+    "box": 12,
+    "strain": 13,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 103,
+  "fields": {
+    "project": 10,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 90,
+    "father": 102,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 9022,
+    "box": 12,
+    "strain": 13,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 104,
+  "fields": {
+    "project": 11,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 10001,
+    "box": 13,
+    "strain": 14,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 105,
+  "fields": {
+    "project": 11,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 10002,
+    "box": 13,
+    "strain": 14,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 106,
+  "fields": {
+    "project": 11,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 10003,
+    "box": 13,
+    "strain": 14,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 107,
+  "fields": {
+    "project": 11,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 10004,
+    "box": 13,
+    "strain": 14,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 108,
+  "fields": {
+    "project": 11,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 105,
+    "father": 104,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 10005,
+    "box": 13,
+    "strain": 14,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 109,
+  "fields": {
+    "project": 11,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 107,
+    "father": 106,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 10006,
+    "box": 13,
+    "strain": 14,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 110,
+  "fields": {
+    "project": 11,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 109,
+    "father": 108,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 10007,
+    "box": 13,
+    "strain": 14,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 111,
+  "fields": {
+    "project": 11,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 109,
+    "father": 108,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 10008,
+    "box": 13,
+    "strain": 14,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 112,
+  "fields": {
+    "project": 11,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 111,
+    "father": 110,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 10009,
+    "box": 13,
+    "strain": 14,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "generated"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 113,
+  "fields": {
+    "project": 12,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 1,
+    "box": 14,
+    "strain": 15,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "barycenter test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 114,
+  "fields": {
+    "project": 12,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 2,
+    "box": 14,
+    "strain": 15,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "barycenter test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 115,
+  "fields": {
+    "project": 12,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 114,
+    "father": 113,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3,
+    "box": 14,
+    "strain": 15,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "barycenter test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 116,
+  "fields": {
+    "project": 12,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 114,
+    "father": 113,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 4,
+    "box": 14,
+    "strain": 15,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "barycenter test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 117,
+  "fields": {
+    "project": 12,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": 115,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 5,
+    "box": 14,
+    "strain": 15,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "barycenter test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 118,
+  "fields": {
+    "project": 12,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 116,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 6,
+    "box": 14,
+    "strain": 15,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "barycenter test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 119,
+  "fields": {
+    "project": 12,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 116,
+    "father": 115,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 7,
+    "box": 14,
+    "strain": 15,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "barycenter test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 120,
+  "fields": {
+    "project": 12,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 118,
+    "father": 117,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 8,
+    "box": 14,
+    "strain": 15,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "barycenter test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 121,
+  "fields": {
+    "project": 12,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 120,
+    "father": 119,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 9,
+    "box": 14,
+    "strain": 15,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "barycenter test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 122,
+  "fields": {
+    "project": 12,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 120,
+    "father": 113,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 10,
+    "box": 14,
+    "strain": 15,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "barycenter test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 123,
+  "fields": {
+    "project": 12,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 122,
+    "father": 121,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 11,
+    "box": 14,
+    "strain": 15,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "barycenter test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 124,
+  "fields": {
+    "project": 13,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3001,
+    "box": 15,
+    "strain": 16,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 125,
+  "fields": {
+    "project": 13,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3002,
+    "box": 15,
+    "strain": 16,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 126,
+  "fields": {
+    "project": 13,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 125,
+    "father": 124,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3010,
+    "box": 15,
+    "strain": 16,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 127,
+  "fields": {
+    "project": 13,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 125,
+    "father": 124,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3011,
+    "box": 15,
+    "strain": 16,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 128,
+  "fields": {
+    "project": 13,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 125,
+    "father": 124,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3012,
+    "box": 15,
+    "strain": 16,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 129,
+  "fields": {
+    "project": 13,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 125,
+    "father": 124,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3013,
+    "box": 15,
+    "strain": 16,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 130,
+  "fields": {
+    "project": 13,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 125,
+    "father": 124,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3014,
+    "box": 15,
+    "strain": 16,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 131,
+  "fields": {
+    "project": 13,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 125,
+    "father": 124,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3015,
+    "box": 15,
+    "strain": 16,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 132,
+  "fields": {
+    "project": 13,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 125,
+    "father": 124,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3016,
+    "box": 15,
+    "strain": 16,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 133,
+  "fields": {
+    "project": 13,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 125,
+    "father": 124,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3017,
+    "box": 15,
+    "strain": 16,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 134,
+  "fields": {
+    "project": 13,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 125,
+    "father": 124,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3018,
+    "box": 15,
+    "strain": 16,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 135,
+  "fields": {
+    "project": 13,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 125,
+    "father": 124,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3019,
+    "box": 15,
+    "strain": 16,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 136,
+  "fields": {
+    "project": 13,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 125,
+    "father": 124,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3020,
+    "box": 15,
+    "strain": 16,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 137,
+  "fields": {
+    "project": 13,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 125,
+    "father": 124,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3021,
+    "box": 15,
+    "strain": 16,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 138,
+  "fields": {
+    "project": 13,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 125,
+    "father": 124,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3022,
+    "box": 15,
+    "strain": 16,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 139,
+  "fields": {
+    "project": 13,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 125,
+    "father": 124,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3023,
+    "box": 15,
+    "strain": 16,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 140,
+  "fields": {
+    "project": 13,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 125,
+    "father": 124,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3024,
+    "box": 15,
+    "strain": 16,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 141,
+  "fields": {
+    "project": 13,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 125,
+    "father": 124,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3025,
+    "box": 15,
+    "strain": 16,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 142,
+  "fields": {
+    "project": 13,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 125,
+    "father": 124,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3026,
+    "box": 15,
+    "strain": 16,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 143,
+  "fields": {
+    "project": 13,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 125,
+    "father": 124,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3027,
+    "box": 15,
+    "strain": 16,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 144,
+  "fields": {
+    "project": 14,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3101,
+    "box": 16,
+    "strain": 17,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 145,
+  "fields": {
+    "project": 14,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3102,
+    "box": 16,
+    "strain": 17,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 146,
+  "fields": {
+    "project": 14,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 145,
+    "father": 144,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3103,
+    "box": 16,
+    "strain": 17,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 147,
+  "fields": {
+    "project": 14,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 145,
+    "father": 144,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3104,
+    "box": 16,
+    "strain": 17,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 148,
+  "fields": {
+    "project": 14,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 147,
+    "father": 146,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3105,
+    "box": 16,
+    "strain": 17,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 149,
+  "fields": {
+    "project": 14,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 147,
+    "father": 146,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3106,
+    "box": 16,
+    "strain": 17,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 150,
+  "fields": {
+    "project": 14,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 149,
+    "father": 148,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3107,
+    "box": 16,
+    "strain": 17,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 151,
+  "fields": {
+    "project": 14,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 149,
+    "father": 148,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3108,
+    "box": 16,
+    "strain": 17,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 152,
+  "fields": {
+    "project": 14,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 151,
+    "father": 150,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3109,
+    "box": 16,
+    "strain": 17,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 153,
+  "fields": {
+    "project": 14,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 151,
+    "father": 150,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3110,
+    "box": 16,
+    "strain": 17,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 154,
+  "fields": {
+    "project": 14,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 153,
+    "father": 152,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3111,
+    "box": 16,
+    "strain": 17,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 155,
+  "fields": {
+    "project": 15,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3201,
+    "box": 17,
+    "strain": 18,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 156,
+  "fields": {
+    "project": 15,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3202,
+    "box": 17,
+    "strain": 18,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 157,
+  "fields": {
+    "project": 15,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 156,
+    "father": 155,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3203,
+    "box": 17,
+    "strain": 18,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 158,
+  "fields": {
+    "project": 15,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 157,
+    "father": 155,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3204,
+    "box": 17,
+    "strain": 18,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 159,
+  "fields": {
+    "project": 15,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 158,
+    "father": 155,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3205,
+    "box": 17,
+    "strain": 18,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 160,
+  "fields": {
+    "project": 15,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 159,
+    "father": 155,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3206,
+    "box": 17,
+    "strain": 18,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 161,
+  "fields": {
+    "project": 15,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 160,
+    "father": 155,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3207,
+    "box": 17,
+    "strain": 18,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 162,
+  "fields": {
+    "project": 15,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 161,
+    "father": 155,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3208,
+    "box": 17,
+    "strain": 18,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 163,
+  "fields": {
+    "project": 16,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3301,
+    "box": 18,
+    "strain": 19,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 164,
+  "fields": {
+    "project": 16,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3302,
+    "box": 18,
+    "strain": 19,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 165,
+  "fields": {
+    "project": 16,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 164,
+    "father": 163,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3303,
+    "box": 18,
+    "strain": 19,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 166,
+  "fields": {
+    "project": 16,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 164,
+    "father": 163,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3304,
+    "box": 18,
+    "strain": 19,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 167,
+  "fields": {
+    "project": 16,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 166,
+    "father": 165,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3305,
+    "box": 18,
+    "strain": 19,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 168,
+  "fields": {
+    "project": 16,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 166,
+    "father": 165,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3306,
+    "box": 18,
+    "strain": 19,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 169,
+  "fields": {
+    "project": 16,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 168,
+    "father": 167,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3307,
+    "box": 18,
+    "strain": 19,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 170,
+  "fields": {
+    "project": 16,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 168,
+    "father": 167,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3308,
+    "box": 18,
+    "strain": 19,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 171,
+  "fields": {
+    "project": 16,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 170,
+    "father": 169,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3309,
+    "box": 18,
+    "strain": 19,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 172,
+  "fields": {
+    "project": 17,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3401,
+    "box": 19,
+    "strain": 20,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 173,
+  "fields": {
+    "project": 17,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3402,
+    "box": 19,
+    "strain": 20,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 174,
+  "fields": {
+    "project": 17,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 173,
+    "father": 172,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3410,
+    "box": 19,
+    "strain": 20,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 175,
+  "fields": {
+    "project": 17,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 173,
+    "father": 172,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3411,
+    "box": 19,
+    "strain": 20,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 176,
+  "fields": {
+    "project": 17,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 173,
+    "father": 172,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3412,
+    "box": 19,
+    "strain": 20,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 177,
+  "fields": {
+    "project": 17,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 173,
+    "father": 172,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3413,
+    "box": 19,
+    "strain": 20,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 178,
+  "fields": {
+    "project": 17,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 174,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3420,
+    "box": 19,
+    "strain": 20,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 179,
+  "fields": {
+    "project": 17,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": 175,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3421,
+    "box": 19,
+    "strain": 20,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 180,
+  "fields": {
+    "project": 17,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 176,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3422,
+    "box": 19,
+    "strain": 20,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 181,
+  "fields": {
+    "project": 17,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": 177,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3423,
+    "box": 19,
+    "strain": 20,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 182,
+  "fields": {
+    "project": 17,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 179,
+    "father": 178,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3430,
+    "box": 19,
+    "strain": 20,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 183,
+  "fields": {
+    "project": 17,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 181,
+    "father": 180,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3431,
+    "box": 19,
+    "strain": 20,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 184,
+  "fields": {
+    "project": 17,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 183,
+    "father": 182,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3432,
+    "box": 19,
+    "strain": 20,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 185,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3501,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 186,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3502,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 187,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 186,
+    "father": 185,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3510,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 188,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 186,
+    "father": 185,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3511,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 189,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 186,
+    "father": 185,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3512,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 190,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 186,
+    "father": 185,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3513,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 191,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 186,
+    "father": 185,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3514,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 192,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 186,
+    "father": 185,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3515,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 193,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 186,
+    "father": 185,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3516,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 194,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 186,
+    "father": 185,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3517,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 195,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 186,
+    "father": 185,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3518,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 196,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 186,
+    "father": 185,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3519,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 197,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 188,
+    "father": 187,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3520,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 198,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 190,
+    "father": 189,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3522,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 199,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 192,
+    "father": 191,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3524,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 200,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 194,
+    "father": 193,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3526,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 201,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 196,
+    "father": 195,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3528,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 202,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 198,
+    "father": 197,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3530,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 203,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 199,
+    "father": 198,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3531,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 204,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 200,
+    "father": 199,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3532,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 205,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 201,
+    "father": 200,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3533,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 206,
+  "fields": {
+    "project": 18,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 205,
+    "father": 202,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3540,
+    "box": 20,
+    "strain": 21,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 207,
+  "fields": {
+    "project": 19,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3601,
+    "box": 21,
+    "strain": 22,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 208,
+  "fields": {
+    "project": 19,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3602,
+    "box": 21,
+    "strain": 22,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 209,
+  "fields": {
+    "project": 19,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 208,
+    "father": 207,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3603,
+    "box": 21,
+    "strain": 22,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 210,
+  "fields": {
+    "project": 19,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 208,
+    "father": 207,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3604,
+    "box": 21,
+    "strain": 22,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 211,
+  "fields": {
+    "project": 19,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 210,
+    "father": 209,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3605,
+    "box": 21,
+    "strain": 22,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 212,
+  "fields": {
+    "project": 19,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 211,
+    "father": 207,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3606,
+    "box": 21,
+    "strain": 22,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 213,
+  "fields": {
+    "project": 19,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 208,
+    "father": 211,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3607,
+    "box": 21,
+    "strain": 22,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 214,
+  "fields": {
+    "project": 19,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 212,
+    "father": 213,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3608,
+    "box": 21,
+    "strain": 22,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 215,
+  "fields": {
+    "project": 20,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3700,
+    "box": 22,
+    "strain": 23,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 216,
+  "fields": {
+    "project": 20,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3701,
+    "box": 22,
+    "strain": 23,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 217,
+  "fields": {
+    "project": 20,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3702,
+    "box": 22,
+    "strain": 23,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 218,
+  "fields": {
+    "project": 20,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3710,
+    "box": 22,
+    "strain": 23,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 219,
+  "fields": {
+    "project": 20,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3711,
+    "box": 22,
+    "strain": 23,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 220,
+  "fields": {
+    "project": 20,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3712,
+    "box": 22,
+    "strain": 23,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 221,
+  "fields": {
+    "project": 20,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 218,
+    "father": 215,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3721,
+    "box": 22,
+    "strain": 23,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 222,
+  "fields": {
+    "project": 20,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 219,
+    "father": 216,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3722,
+    "box": 22,
+    "strain": 23,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 223,
+  "fields": {
+    "project": 20,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 220,
+    "father": 217,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3723,
+    "box": 22,
+    "strain": 23,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 224,
+  "fields": {
+    "project": 20,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 220,
+    "father": 215,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3724,
+    "box": 22,
+    "strain": 23,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 225,
+  "fields": {
+    "project": 20,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 218,
+    "father": 217,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3725,
+    "box": 22,
+    "strain": 23,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 226,
+  "fields": {
+    "project": 20,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 222,
+    "father": 221,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3731,
+    "box": 22,
+    "strain": 23,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 227,
+  "fields": {
+    "project": 20,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 224,
+    "father": 223,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3732,
+    "box": 22,
+    "strain": 23,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 228,
+  "fields": {
+    "project": 20,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 226,
+    "father": 227,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3733,
+    "box": 22,
+    "strain": 23,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 229,
+  "fields": {
+    "project": 21,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3801,
+    "box": 23,
+    "strain": 24,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 230,
+  "fields": {
+    "project": 21,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3802,
+    "box": 23,
+    "strain": 24,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 231,
+  "fields": {
+    "project": 21,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 230,
+    "father": 229,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3803,
+    "box": 23,
+    "strain": 24,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 232,
+  "fields": {
+    "project": 21,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 230,
+    "father": 229,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3804,
+    "box": 23,
+    "strain": 24,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 233,
+  "fields": {
+    "project": 21,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 232,
+    "father": 229,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3805,
+    "box": 23,
+    "strain": 24,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 234,
+  "fields": {
+    "project": 21,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 232,
+    "father": 231,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3806,
+    "box": 23,
+    "strain": 24,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 235,
+  "fields": {
+    "project": 21,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 233,
+    "father": 234,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3810,
+    "box": 23,
+    "strain": 24,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 236,
+  "fields": {
+    "project": 21,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 233,
+    "father": 234,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3811,
+    "box": 23,
+    "strain": 24,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 237,
+  "fields": {
+    "project": 21,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 233,
+    "father": 234,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3812,
+    "box": 23,
+    "strain": 24,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 238,
+  "fields": {
+    "project": 21,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 233,
+    "father": 234,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3813,
+    "box": 23,
+    "strain": 24,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 239,
+  "fields": {
+    "project": 21,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 233,
+    "father": 234,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3814,
+    "box": 23,
+    "strain": 24,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 240,
+  "fields": {
+    "project": 21,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 233,
+    "father": 234,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3815,
+    "box": 23,
+    "strain": 24,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 241,
+  "fields": {
+    "project": 21,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 233,
+    "father": 234,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3816,
+    "box": 23,
+    "strain": 24,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 242,
+  "fields": {
+    "project": 21,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 233,
+    "father": 234,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3817,
+    "box": 23,
+    "strain": 24,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 243,
+  "fields": {
+    "project": 21,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 242,
+    "father": 229,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3821,
+    "box": 23,
+    "strain": 24,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 244,
+  "fields": {
+    "project": 21,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 235,
+    "father": 234,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3822,
+    "box": 23,
+    "strain": 24,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 245,
+  "fields": {
+    "project": 21,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 243,
+    "father": 244,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3823,
+    "box": 23,
+    "strain": 24,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 246,
+  "fields": {
+    "project": 21,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 230,
+    "father": 245,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3824,
+    "box": 23,
+    "strain": 24,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 247,
+  "fields": {
+    "project": 21,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 238,
+    "father": 246,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3825,
+    "box": 23,
+    "strain": 24,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 248,
+  "fields": {
+    "project": 22,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3900,
+    "box": 24,
+    "strain": 25,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 249,
+  "fields": {
+    "project": 22,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3901,
+    "box": 24,
+    "strain": 25,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 250,
+  "fields": {
+    "project": 22,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3902,
+    "box": 24,
+    "strain": 25,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 251,
+  "fields": {
+    "project": 22,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3903,
+    "box": 24,
+    "strain": 25,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 252,
+  "fields": {
+    "project": 22,
+    "study_plan": null,
+    "sex": "F",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3904,
+    "box": 24,
+    "strain": 25,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 253,
+  "fields": {
+    "project": 22,
+    "study_plan": null,
+    "sex": "M",
+    "mother": null,
+    "father": null,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3905,
+    "box": 24,
+    "strain": 25,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 254,
+  "fields": {
+    "project": 22,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 249,
+    "father": 248,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3910,
+    "box": 24,
+    "strain": 25,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 255,
+  "fields": {
+    "project": 22,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 249,
+    "father": 248,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3911,
+    "box": 24,
+    "strain": 25,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 256,
+  "fields": {
+    "project": 22,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 251,
+    "father": 250,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3912,
+    "box": 24,
+    "strain": 25,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 257,
+  "fields": {
+    "project": 22,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 251,
+    "father": 250,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3913,
+    "box": 24,
+    "strain": 25,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 258,
+  "fields": {
+    "project": 22,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 257,
+    "father": 254,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3914,
+    "box": 24,
+    "strain": 25,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 259,
+  "fields": {
+    "project": 22,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 255,
+    "father": 256,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3915,
+    "box": 24,
+    "strain": 25,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 260,
+  "fields": {
+    "project": 22,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 259,
+    "father": 258,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3916,
+    "box": 24,
+    "strain": 25,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 261,
+  "fields": {
+    "project": 22,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 260,
+    "father": 254,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3917,
+    "box": 24,
+    "strain": 25,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 262,
+  "fields": {
+    "project": 22,
+    "study_plan": null,
+    "sex": "M",
+    "mother": 253,
+    "father": 260,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3918,
+    "box": 24,
+    "strain": 25,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.mouse",
+  "pk": 263,
+  "fields": {
+    "project": 22,
+    "study_plan": null,
+    "sex": "F",
+    "mother": 261,
+    "father": 262,
+    "date_of_birth": "2026-03-25",
+    "tube_number": 3919,
+    "box": 24,
+    "strain": 25,
+    "coat_colour": "Black",
+    "earmark": "",
+    "cull_date": null,
+    "cull_reason": null,
+    "notes": "stress test"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 1,
+  "fields": {
+    "name": "floxed GASP-1"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 2,
+  "fields": {
+    "name": "floxed-GASP1"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 3,
+  "fields": {
+    "name": "STRESS-LADDER-2156"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 4,
+  "fields": {
+    "name": "STRESS-LADDER-5905"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 5,
+  "fields": {
+    "name": "LINEAR-9767"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 6,
+  "fields": {
+    "name": "WIDE-2244"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 7,
+  "fields": {
+    "name": "SIB-3761"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 8,
+  "fields": {
+    "name": "BACK-1755"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 9,
+  "fields": {
+    "name": "UNCLE-8134"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 10,
+  "fields": {
+    "name": "COUSIN-3531"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 11,
+  "fields": {
+    "name": "FOUNDER-2380"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 12,
+  "fields": {
+    "name": "DIAMOND-8479"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 13,
+  "fields": {
+    "name": "STRESS-7032"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 14,
+  "fields": {
+    "name": "MERGE-9860"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 15,
+  "fields": {
+    "name": "BARY-3846"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 16,
+  "fields": {
+    "name": "WIDE-3410"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 17,
+  "fields": {
+    "name": "SIBLAD-9246"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 18,
+  "fields": {
+    "name": "BACKCHAIN-6896"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 19,
+  "fields": {
+    "name": "DIAMONDSTACK-2008"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 20,
+  "fields": {
+    "name": "COUSINWEB-3521"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 21,
+  "fields": {
+    "name": "HYBRID-6529"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 22,
+  "fields": {
+    "name": "FOUNDERBOTH-4768"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 23,
+  "fields": {
+    "name": "CHAOS-4760"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 24,
+  "fields": {
+    "name": "LADDERXL-5568"
+  }
+},
+{
+  "model": "mouseapp.strain",
+  "pk": 25,
+  "fields": {
+    "name": "MEGAMIX-6030"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 1,
+  "fields": {
+    "box_type": "S",
+    "location": "",
+    "project": 1,
+    "number": "1"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 2,
+  "fields": {
+    "box_type": "S",
+    "location": "",
+    "project": null,
+    "number": "999"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 3,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 1,
+    "number": "999"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 4,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 2,
+    "number": "101"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 5,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 3,
+    "number": "102"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 6,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 4,
+    "number": "103"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 7,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 5,
+    "number": "104"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 8,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 6,
+    "number": "105"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 9,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 7,
+    "number": "106"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 10,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 8,
+    "number": "107"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 11,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 9,
+    "number": "108"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 12,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 10,
+    "number": "109"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 13,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 11,
+    "number": "110"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 14,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 12,
+    "number": "201"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 15,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 13,
+    "number": "301"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 16,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 14,
+    "number": "302"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 17,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 15,
+    "number": "303"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 18,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 16,
+    "number": "304"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 19,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 17,
+    "number": "305"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 20,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 18,
+    "number": "306"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 21,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 19,
+    "number": "307"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 22,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 20,
+    "number": "308"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 23,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 21,
+    "number": "309"
+  }
+},
+{
+  "model": "mouseapp.box",
+  "pk": 24,
+  "fields": {
+    "box_type": "S",
+    "location": "B",
+    "project": 22,
+    "number": "310"
+  }
+}
+]
