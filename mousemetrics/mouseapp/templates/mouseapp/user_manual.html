@@ -2,18 +2,18 @@
 {% block title %}User Manual{% endblock %}
 {% block content %}
   <div class="max-w-5xl mx-auto px-4 py-8">
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-      <div class="bg-neutral-200 px-6 py-4">
+    <div class="bg-white-dynamic rounded-lg shadow-md overflow-hidden">
+      <div class="bg-secondary px-6 py-4">
         <h1 class="default-header">User Manual</h1>
       </div>
 
-      <div class="p-6 text-neutral-800">
+      <div class="p-6 text-primary">
         <h3 class="text-xl font-semibold mb-4">Basic Usage</h3>
 
         <img
           src="{{ static('manual/fig9.png') }}"
           alt="Front page of the application"
-          class="w-full border border-neutral-300 rounded mb-6"
+          class="w-full border border-dynamic rounded mb-6"
         />
 
         <p>
@@ -31,7 +31,7 @@
         <img
           src="{{ static('manual/fig10.png') }}"
           alt="Project page"
-          class="w-full border border-neutral-300 rounded mt-6 mb-6"
+          class="w-full border border-dynamic rounded mt-6 mb-6"
         />
 
         <p>
@@ -57,7 +57,7 @@
         <img
           src="{{ static('manual/fig11.svg') }}"
           alt="Family tree of a mouse"
-          class="max-w-3xl mx-auto border border-neutral-300 rounded mt-6 mb-6"
+          class="max-w-3xl mx-auto border border-dynamic rounded mt-6 mb-6"
         />
 
         <h3 class="text-xl font-semibold mt-8 mb-4">Data Import</h3>
@@ -71,15 +71,21 @@
           Parent fields refer to the tube number and are assumed to refer to
           mice of the same strain as the child. Sex is expected to take values
           of either
-          <code class="px-1 py-0.5 bg-neutral-100 rounded">M</code> or
-          <code class="px-1 py-0.5 bg-neutral-100 rounded">F</code>. Blank
-          values are assumed to be equal to the previous filled value.
+          <code
+            class="px-1 py-0.5 bg-white-dynamic border border-dynamic rounded"
+            >M</code
+          >
+          or
+          <code
+            class="px-1 py-0.5 bg-white-dynamic border border-dynamic rounded"
+            >F</code
+          >. Blank values are assumed to be equal to the previous filled value.
         </p>
 
         <img
           src="{{ static('manual/fig12.png') }}"
           alt="Import format"
-          class="w-full border border-neutral-300 rounded mt-6 mb-6"
+          class="w-full border border-dynamic rounded mt-6 mb-6"
         />
 
         <p>
@@ -97,19 +103,28 @@
         <p class="mt-4">
           The cell range must be specified to include the heading row. In a
           sheet structured like the example above, the relevant range would be
-          <code class="px-1 py-0.5 bg-neutral-100 rounded">A1:H2</code>.
+          <code
+            class="px-1 py-0.5 bg-white-dynamic border border-dynamic rounded"
+            >A1:H2</code
+          >.
         </p>
 
         <p class="mt-4">
           On the next page the mapping of columns must be given. Simply select
           the corresponding column or
-          <code class="px-1 py-0.5 bg-neutral-100 rounded">-- none --</code>
+          <code
+            class="px-1 py-0.5 bg-white-dynamic border border-dynamic rounded"
+            >-- none --</code
+          >
           if the column is not provided.
         </p>
 
         <p class="mt-4">
           In the case of the strain, the value
-          <code class="px-1 py-0.5 bg-neutral-100 rounded">-- fixed --</code>
+          <code
+            class="px-1 py-0.5 bg-white-dynamic border border-dynamic rounded"
+            >-- fixed --</code
+          >
           can also be selected if the spreadsheet does not contain it in a
           column.
         </p>
@@ -122,7 +137,7 @@
         <img
           src="{{ static('manual/fig13.png') }}"
           alt="Import mapping page"
-          class="w-full border border-neutral-300 rounded mt-6 mb-6"
+          class="w-full border border-dynamic rounded mt-6 mb-6"
         />
 
         <h3 class="text-xl font-semibold mt-8 mb-4">Requests</h3>
