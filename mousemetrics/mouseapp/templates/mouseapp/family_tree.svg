@@ -2,6 +2,15 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg id="main-svg" width="100%" height="100%" viewBox="{{ viewbox }}" xmlns="http://www.w3.org/2000/svg" version="1.1" style="touch-action:none;">
     <style>
+        {% if dark_mode %}
+        .edge { stroke: #94a3b8; stroke-width: 2px; }
+        .box  { fill: #1e293b; stroke: #475569; stroke-width: 3px; }
+        text  { font-family: sans-serif; }
+        .txt-strain { font-size: 14px; fill: #60a5fa; font-weight: bold; cursor: pointer; }
+        .txt-info   { font-size: 14px; fill: #e2e8f0; }
+        .txt-link   { font-size: 10px; fill: #60a5fa; text-anchor: end; cursor: pointer; }
+        a:hover text { fill: #93c5fd; text-decoration: underline; }
+        {% else %}
         .edge { stroke: black; stroke-width: 2px; }
         .box  { fill: white; stroke: #e5e7eb; stroke-width: 3px; }
         text  { font-family: sans-serif; }
@@ -9,6 +18,7 @@
         .txt-info   { font-size: 14px; fill: black; }
         .txt-link   { font-size: 10px; fill: #2563eb; text-anchor: end; cursor: pointer; }
         a:hover text { fill: #1d4ed8; text-decoration: underline; }
+        {% endif %}
         .node, .edge { transition: opacity 0.2s; }
         .dimmed { opacity: 0.1; }
         .highlight { opacity: 1 !important; }

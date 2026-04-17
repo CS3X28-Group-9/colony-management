@@ -117,6 +117,14 @@ class MouseForm(forms.ModelForm):
             else:
                 field.queryset = StudyPlan.objects.none()
 
+        for fld in self.fields.values():
+            w = fld.widget
+            if isinstance(w, (forms.HiddenInput, forms.MultipleHiddenInput)):
+                continue
+            cls = w.attrs.get("class", "")
+            if "input" not in cls.split():
+                w.attrs["class"] = f"{cls} input".strip()
+
     class Meta:
         model = Mouse
         fields = [
@@ -167,6 +175,9 @@ class ProjectForm(forms.ModelForm):
         fields = [
             "name",
         ]
+        widgets = {
+            "name": forms.Textarea(attrs={"class": "input", "rows": 4}),
+        }
 
 
 class CreateProjectForm(forms.ModelForm):
@@ -193,6 +204,12 @@ class CreateProjectForm(forms.ModelForm):
             "start_date": forms.DateInput(attrs={"class": "input"}),
             "quota_5_years": forms.NumberInput(attrs={"class": "input"}),
             "license_constraints": forms.Textarea(attrs={"class": "input"}),
+            "allow_over_18_months": forms.CheckboxInput(
+                attrs={"class": "checkbox-field"}
+            ),
+            "has_mod_sev_permission": forms.CheckboxInput(
+                attrs={"class": "checkbox-field"}
+            ),
         }
         labels = {
             "allow_over_18_months": "Allowed mice older than 18 months",

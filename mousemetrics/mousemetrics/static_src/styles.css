@@ -195,7 +195,8 @@ html {
   }
 
   .mouse-flex {
-    @apply flex border-b border-gray-200 pb-3;
+    @apply flex border-b pb-3;
+    border-color: var(--color-border);
   }
 
   .mouse-row {
@@ -242,6 +243,17 @@ html {
   .input::placeholder {
     color: var(--color-text-secondary);
     opacity: 1;
+  }
+
+  .checkbox-field {
+    height: 1rem;
+    width: 1rem;
+    flex-shrink: 0;
+    border-radius: 0.25rem;
+    border: 2px solid var(--color-input-border);
+    background-color: var(--color-bg-input);
+    accent-color: var(--color-link);
+    cursor: pointer;
   }
 
   .card {

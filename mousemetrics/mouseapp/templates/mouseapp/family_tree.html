@@ -2,15 +2,34 @@
 {% block title %}Family Tree - {{ center_mouse.strain }}{% endblock %}
 {% block content %}
   <div
-    class="overflow-hidden border rounded-lg bg-white shadow-sm p-4 h-[80vh] text-center"
+    class="overflow-hidden border rounded-lg shadow-sm p-4 h-[80vh] text-center bg-card border-dynamic"
   >
     <object
+      id="family-tree-svg"
       type="image/svg+xml"
       data="{{ url('mouseapp:family_tree_svg', mouse=center_mouse.id) }}"
+      data-src-base="{{ url('mouseapp:family_tree_svg', mouse=center_mouse.id) }}"
       class="w-full h-full block"
       style="touch-action: none;"
     >
       Your browser does not support SVG.
     </object>
   </div>
+  <script>
+    (function () {
+      var obj = document.getElementById("family-tree-svg");
+      if (!obj) return;
+      var base = obj.getAttribute("data-src-base") || obj.getAttribute("data");
+      function sync() {
+        var dark = document.documentElement.classList.contains("dark");
+        var url = (base || "").split("?")[0];
+        obj.setAttribute("data", dark ? url + "?theme=dark" : url);
+      }
+      sync();
+      new MutationObserver(sync).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+    })();
+  </script>
 {% endblock %}
