@@ -677,9 +677,6 @@
   .border-gray-300 {
     border-color: var(--color-gray-300);
   }
-  .border-neutral-300 {
-    border-color: var(--color-neutral-300);
-  }
   .border-red-200 {
     border-color: var(--color-red-200);
   }
@@ -1018,11 +1015,6 @@
       scale: var(--tw-scale-x) var(--tw-scale-y);
     }
   }
-  .peer-focus\:text-blue-600 {
-    &:is(:where(.peer):focus ~ *) {
-      color: var(--color-blue-600);
-    }
-  }
   .file\:mr-4 {
     &::file-selector-button {
       margin-right: calc(var(--spacing) * 4);
@@ -1132,11 +1124,6 @@
   .focus\:border-transparent {
     &:focus {
       border-color: transparent;
-    }
-  }
-  .focus\:text-blue-600 {
-    &:focus {
-      color: var(--color-blue-600);
     }
   }
   .focus\:ring-2 {
@@ -1459,7 +1446,10 @@ html {
     transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
     font-size: var(--text-sm);
     line-height: var(--tw-leading, var(--text-sm--line-height));
-    color: var(--color-gray-500);
+    color: var(--color-text-secondary);
+  }
+  .relative:has(> .peer:focus) label.input-label {
+    color: var(--color-link);
   }
   .numeric {
     text-align: right;
@@ -1483,14 +1473,8 @@ html {
     border-width: 0px;
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 2px;
-    border-color: var(--color-gray-300);
-    background-color: var(--color-gray-50);
     font-size: var(--text-sm);
     line-height: var(--tw-leading, var(--text-sm--line-height));
-    color: var(--color-gray-900);
-    &:focus {
-      border-color: var(--color-blue-600);
-    }
     &:focus {
       --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
       box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
@@ -1499,6 +1483,13 @@ html {
       --tw-outline-style: none;
       outline-style: none;
     }
+    background-color: var(--color-bg-input);
+    color: var(--color-text-primary);
+    border-color: var(--color-input-border);
+  }
+  .floating-label:focus {
+    border-color: var(--color-primary);
+    outline: none;
   }
   .default-header {
     text-align: center;
