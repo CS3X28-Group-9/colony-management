@@ -2,7 +2,7 @@
 {% block content %}
   <div class="flex justify-center p-4">
     <div
-      class="p-4 sm:p-6 lg:p-8 rounded bg-neutral-200 w-80 shadow-md border border-neutral-300"
+      class="p-4 sm:p-6 lg:p-8 rounded bg-card w-80 shadow-md border border-dynamic"
     >
       <form method="post" class="space-y-6">
         <h2 class="default-header">Sign in to LabSafe</h2>
@@ -27,7 +27,7 @@
           />
           <label
             for="{{ form.username.id_for_label }}"
-            class="absolute top-4 input-label duration-300 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+            class="absolute top-4 input-label duration-300 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
             >Email</label
           >
           {% if form.username.errors %}
@@ -57,7 +57,7 @@
                                      }'
             tabindex="-1"
             onmousedown="event.preventDefault()"
-            class="absolute inset-y-0 end-0 flex items-center z-20 px-3 cursor-pointer text-gray-400 rounded-e-md"
+            class="absolute inset-y-0 end-0 flex items-center z-20 px-3 cursor-pointer text-muted-dynamic rounded-e-md"
           >
             <span class="eye-slash-icon hover:stroke-blue-600 stroke-current">
               {% include "components/svgs/pass-mode-pass.svg" %}
@@ -68,7 +68,7 @@
           </button>
           <label
             for="{{ form.password.id_for_label }}"
-            class="absolute top-4 input-label duration-300 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+            class="absolute top-4 input-label duration-300 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
             >Password</label
           >
 
@@ -88,7 +88,7 @@
                 id="{{ form.remember_me.id_for_label }}"
                 name="{{ form.remember_me.html_name }}"
                 type="checkbox"
-                class="bg-gray-50 border border-gray-300 focus:ring-3 focus:ring-blue-300 h-4 w-4 rounded"
+                class="checkbox-field focus:ring-3 focus:ring-blue-300 h-4 w-4 rounded"
                 {%
                   if
                   form.remember_me.value
@@ -100,14 +100,14 @@
             <div class="text-sm ml-3">
               <label
                 for="{{ form.remember_me.id_for_label }}"
-                class="font-medium text-gray-900"
+                class="font-medium text-primary"
                 >Remember me</label
               >
             </div>
           </div>
           <a
             href="{{ url('mouseapp:password_reset') }}"
-            class="text-sm ml-auto px-2"
+            class="text-sm ml-auto px-2 link-dynamic"
             >Forgotten Password?</a
           >
         </div>

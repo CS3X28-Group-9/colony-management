@@ -558,7 +558,7 @@ class GraphSVGRenderer:
             }
         )
 
-    def get_final_svg(self):
+    def get_final_svg(self, dark: bool = False) -> str:
         if not self.nodes:
             return "<svg></svg>"
 
@@ -575,6 +575,7 @@ class GraphSVGRenderer:
             "height": height,
             "box_w": self.BOX_W,
             "box_h": self.BOX_H,
+            "dark_mode": dark,
         }
 
         return render_to_string("mouseapp/family_tree.svg", context, using="jinja2")
@@ -883,7 +884,8 @@ def family_tree_svg(request: HttpRequest, mouse: int) -> HttpResponse:
     renderer = GraphSVGRenderer()
     layout_graph(renderer, center_mouse)
 
-    svg_content = renderer.get_final_svg()
+    dark = request.GET.get("theme") == "dark"
+    svg_content = renderer.get_final_svg(dark=dark)
 
     return HttpResponse(svg_content, content_type="image/svg+xml")
 

@@ -1,17 +1,15 @@
 {% extends "base.html" %} {% block title %}Import form{% endblock %}
 {% block content %}
   <div class="flex justify-center p-4">
-    <div
-      class="p-4 m-4 sm:p-6 lg:p-8 rounded bg-neutral-200 w-max shadow-md border border-neutral-300"
-    >
-      <h1>Mouse Excel Import</h1>
+    <div class="card p-4 m-4 sm:p-6 lg:p-8 w-max max-w-full shadow-md">
+      <h1 class="default-header mb-4">Mouse Excel Import</h1>
       <form method="post" enctype="multipart/form-data">
         {{ csrf_input }}
 
         <div class="flex items-center gap-3">
           <label
             for="{{ form.project.id_for_label }}"
-            class="text-sm font-medium text-gray-700 whitespace-nowrap"
+            class="text-sm font-medium text-secondary whitespace-nowrap"
           >
             Project:
           </label>
@@ -20,13 +18,13 @@
             <select
               id="{{ form.project.id_for_label }}"
               name="{{ form.project.html_name }}"
-              class="block w-full px-4 py-2.5 text-gray-900 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-gray-400 transition-colors duration-200 cursor-pointer appearance-none"
+              class="input block w-full py-2.5 rounded-lg shadow-sm cursor-pointer appearance-none pr-10 transition-colors duration-200"
             >
               <option
                 value=""
                 disabled
                 {% if form.project.value() is none %}selected{% endif %}
-                class="text-gray-500"
+                class="text-muted-dynamic"
               >
                 Select a project
               </option>
@@ -60,7 +58,7 @@
           type="file"
           id="{{ form.file.id_for_label }}"
           name="{{ form.file.html_name }}"
-          class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all file:mr-4 file:py-2.5 file:px-4 file:rounded-l-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="input block w-full text-sm cursor-pointer transition-all file:mr-4 file:py-2.5 file:px-4 file:rounded-l-lg file:border-0 file:text-sm file:font-medium file:bg-[var(--color-bg-secondary)] file:text-[var(--color-link)] hover:file:brightness-95 dark:hover:file:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed"
           required
           accept=".xlsm,.xlsx,.csv"
         />

@@ -168,7 +168,12 @@ html {
   }
 
   .input-label {
-    @apply text-sm text-gray-500 transform scale-75 -translate-y-4 origin-left start-2.5;
+    @apply text-sm transform scale-75 -translate-y-4 origin-left start-2.5;
+    color: var(--color-text-secondary);
+  }
+
+  .relative:has(> .peer:focus) label.input-label {
+    color: var(--color-link);
   }
 
   .numeric {
@@ -186,7 +191,15 @@ html {
   }
 
   .floating-label {
-    @apply text-sm text-gray-900 bg-gray-50 rounded-t-lg border-0 border-b-2 border-gray-300 appearance-none focus:border-blue-600 focus:ring-0 focus:outline-none;
+    @apply text-sm rounded-t-lg border-0 border-b-2 appearance-none focus:ring-0 focus:outline-none;
+    background-color: var(--color-bg-input);
+    color: var(--color-text-primary);
+    border-color: var(--color-input-border);
+  }
+
+  .floating-label:focus {
+    border-color: var(--color-primary);
+    outline: none;
   }
 
   .default-header {
@@ -195,7 +208,8 @@ html {
   }
 
   .mouse-flex {
-    @apply flex border-b border-gray-200 pb-3;
+    @apply flex border-b pb-3;
+    border-color: var(--color-border);
   }
 
   .mouse-row {
@@ -242,6 +256,17 @@ html {
   .input::placeholder {
     color: var(--color-text-secondary);
     opacity: 1;
+  }
+
+  .checkbox-field {
+    height: 1rem;
+    width: 1rem;
+    flex-shrink: 0;
+    border-radius: 0.25rem;
+    border: 2px solid var(--color-input-border);
+    background-color: var(--color-bg-input);
+    accent-color: var(--color-link);
+    cursor: pointer;
   }
 
   .card {
