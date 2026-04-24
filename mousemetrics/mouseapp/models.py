@@ -278,7 +278,10 @@ class MouseObservation(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     type = models.CharField(
-        max_length=2, blank=True, null=True, choices=TYPE_CHOICES, default=""
+        max_length=2,
+        blank=True,
+        choices=TYPE_CHOICES,
+        default="",
     )
     details = models.TextField(blank=True, null=True)
 
@@ -408,7 +411,7 @@ class ReplyReaction(models.Model):
         RequestReply, on_delete=models.CASCADE, related_name="reactions"
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    emoji = models.CharField(max_length=10)
+    emoji = models.CharField(max_length=4)
 
     class Meta:
         unique_together = [["reply", "user", "emoji"]]
