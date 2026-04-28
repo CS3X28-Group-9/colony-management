@@ -49,9 +49,8 @@
         </p>
 
         <p class="mt-4">
-          The family tree shows only mice that are direct ancestors or
-          descendants of the requested mouse. Ancestors are shown with the
-          father of any mouse on the left and the mother on the right.
+          Panning the family tree is supported by clicking and dragging, and zooming by scrolling.
+          When a mouse is hovered, its direct ancestors are highlighted.
         </p>
 
         <img
@@ -59,6 +58,16 @@
           alt="Family tree of a mouse"
           class="max-w-3xl mx-auto border border-dynamic rounded mt-6 mb-6"
         />
+
+        <h3 class="text-xl font-semibold mt-8 mb-4">Study Plans</h3>
+        <p>
+        On the project page, a `Create Study Plan' button can be found.
+        Pressing it yields a form containing the basic data of a study plan: its description, start date, end date, quotas of mice expected to be used, and whether the mice are expected to be internally sourced.
+        </p>
+        <p class="mt-4">
+        Once created, study plans can be seen in a list on the project page, with their description, start date, end date, and status, which begins as `Draft'.
+        Following the link in the description yields the study plan page, from which they can be edited or, if the user has permission to do so, approved with a study ID.
+        </p>
 
         <h3 class="text-xl font-semibold mt-8 mb-4">Data Import</h3>
 
@@ -95,12 +104,7 @@
         </p>
 
         <p class="mt-4">
-          The sheet name field refers to the sheet in the spreadsheet that
-          should be used. If left blank, the most recently used sheet will be
-          used.
-        </p>
-
-        <p class="mt-4">
+          On the next page, the sheet within the Excel file from which the data should be taken must be specified, as must the cell range within that sheet.
           The cell range must be specified to include the heading row. In a
           sheet structured like the example above, the relevant range would be
           <code
@@ -110,8 +114,8 @@
         </p>
 
         <p class="mt-4">
-          On the next page the mapping of columns must be given. Simply select
-          the corresponding column or
+          On the next page the mapping of columns must be given.
+          Simply select the corresponding column or
           <code
             class="px-1 py-0.5 bg-white-dynamic border border-dynamic rounded"
             >-- none --</code
@@ -128,6 +132,10 @@
           can also be selected if the spreadsheet does not contain it in a
           column.
         </p>
+        <p class="mt-4">
+          Some columns will have automatically-inferred mappings prefilled.
+        </p>
+
 
         <p class="mt-4">
           Once a mapping is chosen it can be saved and the import can be
@@ -168,6 +176,30 @@
         <p class="mt-4">
           Pending requests can be accepted or denied, and accepted requests can
           be marked completed if the user has permission to do so.
+        </p>
+
+        <p class="mt-4">
+          On an individual request's page, messages can be sent in reply to the request.
+        </p>
+
+        <h3 class="text-xl font-semibold mt-8 mb-4">Administration</h3>
+        <p>
+          Projects can be created with the Create Project button on the home page, if the user is authorized to do so.
+          The project's name, lead, start date, and license constraints must all be specified.
+          The project lead must be specified by email address. If no such user exists, an invitation will be sent to allow the user to register.
+          'Quota 5 years' refers to the number of mice a project is permitted to use in the span of 5 years.
+        </p>
+
+        <p class="mt-4">
+          Users can also be added to the system by invitation from a project lead or administrator, by inviting a member to collaborate on the project. This again sends the user an invitation to allow them to register.
+        </p>
+
+        <p class="mt-4">
+          To grant a user animal facility permissions (full access to all projects and to create projects), the admin page, found under the `Admin' link in the footer, is used.
+          On that page, follow the `Users' link to reach a list of registered users, find the user who should be granted these permissions, and follow the link in the `Username' column.
+          Then, under `Permissions', a list of `Available Groups' can be found, in which `Animal Facility User' should be present.
+          Double-clicking it moves it to the `Chosen Groups' list.
+          These changes can then be saved with the `Save' button at the bottom of the page.
         </p>
       </div>
     </div>
