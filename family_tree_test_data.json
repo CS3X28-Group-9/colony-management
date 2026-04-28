@@ -300,8 +300,8 @@
     "strain": 1,
     "coat_colour": "Black",
     "earmark": "TL+BR",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "."
   }
 },
@@ -320,8 +320,8 @@
     "strain": 2,
     "coat_colour": "Black",
     "earmark": "TL",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "."
   }
 },
@@ -340,8 +340,8 @@
     "strain": 2,
     "coat_colour": "Black",
     "earmark": "TR",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "."
   }
 },
@@ -360,8 +360,8 @@
     "strain": 2,
     "coat_colour": "Black",
     "earmark": "BR",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "."
   }
 },
@@ -380,8 +380,8 @@
     "strain": 2,
     "coat_colour": "Black",
     "earmark": "TR",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "."
   }
 },
@@ -400,8 +400,8 @@
     "strain": 3,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -420,8 +420,8 @@
     "strain": 3,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -440,8 +440,8 @@
     "strain": 3,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -460,8 +460,8 @@
     "strain": 3,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -480,8 +480,8 @@
     "strain": 3,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -500,8 +500,8 @@
     "strain": 3,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -520,8 +520,8 @@
     "strain": 3,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -540,8 +540,8 @@
     "strain": 3,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -560,8 +560,8 @@
     "strain": 3,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -580,8 +580,8 @@
     "strain": 3,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -600,8 +600,8 @@
     "strain": 3,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -620,8 +620,8 @@
     "strain": 3,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -640,8 +640,8 @@
     "strain": 3,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -660,8 +660,8 @@
     "strain": 3,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -680,8 +680,8 @@
     "strain": 3,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -700,8 +700,8 @@
     "strain": 4,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -720,8 +720,8 @@
     "strain": 4,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -740,8 +740,8 @@
     "strain": 4,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -760,8 +760,8 @@
     "strain": 4,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -780,8 +780,8 @@
     "strain": 4,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -800,8 +800,8 @@
     "strain": 4,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -820,8 +820,8 @@
     "strain": 4,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -840,8 +840,8 @@
     "strain": 4,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -860,8 +860,8 @@
     "strain": 4,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -880,8 +880,8 @@
     "strain": 4,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -900,8 +900,8 @@
     "strain": 4,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -920,8 +920,8 @@
     "strain": 4,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -940,8 +940,8 @@
     "strain": 4,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -960,8 +960,8 @@
     "strain": 4,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -980,8 +980,8 @@
     "strain": 4,
     "coat_colour": null,
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": ""
   }
 },
@@ -1000,8 +1000,8 @@
     "strain": 5,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1020,8 +1020,8 @@
     "strain": 5,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1040,8 +1040,8 @@
     "strain": 5,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1060,8 +1060,8 @@
     "strain": 5,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1080,8 +1080,8 @@
     "strain": 5,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1100,8 +1100,8 @@
     "strain": 6,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1120,8 +1120,8 @@
     "strain": 6,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1140,8 +1140,8 @@
     "strain": 6,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1160,8 +1160,8 @@
     "strain": 6,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1180,8 +1180,8 @@
     "strain": 6,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1200,8 +1200,8 @@
     "strain": 6,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1220,8 +1220,8 @@
     "strain": 6,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1240,8 +1240,8 @@
     "strain": 6,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1260,8 +1260,8 @@
     "strain": 6,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1280,8 +1280,8 @@
     "strain": 6,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1300,8 +1300,8 @@
     "strain": 6,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1320,8 +1320,8 @@
     "strain": 6,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1340,8 +1340,8 @@
     "strain": 7,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1360,8 +1360,8 @@
     "strain": 7,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1380,8 +1380,8 @@
     "strain": 7,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1400,8 +1400,8 @@
     "strain": 7,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1420,8 +1420,8 @@
     "strain": 7,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1440,8 +1440,8 @@
     "strain": 8,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1460,8 +1460,8 @@
     "strain": 8,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1480,8 +1480,8 @@
     "strain": 8,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1500,8 +1500,8 @@
     "strain": 8,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1520,8 +1520,8 @@
     "strain": 9,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1540,8 +1540,8 @@
     "strain": 9,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1560,8 +1560,8 @@
     "strain": 9,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1580,8 +1580,8 @@
     "strain": 9,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1600,8 +1600,8 @@
     "strain": 9,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1620,8 +1620,8 @@
     "strain": 9,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1640,8 +1640,8 @@
     "strain": 10,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1660,8 +1660,8 @@
     "strain": 10,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1680,8 +1680,8 @@
     "strain": 10,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1700,8 +1700,8 @@
     "strain": 10,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1720,8 +1720,8 @@
     "strain": 10,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1740,8 +1740,8 @@
     "strain": 10,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1760,8 +1760,8 @@
     "strain": 10,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1780,8 +1780,8 @@
     "strain": 11,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1800,8 +1800,8 @@
     "strain": 11,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1820,8 +1820,8 @@
     "strain": 11,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1840,8 +1840,8 @@
     "strain": 11,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1860,8 +1860,8 @@
     "strain": 11,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1880,8 +1880,8 @@
     "strain": 11,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1900,8 +1900,8 @@
     "strain": 11,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1920,8 +1920,8 @@
     "strain": 11,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1940,8 +1940,8 @@
     "strain": 12,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1960,8 +1960,8 @@
     "strain": 12,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -1980,8 +1980,8 @@
     "strain": 12,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2000,8 +2000,8 @@
     "strain": 12,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2020,8 +2020,8 @@
     "strain": 12,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2040,8 +2040,8 @@
     "strain": 12,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2060,8 +2060,8 @@
     "strain": 13,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2080,8 +2080,8 @@
     "strain": 13,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2100,8 +2100,8 @@
     "strain": 13,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2120,8 +2120,8 @@
     "strain": 13,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2140,8 +2140,8 @@
     "strain": 13,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2160,8 +2160,8 @@
     "strain": 13,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2180,8 +2180,8 @@
     "strain": 13,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2200,8 +2200,8 @@
     "strain": 13,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2220,8 +2220,8 @@
     "strain": 13,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2240,8 +2240,8 @@
     "strain": 13,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2260,8 +2260,8 @@
     "strain": 13,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2280,8 +2280,8 @@
     "strain": 13,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2300,8 +2300,8 @@
     "strain": 13,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2320,8 +2320,8 @@
     "strain": 13,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2340,8 +2340,8 @@
     "strain": 13,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2360,8 +2360,8 @@
     "strain": 14,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2380,8 +2380,8 @@
     "strain": 14,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2400,8 +2400,8 @@
     "strain": 14,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2420,8 +2420,8 @@
     "strain": 14,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2440,8 +2440,8 @@
     "strain": 14,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2460,8 +2460,8 @@
     "strain": 14,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2480,8 +2480,8 @@
     "strain": 14,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2500,8 +2500,8 @@
     "strain": 14,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2520,8 +2520,8 @@
     "strain": 14,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "generated"
   }
 },
@@ -2540,8 +2540,8 @@
     "strain": 15,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "barycenter test"
   }
 },
@@ -2560,8 +2560,8 @@
     "strain": 15,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "barycenter test"
   }
 },
@@ -2580,8 +2580,8 @@
     "strain": 15,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "barycenter test"
   }
 },
@@ -2600,8 +2600,8 @@
     "strain": 15,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "barycenter test"
   }
 },
@@ -2620,8 +2620,8 @@
     "strain": 15,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "barycenter test"
   }
 },
@@ -2640,8 +2640,8 @@
     "strain": 15,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "barycenter test"
   }
 },
@@ -2660,8 +2660,8 @@
     "strain": 15,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "barycenter test"
   }
 },
@@ -2680,8 +2680,8 @@
     "strain": 15,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "barycenter test"
   }
 },
@@ -2700,8 +2700,8 @@
     "strain": 15,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "barycenter test"
   }
 },
@@ -2720,8 +2720,8 @@
     "strain": 15,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "barycenter test"
   }
 },
@@ -2740,8 +2740,8 @@
     "strain": 15,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "barycenter test"
   }
 },
@@ -2760,8 +2760,8 @@
     "strain": 16,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -2780,8 +2780,8 @@
     "strain": 16,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -2800,8 +2800,8 @@
     "strain": 16,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -2820,8 +2820,8 @@
     "strain": 16,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -2840,8 +2840,8 @@
     "strain": 16,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -2860,8 +2860,8 @@
     "strain": 16,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -2880,8 +2880,8 @@
     "strain": 16,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -2900,8 +2900,8 @@
     "strain": 16,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -2920,8 +2920,8 @@
     "strain": 16,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -2940,8 +2940,8 @@
     "strain": 16,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -2960,8 +2960,8 @@
     "strain": 16,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -2980,8 +2980,8 @@
     "strain": 16,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3000,8 +3000,8 @@
     "strain": 16,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3020,8 +3020,8 @@
     "strain": 16,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3040,8 +3040,8 @@
     "strain": 16,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3060,8 +3060,8 @@
     "strain": 16,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3080,8 +3080,8 @@
     "strain": 16,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3100,8 +3100,8 @@
     "strain": 16,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3120,8 +3120,8 @@
     "strain": 16,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3140,8 +3140,8 @@
     "strain": 16,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3160,8 +3160,8 @@
     "strain": 17,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3180,8 +3180,8 @@
     "strain": 17,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3200,8 +3200,8 @@
     "strain": 17,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3220,8 +3220,8 @@
     "strain": 17,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3240,8 +3240,8 @@
     "strain": 17,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3260,8 +3260,8 @@
     "strain": 17,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3280,8 +3280,8 @@
     "strain": 17,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3300,8 +3300,8 @@
     "strain": 17,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3320,8 +3320,8 @@
     "strain": 17,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3340,8 +3340,8 @@
     "strain": 17,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3360,8 +3360,8 @@
     "strain": 17,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3380,8 +3380,8 @@
     "strain": 18,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3400,8 +3400,8 @@
     "strain": 18,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3420,8 +3420,8 @@
     "strain": 18,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3440,8 +3440,8 @@
     "strain": 18,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3460,8 +3460,8 @@
     "strain": 18,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3480,8 +3480,8 @@
     "strain": 18,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3500,8 +3500,8 @@
     "strain": 18,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3520,8 +3520,8 @@
     "strain": 18,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3540,8 +3540,8 @@
     "strain": 19,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3560,8 +3560,8 @@
     "strain": 19,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3580,8 +3580,8 @@
     "strain": 19,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3600,8 +3600,8 @@
     "strain": 19,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3620,8 +3620,8 @@
     "strain": 19,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3640,8 +3640,8 @@
     "strain": 19,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3660,8 +3660,8 @@
     "strain": 19,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3680,8 +3680,8 @@
     "strain": 19,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3700,8 +3700,8 @@
     "strain": 19,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3720,8 +3720,8 @@
     "strain": 20,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3740,8 +3740,8 @@
     "strain": 20,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3760,8 +3760,8 @@
     "strain": 20,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3780,8 +3780,8 @@
     "strain": 20,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3800,8 +3800,8 @@
     "strain": 20,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3820,8 +3820,8 @@
     "strain": 20,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3840,8 +3840,8 @@
     "strain": 20,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3860,8 +3860,8 @@
     "strain": 20,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3880,8 +3880,8 @@
     "strain": 20,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3900,8 +3900,8 @@
     "strain": 20,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3920,8 +3920,8 @@
     "strain": 20,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3940,8 +3940,8 @@
     "strain": 20,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3960,8 +3960,8 @@
     "strain": 20,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -3980,8 +3980,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4000,8 +4000,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4020,8 +4020,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4040,8 +4040,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4060,8 +4060,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4080,8 +4080,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4100,8 +4100,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4120,8 +4120,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4140,8 +4140,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4160,8 +4160,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4180,8 +4180,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4200,8 +4200,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4220,8 +4220,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4240,8 +4240,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4260,8 +4260,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4280,8 +4280,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4300,8 +4300,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4320,8 +4320,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4340,8 +4340,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4360,8 +4360,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4380,8 +4380,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4400,8 +4400,8 @@
     "strain": 21,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4420,8 +4420,8 @@
     "strain": 22,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4440,8 +4440,8 @@
     "strain": 22,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4460,8 +4460,8 @@
     "strain": 22,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4480,8 +4480,8 @@
     "strain": 22,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4500,8 +4500,8 @@
     "strain": 22,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4520,8 +4520,8 @@
     "strain": 22,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4540,8 +4540,8 @@
     "strain": 22,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4560,8 +4560,8 @@
     "strain": 22,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4580,8 +4580,8 @@
     "strain": 23,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4600,8 +4600,8 @@
     "strain": 23,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4620,8 +4620,8 @@
     "strain": 23,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4640,8 +4640,8 @@
     "strain": 23,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4660,8 +4660,8 @@
     "strain": 23,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4680,8 +4680,8 @@
     "strain": 23,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4700,8 +4700,8 @@
     "strain": 23,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4720,8 +4720,8 @@
     "strain": 23,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4740,8 +4740,8 @@
     "strain": 23,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4760,8 +4760,8 @@
     "strain": 23,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4780,8 +4780,8 @@
     "strain": 23,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4800,8 +4800,8 @@
     "strain": 23,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4820,8 +4820,8 @@
     "strain": 23,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4840,8 +4840,8 @@
     "strain": 23,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4860,8 +4860,8 @@
     "strain": 24,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4880,8 +4880,8 @@
     "strain": 24,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4900,8 +4900,8 @@
     "strain": 24,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4920,8 +4920,8 @@
     "strain": 24,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4940,8 +4940,8 @@
     "strain": 24,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4960,8 +4960,8 @@
     "strain": 24,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -4980,8 +4980,8 @@
     "strain": 24,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5000,8 +5000,8 @@
     "strain": 24,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5020,8 +5020,8 @@
     "strain": 24,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5040,8 +5040,8 @@
     "strain": 24,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5060,8 +5060,8 @@
     "strain": 24,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5080,8 +5080,8 @@
     "strain": 24,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5100,8 +5100,8 @@
     "strain": 24,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5120,8 +5120,8 @@
     "strain": 24,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5140,8 +5140,8 @@
     "strain": 24,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5160,8 +5160,8 @@
     "strain": 24,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5180,8 +5180,8 @@
     "strain": 24,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5200,8 +5200,8 @@
     "strain": 24,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5220,8 +5220,8 @@
     "strain": 24,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5240,8 +5240,8 @@
     "strain": 25,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5260,8 +5260,8 @@
     "strain": 25,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5280,8 +5280,8 @@
     "strain": 25,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5300,8 +5300,8 @@
     "strain": 25,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5320,8 +5320,8 @@
     "strain": 25,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5340,8 +5340,8 @@
     "strain": 25,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5360,8 +5360,8 @@
     "strain": 25,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5380,8 +5380,8 @@
     "strain": 25,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5400,8 +5400,8 @@
     "strain": 25,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5420,8 +5420,8 @@
     "strain": 25,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5440,8 +5440,8 @@
     "strain": 25,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5460,8 +5460,8 @@
     "strain": 25,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5480,8 +5480,8 @@
     "strain": 25,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5500,8 +5500,8 @@
     "strain": 25,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5520,8 +5520,8 @@
     "strain": 25,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
@@ -5540,8 +5540,8 @@
     "strain": 25,
     "coat_colour": "Black",
     "earmark": "",
-    "cull_date": null,
-    "cull_reason": null,
+    "death_date": null,
+    "death_reason": null,
     "notes": "stress test"
   }
 },
