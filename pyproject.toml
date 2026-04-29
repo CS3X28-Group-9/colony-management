@@ -25,6 +25,7 @@ dev = [
   "django-stubs>=5.2.7",
   "django-upgrade>=1.29",
   "djhtml>=3.0.10",
+  "locust>=2.43.4",
   "pre-commit>=4.3",
   "pre-commit-update>=0.8.0",
   "pyrefly>=0.50.1",
