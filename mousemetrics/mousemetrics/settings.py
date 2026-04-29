@@ -203,8 +203,10 @@ EMAIL_BACKEND = (
     else "django.core.mail.backends.console.EmailBackend"
 )
 
-DEFAULT_FROM_EMAIL = "Mousemetrics <mousemetrics@mousemetrics.ben.soroos.net>"
-SERVER_EMAIL = "Mousemetrics <system@mousemetrics.ben.soroos.net>"
+DEFAULT_FROM_EMAIL = os.environ.get(
+    "MOUSEMETRICS_EMAIL", "LabSafe <mousemetrics@mousemetrics.ben.soroos.net>"
+)
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 
 # Mouse Import settings
