@@ -91,7 +91,11 @@
                   <p class="text-sm text-secondary mb-1">
                     <strong>Project:</strong>
                     <a href="{{ url('mouseapp:project', req.project.id) }}">
-                      {{ req.project.name }}
+                      {% if req.project.name %}
+                        {{ req.project.name }}
+                      {% else %}
+                        Unnamed Project
+                      {% endif %}
                     </a>
                   </p>
                 {% endif %}
