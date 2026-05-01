@@ -7,6 +7,8 @@ Authors:
 - Moth Robson
 - Ben Soroos
 
+LabSafe is a web-based Laboratory Information Management System designed to support the recording and day-to-day management of laboratory mice and other animals used in scientific research.
+
 # Sample Instance
 A running instance is available at [https://colony-management.staging.up.railway.app](https://colony-management.staging.up.railway.app).
 
